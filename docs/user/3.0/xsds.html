@@ -20,7 +20,7 @@
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><a href="/">Home</a></dt>
+<dt class="hdlist1"><a href="../../../index.html">Home</a></dt>
 <dt class="hdlist1">User documentation</dt>
 <dd>
 <div class="ulist">
@@ -98,8 +98,24 @@
   &lt;/xs:complexType&gt;
 
   &lt;xs:complexType name="service-type"&gt;
+    &lt;xs:choice&gt;
+      &lt;xs:element name="serializer-default" type="ehcache:serializer-type" minOccurs="0" maxOccurs="1"/&gt;
+      &lt;xs:any namespace="##other" minOccurs="0" maxOccurs="1"/&gt;
+    &lt;/xs:choice&gt;
+  &lt;/xs:complexType&gt;
+
+   &lt;xs:complexType name="serializer-type"&gt;
     &lt;xs:sequence&gt;
-      &lt;xs:any namespace="##other" minOccurs="1" maxOccurs="1"/&gt;
+      &lt;xs:element name="class" maxOccurs="unbounded" minOccurs="0"&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:simpleContent&gt;
+            &lt;xs:extension base="xs:string"&gt;
+              &lt;xs:attribute type="xs:string" name="cache" use="optional"/&gt;
+              &lt;xs:attribute type="xs:string" name="type" use="optional"/&gt;
+            &lt;/xs:extension&gt;
+          &lt;/xs:simpleContent&gt;
+        &lt;/xs:complexType&gt;
+     &lt;/xs:element&gt;
     &lt;/xs:sequence&gt;
   &lt;/xs:complexType&gt;
 
@@ -329,7 +345,7 @@
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-05 12:27:13 EST
+Last updated 2015-03-13 11:20:48 PDT
 </div>
 </div>
 </body>
