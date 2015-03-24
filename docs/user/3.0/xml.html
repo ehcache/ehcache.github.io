@@ -20,7 +20,7 @@
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><a href="/">Home</a></dt>
+<dt class="hdlist1"><a href="../../../index.html">Home</a></dt>
 <dt class="hdlist1">User documentation</dt>
 <dd>
 <div class="ulist">
@@ -58,27 +58,29 @@
 <h2 id="_intro">Intro</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s you configure a <code>CacheManager</code> at creation time, using a XML file, according to
-<a href="xsds.html#_core">this schema definition</a>, namely:</p>
+<p>Using an XML file you can configure a <code>CacheManager</code> at creation time, according to
+<a href="xsds.html#_core">this schema definition</a>.</p>
 </div>
 <div class="sect2">
 <h3 id="__code_config_code_root_element"><code>&lt;config&gt;</code> root element</h3>
 <div class="paragraph">
-<p>The root element of our XML configuration. One <code>&lt;config&gt;</code> element, and as such one XML file, corresponds to
-a <code>CacheManager</code>. From Ehcache&#8217;s perspective though, nothing prohibits from creating multiple <code>CacheManager</code> instances
-off one XML configuration file. Ehcache does <em>not</em> act as a repository of <code>CacheManager</code>, unlike JSR-107&#8217;s
-<code>javax.cache.spi.CachingProvider</code>.</p>
+<p>The root element of our XML configuration. One <code>&lt;config&gt;</code> element and, by implication, one XML file,
+provides the definition for a <code>CacheManager</code>.  With Ehcache 3.0, however, you may create multiple
+<code>CacheManager</code> instances using the same XML configuration file.  Unlike the JSR-107
+<code>javax.cache.spi.CachingProvider</code>, Ehcache does not maintain a registry of <code>CacheManager</code> instances.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="__code_service_code_elements"><code>&lt;service&gt;</code> elements</h3>
 <div class="paragraph">
-<p>Currently, no built-in services are provided. But <code>&lt;service&gt;</code> elements are, and will remain, an extension point for
-<code>CacheManager</code> lifecycled services, i.e. <code>Service</code> instances that will be <code>.start()</code> and <code>.stop()</code> 'ed by the
-<code>CacheManager</code> during its own lifecycle state transitions.</p>
+<p>Currently, no built-in services are provided. <code>&lt;service&gt;</code> elements are an extension point for
+specifying <code>CacheManager</code> managed services.  Each <code>Service</code> defined in this way is managed with the
+same lifecycle as the <code>CacheManager</code>&#8201;&#8212;&#8201;for each <code>Service</code> defined for a <code>CacheManager, the `Service.start</code>
+is called during <code>CacheManager.init</code> processing and the <code>Service.stop</code> method is called during
+<code>CacheManager.close</code> processing.</p>
 </div>
 <div class="paragraph">
-<p>These <code>Service</code> instances can then be used by <code>Cache</code> instances managed by the <code>CacheManager</code>. JSR-107 uses this
+<p>These <code>Service</code> instances can then be used by <code>Cache</code> instances managed by the <code>CacheManager</code>.  JSR-107 uses this
 extension point of the XML configuration (and Ehcache 3&#8217;s modular architecture), as explained in the
 <a href="107.html#_supplement_jsr_107_s_configurations">JSR-107 configuration section</a>.</p>
 </div>
@@ -86,9 +88,9 @@ extension point of the XML configuration (and Ehcache 3&#8217;s modular architec
 <div class="sect2">
 <h3 id="__code_cache_code_elements"><code>&lt;cache&gt;</code> elements</h3>
 <div class="paragraph">
-<p><code>&lt;cache&gt;</code> elements each represent a <code>Cache</code> that will be created, and then on managed, by the <code>CacheManager</code>.
+<p>A <code>&lt;cache&gt;</code> element represent a <code>Cache</code> instance that will be created and managed by the <code>CacheManager</code>.
 Each <code>&lt;cache&gt;</code> requires the <code>alias</code> attribute, used at runtime to retrieve the corresponding <code>Cache&lt;K, V&gt;</code> instance using
-the <code>org.ehcache.CacheManager.getCache(String, Class&lt;K&gt;, Class&lt;V&gt;)</code> method. The optional <code>usesTemplate</code> attribute, let&#8217;s you reference
+the <code>org.ehcache.CacheManager.getCache(String, Class&lt;K&gt;, Class&lt;V&gt;)</code> method. The optional <code>usesTemplate</code> attribute, lets you reference
 a <code>&lt;cache-template&gt;</code> element&#8217;s <code>name</code> attribute. See the <a href="#__code_cache_template_code_elements">cache-template section</a>
 for further details on using them.</p>
 </div>
@@ -98,16 +100,16 @@ for further details on using them.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><code>&lt;key-type&gt;</code>: the fully qualified class name (FQCN) of the keys (<code>&lt;K&gt;</code>) held in the <code>Cache&lt;K, V&gt;</code>, defaults to <code>java.lang.Object</code></p>
+<p><code>&lt;key-type&gt;</code>: the fully qualified class name (FQCN) of the keys (<code>&lt;K&gt;</code>) held in the <code>Cache&lt;K, V&gt;</code>; defaults to <code>java.lang.Object</code></p>
 </li>
 <li>
-<p><code>&lt;value-type&gt;</code>: FQCN of the values (<code>&lt;V&gt;</code>) held in the <code>Cache</code>, defaults to <code>java.lang.Object</code></p>
+<p><code>&lt;value-type&gt;</code>: FQCN of the values (<code>&lt;V&gt;</code>) held in the <code>Cache</code>; defaults to <code>java.lang.Object</code></p>
 </li>
 <li>
-<p><code>&lt;capacity&gt;</code>: a positive numerical value, defaults to <code>null</code>, i.e. unconstrained</p>
+<p><code>&lt;capacity&gt;</code>: a positive numerical value; defaults to <code>null</code>, i.e. unconstrained</p>
 </li>
 <li>
-<p><code>&lt;expiry&gt;</code>: lets you control the expiry type and its parameters</p>
+<p><code>&lt;expiry&gt;</code>: control the expiry type and its parameters</p>
 </li>
 <li>
 <p><code>&lt;eviction-veto&gt;</code>: FQCN of a <code>org.ehcache.config.EvictionVeto&lt;K, V&gt;</code> implementation, defaults to <code>null</code>, i.e. none</p>
@@ -116,7 +118,7 @@ for further details on using them.</p>
 <p><code>&lt;eviction-prioritizer&gt;</code>: FQCN of a <code>org.ehcache.config.EvictionPrioritizer&lt;K, V&gt;</code> implementation, defaults to <code>null</code></p>
 </li>
 <li>
-<p><code>&lt;integration&gt;</code>: lets you configure a <code>CacheLoaderWriter</code> for a <em>cache-through</em> pattern</p>
+<p><code>&lt;integration&gt;</code>: configure a <code>CacheLoaderWriter</code> for a <em>cache-through</em> pattern</p>
 </li>
 </ol>
 </div>
@@ -125,8 +127,8 @@ for further details on using them.</p>
 <h3 id="__code_cache_template_code_elements"><code>&lt;cache-template&gt;</code> elements</h3>
 <div class="paragraph">
 <p><code>&lt;cache-template&gt;</code> elements represent a uniquely named (specified using the mandatory <code>name</code> attribute) template for
-<code>&lt;cache&gt;</code> elements to inherit from. A <code>&lt;cache-template&gt;</code>. A <code>&lt;cache&gt;</code> element that references a <code>&lt;cache-template&gt;</code> by
-its <code>name</code> using the <code>usesTemplate</code> attribute, will inherit all of the <code>&lt;cache-template&gt;</code> 's properties. Every <code>&lt;cache&gt;</code>
+<code>&lt;cache&gt;</code> elements to inherit from.  A <code>&lt;cache&gt;</code> element that references a <code>&lt;cache-template&gt;</code> by
+its <code>name</code> using the <code>usesTemplate</code> attribute, will inherit all properties of the <code>&lt;cache-template&gt;</code>. A <code>&lt;cache&gt;</code>
 can override these properties as it needs.</p>
 </div>
 <div class="paragraph">
@@ -139,7 +141,7 @@ can override these properties as it needs.</p>
 <div class="title">Note</div>
 </td>
 <td class="content">
-We&#8217;ve setup a complete configuration <a href="examples.html#_xml_with_107_extension">example</a> for you to inspire from.
+We&#8217;ve setup a complete configuration <a href="examples.html#_xml_with_107_extension">example</a> to inspire you.
 </td>
 </tr>
 </table>
@@ -157,9 +159,8 @@ We&#8217;ve setup a complete configuration <a href="examples.html#_xml_with_107_
 <div class="title">Note</div>
 </td>
 <td class="content">
-If you are obtaining your <code>CacheManager</code> through the JSR-107 API, what follows below is automatically done for you
-      when invoking <code>javax.cache.spi.CachingProvider.getCacheManager(java.net.URI, java.lang.ClassLoader)</code>, so you
-      probably don&#8217;t have to worry about any of this&#8230;&#8203;
+If you are obtaining your <code>CacheManager</code> through the JSR-107 API, what follows is done automatically
+      when invoking <code>javax.cache.spi.CachingProvider.getCacheManager(java.net.URI, java.lang.ClassLoader)</code>.
 </td>
 </tr>
 </table>
@@ -177,11 +178,11 @@ CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <b
 <p>Obtain a <code>URL</code> to your XML file&#8217;s location</p>
 </li>
 <li>
-<p>Instantiate a <code>XmlConfiguration</code> passing the XML file&#8217;s URL to it</p>
+<p>Instantiate an <code>XmlConfiguration</code> passing the XML file&#8217;s URL to it</p>
 </li>
 <li>
-<p>Using the static <code>org.ehcache.CacheManagerBuilder.newCacheManager(org.ehcache.config.Configuration)</code> lets you
-create your <code>CacheManager</code> instance using the <code>Configuration</code> from the <code>XmlConfiguration</code></p>
+<p>Using the static <code>org.ehcache.CacheManagerBuilder.newCacheManager(org.ehcache.config.Configuration)</code> allows you
+to create your <code>CacheManager</code> instance using the <code>Configuration</code> from the <code>XmlConfiguration</code></p>
 </li>
 </ol>
 </div>
@@ -197,7 +198,7 @@ to use a <code>&lt;cache-template&gt;</code> element from a XML file, e.g. the <
 </div>
 </div>
 <div class="paragraph">
-<p>Creating a <code>CacheConfigurationBuilder</code> of that <code>example</code> <code>&lt;cache-template&gt;</code> element, would be done so:</p>
+<p>Creating a <code>CacheConfigurationBuilder</code> of that <code>example</code> <code>&lt;cache-template&gt;</code> element, would be done as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -211,7 +212,7 @@ cacheBuilder.capacityConstraint(100L); <b class="conum">(2)</b></code></pre>
 <p>Creates a builder, inheriting the capacity constraint of 120 entries, specializing the key type to <code>java.lang.String</code></p>
 </li>
 <li>
-<p>But you can obviously override the inherited properties, by simply providing a different value prior to building the <code>CacheConfiguration</code></p>
+<p>The inherent properties can be overridden by simply providing a different value prior to building the <code>CacheConfiguration</code></p>
 </li>
 </ol>
 </div>
@@ -220,7 +221,7 @@ cacheBuilder.capacityConstraint(100L); <b class="conum">(2)</b></code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-05 12:17:43 EST
+Last updated 2015-03-13 11:20:41 PDT
 </div>
 </div>
 </body>

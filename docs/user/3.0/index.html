@@ -20,7 +20,7 @@
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><a href="/">Home</a></dt>
+<dt class="hdlist1"><a href="../../../index.html">Home</a></dt>
 <dt class="hdlist1">User documentation</dt>
 <dd>
 <div class="ulist">
@@ -64,7 +64,7 @@
 <div class="title">Note</div>
 </td>
 <td class="content">
-If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you may want to start reading
+If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you should start by reading
       <a href="107.html">the Ehcache 3.x JSR-107 Provider page</a>
 </td>
 </tr>
@@ -77,9 +77,7 @@ If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you may
 <div class="title">Warning</div>
 </td>
 <td class="content">
-<strong>This is still work in progress</strong>. while this represents the API as it exists today, the plan is to only close it
-         down, when addressing the <code>OSS Beta</code> milestone. Today, the focus is on the <code>107 Alpha</code> milestone, which aims
-         at providing a TCK compliant on-heap implementation&#8230;&#8203;
+<strong>This is still a work in progress</strong>. While it represents the API as it exists today, the final version will be represented in the Ehcache 3.0 OSS Beta.
 </td>
 </tr>
 </table>
@@ -90,10 +88,12 @@ If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you may
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">final CacheManager cacheManager
     = newCacheManagerBuilder() <b class="conum">(1)</b>
-    .withCache("preConfigured", newCacheConfigurationBuilder().buildConfig(Long.class, String.class)) <b class="conum">(2)</b>
+    .withCache("preConfigured",
+        newCacheConfigurationBuilder().buildConfig(Long.class, String.class)) <b class="conum">(2)</b>
     .build(); <b class="conum">(3)</b>
 
-final Cache&lt;Long, String&gt; preConfigured = cacheManager.getCache("preConfigured", Long.class, String.class); <b class="conum">(4)</b>
+final Cache&lt;Long, String&gt; preConfigured =
+    cacheManager.getCache("preConfigured", Long.class, String.class); <b class="conum">(4)</b>
 
 final Cache&lt;Long, String&gt; myCache = cacheManager.createCache("myCache", <b class="conum">(5)</b>
     newCacheConfigurationBuilder().buildConfig(Long.class, String.class));
@@ -103,7 +103,9 @@ final String value = myCache.get(1L); <b class="conum">(7)</b>
 
 cacheManager.removeCache("preConfigured"); <b class="conum">(8)</b>
 
-final StandaloneCache&lt;Long, String&gt; standaloneCache = newCacheBuilder(Long.class, String.class)
+final StandaloneCache&lt;Long, String&gt; standaloneCache =
+    newCacheBuilder(Long.class, String.class,
+        LoggerFactory.getLogger(Ehcache.class + "-" + "GettingStarted"))
     .build(); <b class="conum">(9)</b>
 standaloneCache.init(); <b class="conum">(10)</b>
 
@@ -119,13 +121,13 @@ standaloneCache.close(); <b class="conum">(12)</b></code></pre>
 instance;</p>
 </li>
 <li>
-<p>Using the builder to register a pre-configured <code>Cache</code> to be create when we <code>.build()</code> the actual <code>CacheManager</code>.
-The first <code>String</code> argument is the alias to use to interact with the <code>Cache</code> through the <code>CacheManager</code>; the second
-argument is the <code>org.ehcache.config.CacheConfiguration</code> to use to configure the <code>Cache</code>. We use the static
+<p>Use the builder to register a pre-configured <code>Cache</code> to be created when we <code>.build()</code> the actual <code>CacheManager</code>.
+The first <code>String</code> argument is the alias used to interact with the <code>Cache</code> through the <code>CacheManager</code>; the second
+argument is <code>org.ehcache.config.CacheConfiguration</code> to configure the <code>Cache</code>. We use the static
 <code>.newCacheConfigurationBuilder()</code> method on <code>org.ehcache.config.CacheConfigurationBuilder</code> to create a default config;</p>
 </li>
 <li>
-<p>finally, invoking <code>.build()</code> returns a fully instantiated and initialized <code>CacheManager</code> we can use.</p>
+<p>Finally, invoking <code>.build()</code> returns a fully instantiated and initialized <code>CacheManager</code> we can use.</p>
 </li>
 <li>
 <p>We can retrieve the <code>preConfigured</code> aliased <code>Cache</code> we declared in step 2. For type-safety, we ask for both key and
@@ -135,7 +137,7 @@ early in the application&#8217;s lifecycle. It also guards the <code>Cache</code
 <li>
 <p>The <code>CacheManager</code> can also be used to create new <code>Cache</code> as needed. Just as in step 2, it requires passing in an
 alias as well as a <code>CacheConfiguration</code>. The instantiated and fully initialized <code>Cache</code> added will be returned and/or
-can be accessed through the <code>CacheManager.getCache</code> API.</p>
+accessed through the <code>CacheManager.getCache</code> API.</p>
 </li>
 <li>
 <p>We can now use the newly added <code>Cache</code> to store and &#8230;&#8203;</p>
@@ -146,10 +148,10 @@ can be accessed through the <code>CacheManager.getCache</code> API.</p>
 <li>
 <p>We can also <code>CacheManager.remove()</code> a given <code>Cache</code>. The <code>CacheManager</code> will not only remove it&#8217;s reference to the
 <code>Cache</code>, but will also close it. The <code>Cache</code> releases all locally held transient resources (such as memory).
-References held to this <code>Cache</code> become unusable.</p>
+References to this <code>Cache</code> become unusable.</p>
 </li>
 <li>
-<p>A new feature of Ehcache 3.0, is the ability to create <code>StandaloneCache</code> instances, i.e. ones not managed by a <code>CacheManager</code>;</p>
+<p>A new feature of Ehcache 3.0 is the ability to create <code>StandaloneCache</code> instances, i.e. ones not managed by a <code>CacheManager</code>;</p>
 </li>
 <li>
 <p>As there is nothing that manages them, it is up to you to <code>StandaloneCache.init()</code> them, prior to using them.</p>
@@ -160,13 +162,13 @@ it manages, you have to invoke <code>CacheManager.close()</code>, which in turns
 </li>
 <li>
 <p>In the same vein, a <code>StandaloneCache</code> requires you to <code>StandaloneCache.close()</code> it explicitly. The <code>CacheManager.close()</code>
-in step #11, didn&#8217;t affect our <code>StandaloneCache</code> in any way.</p>
+in step #11, did not affect our <code>StandaloneCache</code> in any way.</p>
 </li>
 </ol>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_it_wouldn_t_be_java_if_it_hadn_t_em_some_em_xml">It wouldn&#8217;t be Java, if it hadn&#8217;t <em>some</em> XML</h3>
+<h3 id="_it_wouldn_t_be_java_without_em_some_em_xml">It wouldn&#8217;t be Java without <em>some</em> XML</h3>
 <div class="paragraph">
 <p>You can create a XML file to configure a <code>CacheManager</code>:</p>
 </div>
@@ -201,27 +203,27 @@ in step #11, didn&#8217;t affect our <code>StandaloneCache</code> in any way.</p
 <p>Declares a <code>Cache</code> aliased to <code>foo</code></p>
 </li>
 <li>
-<p>Its keys will be of type <code>String</code>, as not specified the values will be of any type <code>Object</code></p>
+<p>The keys of <code>foo</code> are declared as type <code>String</code>; since the value type is not specified, the values will be of type <code>Object</code>.</p>
 </li>
 <li>
-<p>Its declared to hold up to 2,000 entries before it starts evicting</p>
+<p><code>foo</code> is declared to hold up to 2,000 entries before it starts evicting</p>
 </li>
 <li>
 <p><code>&lt;cache-template&gt;</code> elements let you create an abstract configuration that further <code>&lt;cache&gt;</code> configuration can then <em>extend</em></p>
 </li>
 <li>
-<p><code>bar</code> is such a <code>Cache</code>, it uses the <code>&lt;cache-template&gt;</code> named <code>myDefaults</code> and overrides its <code>key-type</code> to a wider type.</p>
+<p><code>bar</code> is such a <code>Cache</code>.   <code>bar</code> uses the <code>&lt;cache-template&gt;</code> named <code>myDefaults</code> and overrides its <code>key-type</code> to a wider type.</p>
 </li>
 <li>
-<p><code>simpleCache</code> is such a <code>Cache</code> again, but simply uses <code>myDefaults</code> configuration for its sole <code>CacheConfiguration</code></p>
+<p><code>simpleCache</code> is another such a <code>Cache</code>.  It uses <code>myDefaults</code> configuration for its sole <code>CacheConfiguration</code>.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>Refer to the <a href="xml.html">XML documentation</a> for more details on the XML format</p>
+<p>Refer to the <a href="xml.html">XML documentation</a> for more details on the XML format.</p>
 </div>
 <div class="paragraph">
-<p>In order to parse these XML configuration, you can use the <code>XmlConfiguration</code> type as so:</p>
+<p>In order to parse an XML configuration, you can use the <code>XmlConfiguration</code> type:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -236,7 +238,7 @@ CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <b
 <p>Obtain a <code>URL</code> to your XML file&#8217;s location</p>
 </li>
 <li>
-<p>Instantiate a <code>XmlConfiguration</code> passing the XML file&#8217;s URL to it</p>
+<p>Instantiate an <code>XmlConfiguration</code> passing the XML file&#8217;s URL to it</p>
 </li>
 <li>
 <p>Using the static <code>org.ehcache.CacheManagerBuilder.newCacheManager(org.ehcache.config.Configuration)</code> lets you
@@ -251,12 +253,12 @@ create your <code>CacheManager</code> instance using the <code>Configuration</co
 <h2 id="_current_release">Current release</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We&#8217;ve released the first Alpha on December 12, 2014. It
+<p>We released Ehcache 3.0 Alpha on December 12, 2014. It
 contains everything (and more) to use the JSR-107 API with Ehcache as the underlying provider.</p>
 </div>
 <div class="paragraph">
 <p>The <a href="https://github.com/ehcache/ehcache3/releases/tag/v3.0.0.Alpha">release notes</a> contain the links to the documentation
-to help you get started</p>
+to help you get started.</p>
 </div>
 </div>
 </div>
@@ -265,21 +267,21 @@ to help you get started</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>We are now working on the next milestone, aka <a href="https://github.com/ehcache/ehcache3/milestones/OSS%20Beta">OSS Beta</a> :
-All the work to get all the features we want to port from the existing Ehcache 2.x line, exposed using the new API.
-This includes things not covered by the 107 spec, such as <em>WriteBehind</em>, <em>DiskPersistence</em>, <em>EvictionListener</em> et al.</p>
+All the features we want to port from the existing Ehcache 2.x line, exposed using the new API.
+This includes things not covered by the JSR-107 spec, such as <em>WriteBehind</em>, <em>DiskPersistence</em>, <em>EvictionListener</em> et al.</p>
 </div>
 <div class="paragraph">
-<p>See the <a href="https://github.com/ehcache/ehcache3/milestones">milestones on github</a> for more details on the current status.</p>
+<p>See the <a href="https://github.com/ehcache/ehcache3/milestones">Milestones on GitHub</a> for more details on the current status.</p>
 </div>
 <div class="paragraph">
-<p>For developer information, you might want to go check the <a href="https://github.com/ehcache/ehcache3/wiki">project&#8217;s wiki on github</a>.</p>
+<p>For developer information, you might want to go check the <a href="https://github.com/ehcache/ehcache3/wiki">Ehcache 3.0 project wiki on GitHub</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-05 12:15:11 EST
+Last updated 2015-03-13 11:20:48 PDT
 </div>
 </div>
 </body>
