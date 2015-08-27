@@ -308,7 +308,158 @@
             &lt;xs:element name="eventOrderingMode" type="ehcache:eventOrdering-type" minOccurs="1" maxOccurs="1"&gt;
               &lt;xs:annotation&gt;
                 &lt;xs:documentation xml:lang="en"&gt;
-                  Indicates which EventOrdering ordering mode to use</code></pre>
+                  Indicates which EventOrdering ordering mode to use
+                &lt;/xs:documentation&gt;
+              &lt;/xs:annotation&gt;
+            &lt;/xs:element&gt;
+            &lt;xs:element name="eventsToFireOn" type="ehcache:event-type" minOccurs="1" maxOccurs="5"&gt;
+              &lt;xs:annotation&gt;
+                &lt;xs:documentation xml:lang="en"&gt;
+                  Indicates on which EventType an event has to be fired
+                &lt;/xs:documentation&gt;
+              &lt;/xs:annotation&gt;
+            &lt;/xs:element&gt;
+            &lt;xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/&gt;
+          &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:sequence&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="cache-entry-type"&gt;
+    &lt;xs:simpleContent&gt;
+      &lt;xs:extension base="ehcache:fqcn-type"&gt;
+        &lt;xs:attribute name="serializer" type="ehcache:fqcn-type"&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation xml:lang="en"&gt;
+              A fully qualified class name of the type's serializer class.
+            &lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+        &lt;/xs:attribute&gt;
+      &lt;/xs:extension&gt;
+    &lt;/xs:simpleContent&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="expiry-type"&gt;
+    &lt;xs:choice&gt;
+      &lt;xs:element name="class" type="ehcache:fqcn-type"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            A fully qualified class name to a concrete type that implements
+            org.ehcache.expiry.Expiry and has a public default no argument constructor.
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="tti" type="ehcache:time-type"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            Entries in the cache should expire if not accessed for the defined time.
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="ttl" type="ehcache:time-type"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            Entries in the cache should expire after the defined time.
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="none"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            Entries in the cache should never expire.
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+        &lt;xs:complexType/&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:choice&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="time-type"&gt;
+    &lt;xs:simpleContent&gt;
+      &lt;xs:extension base="xs:positiveInteger"&gt;
+        &lt;xs:attribute name="unit" type="ehcache:time-unit" default="seconds"&gt;
+          &lt;xs:annotation&gt;
+            &lt;xs:documentation xml:lang="en"&gt;
+              The time unit (see java.util.concurrent.TimeUnit) this value is expressed in.
+            &lt;/xs:documentation&gt;
+          &lt;/xs:annotation&gt;
+        &lt;/xs:attribute&gt;
+      &lt;/xs:extension&gt;
+    &lt;/xs:simpleContent&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="resource-type"&gt;
+    &lt;xs:attribute name="unit" type="ehcache:resource-unit" default="entries" use="optional"/&gt;
+    &lt;xs:attribute name="size" use="required" type="xs:positiveInteger"/&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="persistable-resource-type"&gt;
+    &lt;xs:complexContent&gt;
+      &lt;xs:extension base="ehcache:resource-type"&gt;
+        &lt;xs:attribute name="persistent" type="xs:boolean" default="false" use="optional"/&gt;
+      &lt;/xs:extension&gt;
+    &lt;/xs:complexContent&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="resources-type"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="heap" type="ehcache:resource-type" minOccurs="0" maxOccurs="1"/&gt;
+      &lt;xs:element name="offheap" type="ehcache:resource-type" minOccurs="0" maxOccurs="1"/&gt;
+      &lt;xs:element name="disk" type="ehcache:persistable-resource-type" minOccurs="0" maxOccurs="1"/&gt;
+      &lt;xs:any namespace="##other" minOccurs="0"/&gt;
+    &lt;/xs:sequence&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:simpleType name="time-unit"&gt;
+    &lt;xs:restriction base="xs:string"&gt;
+      &lt;xs:enumeration value="nanos"/&gt;
+      &lt;xs:enumeration value="micros"/&gt;
+      &lt;xs:enumeration value="millis"/&gt;
+      &lt;xs:enumeration value="seconds"/&gt;
+      &lt;xs:enumeration value="minutes"/&gt;
+      &lt;xs:enumeration value="hours"/&gt;
+      &lt;xs:enumeration value="days"/&gt;
+    &lt;/xs:restriction&gt;
+  &lt;/xs:simpleType&gt;
+  &lt;xs:simpleType name="resource-unit"&gt;
+    &lt;xs:restriction base="xs:string"&gt;
+      &lt;xs:enumeration value="entries"/&gt;
+      &lt;xs:enumeration value="b"/&gt;
+      &lt;xs:enumeration value="kb"/&gt;
+      &lt;xs:enumeration value="mb"/&gt;
+      &lt;xs:enumeration value="gb"/&gt;
+      &lt;xs:enumeration value="tb"/&gt;
+      &lt;xs:enumeration value="pb"/&gt;
+    &lt;/xs:restriction&gt;
+  &lt;/xs:simpleType&gt;
+  &lt;xs:simpleType name="eventFiring-type"&gt;
+    &lt;xs:restriction base="xs:string"&gt;
+      &lt;xs:enumeration value="ASYNCHRONOUS" /&gt;
+      &lt;xs:enumeration value="SYNCHRONOUS" /&gt;
+    &lt;/xs:restriction&gt;
+  &lt;/xs:simpleType&gt;
+  &lt;xs:simpleType name="eventOrdering-type"&gt;
+    &lt;xs:restriction base="xs:string"&gt;
+      &lt;xs:enumeration value="UNORDERED" /&gt;
+      &lt;xs:enumeration value="ORDERED" /&gt;
+    &lt;/xs:restriction&gt;
+  &lt;/xs:simpleType&gt;
+  &lt;xs:simpleType name="event-type"&gt;
+    &lt;xs:restriction base="xs:string"&gt;
+      &lt;xs:enumeration value="EVICTED" /&gt;
+      &lt;xs:enumeration value="EXPIRED" /&gt;
+      &lt;xs:enumeration value="REMOVED" /&gt;
+      &lt;xs:enumeration value="CREATED" /&gt;
+      &lt;xs:enumeration value="UPDATED" /&gt;
+    &lt;/xs:restriction&gt;
+  &lt;/xs:simpleType&gt;
+  &lt;xs:simpleType name="fqcn-type"&gt;
+  	&lt;xs:restriction base="xs:string"&gt;
+  	  &lt;xs:whiteSpace value="collapse"&gt;&lt;/xs:whiteSpace&gt;
+  	&lt;/xs:restriction&gt;
+  &lt;/xs:simpleType&gt;
+&lt;/xs:schema&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -352,7 +503,7 @@
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-06-03 17:13:57 CEST
+Last updated 2015-08-27 11:29:10 CEST
 </div>
 </div>
 </body>
