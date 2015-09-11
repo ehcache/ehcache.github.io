@@ -1,0 +1,220 @@
+body
+{
+  font-family: Arial, sans-serif;
+  font-size: 10pt;
+}
+
+/* Default style for links */
+/*                         */
+a:link:active  { color: #4166A5; text-decoration: none;}
+a:link         { color: #4166A5; text-decoration: none;}
+a:visited      { color: #6186C5; text-decoration: none;}
+a:link:hover, a:visited:hover   { text-decoration: underline;}
+
+span.WebWorks_Number
+{
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+}
+
+div.WebWorks_Table
+{
+  border: 1px solid #000000;
+}
+
+div.WebWorks_Table_Row
+{
+  clear: left;
+}
+
+div.WebWorks_Table_Cell
+{
+  float: left;
+}
+
+div.WebWorks_Table_End
+{
+  clear: both;
+  font-size: 1px;
+}
+
+/* MiniTOC */
+/*         */
+
+div.WebWorks_MiniTOC
+{
+  margin: 0 20px 20px 20px;
+  padding: 0;
+  background-color: white;
+  border: 1px solid #A4A4A4;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+
+div.WebWorks_MiniTOC_Heading
+{
+    background: #2E7B9C;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #8ABBD0), color-stop(0.76, #2E7B9C));
+background-image: -o-linear-gradient(bottom, #8ABBD0 0%, #2E7B9C 76%);
+background-image: -moz-linear-gradient(bottom, #8ABBD0 0%, #2E7B9C 76%);
+background-image: -webkit-linear-gradient(bottom, #8ABBD0 0%, #2E7B9C 76%);
+background-image: -ms-linear-gradient(bottom, #8ABBD0 0%, #2E7B9C 76%);
+background-image: linear-gradient(to bottom, #8ABBD0 0%, #2E7B9C 76%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8ABBD0', endColorstr='#2E7B9C',GradientType=0 );
+  -moz-border-radius: 2px 2px 0 0;
+  -webkit-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+}
+
+dl.WebWorks_MiniTOC_List
+{
+  margin: 0;
+  padding: 0 0 0 16px;
+}
+
+div.WebWorks_MiniTOC > dl.WebWorks_MiniTOC_List
+{
+  padding-left: 0;
+  background: white;
+  -moz-border-radius: 0 0 2px 2px;
+  -webkit-border-radius: 0 0 2px 2px;
+  border-radius: 0 0 2px 2px;
+}
+
+dl.WebWorks_MiniTOC_List > dd
+{
+    margin: 0;
+    padding: 0;
+}
+
+div.WebWorks_MiniTOC_Entry
+{
+  cursor: pointer;
+  margin: 0;
+  padding: 4px;
+}
+
+div.WebWorks_MiniTOC > dl.WebWorks_MiniTOC_List > dd:first-child > div.WebWorks_MiniTOC_Entry
+{
+}
+
+div.WebWorks_MiniTOC_Entry:hover
+{
+  background: #EFEFEE;
+}
+
+a.WebWorks_MiniTOC_Link:link
+{
+  color: #4166A5;
+  text-decoration: none;
+}
+
+a.WebWorks_MiniTOC_Link:visited
+{
+  color: #6186C5;
+  text-decoration: none;
+}
+
+div.WebWorks_MiniTOC_Entry:hover > a.WebWorks_MiniTOC_Link:link
+{
+  color: #4166A5;
+}
+
+div.WebWorks_MiniTOC_Entry:hover > a.WebWorks_MiniTOC_Link:visited
+{
+  color: #6186C5;
+}
+
+/* Related Topics */
+/*                */
+dl.Related_Topics_List
+{
+  margin: 20px;
+  padding: 0;
+  background: white;
+  border: 1px solid #A4A4A4;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+
+dt.Related_Topics_Title
+{
+  font-weight: bold;
+    background: #2E7B9C;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #8ABBD0), color-stop(0.76, #2E7B9C));
+background-image: -o-linear-gradient(bottom, #8ABBD0 0%, #2E7B9C 76%);
+background-image: -moz-linear-gradient(bottom, #8ABBD0 0%, #2E7B9C 76%);
+background-image: -webkit-linear-gradient(bottom, #8ABBD0 0%, #2E7B9C 76%);
+background-image: -ms-linear-gradient(bottom, #8ABBD0 0%, #2E7B9C 76%);
+background-image: linear-gradient(to bottom, #8ABBD0 0%, #2E7B9C 76%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8ABBD0', endColorstr='#2E7B9C',GradientType=0 );
+  -moz-border-radius: 2px 2px 0 0;
+  -webkit-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+  margin: 0;
+  padding: 4px;
+  color: white;
+}
+
+dd.Related_Topics_Entry
+{
+  cursor: pointer;
+  margin: 0;
+  padding: 4px;
+}
+
+dl.Related_Topics_List > dd.Related_Topics_Entry:last-child
+{
+}
+
+dd.Related_Topics_Entry:hover
+{
+  background: #EFEFEE;
+  color: black;
+}
+
+dd.Related_Topics_Entry a:link
+{
+  color: #4166A5;
+  text-decoration: none;
+}
+
+dd.Related_Topics_Entry a:visited
+{
+  color: #6186C5;
+  text-decoration: none;
+}
+
+dd.Related_Topics_Entry:hover a:link
+{
+  color: #4166A5;
+  text-decoration: none;
+}
+
+dd.Related_Topics_Entry:hover a:visited
+{
+  color: #6186C5;
+  text-decoration: none;
+}
+
+/* LinkedIn Share */
+/*                */
+span#social_linkedin {
+  margin-right: 12pt;
+  vertical-align: -7px;
+}
+
+/* Google +1 */
+/*           */
+span#social_google_plus1 {
+  vertical-align: -7px;
+}
+
+.Search_Result_Highlight
+{
+    background-color: yellow;
+}

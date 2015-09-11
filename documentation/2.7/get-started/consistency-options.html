@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/get-started/consistency-options.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="cache-consistency-options">Cache Consistency Options</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#cache-consistency-options">
+                        <span class="toctext">Cache Consistency Options</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#propagation-of-modified-data">
+                              <span class="toctext">Propagation of Modified Data</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#server-side-consistency">
+                              <span class="toctext">Server-Side Consistency</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#client-side-consistency">
+                              <span class="toctext">Client-Side Consistency</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#consistency-modes-in-distributed-ehcache">
+                              <span class="toctext">Consistency Modes in Distributed Ehcache</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#other-safety-features">
+                              <span class="toctext">Other Safety Features</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#use-cases-and-recommended-practices">
+                              <span class="toctext">Use Cases And Recommended Practices</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+<p>Consistency is a quality of shared data that is relevant for distributed caching. This page explains the distributed-cache consistency models in terms of standard distributed systems theory. Distributed caches are available when using the Terracotta Server Array, available with <a href="http://terracotta.org/products/bigmemorymax">BigMemory Max</a>.</p>
+
+<h2 id="propagation-of-modified-data">Propagation of Modified Data</h2>
+<p>In general, any data cached in the heap is always consistent in that heap. For example, if one thread gets and modifies a cached element, another thread that then gets that element sees the change as long as all activity takes place in that heap.</p>
+
+<p>If, however, other data tiers are involved, it is possible for the second thread to get the original element, not the changed element. If a <code>cache.get("key").getValue().modify()</code> happens, after which the element is flushed to a lower tier (to BigMemory or disk, for example), then a subsequent get obtains the original element (not the changed element). To ensure that subsequent <code>get()</code> operations obtain the changed element, the changed element should be put back into the cache. To guarantee this behavior without having to perform a <code>put()</code>, set the cache’s <code>copyOnRead</code> attribute to false.</p>
+
+<h2 id="server-side-consistency">Server-Side Consistency</h2>
+<p>Leaving aside the issue of data also held in the Ehcache nodes, let us look at the server side consistency of the Terracotta Server Array (TSA).</p>
+
+<h3 id="server-deployment-topology">Server Deployment Topology</h3>
+<p>Large datasets are handled with partitions which are managed automatically using a consistent
+hashing algorithm once a set of “stripes” are defined in the &lt;tc-config&gt;. There is no dynamic resizing of clusters, so the consistent hash always resolves to the same stripe.
+The TSA is typically deployed with a pair of servers per partition of data, which is known in the &lt;tc-config&gt; as a Mirror Group.
+A mirror group has an active server which handles all requests for that partition and a mirror server, or hot standby, which does not
+service any requests. The active server propagates changes to the mirror server.
+In the language of consistency protocols, the active and mirror are replicas - they should contain the same data.</p>
+
+<h3 id="restating-in-terms-of-quorum-based-replicated-write-protocols">Restating in terms of Quorum based replicated-write protocols</h3>
+<p>To use the terminology from Gifford (1979), a storage system has <em>N</em> storage replicas. A write is a <em>W</em>. A read is an <em>R</em>.
+The server-side storage system will be strongly consistent if:</p>
+
+<ul>
+  <li>
+    <p>R + W &gt; N</p>
+
+    <p>and</p>
+  </li>
+  <li>
+    <p>W &gt; N/2</p>
+  </li>
+</ul>
+
+<p>In Terracotta, there is one active and one mirror. The acknowledgement is not sent until all have been written to. We always read from only one replica, the Active. So R = 1, W = 2, N = 2.
+Substituting the terms of R + W &gt; N, we get 1 + 2 &gt; 2, which is clearly true. And for W &gt; N/2 we get 2 &gt; 2/2 =&gt; 2 &gt; 1 which is clearly true. Therefore we are strongly consistent server side.</p>
+
+<h2 id="client-side-consistency">Client-Side Consistency</h2>
+<p>Because data is also held in Ehcache nodes, and Ehcache nodes are what application code interacts with, there is more to the story than consistency in the TSA. Werner Vogel’s seminal “Eventually Consistent” paper presented standard terms for client-side consistency and a way of reasoning about whether that consistency can be achieved in a distributed system. This paper in turn referenced Tannenbaum’s <a href="http://www.amazon.com/Distributed-Systems-Principles-Paradigms-2nd/dp/0132392275/ref=dp_ob_title_bk">Distributed Systems: Principles and Paradigms (2nd Edition)</a>.</p>
+
+<p>Tannenbaum was popularising research work done on Bayou, a database system. See page 290 of “Distributed Systems, Principles and Paradigms” by Tannenbaum and Van Steen for detailed coverage of this material.</p>
+
+<h3 id="model-components">Model Components</h3>
+<p>Before explaining our consistency modes, we need to explain the standard components of the reference model, which is an abstract model of a distributed system that can be used for studying interactions.</p>
+
+<ul>
+  <li>A storage system. The storage system consists of data stored durably in one server or multiple servers connected via a network. In Ehcache, durability is optional and the storage system might simply be in memory.</li>
+  <li>Client Process A. This is a process that writes to and reads from the storage system.</li>
+  <li>Client Processes B and C. These two processes are independent of process A and write to and read from the storage system. It is irrelevant whether these are really processes or threads within the same process; what is important is that they are independent and need to communicate to share information. Client-side consistency has to do with how and when observers (in this case the processes A, B, or C) see updates made to a data object in the storage systems.</li>
+</ul>
+
+<h3 id="mapping-the-model-to-distributed-ehcache">Mapping the Model to Distributed Ehcache</h3>
+<p>The model maps to Distributed Ehcache as follows:</p>
+
+<ul>
+  <li>there is a Terracotta Server Array which is the ‘storage system’;</li>
+  <li>there are three nodes connected to the Terracotta Server Array: Ehcache A, B and C, mapping to the processes in the standard model;</li>
+  <li>a “write” in the standard model is a “put” or “remove” in Ehcache.</li>
+</ul>
+
+<h3 id="standard-client-side-consistency-modes">Standard Client-Side Consistency Modes</h3>
+<p>It then goes on to define the following consistencies where process A has made an update to a data object:</p>
+
+<ul>
+  <li>Strong consistency. After the update completes, any subsequent access (by A, B, or C) will return the updated value.</li>
+  <li>Weak consistency. The system does not guarantee that subsequent accesses will return the updated value.</li>
+  <li>Eventual consistency. This is a specific form of weak consistency; the storage system guarantees that if no new updates are made to the object, eventually all accesses will return the last updated value. If no failures occur, the maximum size of the inconsistency window can be determined based on factors such as communication delays, the load on the system, and the number of replicas involved in the replication scheme.</li>
+</ul>
+
+<p>Within eventual consistency there are a number of desirable properties:</p>
+
+<ul>
+  <li>Read-your-writes consistency. This is an important model where process A, after it has updated a data item, always accesses the updated value and will never see an older value. This is a special case of the causal consistency model.</li>
+  <li>Session consistency. This is a practical version of the previous model, where a process accesses the storage system in the context of a session. As long as the session exists, the system guarantees read-your-writes consistency. If the session terminates because of a certain failure scenario, a new session needs to be created and the guarantees do not overlap the sessions.</li>
+  <li>Monotonic read consistency. If a process has seen a particular value for the object, any subsequent accesses will never return any previous values.</li>
+  <li>Monotonic write consistency. In this case the system guarantees to serialize the writes by the same process. Systems that do not guarantee this level of consistency are notoriously hard to program.</li>
+</ul>
+
+<p>Finally, in eventual consistency, the period between the update and the moment when it is guaranteed that any observer will always see the updated value is dubbed the inconsistency window.</p>
+
+<h2 id="consistency-modes-in-distributed-ehcache">Consistency Modes in Distributed Ehcache</h2>
+<p>The consistency modes in Terracotta distributed Ehcache are “strong” and “eventual”. Eventual consistency is the default mode.</p>
+
+<h3 id="strong-consistency">Strong Consistency</h3>
+<p>In the distributed cache, strong consistency is configured as follows:</p>
+
+<pre>
+   <code>&lt;cache name="sampleCache1"
+...
+ /&gt;
+   &lt;terracotta consistency="strong" /&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<p>We will walk through how a write is done and show that it is strongly consistent.</p>
+
+<ol>
+  <li>A thread in Ehcache A performs a write.</li>
+  <li>Before the write is done, a write lock is obtained from the Terracotta Server (storage system).
+    The write lock is granted only after all read locks have been surrendered.</li>
+  <li>The write is done to an in-process Transaction Buffer. Within the Java process the write is thread-safe.
+    Any local threads in Ehcache A will have immediate visibility of the change.</li>
+  <li>Once the change has hit the Transaction Buffer which is a LinkedBlockingQueue, a notify occurs, and the
+    Transaction Buffer initiates sending the write (update) asynchronously to the TSA (storage system).</li>
+  <li>The Terracotta Server is generally configured with multiple replicas forming a Mirror Group. Within the mirror group there is an active server, and one or more mirror servers.  The write is to the active server. The active server does not acknowledge the write until it has written it to each of the mirror servers in the mirror group.
+     It then sends back an acknowledgement to Ehcache A which then deletes the write from the Transaction Buffer.</li>
+  <li>A read or write request from Ehcache A is immediately available because a read lock is automatically granted when a write lock
+    has already been acquired. A read or write request in Ehcache B or C requires the acquisition of a read or write lock,
+    respectively, which will block until step 5 has occurred. In addition, if you have a stale copy locally, it is updated first.
+    When the lock is granted, the write is present in all replicas. Because Ehcache also maintains copies of Elements in-process
+    in potentially each node, if any of Ehcache A, B or C have a copy they are also updated before Step 5 completes.</li>
+</ol>
+
+<p>Note: This analysis assumes that if the <code>nonstop</code> is being used, it is configured with the default of Exception, so that on a <code>clusterOffline</code> event no cache operations happen locally. Nonstop allows fine-grained tradeoffs to be made in the event of a network partition, including dropping consistency.</p>
+
+<h3 id="eventual-consistency">Eventual Consistency</h3>
+<p>Distributed Ehcache can have eventual consistency in the following ways:</p>
+
+<ul>
+  <li>Configured with <code>consistency="eventual"</code>.</li>
+  <li>Set programmatically with a bulk-loading mode, using <code>setNodeBulkLoadEnabled(boolean)</code>.</li>
+  <li>Configured with &lt;UnlockedReadsView&gt;, a <code>CacheDecorator</code> that can be created like a view on a cache to show the latest writes visible to the local Ehcache node without respect for any locks.</li>
+  <li>Using bulk-loading Cache methods <code>putAll()</code>, <code>getAll()</code>, and <code>removeAll()</code>. (Note that <code>putAll(Collection&lt;Element&gt;)</code> does not discriminate between new and existing elements, thus resulting in put notifications, not update notifications.) These can also be used with strong consistency. If you can use them, it’s unnecessary to use bulk-load mode. See the <a href="http://ehcache.org/apidocs">API documentation</a> for details.</li>
+</ul>
+
+<p>Regardless, Ehcache B and C will eventually see the change made by Ehcache A, generally with consistency window of 5ms (with no partitions or interruptions). If a GC happens on a TSA node, or Ehcache A or B, the inconsistency window is increased by the length of the GC.</p>
+
+<p>If <code>setNodeBulkLoadEnabled(true)</code> is used, it causes the TSA to not update Ehcache B and C. Instead, they are set to a 5 minute fixed TTL. The inconsistency window thus increases to 5 minutes plus the above.</p>
+
+<p>If a network partition occurs that is long enough to cause an Ehcache A to be ejected from the cluster, the only configurable option is to discard on <a href="http://terracotta.org/documentation/2.7/4.0/bigmemorymax/configuration/reference-guide#71266">rejoin</a>. Once this happens Ehcache A or B gets the write. From the perspective of other threads in Ehcache A, all writes are thread-safe.</p>
+
+<h4 id="java-memory-model-honored">Java Memory Model Honored</h4>
+<p>In all modes the <em>happens-before</em> requirement of the Java Memory Model is honored. As a result the following is true:</p>
+
+<ul>
+  <li>A thread in Ehcache A will see any writes made by another thread. =&gt; Read your writes consistency.</li>
+  <li>Monotonic Read Consistency in Ehcache A is true.</li>
+  <li>Monotonic Write Consistency is Ehcache A is true.</li>
+</ul>
+
+<h4 id="consistency-in-web-sessions">Consistency in Web Sessions</h4>
+<p>It should be noted that desirable characteristics of eventual consistency are from the point of view of Ehcache A. From the context of a web application, in order for an end user interacting with a whole application to see this behaviour use sticky sessions.</p>
+
+<p>This way the user interacts with the same node (Ehcache A) for each step. If an application node falls over, a new session will be established. The time between the last write, failure, detection by the load balancer and allocation to a new application node will take longer than the 5ms+ that it takes for all Ehcache nodes in the cluster to get the write. So when the new application node is switched to, eventual consistency has occurred and no loss of consistency is observed by the user.</p>
+
+<p>If you want to avoid sticky sessions, try relying on the time gap between a click or submit and the next one in a “click path” that takes much longer than the 5ms+ that it takes for other nodes to become eventually consistent.</p>
+
+<p>In an Internet context the user is sufficiently distant from the server so that the response time is at least an order of magnitude greater than the inconsistency window. Probabilistically it is therefore unlikely that a user would see inconsistency.</p>
+
+<h2 id="other-safety-features">Other Safety Features</h2>
+<p>Ehcache offers a rich set of data safety features. In this section we look at some of the others and how they interact with the
+<code>strong</code> and <code>eventual</code> consistency.</p>
+
+<h3 id="compare-and-swap-cache-operations">Compare and Swap Cache Operations</h3>
+<p>We support three Compare and Swap (CAS) operations:</p>
+
+<ul>
+  <li><code>cache.replace(Element old, Element new)</code></li>
+  <li><code>cache.putIfAbsent(Element)</code></li>
+  <li><code>cache.removeElement(Element)</code></li>
+</ul>
+
+<p>In each case the TSA will only perform the write if the old value is the same as that presented. This is guaranteed to be done atomically as required by the CAS pattern.
+CAS achieves strong consistency between A, B, and C with <strong>optimistic locking</strong> rather than pessimistic locking. Optimistic locking approaches are not guaranteed to succeed. If someone else got in and changed the Element ahead of you, the methods will return <code>false</code>. You should read the new value, take that into account in your business logic, and then retry your mutation.</p>
+
+<p>CAS will work with both <code>strong</code> and <code>eventual</code> consistency modes, but because it does not use the locks, it does not need <code>strong</code>. However, with eventual consistency two simultaneous <code>replace()</code> operations in different nodes (or threads) can both return true. But at the TSA, only one of the operations is allowed to succeed and all competing values are invalidated, eventually making the caches consistent in all nodes.</p>
+
+<h2 id="use-cases-and-recommended-practices">Use Cases And Recommended Practices</h2>
+<p>In this section we look at some common use cases and give advice on what consistency and safety options should be used. These
+serve as a useful starting point for your own analysis.
+We welcome commentary and further discussion on these use cases. Please post to the Ehcache forums.</p>
+
+<h3 id="shopping-cart---optimistic-inventory">Shopping Cart - optimistic inventory</h3>
+
+<h4 id="problem">Problem</h4>
+<p>A user adds items to a shopping cart. Do not decrement inventory until checkout.</p>
+
+<h4 id="solution">Solution</h4>
+<p>Use eventual consistency.</p>
+
+<h3 id="shopping-cart-with-inventory-decrementing">Shopping Cart with Inventory Decrementing</h3>
+
+<h4 id="problem-1">Problem</h4>
+<p>A user adds items to a shopping cart. There is limited inventory and the business policy is that the first user to add the inventory
+to their shopping cart can buy it. If the user does not proceed to checkout, a timer will release the inventory back. As a result,
+inventory must be decremented at the time the item is added to the shopping cart.</p>
+
+<h4 id="solution-1">Solution</h4>
+<p>Use strong consistency with one of:</p>
+
+<ul>
+  <li>explicit locking</li>
+  <li>local transactions</li>
+  <li>XA transactions</li>
+</ul>
+
+<p>The key thing here is that two resources have to be updated: the shopping cart, which is only visible to one user, and on it’s own
+has low consistency requirements, and an inventory which is transactiional in nature.</p>
+
+<h3 id="financial-order-processing---write-to-cache-and-database">Financial Order Processing - write to cache and database</h3>
+
+<h4 id="problem-2">Problem</h4>
+<p>An order processing system sends a series of messages in a workflow, perhaps using Business Process Management software. The system
+involves multiple servers and the next step in the processing of an order may occur on any server. Let’s say there are 5 steps in the
+process.
+To avoid continual re-reading from a database, the processing results are also written to a distributed cache. The next step could execute
+in a few ms to minutes depending on what other orders are going through and how busy the hardware is.</p>
+
+<h4 id="solution-2">Solution</h4>
+<p>Use strong consistency plus XA transactions.
+Because the execution step cannot be replayed once completed, and may be under the control of a BPM, it is very important that the
+change in state gets to the cache cluster. Synchronous writes can also be used (at a high performance cost) so that the put to the cache does not
+return until the data has been applied. If an executing node failed before the data was transferred, the locks would still be in place
+preventing readers from reading stale data, but that will not help the next step in the process.
+XA transactions are needed because we want to keep the database and the cache in sync.</p>
+
+<h3 id="immutable-data">Immutable Data</h3>
+
+<h4 id="problem-3">Problem</h4>
+<p>The application uses data that once it comes into existence is immutable. Nothing is immutable forever. The key point is that it is
+immutable up until the time of the next software release.
+Some examples are:</p>
+
+<ul>
+  <li>application constants</li>
+  <li>reference data - zip and post codes, countries etc.</li>
+</ul>
+
+<p>If you analyse database traffic commonly used reference data turns out to be a big hitter.
+As they are immutable they can only be appended or read, never updated.</p>
+
+<h4 id="solution-3">Solution</h4>
+<p>In concurrent programming, immutable data never needs further concurrency protection. So we simply want to use the fastest mode.
+Here we would always use eventual consistency.</p>
+
+<h3 id="financial-order-processing---write-to-cache-as-sor">Financial Order Processing - write to cache as SOR</h3>
+
+<h4 id="problem-4">Problem</h4>
+<p>An order processing system sends a series of messages in a workflow, perhaps using Business Process Management software. The system
+involves multiple servers and the next step in the processing of an order may occur on any server. Let’s say there are 50 steps in the
+process.
+To avoid overloading a database the processing results at each step only written to a distributed cache. The next step could execute
+in a few ms to minutes depending on what other orders are going through and how busy the hardware is.</p>
+
+<h4 id="solution-4">Solution</h4>
+<p>Use one of:</p>
+
+<ul>
+  <li>strong consistency and local transactions (if changes are needed to be applied to multiple caches or entries).
+  Because the execution step, once completed cannot be replayed, and may be under the control of a BPM, it is very important that the
+change in state gets to the cache cluster. Synchronous writes can also be used (at a high performance cost) so that the put to the cache does not
+return until the data has been applied. If an executing node failed before the data was transferred, the locks would still be in place
+preventing readers from reading stale data, but that will not help the next step in the process.</li>
+  <li>CAS operations with eventual consistency. The CAS methods will not return until the data has been applied to the server, so
+  it is not necessary to use synchronous writes.
+In a 50 step process it is likely there are key milestones. Often it is desirable to record these in a database with the non-milestone
+steps recorded in the cache. For these key milestones use the “Financial Order Processing - write to cache and database” pattern.</li>
+</ul>
+
+<h3 id="e-commerce-web-app-with-non-sticky-sessions">E-commerce web app with Non-sticky sessions</h3>
+<p>Here a user makes reads and writes to a web application cluster. There are n servers where n &gt; 1. The load balancer is non-sticky,
+so any of the n servers can be hit on the next HTTP operation.
+When a user submits using a HTML form, either a GET or POST is done based on the form action. And if it is an AJAx app, then
+requests are being done with <code>XMLHttpRequest</code> and any HTTP request method can be sent. If POST (form and AJAX) or PUT (AJAX) is used,
+no content is returned and a separate GET is required to refresh the view or AJAX app.</p>
+
+<p>The key point is that sending a change and getting
+a view may happen with one request or two. If it happens with two, then the same server might respond to the second request or not.
+The probability that the second server will be the same as the first is 1/n.
+AJAX apps can further exacebate this situation. A page may make multiple requests to fill different panels. This opens up the possibility
+of, within a single page, having data come from multiple servers. Any lack of consistency could be glaring indeed.</p>
+
+<h4 id="solution-5">Solution</h4>
+<p>Use one of:</p>
+
+<ul>
+  <li>strong consistency</li>
+  <li>CAS</li>
+</ul>
+
+<p>Other options can be added depending on what is needed for the request. e.g. XA if a database plus the cache is updated.</p>
+
+<h3 id="e-commerce-web-app-with-sticky-sessions">E-commerce web app with sticky sessions</h3>
+
+<h4 id="problem-5">Problem</h4>
+<p>Here a user makes reads and writes to a web application cluster. The load balancer is sticky,
+so the same server should be hit on the next HTTP operation. There are different ways of configuring sticky sessions. The same
+server might be used for the length of a session, which is the standard meaning, or a browser’s IP can permanently hash to a server.
+In any case, each request is guaranteed to hit the same server.</p>
+
+<h4 id="solution-6">Solution</h4>
+<p>The same server is always hit. The consistency mode depends on whether only the user making the changes needs to see them applied
+(read your writes, monotonic reads, monotonic writes), or whether they are mutating shared-state, like inventory where write-write
+conflicts might occur.
+For mutating user-only consistency, use eventual consistency.
+For multi-user shared state, use strong consistency at a minimum plus further safety mechanisms depending on the type of mutation.</p>
+
+<h3 id="e-commerce-catalog">E-commerce Catalog</h3>
+
+<h4 id="problem-6">Problem</h4>
+<p>Catalogues display inventory. There are product details and pricing. There may be also be an inventory status of available or sold
+out.
+Catalogue changes are usually made by one user or process (for example a daily update load from a supplier) and usually do not
+have write-write conflicts. While the catalogue is often non-sticky, admin users are typically configured sticky.
+There is often tolerance for the displayed catalogue to lag behind the change made. Users following a click path are usually less tolerant about seeing inconsistencies.</p>
+
+<h4 id="solution-7">Solution</h4>
+<p>The person making the changes can see a consistent view by virtue of the sticky session. So eventual consistency will often
+be enough.
+For end users following a click path, they need a consistent view. However, the network or Internet time, plus their think time to
+move along the path, adds up to seconds and minutes, while eventual consistency will propagate in the order of 2+ milliseconds. With
+eventual consistency, it is very unlikely they will see inconsistency. The general recommendation is therefore to use eventual consistency.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

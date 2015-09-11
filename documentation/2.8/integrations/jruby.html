@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.8 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.8/integrations/jruby.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.8 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.8/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.8/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.8/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.8/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.8/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.8/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.8/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.8/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.8/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.8/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.8/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.8.5/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="jruby-and-rails-caching-">JRuby and Rails Caching <a name="rails-and-jruby-caching" id="rails-and-jruby-caching"></a></h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#jruby-and-rails-caching-">
+                        <span class="toctext">JRuby and Rails Caching </span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#installation">
+                              <span class="toctext">Installation</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#configuring-ehcache">
+                              <span class="toctext">Configuring Ehcache</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#using-the-jruby-ehcache-api-directly">
+                              <span class="toctext">Using the jruby-ehcache API directly</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#using-ehcache-from-within-rails">
+                              <span class="toctext">Using Ehcache from within Rails</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+<p>jruby-ehcache is a JRuby Ehcache library which makes a commonly used subset of Ehcache’s API available to
+JRuby. All of the strength of Ehcache is there, including BigMemory and the ability to cluster with Terracotta.
+It can be used directly via its own API, or as a Rails caching provider.</p>
+
+<h2 id="installation">Installation</h2>
+<p>### Installation for JRuby
+Ehcache JRuby integration is provided by the jruby-ehcache gem.  To install it, simply execute:</p>
+
+<pre>
+   <code>jgem install jruby-ehcache
+</code>
+</pre>
+
+<p>Note that you may need to use “sudo” to install gems on your system.</p>
+
+<h3 id="installation-for-rails">Installation for Rails</h3>
+
+<p>If you want Rails caching support, you should also install the correct gem for your Rails version:</p>
+
+<pre>
+   <code>jgem install jruby-ehcache-rails2 # for Rails 2
+jgem install jruby-ehcache-rails3 # for Rails 3
+</code>
+</pre>
+
+<p>An alternative installation is to simply add the appropriate jruby-ehcache-rails dependency to your Gemfile, and then run a Bundle Install. This will pull in the latest jruby-ehcache gem.</p>
+
+<h3 id="dependencies">Dependencies</h3>
+
+<ul>
+  <li>JRuby 1.5 and higher</li>
+  <li>Rails 2 for the jruby-ehcache-rails2</li>
+  <li>Rails 3 for the jruby-ehcache-rails3</li>
+  <li>Ehcache 2.4.6 is the declared dependency, although any version of Ehcache will work.</li>
+</ul>
+
+<p>The jruby-ehcache gem comes bundled with the ehcache-core.jar. To use a different version of Ehcache, place the Ehcache jar in the same Classpath as JRuby (for standalone JRuby) or in the Rails lib directory (for Rails).</p>
+
+<h2 id="configuring-ehcache">Configuring Ehcache</h2>
+<p>Configuring Ehcache for JRuby is done using the same ehcache.xml file as
+ used for native Java Ehcache.  The ehcache.xml file can be placed either
+ in your Classpath or, alternatively, can be placed in the same directory as
+ the Ruby file in which you create the CacheManager object from your Ruby
+ code. For a Rails application, the ehcache.xml file should reside in the
+ config directory of the Rails application.</p>
+
+<h2 id="using-the-jruby-ehcache-api-directly">Using the jruby-ehcache API directly</h2>
+
+<h3 id="basic-operations">Basic Operations</h3>
+<p>To make Ehcache available to JRuby:</p>
+
+<pre>
+   <code>require 'ehcache'
+</code>
+</pre>
+
+<p>Note that, because jruby-ehcache is provided as a Ruby Gem, you must
+make your Ruby interpreter aware of Ruby Gems in order to load it.  You
+can do this by either including -rubygems on your jruby command line, or
+you can make Ruby Gems available to JRuby globally by setting
+the RUBYOPT environment variable as follows:</p>
+
+<pre>
+   <code>export RUBYOPT=rubygems</code>
+</pre>
+
+<p>To create a CacheManager, which you do once when the application starts:</p>
+
+<pre>
+   <code>manager = Ehcache::CacheManager.new</code>
+</pre>
+
+<p>To access an existing cache (call it “sampleCache1”):</p>
+
+<pre>
+   <code>cache = manager.cache("sampleCache1")</code>
+</pre>
+
+<p>To create a new cache from the defaultCache:</p>
+
+<pre>
+   <code>cache = manager.cache</code>
+</pre>
+
+<p>To put into a cache:</p>
+
+<pre>
+   <code>cache.put("key", "value", {:ttl =&gt; 120})</code>
+</pre>
+
+<p>To get from a cache:</p>
+
+<pre>
+   <code>cache.get("key")  # Returns the Ehcache Element object
+cache["key"]      # Returns the value of the element directly</code>
+</pre>
+
+<p>To shut down the CacheManager:
+This is only when you shut your application down.
+It is not necessary to call this if the cache is configured for persistence or is clustered with Terracotta, but
+it is always a good idea to do it.</p>
+
+<pre>
+   <code>manager.shutdown</code>
+</pre>
+
+<h3 id="supported-properties">Supported Properties</h3>
+<p>The following caching options are supported in JRuby:</p>
+
+<table>
+<tr><th>Property</th><th>Argument Type</th><th>Description</th></tr>
+<tr><td> unlessExist, ifAbsent</td><td>boolean
+
+</td><td>If true, use the putIfAbsent method.</td></tr>
+<tr><td> elementEvictionData</td><td>ElementEvictionData
+
+</td><td>Sets this element’s eviction data instance.</td></tr>
+
+<tr><td>eternal</td><td>boolean
+
+</td><td>Sets whether the element is eternal.</td></tr>
+
+<tr><td>timeToIdle, tti</td><td>int
+
+</td><td>Sets time to idle.</td></tr>
+
+<tr><td> timeToLive, ttl, expiresIn</td><td>int
+
+</td><td>Sets time to Live.</td></tr>
+
+<tr><td> version</td><td>long
+
+</td><td>Sets the version attribute of the ElementAttributes object.</td></tr>
+</table>
+
+<h3 id="example-configuration">Example Configuration</h3>
+
+<pre>
+   <code>class SimpleEhcache
+ #Code here
+ require 'ehcache'
+ manager = Ehcache::CacheManager.new
+ cache = manager.cache
+ cache.put("answer", "42", {:ttl =&gt; 120})
+ answer = cache.get("answer")
+ puts "Answer: #{answer.value}"
+ question = cache["question"] || 'unknown'
+ puts "Question: #{question}"
+ manager.shutdown
+end</code>
+</pre>
+
+<p>As you can see from the example, you create a cache using CacheManager.new, and you can control the “time to live” value of a
+cache entry using the :ttl option in cache.put.</p>
+
+<h2 id="using-ehcache-from-within-rails">Using Ehcache from within Rails</h2>
+
+<h3 id="general-overview">General Overview</h3>
+<p>#### The ehcache.xml file
+Configuration of Ehcache is still done with the ehcache.xml file, but for Rails applications you must place this file in the
+config directory of your Rails app.
+Also note that you must use JRuby to execute your Rails application, as these gems utilize JRuby’s Java integration
+to call the Ehcache API.
+With this configuration out of the way, you can now use the Ehcache API directly from your Rails controllers and/or models.
+You could of course create a new Cache object everywhere you want to use it, but it is better to create a single instance
+and make it globally accessible by creating the Cache object in your Rails environment.rb file.
+For example, you could add the following lines to config/environment.rb:</p>
+
+<pre>
+   <code>require 'ehcache'
+EHCACHE = Ehcache::CacheManager.new.cache</code>
+</pre>
+
+<p>By doing so, you make the EHCACHE constant available to all Rails-managed objects in your application.  Using the Ehcache API is
+now just like the above JRuby example.
+If you are using Rails 3 then you have a better option at your disposal: the built-in Rails 3 caching API.
+This API provides an abstraction layer for caching underneath which you can plug in any one of a number of caching providers.
+The most common provider to date has been the memcached provider, but now you can also use the Ehcache provider.
+Switching to the Ehcache provider requires only one line of code in your Rails environment file
+(e.g. development.rb or production.rb):</p>
+
+<pre>
+   <code>config.cache_store = :ehcache_store, {
+                        :cache_name =&gt; 'rails_cache',
+                        :ehcache_config =&gt; 'ehcache.xml'
+                    }</code>
+</pre>
+
+<p>This configuration will cause the Rails.cache API to use Ehcache as its cache store.
+The :cache_name and :ehcache_config are both optional parameters, the default values
+for which are shown in the above example. The value of the :ehcache_config parameter
+can be either an absolute path or a relative path, in which case it is interpreted
+relative to the Rails app’s config directory.
+A very simple example of the Rails caching API is as follows:</p>
+
+<pre>
+   <code>Rails.cache.write("answer", "42")
+Rails.cache.read("answer")  # =&gt; '42'</code>
+</pre>
+
+<p>Using this API, your code can be agnostic about the underlying provider, or even switch providers based on the current environment
+(e.g. memcached in development mode, Ehcache in production).
+The write method also supports options in the form of a Hash passed as the final parameter.</p>
+
+<p>See the <a href="/documentation/2.8/integrations/jruby.html#supported-properties">Supported Properties</a> table above for the options that are supported. These options are passed to the write method as Hash options using either camelCase or underscore notation,
+as in the following example:</p>
+
+<pre>
+   <code>Rails.cache.write('key', 'value', :time_to_idle =&gt; 60.seconds, :timeToLive =&gt; 600.seconds)
+caches_action :index, :expires_in =&gt; 60.seconds, :unless_exist =&gt; true</code>
+</pre>
+
+<h4 id="turn-on-caching-in-your-controllers">Turn on caching in your controllers</h4>
+<p>You can also configure Rails to use Ehcache for its automatic action caching
+and fragment caching, which is the most common method for caching at the
+controller level. To enable this, you must configure Rails to perform
+controller caching, and then set Ehcache as the provider in the same way
+as for the Rails cache API:</p>
+
+<pre>
+   <code>config.action_controller.perform_caching = true
+config.action_controller.cache_store = :ehcache_store</code>
+</pre>
+
+<h3 id="setting-up-a-rails-application-with-ehcache">Setting up a Rails Application with Ehcache</h3>
+<p>Here are the basic steps for configuring a Rails application to use Ehcache:</p>
+
+<ol>
+  <li>
+    <p>For this example, we will create a new Rails application with the custom template from JRuby.org. The following command creates a “rails-bigmemory” application:</p>
+
+    <pre><code> jruby -S rails new rails-bigmemory -m http://jruby.org/rails3.rb
+</code></pre>
+  </li>
+  <li>
+    <p>The example application will be a simple address book. Generate a scaffold for the address book application, which will create contacts including a first name, last name, and email address.</p>
+
+    <pre><code> jruby -S rails generate scaffold Contact first_name: string last_name: string email_address: string
+</code></pre>
+  </li>
+  <li>
+    <p>Add support for caching with Ehcache. There are several ways to do this, but for this example, we will use the Action Controller caching mechanism. Open the ContactsController.rb. Add a call to the Action method to tell it to cache the results of our index and show pages.</p>
+
+    <pre><code> caches_action :index, :show
+</code></pre>
+
+    <p>To expire items from the cache as appropriate, add calls to expire the results of the caching calls.</p>
+
+    <p>Under create, add the following:</p>
+
+    <pre><code> expire_action :action =&gt; 'index'
+</code></pre>
+
+    <p>Under update, add the following:</p>
+
+    <pre><code>  expire_action :action =&gt; 'show', :id =&gt; params[:id]
+  expire_action :action =&gt; 'index'
+</code></pre>
+
+    <p>Under destroy, add the following:</p>
+
+    <pre><code>   expire_action :action =&gt; 'index'
+</code></pre>
+  </li>
+  <li>
+    <p>Now that the application is configured to support caching, specify Ehcache as its caching provider. Open the Gemfile and declare a dependency on the ehcache-jruby gem. Add the following line:</p>
+
+    <pre><code>  gem 'ehcache-jruby-rails3'
+</code></pre>
+  </li>
+  <li>
+    <p>In the development.rb file, enable caching for the Rails Action Controller mechanism, which is disabled by default in developement mode. (Note that caching must be configured for each environment in which you want to use it.) This file also needs a specification for using Ehcache as the cache store provider. Add the following two lines to the .rb file:</p>
+
+    <pre><code>  config.action_controller.perform_caching = true
+  config.cache_store = :ehcache_store
+</code></pre>
+  </li>
+  <li>
+    <p>Run the Bundle Install command.</p>
+
+    <pre><code>  jruby -S bundle install
+</code></pre>
+  </li>
+  <li>
+    <p>Run the Rake command to create the database and populate the initial schema.</p>
+
+    <pre><code>  jruby -S rake db:create db:migrate
+</code></pre>
+  </li>
+  <li>
+    <p>(Optional) Set up the Ehcache monitor. This involves the following four steps:</p>
+    <ul>
+      <li>Install the Ehcache Monitor from <a href="/downloads">Downloads</a>.</li>
+      <li>Start the Ehcache Monitor server.</li>
+      <li>Connect the application to the monitor server by copying the ehcache-probe JAR (bundled with the Ehcache Monitor) to your Rails lib directory.</li>
+      <li>
+        <p>Create an ehcache.xml file in the Rails application config directory. In the ehcache.xml file, add the following:</p>
+
+        <pre><code>  &lt;cacheManagerPeerListenerFactory
+      class="org.terracotta.ehcachedx.monitor.probe.ProbePeerListenerFactory"
+      properties="monitorAddress=localhost, monitorPort=9889, memoryMeasurement=true"/&gt;
+</code></pre>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>Now you are ready to start the application with the following command:</p>
+
+<pre>
+   <code>jruby -S rails server
+</code>
+</pre>
+
+<p>Once the application is started, populate the cache by adding, editing, and deleting contacts. To see the Contacts address book, enter the following in your browser:</p>
+
+<pre>
+   <code>http://localhost:3000/contacts
+</code>
+</pre>
+
+<p>To view cache activity and statistics in the Ehcache monitor, enter the following in your browser:</p>
+
+<pre>
+   <code>http://localhost:9889/monitor
+</code>
+</pre>
+
+<p>For more information about how to use the monitor, refer to the <a href="/documentation/2.8/operations/monitor.html">Ehcache Monitor</a> page.</p>
+
+<h3 id="adding-bigmemory-under-rails">Adding BigMemory under Rails</h3>
+<p>BigMemory provides in-memory data management with a large additional cache located right at the node where your application runs. To upgrade your Ehcache to use BigMemory with your Rails application, follow these steps.</p>
+
+<ol>
+  <li>
+    <p>Add the ehcache-core-ee.jar to your Rails application lib directory.</p>
+  </li>
+  <li>
+    <p>Modify the ehcache.xml file (in the config directory of your Rails application) by adding the following to each cache where you want to enable BigMemory:</p>
+
+    <pre><code> overflowToOffHeap="true"
+ maxBytesLocalOffHeap="1G"
+</code></pre>
+
+    <p>When <code>overflowToOffHeap</code> is set to true, it enables the cache to utilize off-heap memory storage to improve performance. Off-heap memory is not subject to Java GC cycles and has a size limit set by the Java property MaxDirectMemorySize.</p>
+
+    <p><code>maxBytesLocalOffHeap</code> sets the amount of off-heap memory available to the cache, and is in effect only if overflowToOffHeap is true. For more information about sizing caches, refer to <a href="/documentation/2.8/configuration/cache-size.html">How To Size Caches</a>.</p>
+  </li>
+  <li>
+    <p>Also in the ehcache.xml file, set <code>maxEntriesLocalHeap</code> to at least 100 elements when using an off-heap store to avoid performance degradation. Lower values for <code>maxEntriesLocalHeap</code> trigger a warning to be logged.</p>
+  </li>
+  <li>
+    <p>Now that your application is configured to use BigMemory, start it with the following commands:</p>
+
+    <pre><code> jruby -J-Dcom.tc.productkey.path=/path/to/key -J-XX:MaxDirectMemorySize=2G -S rails server
+</code></pre>
+
+    <p>This will configure a system property that points to the location of the license key, and it will set the direct memory size. The <code>maxDirectMemorySize</code> must be at least 256M larger than total off-heap memory (the unused portion will still be available for other uses).</p>
+  </li>
+</ol>
+
+<p>For additional configuration options, refer to the <a href="/documentation/2.8/configuration/bigmemory#advanced-configuration-options.html">BigMemory</a> page.</p>
+
+<p>Note that only Serializable cache keys and values can be placed in the store, similar to DiskStore. Serialization and deserialization take place on putting and getting from the store. This is handled automatically by the jruby-ehcache gem.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

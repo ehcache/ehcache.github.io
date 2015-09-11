@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/get-started/cache-topologies.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="cache-topologies-">Cache Topologies <a name="Distributed-and-Replicated-Caching" id="Distributed-and-Replicated-Caching"></a></h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#cache-topologies-">
+                        <span class="toctext">Cache Topologies </span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#distributed-caching">
+                              <span class="toctext">Distributed Caching</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#replicated-caching">
+                              <span class="toctext">Replicated Caching</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>The Ehcache API is used in the following topologies:</p>
+
+<ul>
+  <li>
+    <p>Standalone – The cached data set is held in the application node. Any other application nodes are independent with no communication between them. If standalone caching is being used where there are multiple application nodes running the same application, then there is Weak Consistency between them. They contain consistent values for immutable data or after the time to live on an Element has completed and the Element needs to be reloaded. Standalone nodes can be run with open-source Ehcache or, to add off-heap memory and other features, with <a href="http://terracotta.org/products/bigmemorygo">BigMemory Go</a>.</p>
+  </li>
+  <li>
+    <p>Distributed – The data is held in a Terracotta Server Array with a subset of recently used data held in each application cache node. The distributed topology, available with <a href="http://terracotta.org/products/bigmemorymax">BigMemory Max</a>, supports a very rich set of <a href="/documentation/2.7/get-started/consistency-options">consistency modes</a>.</p>
+  </li>
+  <li>
+    <p>Replicated – The cached data set is held in each application node and data is copied or invalidated across the cluster without locking. Replication can be either asynchronous or synchronous, where the writing thread blocks while propagation occurs. The only consistency mode available in this topology is Weak Consistency. nodes can be run with open-source Ehcache.</p>
+  </li>
+</ul>
+
+<p>Many production applications are deployed in clusters of multiple
+instances for availability and scalability. However, without a
+distributed or replicated cache, application
+clusters exhibit a number of undesirable behaviors, such as:</p>
+
+<ul>
+  <li><strong>Cache Drift</strong> – if each application instance maintains its own cache,
+updates made to one cache will not appear in the other instances.  This
+also happens to web session data.  A distributed or replicated cache ensures that all
+of the cache instances are kept in sync with each other.</li>
+  <li><strong>Database Bottlenecks</strong> – In a single-instance
+application, a cache effectively shields a database from the overhead of
+redundant queries.  However, in a distributed application environment,
+each instance much load and keep its own cache fresh.  The overhead of
+loading and refreshing multiple caches leads to database bottlenecks as
+more application instances are added.  A distributed or replicated cache eliminates
+the per-instance overhead of loading and refreshing multiple caches from
+a database.</li>
+</ul>
+
+<p>The following sections further explore distributed and replicated caching.</p>
+
+<h2 id="distributed-caching">Distributed Caching</h2>
+<p>Distributed caching uses the Terracotta Server Array, available with <a href="http://terracotta.org/products/bigmemorymax">BigMemory Max</a>. Distributed caching enabling data sharing among multiple CacheManagers and their caches in multiple JVMs. By combining the power of the Terracotta Server Array with the ease of Ehcache application-data caching, you can:</p>
+
+<ul>
+  <li>linearly scale your application to grow with requirements;</li>
+  <li>rely on data that remains consistent across the cluster;</li>
+  <li>offload databases to reduce the associated overhead;</li>
+  <li>increase application performance with distributed in-memory data;</li>
+  <li>access even more powerful APIs to leverage these capabilities.</li>
+</ul>
+
+<p>Using distributed caching is the recommended approach in a clustered or scaled-out application environment. It provides the highest level of performance, availability, and scalability.</p>
+
+<h2 id="replicated-caching">Replicated Caching</h2>
+<p>Ehcache has a pluggable cache replication scheme which enables the addition of cache replication mechanisms.
+Ehcache modules for the following replicated caching mechanisms are available:</p>
+
+<ul>
+  <li>RMI</li>
+  <li>JGroups</li>
+  <li>JMS</li>
+  <li>Cache Server</li>
+</ul>
+
+<p>Each of the is covered in its own chapter.
+ One solution is to replicate data between the caches to keep them
+consistent, or coherent. Typical operations include:</p>
+
+<ul>
+  <li>put</li>
+  <li>update (put which overwrites an existing entry)</li>
+  <li>remove</li>
+</ul>
+
+<p>Update supports updateViaCopy or updateViaInvalidate. The latter
+ sends the a remove message out to the cache cluster, so that other
+ caches remove the Element, thus preserving coherency. It is typically
+ a lower cost option than a copy.</p>
+
+<h3 id="using-a-cache-server">Using a Cache Server</h3>
+<p>Ehcache 1.5 supports the Ehcache Cache Server.
+To achieve shared data, all JVMs read to and write from a Cache Server, which runs
+it in its own JVM.
+To achieve redundancy, the Ehcache inside the Cache Server can be set up in its own cluster.
+This technique will be expanded upon in Ehcache 1.6.</p>
+
+<h3 id="notification-strategies">Notification Strategies</h3>
+<p>The best way of notifying of put and update depends on the nature of
+the cache.
+ If the Element is not available anywhere else then the Element
+itself should form the payload of the notification. An example is a
+cached web page. This notification strategy is called copy.
+ Where the cached data is available in a database, there are two
+choices. Copy as before, or invalidate the data. By invalidating the
+data, the application tied to the other cache instance will be forced
+to refresh its cache from the database, preserving cache coherency.
+Only the Element key needs to be passed over the network.
+ Ehcache supports notification through copy and invalidate, selectable per cache.</p>
+
+<h3 id="potential-issues-with-replicated-caching">Potential Issues with Replicated Caching</h3>
+
+<h4 id="potential-for-inconsistent-data">Potential for Inconsistent Data</h4>
+<p>Timing scenarios, race conditions, delivery, reliability
+constraints and concurrent updates to the same cached data can cause
+inconsistency (and thus a lack of coherency) across the cache
+instances.
+ This potential exists within the Ehcache implementation.
+These issues are the same as what is seen when two completely
+separate systems are sharing a database, a common scenario.
+ Whether data inconsistency is a problem depends on the data and how it
+is used. For those times when it is important, Ehcache provides for
+synchronous delivery of puts and updates via invalidation. These are discussed below:</p>
+
+<h5 id="synchronous-delivery">Synchronous Delivery</h5>
+<p>Delivery can be specified to be synchronous or asynchronous.
+Asynchronous delivery gives faster returns to operations on the local
+cache and is usually preferred. Synchronous delivery adds time to the
+local operation, however delivery of an update to
+all peers in the cluster happens before the cache operation returns.</p>
+
+<h5 id="put-and-update-via-invalidation">Put and Update via Invalidation</h5>
+<p>The default is to update other caches by copying the new value to
+them. If the replicatePutsViaCopy property is set to false in the
+replication configuration, puts are made by removing the element in
+any other cache peers. If the replicateUpdatesViaCopy property is set to false in the
+replication configuration, updates are made by removing the element in
+any other cache peers.
+ This forces the applications using the cache
+peers to return to a canonical source for the data.
+ A similar effect can be obtained by setting the element TTL to a low value such
+as a second.
+ Note that these features impact cache performance and should
+not be used where the main purpose of a cache is performance boosting over
+coherency.</p>
+
+<h4 id="use-of-time-to-idle">Use of Time To Idle</h4>
+<p>Time To Idle is inconsistent with replicated caching. Time-to-idle makes some entries live longer on some
+nodes than in others because of cache usage patterns. However, the cache entry “last touched” timestamp
+is not replicated across nodes.
+ Do not use Time To Idle with replicated caching, unless you do not care about inconsistent data across nodes.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

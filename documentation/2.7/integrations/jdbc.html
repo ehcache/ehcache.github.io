@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/integrations/jdbc.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="jdbc-caching-">JDBC Caching <a name="JDBC-Caching" id="JDBC-Caching"></a></h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#jdbc-caching-">
+                        <span class="toctext">JDBC Caching </span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#adding-jdbc-caching-to-a-dao/dal-layer">
+                              <span class="toctext">Adding JDBC caching to a DAO/DAL layer</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+<p>Ehcache can easily be combined with your existing JDBC code.  Whether
+you access JDBC directly, or have a DAO/DAL layer, Ehcache can be 
+combined with your existing data access pattern to speed up frequently 
+accessed data to reduce page load times, improve performance, and 
+reduce load from your database.</p>
+
+<p>This page discusses how to add caching to a JDBC application using
+the commonly used DAO/DAL layer patterns.</p>
+
+<h2 id="adding-jdbc-caching-to-a-dao/dal-layer">Adding JDBC caching to a DAO/DAL layer</h2>
+
+<p>If your application already has a DAO/DAL layer, this is a natural place
+to add caching.  To add caching, follow these steps:</p>
+
+<ul>
+  <li>identify methods which can be cached</li>
+  <li>instantiate a cache and add a member variable to your DAO to hold a reference to it</li>
+  <li>Put and get values from the cache</li>
+</ul>
+
+<h3 id="identifying-methods-which-can-be-cached">Identifying methods which can be cached</h3>
+
+<p>Normally, you will want to cache the following kinds of method calls:</p>
+
+<ul>
+  <li>Any method which retrieves entities by an Id</li>
+  <li>Any queries which can be tolerate some inconsistent or out of date data</li>
+</ul>
+
+<p>Example methods that are commonly cacheable:</p>
+
+<pre>
+public V getById(final K id);
+public Collection<v> findXXX(...);
+
+
+### Instantiate a cache and add a member variable
+
+Your DAO is probably already being managed by Spring or Guice, so simply 
+add a setter method to your DAO layer such as `setCache(Cache cache)`.
+Configure the cache as a bean in your Spring or Guice config, and then 
+use the the frameworks injection methodology to inject an instance of 
+the cache.
+
+If you are not using a DI framework such as Spring or Guice, then you will
+need to instantiate the cache during the bootstrap of your application.  As
+your DAO layer is being instantiated, pass the cache instance to it.
+
+### Put and get values from the cache
+
+Now that your DAO layer has a cache reference, you can start to use it.
+You will want to consider using the cache using one of two standard cache
+access patterns:
+
+* cache-aside
+* cache-as-sor
+
+You can read more about these in these [cache-as-sor](/documentation/2.7/get-started/getting-started#cache-as-sor-example) and [Concepts cache-aside](/documentation/2.7/get-started/getting-started#cache-aside) sections.
+
+## Putting it all together - an example
+
+Here is some example code that demonstrates a DAO based cache using a 
+cache aside methodology wiring it together with Spring.
+
+This code implements a PetDao modeled after the Spring Framework PetClinic
+sample application.
+
+It implements a standard pattern of creating an abstract 
+GenericDao implementation which all Dao implementations will 
+extend.  
+
+It also uses Spring's SimpleJdbcTemplate to make the job of accessing 
+the database easier.
+
+Finally, to make Ehcache easier to work with in Spring, it implements
+a wrapper that holds the cache name.
+
+### The example files
+The following are relevant snippets from the example files.  A full project
+will be available shortly.
+
+#### CacheWrapper.java
+Simple get/put wrapper interface.
+
+<pre>
+public interface CacheWrapper&lt;K, V&gt; 
+{
+ void put(K key, V value);
+ V get(K key);
+"/&gt;
+</pre>
+
+#### EhcacheWrapper.java
+The wrapper implementation.  Holds the name so caches can be named.
+
+<pre>
+public class EhCacheWrapper&lt;K, V&gt; implements CacheWrapper&lt;K, V&gt; 
+{
+    private final String cacheName;
+    private final CacheManager cacheManager;
+    public EhCacheWrapper(final String cacheName, final CacheManager cacheManager)
+    {
+	this.cacheName = cacheName;
+	this.cacheManager = cacheManager;
+    "/&gt;
+    public void put(final K key, final V value)
+    {
+	getCache().put(new Element(key, value));
+    "/&gt;
+    public V get(final K key, CacheEntryAdapter&lt;V&gt; adapter) 
+    {
+	Element element = getCache().get(key);
+	if (element != null) {
+	    return (V) element.getValue();
+	"/&gt;
+	return null;
+    "/&gt;
+    public Ehcache getCache() 
+    {
+	return cacheManager.getEhcache(cacheName);
+    "/&gt;
+"/&gt;
+</pre>
+
+#### GenericDao.java
+The Generic Dao.  It implements most of the work.
+
+<pre>
+public abstract class GenericDao&lt;K, V extends BaseEntity&gt; implements Dao&lt;K, V&gt;
+{
+    protected DataSource datasource;
+    protected SimpleJdbcTemplate jdbcTemplate;
+    /* Here is the cache reference */
+    protected CacheWrapper&lt;K, V&gt; cache;
+    public void setJdbcTemplate(final SimpleJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    "/&gt;
+    public void setDatasource(final DataSource datasource) {
+        this.datasource = datasource;
+    "/&gt;
+    public void setCache(final CacheWrapper&lt;K, V&gt; cache) {
+        this.cache = cache;
+    "/&gt;
+    /* the cacheable method */
+    public V getById(final K id) {
+	V value;
+	if ((value = cache.get(id)) == null) {
+	    value = this.jdbcTemplate.queryForObject(findById, mapper, id);
+	    if (value != null) {
+		cache.put(id, value);
+	    "/&gt;
+	"/&gt;
+	return value;
+    "/&gt;
+    /** rest of GenericDao implementation here **/
+    /** ... **/
+    /** ... **/
+    /** ... **/
+"/&gt;
+</pre>
+
+#### PetDaoImpl.java
+
+The Pet Dao implementation, really it doesn't need to do anything unless
+specific methods not available via GenericDao are cacheable.
+
+<pre>
+public class PetDaoImpl extends GenericDao&lt;Integer, Pet&gt; implements PetDao 
+{
+/** ... **/
+"/&gt;
+</pre>
+
+We need to configure the JdbcTemplate, Datasource, CacheManager, PetDao, 
+and the Pet cache using the spring configuration file.
+
+#### application.xml
+
+The Spring configuration file.
+
+<pre>
+&lt;!-- datasource and friends --&gt;
+&lt;bean id="dataSource" class="org.springframework.jdbc.datasource.FasterLazyConnectionDataSourceProxy"&gt;
+  &lt;property name="targetDataSource" ref="dataSourceTarget"/&gt;
+&lt;/bean&gt;
+&lt;bean id="dataSourceTarget" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+      destroy-method="close"&gt;
+  &lt;property name="user" value="${jdbc.username}"/&gt;
+  &lt;property name="password" value="${jdbc.password}"/&gt;
+  &lt;property name="driverClass" value="${jdbc.driverClassName}"/&gt;
+  &lt;property name="jdbcUrl" value="${jdbc.url}"/&gt;
+  &lt;property name="initialPoolSize" value="50"/&gt;
+  &lt;property name="maxPoolSize" value="300"/&gt;
+  &lt;property name="minPoolSize" value="30"/&gt;
+  &lt;property name="acquireIncrement" value="2"/&gt;
+  &lt;property name="acquireRetryAttempts" value="0"/&gt;
+&lt;/bean&gt;
+&lt;!-- jdbctemplate --&gt;
+&lt;bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate"&gt;
+  &lt;constructor-arg ref="dataSource"/&gt;
+&lt;/bean&gt;
+&lt;!-- the cache manager --&gt;
+&lt;bean id="cacheManager" class="EhCacheManagerFactoryBean"&gt;
+  &lt;property name="configLocation" value="classpath:${ehcache.config}"/&gt;
+&lt;/bean&gt;
+&lt;!-- the pet cache to be injected into the pet dao --&gt;
+&lt;bean name="petCache" class="EhCacheWrapper"&gt;
+  &lt;constructor-arg value="pets"/&gt;
+  &lt;constructor-arg ref="cacheManager"/&gt;
+&lt;/bean&gt;
+&lt;!-- the pet dao --&gt;
+&lt;bean id="petDao" class="PetDaoImpl"&gt;
+  &lt;property name="cache" ref="petCache"/&gt;
+  &lt;property name="jdbcTemplate" ref="jdbcTemplate"/&gt;
+  &lt;property name="datasource" ref="dataSource"/&gt;
+&lt;/bean&gt;
+</pre>
+</v></pre>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

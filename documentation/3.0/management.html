@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 3.0 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/3.0/management.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 3.0 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="index.html">Getting Started</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="management-and-monitoring">Management and Monitoring</h1>
+<div class="sect1">
+<h2 id="intro">Intro</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Managed objects like caches, cache managers and stores are registered into a <code>org.ehcache.management.ManagementRegistry</code><br />
+instance.</p>
+</div>
+<div class="paragraph">
+<p>A <code>ManagementRegistry</code> implementation has to understand the registered object and provide management and monitoring<br />
+capabilities for them, including the capabilities' context.</p>
+</div>
+<div class="paragraph">
+<p>Given a capability and a context, statistics can be collected or calls can be made.</p>
+</div>
+<div class="paragraph">
+<p>The current <code>ManagementRegistry</code> implementation provides minimal support for <code>Ehcache</code> instances, providing<br />
+a minimal set of statistics and actions via a couple of capabilities.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="making-use-of-the-code-managementregistry-code">Making use of the <code>ManagementRegistry</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, a <code>ManagementRegistry</code> is automatically discovered and enabled, but can only be accessed by ehcache<br />
+internal services. If you wish to make use of it, you should create your own instance and pass it to the<br />
+cache manager builder as a service:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
+    .buildConfig(Long.class, String.class);
+
+ManagementRegistry managementRegistry = new DefaultManagementRegistry(); <i class="conum" data-value="1"></i><b>(1)</b>
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .withCache("aCache", cacheConfiguration)
+    .using(managementRegistry) <i class="conum" data-value="2"></i><b>(2)</b>
+    .build(true);
+
+
+Cache&lt;Long, String&gt; aCache = cacheManager.getCache("aCache", Long.class, String.class);
+aCache.get(0L); <i class="conum" data-value="3"></i><b>(3)</b>
+aCache.get(0L);
+aCache.get(0L);
+
+Map&lt;String, String&gt; context = createContext(managementRegistry); <i class="conum" data-value="4"></i><b>(4)</b>
+
+Collection&lt;Counter&gt; counters = managementRegistry.collectStatistics(context, "org.ehcache.management.providers.statistics.EhcacheStatisticsProvider", "GetCounter"); <i class="conum" data-value="5"></i><b>(5)</b>
+Assert.assertThat(counters.size(), Matchers.is(1));
+Counter getCounter = counters.iterator().next();
+
+Assert.assertThat(getCounter.getValue(), Matchers.equalTo(3L)); <i class="conum" data-value="6"></i><b>(6)</b>
+
+cacheManager.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create an instance of <code>org.ehcache.management.registry.DefaultManagementRegistry</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Pass it as a service to the cache manager</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Perform a few gets to increment the statistic’s counter</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Create the target statistic’s context</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Collect the get count statistic</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Check that the statistic reports the expected count</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Obviously, you may use the above technique to pass your own implementation of <code>ManagementRegistry</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="capabilities-and-contexts">Capabilities and contexts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Capabilities are metadata of what the managed objects are capable of: a collection of statistic that can be queried<br />
+and/or remote actions that can be called.<br />
+Each capability requires a context to run within. For instance, cache-specific statistics require a cache manager name<br />
+and a cache name to uniquely identify the cache on which you want to query stats or call an action.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
+    .buildConfig(Long.class, String.class);
+
+ManagementRegistry managementRegistry = new DefaultManagementRegistry();
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .withCache("aCache", cacheConfiguration)
+    .using(managementRegistry)
+    .build(true);
+
+
+Collection&lt;Capability&gt; capabilities = managementRegistry.capabilities(); <i class="conum" data-value="1"></i><b>(1)</b>
+Assert.assertThat(capabilities.isEmpty(), Matchers.is(false));
+Capability capability = capabilities.iterator().next();
+String capabilityName = capability.getName(); <i class="conum" data-value="2"></i><b>(2)</b>
+Collection&lt;Descriptor&gt; capabilityDescriptions = capability.getDescriptions(); <i class="conum" data-value="3"></i><b>(3)</b>
+Assert.assertThat(capabilityDescriptions.isEmpty(), Matchers.is(false));
+CapabilityContext capabilityContext = capability.getCapabilityContext();
+Collection&lt;CapabilityContext.Attribute&gt; attributes = capabilityContext.getAttributes(); <i class="conum" data-value="4"></i><b>(4)</b>
+Assert.assertThat(attributes.size(), Matchers.is(2));
+Iterator&lt;CapabilityContext.Attribute&gt; iterator = attributes.iterator();
+CapabilityContext.Attribute attribute1 = iterator.next();
+Assert.assertThat(attribute1.getName(), Matchers.equalTo("cacheManagerName"));  <i class="conum" data-value="5"></i><b>(5)</b>
+Assert.assertThat(attribute1.isRequired(), Matchers.is(true));
+CapabilityContext.Attribute attribute2 = iterator.next();
+Assert.assertThat(attribute2.getName(), Matchers.equalTo("cacheName")); <i class="conum" data-value="6"></i><b>(6)</b>
+Assert.assertThat(attribute2.isRequired(), Matchers.is(true));
+
+Collection&lt;ContextContainer&gt; contexts = managementRegistry.contexts();  <i class="conum" data-value="7"></i><b>(7)</b>
+Assert.assertThat(contexts.size(), Matchers.is(1));
+ContextContainer contextContainer = contexts.iterator().next();
+Assert.assertThat(contextContainer.getName(), Matchers.equalTo("cacheManagerName"));  <i class="conum" data-value="8"></i><b>(8)</b>
+Assert.assertThat(contextContainer.getValue(), Matchers.startsWith("cache-manager-"));
+Collection&lt;ContextContainer&gt; subContexts = contextContainer.getSubContexts();
+Assert.assertThat(subContexts.size(), Matchers.is(1));
+ContextContainer subContextContainer = subContexts.iterator().next();
+Assert.assertThat(subContextContainer.getName(), Matchers.equalTo("cacheName"));  <i class="conum" data-value="9"></i><b>(9)</b>
+Assert.assertThat(subContextContainer.getValue(), Matchers.equalTo("aCache"));
+
+
+cacheManager.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Query the <code>ManagementRegistry</code> for the registered managed objects' capabilities.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Each capability has a unique name you will need to refer to it.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Each capability has a collection of `Descriptor`s that contains the metadata of each statistic or action.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Each capability requires a context to which it needs to refer to.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The first attribute of this context is the cache manager name.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>The second attribute of this context is the cache name. With both attributes, the capability can uniquely refer to<br />
+a unique managed object.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Query the <code>ManagementRegistry</code> for the all the registered managed objects' contexts.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>There is only one context here, and its name is the cache manager’s name.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>The above context has a subcontext: the cache’s name.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The context containers give you all the attributes of all existing contexts. You can match the values returned by a<br />
+context container to a capability’s context by matching their respective names.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="actions">Actions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are two forms of capabilities: statistics and action ones. The statistic ones offer a set of predefined<br />
+statistics that can be queried at will, while the action ones offer a set of actions that can be taken upon<br />
+a managed object. Examples of actions could be: clear caches, get their config or modify a config setting.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
+    .buildConfig(Long.class, String.class);
+
+ManagementRegistry managementRegistry = new DefaultManagementRegistry();
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .withCache("aCache", cacheConfiguration)
+    .using(managementRegistry)
+    .build(true);
+
+Cache&lt;Long, String&gt; aCache = cacheManager.getCache("aCache", Long.class, String.class);
+aCache.put(0L, "zero"); <i class="conum" data-value="1"></i><b>(1)</b>
+
+Map&lt;String, String&gt; context = createContext(managementRegistry); <i class="conum" data-value="2"></i><b>(2)</b>
+
+managementRegistry.callAction(context, "org.ehcache.management.providers.actions.EhcacheActionProvider", "clear", new String[0], new Object[0]); <i class="conum" data-value="3"></i><b>(3)</b>
+
+Assert.assertThat(aCache.get(0L), Matchers.is(Matchers.nullValue())); <i class="conum" data-value="4"></i><b>(4)</b>
+
+cacheManager.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Put something in a cache.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Call the 'clear' action on the managed cache. Refer to the descriptors of the provider to get the exact list of<br />
+action names and their required parameters.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Call the clear action on the cache.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Make sure that the cache is now empty.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="managing-multiple-cache-managers">Managing multiple cache managers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The default <code>ManagementRegistry</code> instance that is created when none are manually registered only manages a single cache<br />
+manager by default, but sometimes you may want one <code>ManagementRegistry</code> to manage multiple cache managers.</p>
+</div>
+<div class="paragraph">
+<p><code>ManagementRegistry</code> instances are thread-safe, so one instance can be shared amongst multiple cache managers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
+    .buildConfig(Long.class, String.class);
+
+ManagementRegistry managementRegistry = new DefaultManagementRegistry(); <i class="conum" data-value="1"></i><b>(1)</b>
+CacheManager cacheManager1 = CacheManagerBuilder.newCacheManagerBuilder()
+    .withCache("aCache", cacheConfiguration)
+    .using(managementRegistry) <i class="conum" data-value="2"></i><b>(2)</b>
+    .build(true);
+
+CacheManager cacheManager2 = CacheManagerBuilder.newCacheManagerBuilder()
+    .withCache("aCache", cacheConfiguration)
+    .using(managementRegistry) <i class="conum" data-value="3"></i><b>(3)</b>
+    .build(true);
+
+cacheManager2.close();
+cacheManager1.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create an instance of <code>org.ehcache.management.registry.DefaultManagementRegistry</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Pass it as a service to the first cache manager</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Pass it as a service to the second cache manager</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This way, all managed objects get registered into a common <code>ManagementRegistry</code> instance.</p>
+</div>
+</div>
+</div>
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

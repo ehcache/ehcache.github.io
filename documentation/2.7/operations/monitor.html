@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/operations/monitor.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="ehcache-monitor">Ehcache Monitor</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#ehcache-monitor">
+                        <span class="toctext">Ehcache Monitor</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#installation-and-configuration-">
+                              <span class="toctext">Installation And Configuration </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#recommended-deployment-topology-">
+                              <span class="toctext">Recommended Deployment Topology </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#starting-the-monitor-">
+                              <span class="toctext">Starting the Monitor </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#securing-the-monitor-">
+                              <span class="toctext">Securing the Monitor </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#using-the-web-gui-">
+                              <span class="toctext">Using the Web GUI </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#using-the-api-">
+                              <span class="toctext">Using the API </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-9">
+                           <a href="#licensing-">
+                              <span class="toctext">Licensing </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-10">
+                           <a href="#limitations">
+                              <span class="toctext">Limitations</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<p><strong>NOTE:</strong> The <a href="http://terracotta.org/documentation/2.7/tms">Terracotta Management Console</a> is now available for standalone enterprise Ehcache and replaces Ehcache Monitor for monitoring, management, and administration. For download instructions, contact pm@terracotta.org.</p>
+
+<h2 id="introduction">Introduction</h2>
+<p>The Ehcache Monitor is an add-on tool for Ehcache provides enterprise-class monitoring and management capabilities for use in both development and production. It is intended to help understand and tune cache usage, detect errors, and provide an easy to use access point to integrate with production management systems. It also provides administrative functionality such as the ability to forcefully remove items from caches.</p>
+
+<p>To install the Monitor, add the Monitor Probe JAR to your app and a few lines of config in ehcache.xml.
+The package contains a probe and a server. The probe installs with your existing Ehcache cache instance, and communicates
+to a central server. The server aggregates data from multiple probes. It can be accessed via a simple web UI, as well as
+a scriptable API. In this way, it is easy to integrate with common third party systems management tools
+(such as Hyperic, Nagios etc). The probe is designed to be compatible with all versions of Ehcache from 1.5 and
+requires JDK 1.6.</p>
+
+<h2 id="installation-and-configuration-">Installation And Configuration <a name="Installation-And-Configuration" id="Installation-And-Configuration"></a></h2>
+<p>First <a href="http://ehcache.org/downloads/monitor">download</a> and extract the Ehcache Monitor package. The package consists of a lib directory with the probe and monitor server jars, a bin directory with startup and shutdown scripts for the monitor server and an <code>etc</code> directory with an example monitor server configuration file and a Jetty Server configuration file.</p>
+
+<h2 id="recommended-deployment-topology-">Recommended Deployment Topology <a name="Recommended-Deployment-Topology" id="Recommended-Deployment-Topology"></a></h2>
+
+<p>
+   <img src="/images/documentation/monitor.png" alt="Ehcache Image" />
+</p>
+
+<p>It is recommended that you install the Monitor on an Operations server separate to production. The Monitor acts as an aggregation point
+for access by end users and for scripted connection from Operations tools for data feeds and set up of alerts.</p>
+
+<h3 id="probe">Probe</h3>
+<p>To include the probe in your Ehcache application, you need to perform two steps:</p>
+
+<ol>
+  <li>
+    <p>Add the ehcache-probe-<version>.jar to your application classpath (or war file). Do this in the same way you added the core ehcache jar to your application. If you are Maven based, the probe module is in the Terracotta public repository for easy integration.</version></p>
+
+    <pre><code> &lt;repository&gt;
+   &lt;id&gt;terracotta-releases&lt;/id&gt;
+   &lt;url&gt;http://www.terracotta.org/download/reflector/releases&lt;/url&gt;
+ &lt;/repository&gt;
+ &lt;dependency&gt;
+   &lt;groupId&gt;org.terracotta&lt;/groupId&gt;
+   &lt;artifactId&gt;ehcache-probe&lt;/artifactId&gt;
+   &lt;version&gt;[version]&lt;/version&gt;
+ &lt;/dependency&gt;
+</code></pre>
+  </li>
+  <li>
+    <p>Configure Ehcache to communicate with the probe by specifying the class name of the probe, the address (or hostname), the port that the monitor will be running on and whether to do memory measurement. This is done by adding the following to ehcache.xml:</p>
+
+    <pre><code> &lt;cacheManagerPeerListenerFactory
+ class="org.terracotta.ehcachedx.monitor.probe.ProbePeerListenerFactory"
+ properties="monitorAddress=localhost, monitorPort=9889, memoryMeasurement=true" /&gt;
+</code></pre>
+  </li>
+  <li>
+    <p>Include required SLF4J logging jars.</p>
+
+    <p>Ehcache 1.7.1 and above require SLF4J. Earlier versions used commons logging. The probe, like all new Ehcache modules, uses SLF4J, which is becoming a new standard in open source projects.</p>
+
+    <p>If you are using Ehcache 1.5 to 1.7.0, you will need to add slf4j-api and one concrete logger.
+ If you are using Ehcache 1.7.1 and above you should not need to do anything because you will already be using slf4j-api and one concrete logger.</p>
+
+    <p>More information on SLF4J is available from http://www.slf4j.org.</p>
+  </li>
+  <li>
+    <p>Ensure that statistics capture in each cache is turned on for the probe to gather statistics.
+Statistics were turned off by default from Ehcache 2.1 onwards.</p>
+
+    <pre><code> &lt;cache name="sampleCache2"
+   maxEntriesLocalHeap="1000"
+   eternal="true"
+   overflowToDisk="false"
+   memoryStoreEvictionPolicy="FIFO"
+   statistics="true"
+   /&gt;
+</code></pre>
+  </li>
+</ol>
+
+<h2 id="starting-the-monitor-">Starting the Monitor <a name="Monitor" id="Monitor"></a></h2>
+<p>Copy the monitor package to a monitoring server.</p>
+
+<p>To start the monitor, run the startup script provided in the bin directory: startup.sh on Unix and startup.bat on Microsoft Windows.</p>
+
+<p><em>NOTE:</em> If errors occur at startup, remove the line <code>-j "$PRGDIR/etc/jetty.xml" \</code> (or <code>-j %PRGDIR%\etc\jetty.xml ^</code>) from the startup script.</p>
+
+<p>The monitor port selected in this script should match the port specified in ehcache.xml. The monitor can be configured, including interface, port and simple security settings, in <code>etc/ehcache-monitor.conf</code>. Note that for the commercial version, the location of your license file must be specified in <code>ehcache-monitor.conf</code>.</p>
+
+<p>For example:</p>
+
+<pre>
+   <code>license_file=/Users/karthik/Documents/workspace/lib/license/terracotta-license.key
+</code>
+</pre>
+
+<p>The monitor connection timeout can also be configured. If the monitor is frequently timing out while attempting to connect to a node (due to long GC cycles, for example), then the default timeout value may not be suitable for your environment. You can set the monitor timeout using the system property <code>ehcachedx.connection.timeout.seconds</code>. For example, <code>-Dehcachedx.connection.timeout.seconds=60</code> sets the timeout to 60 seconds.</p>
+
+<h2 id="securing-the-monitor-">Securing the Monitor <a name="Securing-the-Monitor" id="Securing-the-Monitor"></a></h2>
+<p>The Monitor can be secured in a variety of ways. The simplest method involves simply editing <code>ehcache-monitor.conf</code> to specify a single user name and password. This method has the obvious drawbacks that (1) it provides only a single login identity, and (2)
+the credentials are stored in clear-text.</p>
+
+<p>A more comprehensive security solution can be achieved by configuring the Jetty Server with one ore more <code>UserRealm</code>s as described by <a href="http://docs.codehaus.org/display/JETTY/JAAS">Jetty and JAAS</a>. Simply edit <code>etc/jetty.xml</code> to use the appropriate <code>UserRealm</code> implementation for your needs. To configure the Monitor to authenticate against an existing LDAP server, first ensure that you have
+defined and properly registered a <code>LoginConfig</code>, such as the following example:</p>
+
+<pre>
+   <code>MyExistingLDAPLoginConfig {
+  com.sun.security.auth.module.LdapLoginModule REQUIRED
+  java.naming.security.authentication="simple"
+  userProvider="ldap://ldap-host:389"
+  authIdentity="uid={USERNAME},ou=People,dc=myorg,dc=org"
+  useSSL=false
+  bindDn="cn=Manager"
+  bindCredential="secretBindCredential"
+  bindAuthenticationType="simple"
+  debug=true;
+};
+</code>
+</pre>
+
+<p>Note: the <code>LdapLoginModule</code> is new with JDK 1.6.</p>
+
+<p>JAAS supports many different types of login modules and it is up to the user to provide a valid, working JAAS environment. For information on how to register your LoginConfig refer to <code>$JAVA_HOME/jre/lib/security/java.security</code>.</p>
+
+<p>Next, edit <code>etc/jetty.xml</code>:</p>
+
+<pre>
+   <code>&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN"
+ "http://jetty.mortbay.org/configure.dtd"&gt;
+&lt;Configure id="Server" class="org.terracotta.ehcachedx.org.mortbay.jetty.Server"&gt;
+  &lt;Set name="UserRealms"&gt;
+    &lt;Array type="org.terracotta.ehcachedx.org.mortbay.jetty.security.UserRealm"&gt;
+      &lt;Item&gt;
+        &lt;New class="org.terracotta.ehcachedx.org.mortbay.jetty.plus.jaas.JAASUserRealm"&gt;
+          &lt;Set name="Name"&gt;MyArbitraryLDAPRealmName&lt;/Set&gt;
+          &lt;Set name="LoginModuleName"&gt;MyExistingLDAPLoginConfig&lt;/Set&gt;
+        &lt;/New&gt;
+      &lt;/Item&gt;
+    &lt;/Array&gt;
+  &lt;/Set&gt;
+&lt;/Configure&gt;
+</code>
+</pre>
+
+<p>The <code>LoginModuleName</code> you specify as the second constructor parameter to the <code>JAASUserRealm</code> class must exactly match the name of your <code>LoginModule</code>. The realm name specified as the first constructor parameter can be an arbitrary value.</p>
+
+<p>Note: the version of Jetty used in the Monitor has been repackaged so be sure to prefix any standard Jetty class names with <code>org.terracotta.ehcachedx</code>.</p>
+
+<p>If the Jetty Server is found to have been configured with any security realms, the simple user name and password from <code>ehcache-monitor.conf</code> is ignored.</p>
+
+<h2 id="using-the-web-gui-">Using the Web GUI <a name="Using-the-Web-GUI" id="Using-the-Web-GUI"></a></h2>
+<p>The web-based GUI is available by pointing your browser at http://<monitor-host-name>:<monitor-port>/monitor. For a default installation on the local machine, this would be http://localhost:9889/monitor
+The GUI contains six tabs, described as follows:</monitor-port></monitor-host-name></p>
+
+<h3 id="cache-managers">Cache Managers</h3>
+<p>This tab shows aggregate statistics for the cache managers being monitored by probes connected to the monitor server. Double-clicking on any cache manager drills down to the detailed Statistics tab for that manager.</p>
+
+<h3 id="statistics">Statistics</h3>
+<p>This tab shows the statistics being gathered for each cache managed by the selected cache manager.
+The Settings button permits you to add additional statistics fields to the display. Note: only displayed fields are collected and aggregated by the probe.
+Adding additional display fields will increase the processing required for probe and the monitor. The selected settings are stored in a preferences cookie in your browser.
+Double-clicking on any cache drills down to the Contents tab for that cache.</p>
+
+<h3 id="configuration">Configuration</h3>
+<p>This tab shows the key configuration information for each cache managed by the selected cache manager.</p>
+
+<h3 id="contents">Contents</h3>
+<p>This tab enables you to look inside the cache, search for elements via their keys and remove individual or groups of elements from the cache.
+The GUI is set to refresh at the same frequency that the probes aggregate their statistic samples which is every 10 seconds by default. The progress bar at the bottom of the screen indicates the time until the next refresh.</p>
+
+<h3 id="charts">Charts</h3>
+<p>This tab contains various live charts of cache statistics. It gives you a feel for the trending of the each statistic, rather than
+just the latest value.</p>
+
+<h4 id="estimated-memory-use-chart">Estimated Memory Use Chart</h4>
+<p>This chart shows the estimated memory use of the Cache.
+Memory is estimated by sampling. The first 15 puts or updates are measured and then every 100th put or update. Most caches
+contain objects of similar size. If this is not the case for your cache, then the estimate will not be accurate.
+Measurements are performed by walking the object graph of sampled elements through reflection. In some cases such as classes
+not visible to the classloader, the measurement fails and 0 is recorded for cache size. If you see a chart with 0 memory
+size values but the cache has data in it, then this is the cause. For this release, caches distributed via Terracotta
+server show as 0.</p>
+
+<h3 id="api">API</h3>
+<p>This tab contains a listing of the API methods. Each is a hyperlink, which may be clicked on. Some will display data and some will require
+additional arguments. If additional arguments are required an error message will be displayed with the details. This tab is meant for
+iterative testing of the API.</p>
+
+<h2 id="using-the-api-">Using the API <a name="Using-the-API" id="Using-the-API"></a></h2>
+<p>The Monitor provides a API over HTTP on the same port as the Web GUI.
+The list of functions supported by the API can be accessed by pointing your browser at 
+http://<monitor-host-name>:<monitor-port>/monitor/list. For a default installation on the local machine, this would be
+http://localhost:9889/monitor/list. The API returns data as either structured XML or plan text. The default format is txt. For example, the getVersion function returns the software version of the monitor server. It can be called as follows:
+http://localhost:9889/monitor/getVersion
+or, to receive the results as XML:
+http://localhost:9889/monitor/getVersion?format=xml</monitor-port></monitor-host-name></p>
+
+<p>To query the data collected by the monitor server from scripts that can then be used to pass the data to enterprise system management
+frameworks, commands such as <code>curl</code> or <code>wget</code> can be used.
+For example, on a Linux system, to query the list of probes that a local monitor on the default port is currently aware of, and return
+the data in XML format, the following command could be used:</p>
+
+<pre>
+   <code>$ curl http://localhost:9889/monitor/listProbes?format=xml
+</code>
+</pre>
+
+<h2 id="licensing-">Licensing <a name="Licensing" id="Licensing"></a></h2>
+<p>Unless otherwise indicated, this module is licensed for usage in development.
+For details see the license terms in the appropriate LICENSE.txt. To obtain a commercial license for use in production,
+please contact sales@terracottatech.com</p>
+
+<h2 id="limitations">Limitations</h2>
+
+<h3 id="history-not-implemented">History not Implemented</h3>
+<p>This release has server side history configuration in place, however history is not implemented. It is anticipated
+it will be implemented in the next release. In the meantime, the charts with their recent history provide trending.</p>
+
+<h3 id="memory-measurement-limitations">Memory Measurement limitations</h3>
+<p>Unfortunately in Java, there is no JSR for memory measurement of objects. Implementations, such as the sizeof one we use
+are subject to fragilities.
+For example, Java 7 memory measurement is not supported at this time. You will get a <code>java.lang.NoSuchFieldException: header</code>
+exception message if you use memory measurement with Java 7.
+Memory measurement can optionally be turned off by setting <code>memoryMeasurement=false</code> in the probe configuration.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

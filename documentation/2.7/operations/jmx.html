@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/operations/jmx.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="management-and-monitoring-using-jmx-">Management and Monitoring using JMX <a name="JMX-Management-and-Monitoring" id="JMX-Management-and-Monitoring"></a></h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#management-and-monitoring-using-jmx-">
+                        <span class="toctext">Management and Monitoring using JMX </span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#terracotta-monitoring-products">
+                              <span class="toctext">Terracotta Monitoring Products</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#jmx-overview-">
+                              <span class="toctext">JMX Overview </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#mbeans-">
+                              <span class="toctext">MBeans </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#jmx-remoting-">
+                              <span class="toctext">JMX Remoting </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#objectname-naming-scheme">
+                              <span class="toctext">ObjectName naming scheme</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#the-management-service-">
+                              <span class="toctext">The Management Service </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-9">
+                           <a href="#jconsole-example-">
+                              <span class="toctext">JConsole Example </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-10">
+                           <a href="#hibernate-statistics-">
+                              <span class="toctext">Hibernate statistics </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-11">
+                           <a href="#jmx-tutorial-">
+                              <span class="toctext">JMX Tutorial </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-12">
+                           <a href="#performance">
+                              <span class="toctext">Performance</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+<p>As an alternative to the Ehcache Monitor, JMX creates a standard way of instrumenting classes and making them available to a management and monitoring infrastructure.</p>
+
+<h2 id="terracotta-monitoring-products">Terracotta Monitoring Products</h2>
+<p>An extensive monitoring product, available in Enterprise Ehcache, provides a monitoring
+server with probes supporting Ehcache-1.2.3 and higher for standalone and clustered
+Ehcache. It comes with a web console and a RESTful API for operations integration.
+See the <a href="/documentation/2.7/operations/monitor">ehcache-monitor documentation</a> for more information. 
+When using Ehcache 1.7 with Terracotta clustering, the Terracotta Developer Console
+shows statistics for Ehcache.</p>
+
+<h2 id="jmx-overview-">JMX Overview <a name="jmx" id="jmx"></a></h2>
+<p>JMX creates a standard way of instrumenting classes and making them
+available to a management and monitoring infrastructure.
+The <code>net.sf.ehcache.management</code> package contains MBeans and a <code>ManagementService</code> for JMX management of ehcache. It
+is in a separate package so that JMX libraries are only required if you wish to use it - there is no leakage of JMX dependencies
+into the core Ehcache package.</p>
+
+<p>Use <code>net.sf.ehcache.management.ManagementService.registerMBeans(...)</code> static method
+to register a selection of MBeans to the MBeanServer provided to the method.
+If you wish to monitor Ehcache but not use JMX, just use the existing public methods on <code>Cache</code> and <code>CacheStatistics</code>.</p>
+
+<p>The Management package is illustrated in the follwing image.</p>
+
+<p>
+   <img src="/images/documentation/management_package.png" alt="Ehcache Image" />
+</p>
+
+<h2 id="mbeans-">MBeans <a name="MBeans" id="MBeans"></a></h2>
+<p>Ehcache uses Standard MBeans. MBeans are available for the following:</p>
+
+<ul>
+  <li>CacheManager</li>
+  <li>Cache</li>
+  <li>CacheConfiguration</li>
+  <li>CacheStatistics</li>
+</ul>
+
+<p>All MBean attributes are available to a local MBeanServer. The CacheManager MBean allows
+traversal to its collection of Cache MBeans. Each Cache MBean likewise allows traversal to
+its CacheConfiguration MBean and its CacheStatistics MBean.</p>
+
+<h2 id="jmx-remoting-">JMX Remoting <a name="JMXr-Remoting" id="JMXr-Remoting"></a></h2>
+<p>The Remote API allows connection from a remote JMX Agent to an MBeanServer via an <a id="MBeanServerConnection"></a><code>MBeanServerConnection</code>.
+Only <code>Serializable</code> attributes are available remotely. The following Ehcache MBean attributes are available remotely:</p>
+
+<ul>
+  <li>limited CacheManager attributes</li>
+  <li>limited Cache attributes</li>
+  <li>all CacheConfiguration attributes</li>
+  <li>all CacheStatistics attributes</li>
+</ul>
+
+<p>Most attributes use built-in types. To access all attributes, you need to add ehcache.jar to the remote JMX client’s
+classpath e.g. <code>jconsole -J-Djava.class.path=ehcache.jar</code>.</p>
+
+<h2 id="objectname-naming-scheme"><code>ObjectName</code> naming scheme</h2>
+<ul>
+  <li>CacheManager - “net.sf.ehcache:type=CacheManager,name=&lt;CacheManager&gt;”</li>
+  <li>Cache - “net.sf.ehcache:type=Cache,CacheManager=&lt;cacheManagerName&gt;,name=&lt;cacheName&gt;”</li>
+  <li>CacheConfiguration</li>
+  <li>“net.sf.ehcache:type=CacheConfiguration,CacheManager=&lt;cacheManagerName&gt;,name=&lt;cacheName&gt;”</li>
+  <li>CacheStatistics - “net.sf.ehcache:type=CacheStatistics,CacheManager=&lt;cacheManagerName&gt;,name=&lt;cacheName&gt;”</li>
+</ul>
+
+<h2 id="the-management-service-">The Management Service <a name="Management-Service" id="Management-Service"></a></h2>
+<p>The <code>ManagementService</code> class is the API entry point.
+<img src="/images/documentation/ManagementService.png" alt="Ehcache Image" /> 
+There is only one method, <code>ManagementService.registerMBeans</code> which is used to initiate JMX registration
+of an Ehcache CacheManager’s instrumented MBeans.
+The <code>ManagementService</code> is a <code>CacheManagerEventListener</code> and
+is therefore notified of any new Caches added or disposed and updates the MBeanServer appropriately.
+Once initiated the MBeans remain registered in the MBeanServer until the CacheManager shuts down, at which time
+the MBeans are deregistered. This behaviour ensures correct behaviour in application servers where applications are
+deployed and undeployed.</p>
+
+<pre>
+   <code>
+/**
+* This method causes the selected monitoring options to be be registered
+* with the provided MBeanServer for caches in the given CacheManager.
+* 
+* While registering the CacheManager enables traversal to all of the other
+*  items,
+* this requires programmatic traversal. The other options allow entry points closer
+* to an item of interest and are more accessible from JMX management tools like JConsole.
+* Moreover CacheManager and Cache are not serializable, so remote monitoring is not
+* possible * for CacheManager or Cache, while CacheStatistics and CacheConfiguration are.
+* Finally * CacheManager and Cache enable management operations to be performed.
+* 
+* Once monitoring is enabled caches will automatically added and removed from the
+* MBeanServer * as they are added and disposed of from the CacheManager. When the
+* CacheManager itself * shutsdown all registered MBeans will be unregistered.
+*
+* @param cacheManager the CacheManager to listen to
+* @param mBeanServer the MBeanServer to register MBeans to
+* @param registerCacheManager Whether to register the CacheManager MBean
+* @param registerCaches Whether to register the Cache MBeans
+* @param registerCacheConfigurations Whether to register the CacheConfiguration MBeans
+* @param registerCacheStatistics Whether to register the CacheStatistics MBeans
+*/
+public static void registerMBeans(
+   net.sf.ehcache.CacheManager cacheManager,
+   MBeanServer mBeanServer,
+   boolean registerCacheManager,
+   boolean registerCaches,
+   boolean registerCacheConfigurations,
+   boolean registerCacheStatistics) throws CacheException {
+</code>
+</pre>
+
+<h2 id="jconsole-example-">JConsole Example <a name="JConsole-Example" id="JConsole-Example"></a></h2>
+<p>This example shows how to register CacheStatistics in the JDK platform MBeanServer, which
+works with the JConsole management agent.</p>
+
+<pre>
+   <code>
+CacheManager manager = new CacheManager();
+MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+ManagementService.registerMBeans(manager, mBeanServer, false, false, false, true);
+</code>
+</pre>
+
+<p>CacheStatistics MBeans are then registered.
+<img src="/images/documentation/JConsoleExample.png" alt="Ehcache Image" /> CacheStatistics MBeans in JConsole</p>
+
+<h2 id="hibernate-statistics-">Hibernate statistics <a name="Hibernate-statistics" id="Hibernate-statistics"></a></h2>
+<p>If you are running Terracotta clustered caches as hibernate second-level cache provider, it is possible to access 
+the hibernate statistics + ehcache stats etc via jmx.
+<code>EhcacheHibernateMBean</code> is the main interface that exposes all the API’s via jmx. It basically extends
+two interfaces – <code>EhcacheStats</code> and <code>HibernateStats</code>. And as the name implies <code>EhcacheStats</code> contains
+methods related with Ehcache and <code>HibernateStats</code> related with Hibernate.
+You can see cache hit/miss/put rates, change config element values dynamically – like maxElementInMemory, TTI, TTL,
+enable/disable statistics collection etc and various other things. Please look into the specific interface for more
+details.</p>
+
+<h2 id="jmx-tutorial-">JMX Tutorial <a name="JMX-Tutorial" id="JMX-Tutorial"></a></h2>
+<p>See this <a href="http://weblogs.java.net/blog/maxpoon/archive/2007/06/extending_the_n_2.html">online tutorial</a>.</p>
+
+<h2 id="performance">Performance</h2>
+<p>Collection of cache statistics is not entirely free of overhead.  In production systems where monitoring
+is not required statistics can be disabled.  This can be done either programatically by calling
+<code>setStatisticsEnabled(false)</code> on the cache instance, or in configuration by setting the <code>statistics="false"</code>
+attribute of the relevant cache configuration element.
+From Ehcache 2.1.0 statistics are off by default.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

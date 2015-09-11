@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/apis/write-through-caching.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="write-through-and-write-behind-caching-with-the-cachewriter-">Write-through and Write-behind Caching with the CacheWriter <a name="Write-through-and-Write-behind-Caching-with-the-CacheWriter" id="Write-through-and-Write-behind-Caching-with-the-CacheWriter"></a></h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#write-through-and-write-behind-caching-with-the-cachewriter-">
+                        <span class="toctext">Write-through and Write-behind Caching with the CacheWriter </span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#potential-benefits-of-write-behind">
+                              <span class="toctext">Potential Benefits of Write-Behind</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#limitations-&amp;-constraints-of-write-behind">
+                              <span class="toctext">Limitations &amp; Constraints of Write-Behind</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#using-a-combined-read-through-and-write-behind-cache">
+                              <span class="toctext">Using a combined Read-Through and Write-Behind Cache</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#introductory-video">
+                              <span class="toctext">Introductory Video</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#sample-application">
+                              <span class="toctext">Sample Application</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#ehcache-versions">
+                              <span class="toctext">Ehcache Versions</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-9">
+                           <a href="#configuration">
+                              <span class="toctext">Configuration</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-10">
+                           <a href="#api">
+                              <span class="toctext">API</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-11">
+                           <a href="#spi">
+                              <span class="toctext">SPI</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-12">
+                           <a href="#faq">
+                              <span class="toctext">FAQ</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+<p>Write-through caching is a caching pattern where writes to the cache cause writes to an underlying resource. The cache acts as a facade
+to the underlying resource. With this pattern, it often makes sense to read through the cache too.
+Write-behind caching uses the same client API; however, the write happens asynchronously.
+Ehcache-2.0 introduced write-through and write-behind caching.
+While file systems or a web-service clients can underlie the facade of a write-through cache, the most common underlying resource is a database.
+To simplify the discussion, we will use the database as the example resource.</p>
+
+<h2 id="potential-benefits-of-write-behind">Potential Benefits of Write-Behind</h2>
+<p>The major benefit of write-behind is database offload. This can be achieved in a number of ways:</p>
+
+<ul>
+  <li>time shifting - moving writes to a specific time or time interval. For example, writes could be batched up and written overnight, or at 5 minutes past the hour, to avoid periods of peak contention.</li>
+  <li>rate limiting - spreading writes out to flatten peaks. Say a Point of Sale network has an end-of-day procedure where data gets written up to a central server. All POS nodes in the same time zone will write all at once. A very large peak will occur. Using rate
+limiting, writes could be limited to 100 TPS, and the queue of writes are whittled down over several hours</li>
+  <li>conflation - consolidate writes to create fewer transactions. For example, a value in a database row is updated by 5 writes, incrementing it from 10 to 20 to 31 to 40 to 45. Using conflation, the 5 transactions are replaced by one to update the value from 10 to 45.</li>
+</ul>
+
+<p>These benefits must be weighed against the limitations and constraints imposed.</p>
+
+<h2 id="limitations-&amp;-constraints-of-write-behind">Limitations &amp; Constraints of Write-Behind</h2>
+
+<h3 id="transaction-boundaries">Transaction Boundaries</h3>
+<p>If the cache participates in a JTA transaction (ehcache-2.0 and higher), which means it is an XAResource, then the cache can be made consistent with the
+  database. A write to the database, and a commit or rollback, happens with the transaction boundary.
+In write-behind, the write to the resource happens after the write to the cache. The transaction boundary is the write to the outstanding queue, not
+the write behind. In write-through mode, commit can get called and both the cache and the underlying resource can get
+committed at once.
+Because the database is being written to outside of the transaction, there is always a risk that a failure on the eventual write
+will occur. While this can be mitigated with retry counts and delays, compensating actions may be required.</p>
+
+<h3 id="time-delay">Time delay</h3>
+<p>The obvious implication of asynchronous writes is that there is a delay between when the cache is updated and when the database
+is updated. This introduces an inconsistency between the cache and the database, where the cache holds the correct value and the
+database will be eventually consistent with the cache. The data passed into the CacheWriter methods is a snapshot of the cache
+entry at the time of the write to operation.
+A read against the database will result in incorrect data being loaded.</p>
+
+<h3 id="applications-tolerant-of-inconsistency">Applications Tolerant of Inconsistency</h3>
+<p>The application must be tolerant of inconsistent data. The following examples illustrate this requirement:</p>
+
+<ul>
+  <li>The database is logging transactions and only appends are done.</li>
+  <li>Reading is done by a part of the application that does not write, so there is no way that data can be corrupted. The application is tolerant of delays. For example, a news application where the reader displays the articles that are written.</li>
+</ul>
+
+<p>Note if other applications are writing to the database, then a cache can often be inconsistent with the database.</p>
+
+<h3 id="node-time-synchronisation">Node time synchronisation</h3>
+<p>Ideally node times should be synchronised. The write-behind queue is generally written to the underlying resource in timestamp order, based
+on the timestamp of the cache operation, although there is no guaranteed ordering.
+The ordering will be more consistent if all nodes are using the same time. This can easily be achieved by configuring
+your system clock to synchronise with a time authority using Network Time Protocol.</p>
+
+<h3 id="no-ordering-guarantees">No ordering guarantees</h3>
+<p>The items on the write-behind queue are generally in order, but this isn’t guaranteed. In certain situations and more particularly in
+clustered usage, the items can be processed out of order. Additionally, when batching is used, write and delete collections are
+aggregated separately and can be processed inside the CacheWriter in a different order than the order that was used by the queue.
+Your application must be tolerant of item reordering or you need to compensate for this in your implementation of the
+CacheWriter. Possible examples are:</p>
+
+<ul>
+  <li>
+    <p>Working with versioning in the cache elements.</p>
+
+    <p>You may have to explicitly version elements. Auto-versioning is off by default and is effective only for unclustered MemoryStore caches. Distributed caches or caches that use off-heap or disk stores cannot use auto-versioning. To enable auto-versioning, set the system property <code>net.sf.ehcache.element.version.auto</code> (it is false by default). Note that if this property is turned on for one of the ineligible caches, auto-versioning will silently fail.</p>
+  </li>
+  <li>
+    <p>Verifications with the underlying resource to check if the scheduled write-behind operation is still relevant.</p>
+  </li>
+</ul>
+
+<h2 id="using-a-combined-read-through-and-write-behind-cache">Using a combined Read-Through and Write-Behind Cache</h2>
+<p>For applications that are not tolerant of inconsistency, the simplest solution is for the application to always read through
+the same cache that it writes through. Provided all database writes are through the cache, consistency is guaranteed. And in the
+distributed caching scenario, using Terracotta clustering extends the same guarantee to the cluster.
+If using transactions, the cache is the XAResource, and a commit is a commit to the cache.
+The cache effectively becomes the System Of Record (“SOR”). Terracotta clustering provides
+HA and durability and can easily act as the SOR. The database then becomes a backup to the SOR.
+The following aspects of read-through with write-behind should be considered:</p>
+
+<h3 id="lazy-loading">Lazy Loading</h3>
+<p>The entire data set does not need to be loaded into the cache on startup. A read-through cache
+uses a <code>CacheLoader</code> that loads data into the cache on demand. In this way the cache can be populated lazily.</p>
+
+<h3 id="caching-of-a-partial-dataset">Caching of a Partial Dataset</h3>
+<p>If the entire dataset cannot fit in the cache, then some reads will miss the cache and fall through to the <code>CacheLoader</code> which will
+  in turn hit the database. If a write has occurred but has not yet hit the database due to write-behind, then the database will be inconsistent.
+The simplest solution is to ensure that the entire dataset is in the cache. This then places some implications on cache configuration
+  in the areas of expiry and eviction.</p>
+
+<h4 id="eviction">Eviction</h4>
+<p>Eviction or flushing of elements, occurs when the maximum elements for the cache have been exceeded. Be sure to size the cache appropriately to avoid eviction or flushing. See <a href="/documentation/2.7/configuration/cache-size">How to Size Caches</a> for more information.</p>
+
+<h4 id="expiry">Expiry</h4>
+<p>Even if all of the dataset can fit in the cache, it could be evicted if Elements expire. Accordingly, both <code>timeToLive</code> and
+  <code>timeToIdle</code> should be set to eternal (“0”) to prevent this from happening.</p>
+
+<h2 id="introductory-video">Introductory Video</h2>
+<p>Alex Snaps the primary author of Write Behind presents an <a href="http://vimeo.com/21193026">introductory video</a> on Write Behind.</p>
+
+<h2 id="sample-application">Sample Application</h2>
+<p>We have created a sample web application for a raffle which fully demonstrates how to use write behind.
+You can also <a href="https://github.com/alexsnaps/Ehcache-Raffle">checkout</a> the Ehcache Raffle application, that demonstrates Cache Writers
+  and Cache Loaders from github.com.</p>
+
+<h2 id="ehcache-versions">Ehcache Versions</h2>
+<p>Both Ehcache standalone (DX) and with Terracotta Server Array (Ehcache EX and FX) are supported.</p>
+
+<h3 id="ehcache-dx-standalone-ehcache">Ehcache DX (Standalone Ehcache)</h3>
+<p>The write-behind queue is stored locally in memory. It supports all configuration options, but any data in the queue
+will be lost on JVM shutdown.</p>
+
+<h3 id="ehcache-ex-and-fx">Ehcache EX and FX</h3>
+
+<h4 id="durable-ha-write-behind-queue">Durable HA write-behind Queue</h4>
+<p>EX and FX when used with the Terracotta Server Array will store the queue on the Terracotta Server Array and can thus be configured
+for durability and HA. The data is still kept in the originating node for performance.</p>
+
+<h2 id="configuration">Configuration</h2>
+<p>There are many configuration options. See the <code>CacheWriterConfiguration</code> for properties that may be set and their effect.
+Below is an example of how to configure the cache writer in XML:</p>
+
+<pre>
+   <code>&lt;cache name="writeThroughCache1" ... &gt;
+&lt;cacheWriter writeMode="write_behind" maxWriteDelay="8" rateLimitPerSecond="5"
+        writeCoalescing="true" writeBatching="true" writeBatchSize="20"
+        retryAttempts="2" retryAttemptDelaySeconds="2"&gt;
+   &lt;cacheWriterFactory class="com.company.MyCacheWriterFactory"
+                   properties="just.some.property=test; another.property=test2" propertySeparator=";"/&gt;
+&lt;/cacheWriter&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<p>Further examples:</p>
+
+<pre>
+   <code>&lt;cache name="writeThroughCache2" ... &gt;
+ &lt;cacheWriter/&gt;
+&lt;/cache&gt;
+&lt;cache name="writeThroughCache3" ... &gt;
+ &lt;cacheWriter writeMode="write_through" notifyListenersOnException="true" maxWriteDelay="30"
+      rateLimitPerSecond="10" writeCoalescing="true" writeBatching="true" writeBatchSize="8"
+      retryAttempts="20" retryAttemptDelaySeconds="60"/&gt;
+&lt;/cache&gt;
+&lt;cache name="writeThroughCache4" ... &gt;
+ &lt;cacheWriter writeMode="write_through" notifyListenersOnException="false" maxWriteDelay="0"
+      rateLimitPerSecond="0" writeCoalescing="false" writeBatching="false" writeBatchSize="1"
+      retryAttempts="0" retryAttemptDelaySeconds="0"&gt;
+ &lt;cacheWriterFactory class="net.sf.ehcache.writer.WriteThroughTestCacheWriterFactory"/&gt;
+ &lt;/cacheWriter&gt;
+&lt;/cache&gt;
+&lt;cache name="writeBehindCache5" ... &gt;
+ &lt;cacheWriter writeMode="write-behind" notifyListenersOnException="true" maxWriteDelay="8" rateLimitPerSecond="5"
+      writeCoalescing="true" writeBatching="false" writeBatchSize="20"
+      retryAttempts="2" retryAttemptDelaySeconds="2"&gt;
+ &lt;cacheWriterFactory class="net.sf.ehcache.writer.WriteThroughTestCacheWriterFactory"
+                 properties="just.some.property=test; another.property=test2" propertySeparator=";"/&gt;
+ &lt;/cacheWriter&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<p>This configuration can also be achieved through the <code>Cache</code> constructor in Java:</p>
+
+<pre>
+   <code>Cache cache = new Cache(
+new CacheConfiguration("cacheName", 10)
+.cacheWriter(new CacheWriterConfiguration()
+.writeMode(CacheWriterConfiguration.WriteMode.WRITE_BEHIND)
+.maxWriteDelay(8)
+.rateLimitPerSecond(5)
+.writeCoalescing(true)
+.writeBatching(true)
+.writeBatchSize(20)
+.retryAttempts(2)
+.retryAttemptDelaySeconds(2)
+.cacheWriterFactory(new CacheWriterConfiguration.CacheWriterFactoryConfiguration()
+   .className("com.company.MyCacheWriterFactory")
+   .properties("just.some.property=test; another.property=test2")
+   .propertySeparator(";"))));
+</code>
+</pre>
+
+<p>Instead of relying on a <code>CacheWriterFactoryConfiguration</code> to create a <code>CacheWriter</code>, it’s also possible to explicitly
+register a <code>CacheWriter</code> instance from within Java code. This allows you to refer to local resources like database
+connections or file handles.</p>
+
+<pre>
+   <code>Cache cache = manager.getCache("cacheName");
+MyCacheWriter writer = new MyCacheWriter(jdbcConnection);
+cache.registerCacheWriter(writer);
+</code>
+</pre>
+
+<h3 id="configuration-attributes">Configuration Attributes</h3>
+<p>The CacheWriterFactory supports the following attributes:</p>
+
+<h4 id="all-modes">All modes</h4>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>write-mode [write-through</td>
+          <td>write-behind] - Whether to run in write-behind or write-through mode. The default is write-through.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<h4 id="write-through-mode-only">write-through mode only</h4>
+
+<ul>
+  <li>notifyListenersOnException - Whether to notify listeners when an exception occurs on a store operation. Defaults to false. If using cache replication, set this attribute to “true” to ensure that changes to the underlying store are replicated.</li>
+</ul>
+
+<h4 id="write-behind-mode-only">write-behind mode only</h4>
+
+<ul>
+  <li>writeBehindMaxQueueSize - The maximum number of elements allowed per queue, or per bucket (if the queue has multiple buckets). “0” means unbounded (default). When an attempt to add an element is made, the queue size (or bucket size) is checked, and if full then the operation is blocked until the size drops by one. Note that elements or a batch currently being processed (and coalesced elements) are not included in the size value. Programmatically, this attribute can be set with <code>net.sf.ehcache.config.CacheWriterConfiguration.setWriteBehindMaxQueueSize()</code>.</li>
+  <li>writeBehindConcurrency - The number of thread-bucket pairs on the node for the given cache (default is 1). Each thread uses the settings configured for write-behind. For example, if rateLimitPerSecond is set to 100, each thread-bucket pair will perform up to 100 operations per second. In this case, setting writeBehindConcurrency=”4” means that up to 400 operations per second will occur on the node for the given cache. Programmatically, this attribute can be set with <code>net.sf.ehcache.config.CacheWriterConfiguration.setWriteBehindConcurrency()</code>.</li>
+  <li>maxWriteDelaySeconds - The maximum number of seconds to wait before writing behind. Defaults to 0. If set to a value greater than 0, it permits operations to build up in the queue to enable effective coalescing and batching optimisations.</li>
+  <li>rateLimitPerSecond - The maximum number of store operations to allow per second.</li>
+  <li>writeCoalescing - Whether to use write coalescing. Defaults to false. When set to true, if multiple operations on the same key are present in the write-behind queue, then only the latest write is done (the others are redundant). This can dramatically reduce load on the underlying resource.</li>
+  <li>writeBatching - Whether to batch write operations. Defaults to false. If set to true, storeAll and deleteAll will be called rather than store and delete being called for each key. Resources such as databases can perform more efficiently if updates are batched to reduce load.</li>
+  <li>writeBatchSize - The number of operations to include in each batch. Defaults to 1. If there are less entries in the write-behind queue than the batch size, the queue length size is used. Note that batching is split across operations. For example, if the batch size is 10 and there were 5 puts and 5 deletes, the CacheWriter is invoked. It does not wait for 10 puts or 10 deletes.</li>
+  <li>retryAttempts - The number of times to attempt writing from the queue. Defaults to 1.</li>
+  <li>retryAttemptDelaySeconds - The number of seconds to wait before retrying.</li>
+</ul>
+
+<h2 id="api">API</h2>
+<p>CacheLoaders are exposed for API use through the <code>cache.getWithLoader(...)</code> method. CacheWriters are exposed with
+<code>cache.putWithWriter(...)</code> and <code>cache.removeWithWriter(...)</code> methods.
+For example, following is the method signature for <code>cache.putWithWriter(...)</code>.</p>
+
+<pre>
+   <code>/**
+* Put an element in the cache writing through a CacheWriter. If no CacheWriter has been
+* set for the cache, then this method has the same effect as cache.put().
+* 
+* Resets the access statistics on the element, which would be the case if it has previously
+* been gotten from a cache, and is now being put back.
+* 
+* Also notifies the CacheEventListener, if the writer operation succeeds, that:
+* 
+* - the element was put, but only if the Element was actually put.
+* - if the element exists in the cache, that an update has occurred, even if the element
+* would be expired if it was requested
+* 
+*
+* @param element An object. If Serializable it can fully participate in replication and the
+* DiskStore.
+* @throws IllegalStateException    if the cache is not {@link net.sf.ehcache.Status#STATUS_ALIVE"/&gt;
+* @throws IllegalArgumentException if the element is null
+* @throws CacheException
+*/
+void putWithWriter(Element element) throws IllegalArgumentException, IllegalStateException,
+CacheException;
+</code>
+</pre>
+
+<p>See the Cache JavaDoc for the complete API.</p>
+
+<h2 id="spi">SPI</h2>
+<p>The Ehcache write-through SPI is the <code>CacheWriter</code> interface. Implementers perform writes to the underlying resource
+in their implementation.</p>
+
+<pre>
+   <code>/**
+* A CacheWriter is an interface used for write-through and write-behind caching to a
+* underlying resource.
+* &lt;p/&gt;
+* If configured for a cache, CacheWriter's methods will be called on a cache operation.
+* A cache put will cause a CacheWriter write
+* and a cache remove will cause a writer delete.
+* &lt;p&gt;
+* Implementers should create an implementation which handles storing and deleting to an
+* underlying resource.
+* &lt;/p&gt;
+* &lt;h4&gt;Write-Through&lt;/h4&gt;
+* In write-through mode, the cache operation will occur and the writer operation will occur
+* before CacheEventListeners are notified. If
+* the write operation fails an exception will be thrown. This can result in a cache which
+* is inconsistent with the underlying resource.
+* To avoid this, the cache and the underlying resource should be configured to participate
+* in a transaction. In the event of a failure
+* a rollback can return all components to a consistent state.
+* &lt;p/&gt;
+* &lt;h4&gt;Write-Behind&lt;/h4&gt;
+* In write-behind mode, writes are written to a write-behind queue. They are written by a
+* separate execution thread in a configurable
+* way. When used with Terracotta Server Array, the queue is highly available. In addition
+* any node in the cluster may perform the
+* write-behind operations.
+* &lt;p/&gt;
+* &lt;h4&gt;Creation and Configuration&lt;/h4&gt;
+* CacheWriters can be created using the CacheWriterFactory.
+* &lt;p/&gt;
+* The manner upon which a CacheWriter is actually called is determined by the
+* {@link net.sf.ehcache.config.CacheWriterConfiguration} that is set up for a cache
+* using the CacheWriter.
+* &lt;p/&gt;
+* See the CacheWriter chapter in the documentation for more information on how to use writers.
+*
+* @author Greg Luck
+* @author Geert Bevin
+* @version $Id: $
+*/
+public interface CacheWriter {
+/**
+* Creates a clone of this writer. This method will only be called by ehcache before a
+* cache is initialized.
+* &lt;p/&gt;
+* Implementations should throw CloneNotSupportedException if they do not support clone
+* but that will stop them from being used with defaultCache.
+*
+* @return a clone
+* @throws CloneNotSupportedException if the extension could not be cloned.
+*/
+public CacheWriter clone(Ehcache cache) throws CloneNotSupportedException;
+ /**
+* Notifies writer to initialise themselves.
+* &lt;p/&gt;
+* This method is called during the Cache's initialise method after it has changed it's
+* status to alive. Cache operations are legal in this method.
+*
+* @throws net.sf.ehcache.CacheException
+*/
+void init();
+/**
+* Providers may be doing all sorts of exotic things and need to be able to clean up on
+* dispose.
+* &lt;p/&gt;
+* Cache operations are illegal when this method is called. The cache itself is partly
+* disposed when this method is called.
+*/
+void dispose() throws CacheException;
+/**
+* Write the specified value under the specified key to the underlying store.
+* This method is intended to support both key/value creation and value update for a
+* specific key.
+*
+* @param element the element to be written
+*/
+void write(Element element) throws CacheException;
+/**
+* Write the specified Elements to the underlying store. This method is intended to
+* support both insert and update.
+* If this operation fails (by throwing an exception) after a partial success,
+* the convention is that entries which have been written successfully are to be removed
+* from the specified mapEntries, indicating that the write operation for the entries left
+* in the map has failed or has not been attempted.
+*
+* @param elements the Elements to be written
+*/
+void writeAll(Collection&lt;Element&gt; elements) throws CacheException;
+ /**
+* Delete the cache entry from the store
+*
+* @param entry the cache entry that is used for the delete operation
+*/
+void delete(CacheEntry entry) throws CacheException;
+ /**
+* Remove data and keys from the underlying store for the given collection of keys, if
+* present. If this operation fails * (by throwing an exception) after a partial success,
+* the convention is that keys which have been erased successfully are to be removed from
+* the specified keys, indicating that the erase operation for the keys left in the collection
+* has failed or has not been attempted.
+*
+* @param entries the entries that have been removed from the cache
+*/
+void deleteAll(Collection&lt;CacheEntry&gt; entries) throws CacheException;
+  /**
+ * This method will be called whenever an Element couldn't be handled by the writer and all of
+ * the {@link net.sf.ehcache.config.CacheWriterConfiguration#getRetryAttempts() retryAttempts} have been tried.
+ * &lt;p&gt;When batching is enabled, all of the elements in the failing batch will be passed to this method.
+ * &lt;p&gt;Try to not throw RuntimeExceptions from this method. Should an Exception occur, it will be logged, but
+ * the element will still be lost.
+ * @param element the Element that triggered the failure, or one of the elements in the batch that failed
+ * @param operationType the operation we tried to execute
+ * @param e the RuntimeException thrown by the Writer when the last retry attempt was being executed
+ */
+void throwAway(Element element, SingleOperationType operationType, RuntimeException e);
+
+"/&gt;
+</code>
+</pre>
+
+<h2 id="faq">FAQ</h2>
+
+<h3 id="is-there-a-way-to-monitor-the-write-behind-queue-size">Is there a way to monitor the write-behind queue size?</h3>
+<p>Use the method <code>net.sf.ehcache.statistics.LiveCacheStatistics#getWriterQueueLength()</code>. This method returns the number of elements on the local queue (in all local buckets) that are waiting to be processed, or -1 if no write-behind queue exists. Note that elements or a batch currently being processed (and coalesced elements) are not included in the returned value.</p>
+
+<h3 id="what-happens-if-an-exception-occurs-when-the-writer-is-called">What happens if an exception occurs when the writer is called?</h3>
+<p>Once all retry attempts have been executed, on exception the element (or all elements of that batch) will be passed to the <code>net.sf.ehcache.writer.CacheWriter#throwAway</code> method.
+The user can then act one last time on the element that failed to write. A reference to the last thrown RuntimeException, and the type of operation that failed to execute for the element, are received.
+Any Exception thrown from that method will simply be logged and ignored. The element will be lost forever. It is important that implementers are careful about proper Exception handling in that last method.</p>
+
+<p>A handy pattern is to use an eternal cache (potentially using a writer, so it is persistent) to store failed operations and their element. Users can monitor that cache and manually intervene on those errors at a later point.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

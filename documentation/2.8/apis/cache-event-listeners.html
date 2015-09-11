@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.8 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.8/apis/cache-event-listeners.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.8 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.8/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.8/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.8/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.8/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.8/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.8/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.8/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.8/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.8/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.8/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.8/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.8.5/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="cache-event-listeners">Cache Event Listeners</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#cache-event-listeners">
+                        <span class="toctext">Cache Event Listeners</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#configuration">
+                              <span class="toctext">Configuration</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#implementing-a-cacheeventlistenerfactory-and-cacheeventlistener-">
+                              <span class="toctext">Implementing a CacheEventListenerFactory and CacheEventListener </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#adding-a-listener-programmatically">
+                              <span class="toctext">Adding a Listener Programmatically</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+<p>Cache listeners allow implementers to register callback methods that
+will be executed when a cache event occurs. Cache listeners
+implement the CacheEventListener interface.
+The events include:</p>
+
+<ul>
+  <li>an Element has been put</li>
+  <li>an Element has been updated. Updated means that an Element exists in the Cache with the same key as the Element being put.</li>
+  <li>an Element has been removed</li>
+  <li>an Element expires, either because timeToLive or timeToIdle have been reached.</li>
+</ul>
+
+<p>Callbacks to these methods are synchronous and unsynchronized. It is
+the responsibility of the implementer to safely handle the potential
+performance and thread safety issues depending on what their listener
+is doing.
+Listeners are guaranteed to be notified of events in the order in which
+they occurred.
+Elements can be put or removed from a Cache without notifying listeners
+by using the putQuiet and removeQuiet methods.
+In clustered environments event propagation can be configured to
+be propagated only locally, only remotely, or both. The default is both,
+to be backwardly compatible.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>Cache event listeners are configured per cache. Each cache can have
+multiple listeners.
+Each listener is configured by adding a
+cacheEventListenerFactory element as follows:</p>
+
+<pre>
+   <code>&lt;cache ...&gt;
+  &lt;cacheEventListenerFactory class="" properties="" listenFor=""/&gt;
+  ...
+&lt;/cache&gt;
+</code>
+</pre>
+
+<p>The entry specifies a CacheEventListenerFactory which is used to
+create a CacheEventListener, which then receives notifications.
+The attributes of a CacheEventListenerFactory are:</p>
+
+<ul>
+  <li>class - a fully qualified factory class name</li>
+  <li>properties - an optional comma separated properties having meaning only to the factory.</li>
+  <li>
+    <p>listenFor - describes which events will be delivered in a clustered environment, defaults to ‘all’.</p>
+
+    <p>These are the possible values:</p>
+
+    <ul>
+      <li>all - the default is to deliver all local and remote events</li>
+      <li>local - deliver only events originating in the current node</li>
+      <li>remote - deliver only events originating in other nodes</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Callbacks to listener methods are synchronous and unsynchronized. It is
+the responsibility of the implementer to safely handle the potential
+performance and thread safety issues depending on what their listener
+is doing.</p>
+
+<h2 id="implementing-a-cacheeventlistenerfactory-and-cacheeventlistener-">Implementing a CacheEventListenerFactory and CacheEventListener <a name="Implementing-a-CacheEventListenerFactory" id="Implementing-a-CacheEventListenerFactory"></a></h2>
+<p>A CacheEventListenerFactory is an abstract factory for creating
+cache event listeners. Implementers should provide their own concrete
+factory, extending this abstract factory. It can then be configured in <code>ehcache.xml</code>.
+The following example demonstrates how to create an abstract CacheEventListenerFactory:</p>
+
+<pre>
+   <code>/**
+* An abstract factory for creating listeners. Implementers should provide their own
+* concrete factory extending this factory. It can then be configured in ehcache.xml
+*
+* @author Greg Luck
+* @version $Id: cache_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
+*/
+public abstract class CacheEventListenerFactory {
+/**
+* Create a &lt;code&gt;CacheEventListener&lt;/code&gt;
+*
+* @param properties implementation specific properties. These are configured as comma
+*                   separated name value pairs in ehcache.xml
+* @return a constructed CacheEventListener
+*/
+public abstract CacheEventListener createCacheEventListener(Properties properties);
+"/&gt;
+</code>
+</pre>
+
+<p>The following example demonstrates how to create a concrete implementation of the CacheEventListener
+interface:</p>
+
+<pre>
+   <code>/**
+* Allows implementers to register callback methods that will be executed when a cache event
+*  occurs.
+* The events include:
+* &lt;ol&gt;
+* &lt;li&gt;put Element
+* &lt;li&gt;update Element
+* &lt;li&gt;remove Element
+* &lt;li&gt;an Element expires, either because timeToLive or timeToIdle has been reached.
+* &lt;/ol&gt;
+* &lt;p/&gt;
+* Callbacks to these methods are synchronous and unsynchronized. It is the responsibility of
+* the implementer to safely handle the potential performance and thread safety issues
+* depending on what their listener is doing.
+* &lt;p/&gt;
+* Events are guaranteed to be notified in the order in which they occurred.
+* &lt;p/&gt;
+* Cache also has putQuiet and removeQuiet methods which do not notify listeners.
+*
+* @author Greg Luck
+* @version $Id: cache_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
+* @see CacheManagerEventListener
+* @since 1.2
+*/
+public interface CacheEventListener extends Cloneable {
+/**
+* Called immediately after an element has been removed. The remove method will block until
+* this method returns.
+* &lt;p/&gt;
+* Ehcache does not chech for
+* &lt;p/&gt;
+* As the {@link net.sf.ehcache.Element} has been removed, only what was the key of the
+* element is known.
+* &lt;p/&gt;
+*
+* @param cache   the cache emitting the notification
+* @param element just deleted
+*/
+void notifyElementRemoved(final Ehcache cache, final Element element) throws CacheException;
+/**
+* Called immediately after an element has been put into the cache. The
+* {@link net.sf.ehcache.Cache#put(net.sf.ehcache.Element)} method
+* will block until this method returns.
+* &lt;p/&gt;
+* Implementers may wish to have access to the Element's fields, including value, so the
+* element is provided. Implementers should be careful not to modify the element. The
+* effect of any modifications is undefined.
+*
+* @param cache   the cache emitting the notification
+* @param element the element which was just put into the cache.
+*/
+void notifyElementPut(final Ehcache cache, final Element element) throws CacheException;
+/**
+* Called immediately after an element has been put into the cache and the element already
+* existed in the cache. This is thus an update.
+* &lt;p/&gt;
+* The {@link net.sf.ehcache.Cache#put(net.sf.ehcache.Element)} method
+* will block until this method returns.
+* &lt;p/&gt;
+* Implementers may wish to have access to the Element's fields, including value, so the
+* element is provided. Implementers should be careful not to modify the element. The
+* effect of any modifications is undefined.
+*
+* @param cache   the cache emitting the notification
+* @param element the element which was just put into the cache.
+*/
+void notifyElementUpdated(final Ehcache cache, final Element element) throws CacheException;
+/**
+* Called immediately after an element is &lt;i&gt;found&lt;/i&gt; to be expired. The
+* {@link net.sf.ehcache.Cache#remove(Object)} method will block until this method returns.
+* &lt;p/&gt;
+* As the {@link Element} has been expired, only what was the key of the element is known.
+* &lt;p/&gt;
+* Elements are checked for expiry in Ehcache at the following times:
+* &lt;ul&gt;
+* &lt;li&gt;When a get request is made
+* &lt;li&gt;When an element is spooled to the diskStore in accordance with a MemoryStore
+* eviction policy
+* &lt;li&gt;In the DiskStore when the expiry thread runs, which by default is
+* {@link net.sf.ehcache.Cache#DEFAULT_EXPIRY_THREAD_INTERVAL_SECONDS"/&gt;
+* &lt;/ul&gt;
+* If an element is found to be expired, it is deleted and this method is notified.
+*
+* @param cache   the cache emitting the notification
+* @param element the element that has just expired
+*    &lt;p/&gt;
+*    Deadlock Warning: expiry will often come from the &lt;code&gt;DiskStore&lt;/code&gt;
+*    expiry thread. It holds a lock to the DiskStore at the time the
+*    notification is sent. If the implementation of this method calls into a
+*    synchronized &lt;code&gt;Cache&lt;/code&gt; method and that subsequently calls into
+*    DiskStore a deadlock will result. Accordingly implementers of this method
+*    should not call back into Cache.
+*/
+void notifyElementExpired(final Ehcache cache, final Element element);
+/**
+* Give the replicator a chance to cleanup and free resources when no longer needed
+*/
+void dispose();
+/**
+* Creates a clone of this listener. This method will only be called by Ehcache before a
+* cache is initialized.
+* &lt;p/&gt;
+* This may not be possible for listeners after they have been initialized. Implementations
+* should throw CloneNotSupportedException if they do not support clone.
+* @return a clone
+* @throws CloneNotSupportedException if the listener could not be cloned.
+*/
+public Object clone() throws CloneNotSupportedException;
+"/&gt;
+</code>
+</pre>
+
+<p>Two other methods are also available:</p>
+
+<ul>
+  <li>
+    <p><code>void notifyElementEvicted(Ehcache cache, Element element)</code></p>
+
+    <p>Called immediately after an element is evicted from the cache. Eviction, which happens when a cache entry is deleted from a store, should not be confused with removal, which is a result of calling <code>Cache.removeElement(Element)</code>.</p>
+  </li>
+  <li>
+    <p><code>void notifyRemoveAll(Ehcache cache)</code></p>
+
+    <p>Called during <code>Ehcache.removeAll()</code> to indicate that all elements have been removed from the cache in a bulk operation. The usual <code>notifyElementRemoved(net.sf.ehcache.Ehcache, net.sf.ehcache.Element)</code> is not called. Only one notification is emitted because performance considerations do not allow for serially processing notifications where potentially millions of elements have been bulk deleted.</p>
+  </li>
+</ul>
+
+<p>The implementations need to be placed in the classpath accessible to Ehcache. See the chapter on <a href="/documentation/2.8/apis/class-loading.html">Classloading</a> for details on how the loading
+of these classes will be done.</p>
+
+<h2 id="adding-a-listener-programmatically">Adding a Listener Programmatically</h2>
+
+<p>To add a listener programmatically, follow this example:</p>
+
+<pre>
+   <code>cache.getCacheEventNotificationService().registerListener(myListener);
+</code>
+</pre>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

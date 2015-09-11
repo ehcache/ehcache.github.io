@@ -1,0 +1,26 @@
+var pairs =
+{
+"requirements":{"java":1}
+,"java":{"java":1,"web":1}
+,"web":{"container":1}
+,"container":{"(war":1,"web":1,"support":1,"configurations":1}
+,"(war":{"packaged":1}
+,"packaged":{"version":1}
+,"version":{"only)":1}
+,"only)":{"standalone":1}
+,"standalone":{"server":1}
+,"server":{"comes":1}
+,"comes":{"embedded":1}
+,"embedded":{"glassfish":1}
+,"glassfish":{"web":1,"v2\u002Fv3":1}
+,"support":{"servlet":1}
+,"servlet":{"2.5":1}
+,"2.5":{"specification":1}
+,"specification":{"following":1}
+,"following":{"web":1}
+,"configurations":{"tested":1}
+,"tested":{"glassfish":1}
+,"v2\u002Fv3":{"tomcat":1}
+,"tomcat":{"jetty":1}
+}
+;Search.control.loadWordPairs(pairs);
