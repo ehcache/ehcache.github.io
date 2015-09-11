@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/get-started/introduction.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="hello-ehcache">Hello, Ehcache</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#hello-ehcache">
+                        <span class="toctext">Hello, Ehcache</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#definitions">
+                              <span class="toctext">Definitions</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#why-caching-works">
+                              <span class="toctext">Why caching works</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#will-an-application-benefit-from-caching?">
+                              <span class="toctext">Will an Application Benefit from Caching?</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#how-much-will-an-application-speed-up-with-caching?">
+                              <span class="toctext">How much will an application speed up with Caching?</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+<p>Ehcache is a cache library introduced in October 2003 with the key goal of improving performance by reducing the load on underlying resources. Ehcache is not just for general-purpose caching, however, but also for caching Hibernate (second-level cache), data access objects, security credentials, web pages. It can also be used for SOAP and RESTful server caching, application persistence, and distributed caching.</p>
+
+<h2 id="definitions">Definitions</h2>
+
+<ul>
+  <li>
+    <p><strong>cache</strong>: Wiktionary defines a cache as “a store of things that will be required in future, and can be retrieved rapidly.” That is the
+nub of it. In computer science terms, a cache is a collection of temporary data which either duplicates data located elsewhere or is the result of a computation. Once in the cache, the data can be repeatedly accessed inexpensively.</p>
+  </li>
+  <li>
+    <p><strong>cache-hit</strong>: <a name="cache-hit" id="cache-hit"></a>When a data element is requested of the cache and the element exists for 
+the given key, it is referrred to as a cache hit (or simply ‘hit’).</p>
+  </li>
+  <li>
+    <p><strong>cache-miss</strong>: <a name="cache-miss" id="cache-miss"></a>When a data element is requested of the cache and the element does not 
+exist for the given key, it is referred to as a cache miss (or simply
+‘miss’).</p>
+  </li>
+  <li>
+    <p><strong>system-of-record</strong>:<a name="system-of-record" id="system-of-record"></a> The core premise of caching assumes that there is a source of truth for 
+the data.  This is often referred to as a <a href="http://en.wikipedia.org/wiki/System_of_record">system-of-record (SOR)</a>. The cache acts as a local copy of data retrieved from or stored to the system-of-record. This is often a traditional database, although it may be a specialized file system or some other reliable long-term storage. For the purposes of using Ehcache, the SOR is assumed to be a database.</p>
+  </li>
+  <li>
+    <p><strong>SOR</strong>: <a name="SOR" id="SOR"></a>See <a href="#system-of-record">system-of-record</a>.</p>
+  </li>
+</ul>
+
+<h2 id="why-caching-works">Why caching works</h2>
+
+<h3 id="locality-of-reference">Locality of Reference</h3>
+
+<p>While Ehcache concerns itself with Java objects, caching is used throughout computing, from CPU caches to the DNS system.
+  Why? Because many computer systems exhibit “locality of reference”. Data that is near other data or has just been used
+is more likely to be used again.</p>
+
+<h3 id="the-long-tail">The Long Tail</h3>
+
+<p>Chris Anderson, of Wired Magazine, coined the term “The Long Tail” to refer to Ecommerce systems. The idea that a small
+number of items may make up the bulk of sales, a small number of blogs might get the most hits and so on. While there
+is a small list of popular items, there is a long tail of less popular ones.</p>
+
+<p><img src="/images/documentation/longtail.png" alt="Ehcache Image" />
+<br />The Long Tail</p>
+
+<p>The Long Tail is itself a vernacular term for a Power Law probability distribution. They don’t just appear in ecommerce,
+but throughout nature. One form of a Power Law distribution is the Pareto distribution, commonly know as the 80:20 rule.
+This phenomenon is useful for caching. If 20% of objects are used 80% of the time and a way can be found to reduce the
+cost of obtaining that 20%, then the system performance will improve.</p>
+
+<h2 id="will-an-application-benefit-from-caching?">Will an Application Benefit from Caching?</h2>
+
+<p>The short answer is that it often does, due to the effects noted above.</p>
+
+<p>The medium answer is that it often depends on whether it is CPU bound or I/O bound. If an application is I/O bound then
+then the time taken to complete a computation depends principally on the rate at which data can be obtained. If it is
+CPU bound, then the time taken principally depends on the speed of the CPU and main memory.</p>
+
+<p>While the focus for caching is on improving performance, it it also worth realizing that it reduces load. The time it
+takes something to complete is usually related to the expense of it. So, caching often reduces load on scarce resources.</p>
+
+<h3 id="speeding-up-cpu-bound-applications">Speeding up CPU-bound Applications</h3>
+
+<p>CPU bound applications are often sped up by:</p>
+
+<ul>
+  <li>improving algorithm performance</li>
+  <li>parallelizing the computations across multiple CPUs (SMP) or multiple machines (Clusters).</li>
+  <li>upgrading the CPU speed.</li>
+</ul>
+
+<p>The role of caching, if there is one, is to temporarily store computations that may be reused again.
+An example from Ehcache would be large web pages that have a high rendering cost. Another caching of authentication
+  status, where authentication requires cryptographic transforms.</p>
+
+<h3 id="speeding-up-io-bound-applications">Speeding up I/O-bound Applications</h3>
+
+<p>Many applications are I/O bound, either by disk or network operations. In the case of databases they can be limited
+by both.</p>
+
+<p>There is no Moore’s law for hard disks. A 10,000 RPM disk was fast 10 years ago and is still fast. Hard disks are
+speeding up by using their own caching of blocks into memory.</p>
+
+<p>Network operations can be bound by a number of factors:</p>
+
+<ul>
+  <li>time to set up and tear down connections</li>
+  <li>latency, or the minimum round trip time</li>
+  <li>throughput limits</li>
+  <li>marshalling and unmarhshalling overhead</li>
+</ul>
+
+<p>The caching of data can often help a lot with I/O bound applications. Some examples of Ehcache uses are:</p>
+
+<ul>
+  <li>Data Access Object caching for Hibernate</li>
+  <li>Web page caching, for pages generated from databases.</li>
+</ul>
+
+<h3 id="increased-application-scalability">Increased Application Scalability</h3>
+
+<p>The flip side of increased performance is increased scalability. Say you have a database which can do 100 expensive
+queries per second. After that it backs up and if connections are added to it it slowly dies.</p>
+
+<p>In this case, caching may be able to reduce the workload required. If caching can cause 90 of that 100 to be cache hits
+and not even get to the database, then the database can scale 10 times higher than otherwise.</p>
+
+<h2 id="how-much-will-an-application-speed-up-with-caching?">How much will an application speed up with Caching?</h2>
+
+<h3 id="the-short-answer">The short answer</h3>
+
+<p>The short answer is that it depends on a multitude of factors being:</p>
+
+<ul>
+  <li>how many times a cached piece of data can and is reused by the application</li>
+  <li>the proportion of the response time that is alleviated by caching</li>
+</ul>
+
+<p>In applications that are I/O bound, which is most business applications, most of the response time is getting data
+from a database. Therefore the speed up mostly depends on how much reuse a piece of data gets.</p>
+
+<p>In a system where each piece of data is used just once, it is zero. In a system where data is reused a lot, the speed
+up is large.</p>
+
+<p>The long answer, unfortunately, is complicated and mathematical. It is considered next.</p>
+
+<h3 id="applying-amdahls-law">Applying Amdahl’s Law</h3>
+
+<p>Amdahl’s law, after Gene Amdahl, is used to find the system speed up from a speed up in part of the system.</p>
+
+<pre>
+1 / ((1 - Proportion Sped Up) + Proportion Sped Up / Speed up)
+</pre>
+
+<p>The following examples show how to apply Amdahl’s law to common situations. In the interests of simplicity,
+we assume:</p>
+
+<ul>
+  <li>a single server</li>
+  <li>a system with a single thing in it, which when cached, gets 100% cache hits and lives forever.</li>
+</ul>
+
+<h4 id="persistent-object-relational-caching">Persistent Object Relational Caching</h4>
+
+<p>A Hibernate Session.load() for a single object is about 1000 times faster from cache than from a database.</p>
+
+<p>A typical Hibernate query will return a list of IDs from the database, and then attempt to load each. If Session.iterate()
+is used Hibernate goes back to the database to load each object.</p>
+
+<p>Imagine a scenario where we execute a query against the database which returns a hundred IDs and then load each one.
+The query takes 20% of the time and the roundtrip loading takes the rest (80%). The database query itself is 75% of
+the time that the operation takes. The proportion being sped up is thus 60% (75% * 80%).</p>
+
+<p>The expected system speedup is thus:</p>
+
+<pre>
+1 / ((1 - .6) + .6 / 1000)
+= 1 / (.4 + .0006)
+= 2.5 times system speedup
+</pre>
+
+<h4 id="web-page-caching">Web Page Caching</h4>
+
+<p>An observed speed up from caching a web page is 1000 times. Ehcache can retrieve a page from its SimplePageCachingFilter
+in a few ms.</p>
+
+<p>Because the web page is the end result of a computation, it has a proportion of 100%.</p>
+
+<p>The expected system speedup is thus:</p>
+
+<pre>
+   1 / ((1 - 1) + 1 / 1000)
+    = 1 / (0 + .0001)
+    = 1000 times system speedup
+</pre>
+
+<h4 id="web-page-fragment-caching">Web Page Fragment Caching</h4>
+
+<p>Caching the entire page is a big win. Sometimes the liveness requirements vary in different parts of the page.
+Here the SimplePageFragmentCachingFilter can be used.</p>
+
+<p>Let’s say we have a 1000 fold improvement on a page fragment that taking 40% of the page render time.</p>
+
+<p>The expected system speedup is thus:</p>
+
+<pre>
+   1 / ((1 - .4) + .4 / 1000)
+    = 1 / (.6 + .0004)
+    = 1.6 times system speedup
+</pre>
+
+<h3 id="cache-efficiency">Cache Efficiency</h3>
+
+<p>In real life cache entrie do not live forever. Some examples that come close are “static” web pages
+or fragments of same, like page footers, and in the database realm, reference data, such as the currencies in the world.</p>
+
+<p>Factors which affect the efficiency of a cache are:</p>
+
+<ul>
+  <li><strong>liveness</strong>—how live the data needs to be. The less live the more it can be cached</li>
+  <li><strong>proportion of data cached</strong>—what proportion of the data can fit into the resource limits of the machine. For 32 bit Java
+systems, there was a hard limit of 2GB of address space. While now relaxed, garbage collection issues make it harder to
+go a lot large. Various eviction algorithms are used to evict excess entries.</li>
+  <li><strong>Shape of the usage distribution</strong>—If only 300 out of 3000 entries can be cached, but the Pareto distribution applies,
+it may be that 80% of the time, those 300 will be the ones requested. This drives up the average request lifespan.</li>
+  <li><strong>Read/Write ratio</strong>—The proportion of times data is read compared with how often it is written. Things such as the
+number of rooms left in a hotel will be written to quite a lot. However the details of a room sold are immutable
+once created so have a maximum write of 1 with a potentially large number of reads.</li>
+</ul>
+
+<p>Ehcache keeps these statistics for each Cache and each element, so they can be measured directly rather than estimated.</p>
+
+<h3 id="cluster-efficiency">Cluster Efficiency</h3>
+<p>Also in real life, we generally do not find a single server?
+Assume a round robin load balancer where each hit goes to the next server.
+The cache has one entry which has a variable lifespan of requests, say caused by a time to live. The following
+table shows how that lifespan can affect hits and misses.</p>
+
+<pre>
+Server 1    Server 2   Server 3    Server 4
+ M             M           M           M
+ H             H           H           H
+ H             H           H           H
+ H             H           H           H
+ H             H           H           H
+ ...           ...         ...         ...
+</pre>
+
+<p>The cache hit ratios for the system as a whole are as follows:</p>
+
+<pre>
+Entry
+Lifespan  Hit Ratio   Hit Ratio  Hit Ratio   Hit Ratio
+in Hits   1 Server    2 Servers  3 Servers   4 Servers
+2          1/2           0/2         0/2         0/2
+4          3/4           2/4         1/4         0/4
+10         9/10          8/10        7/10        6/10
+20         19/20         18/20       17/20       16/10
+50         49/50         48/50       47/20       46/50
+</pre>
+
+<p>The efficiency of a cluster of standalone caches is generally:</p>
+
+<pre>
+(Lifespan in requests - Number of Standalone Caches) / Lifespan in requests
+</pre>
+
+<p>Where the lifespan is large relative to the number of standalone caches, cache efficiency is not much affected.
+However when the lifespan is short, cache efficiency is dramatically affected.
+(To solve this problem, Ehcache supports distributed caching, where an entry put in a local cache is also propagated
+to other servers in the cluster.)</p>
+
+<h3 id="a-cache-version-of-amdahls-law">A cache version of Amdahl’s law</h3>
+<p>From the above we now have:</p>
+
+<pre>
+1 / ((1 - Proportion Sped Up * effective cache efficiency) +
+(Proportion Sped Up  * effective cache efficiency)/ Speed up)
+effective cache efficiency = (cache efficiency) * (cluster efficiency)
+</pre>
+
+<h3 id="web-page-example">Web Page example</h3>
+<p>Applying this to the earlier web page cache example where we have cache efficiency of 35% and average request lifespan of 10 requests
+ and two servers:</p>
+
+<pre>
+ cache efficiency = .35
+ cluster efficiency = .(10 - 1) / 10
+                = .9
+ effective cache efficiency = .35 * .9
+                        = .315
+    1 / ((1 - 1 * .315) + 1 * .315 / 1000)
+    = 1 / (.685 + .000315)
+    = 1.45 times system speedup
+</pre>
+
+<p>What if, instead the cache efficiency is 70%; a doubling of efficiency. We keep to two servers.</p>
+
+<pre>
+ cache efficiency = .70
+ cluster efficiency = .(10 - 1) / 10
+                = .9
+ effective cache efficiency = .70 * .9
+                            = .63
+    1 / ((1 - 1 * .63) + 1 * .63 / 1000)
+    = 1 / (.37 + .00063)
+    = 2.69 times system speedup
+</pre>
+
+<p>What if, instead the cache efficiency is 90%. We keep to two servers.</p>
+
+<pre>
+ cache efficiency = .90
+ cluster efficiency = .(10 - 1) / 10
+                = .9
+ effective cache efficiency = .9 * .9
+                            = .81
+    1 / ((1 - 1 * .81) + 1 * .81 / 1000)
+    = 1 / (.19 + .00081)
+    = 5.24 times system speedup
+</pre>
+
+<p>Why is the reduction so dramatic? Because Amdahl’s law is most sensitive to the proportion of the system that is sped up.</p>
+
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

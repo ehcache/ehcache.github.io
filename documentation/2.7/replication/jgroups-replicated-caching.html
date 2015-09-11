@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/replication/jgroups-replicated-caching.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="replicated-caching-using-jgroups">Replicated Caching using JGroups</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#replicated-caching-using-jgroups">
+                        <span class="toctext">Replicated Caching using JGroups</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#suitable-element-types">
+                              <span class="toctext">Suitable Element Types</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#peer-discovery">
+                              <span class="toctext">Peer Discovery</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#configuration">
+                              <span class="toctext">Configuration</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#example-configuration-using-udp-multicast">
+                              <span class="toctext">Example configuration using UDP Multicast</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#example-configuration-using-tcp-unicast">
+                              <span class="toctext">Example configuration using TCP Unicast</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#protocol-considerations.">
+                              <span class="toctext">Protocol considerations.</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-9">
+                           <a href="#configuring-cachereplicators">
+                              <span class="toctext">Configuring CacheReplicators</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-10">
+                           <a href="#complete-sample-configuration">
+                              <span class="toctext">Complete Sample configuration</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-11">
+                           <a href="#common-problems">
+                              <span class="toctext">Common Problems</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>JGroups can be used as the underlying mechanism for
+the replication operations in ehcache. JGroups offers a very flexible
+protocol stack, reliable unicast and multicast message transmission.</p>
+
+<p>On the down side JGroups can be complex to configure and some protocol stacks
+have dependencies on others.</p>
+
+<p>To set up replicated caching using JGroups you need to configure a PeerProviderFactory
+of type JGroupsCacheManagerPeerProviderFactory which is done globally for a CacheManager</p>
+
+<p>For each cache that will be replicated, you then need to add
+a cacheEventListenerFactory of type JGroupsCacheReplicatorFactory to propagate messages.</p>
+
+<h2 id="suitable-element-types">Suitable Element Types</h2>
+
+<p>Only Serializable Elements are suitable for replication.</p>
+
+<p>Some operations, such as remove,  work off Element keys rather than the full Element itself. In this case
+the operation will be replicated provided the key is Serializable, even if the Element is not.</p>
+
+<h2 id="peer-discovery">Peer Discovery</h2>
+
+<p>If you use the UDP multicast stack there is no additional configuration. If you use a TCP stack
+you will need to specify the initial hosts in the cluster.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>There are two things to configure:</p>
+
+<ul>
+  <li>The JGroupsCacheManagerPeerProviderFactory which is done once per CacheManager and therefore once per ehcache.xml file.</li>
+  <li>The JGroupsCacheReplicatorFactory which is added to each cache’s configuration.</li>
+</ul>
+
+<p>The main configuration happens in the JGroupsCacheManagerPeerProviderFactory connect sub-property.</p>
+
+<p>A connect property is passed directly to the JGroups channel and therefore all the protocol
+stacks and options available in JGroups can be set.</p>
+
+<h2 id="example-configuration-using-udp-multicast">Example configuration using UDP Multicast</h2>
+
+<p>Suppose you have two servers in a cluster. You wish to replicated
+sampleCache11 and sampleCache12 and you wish to use UDP multicast as the underlying mechanism.
+The configuration for server1 and server2 are identical and will look like this:</p>
+
+<pre>
+   <code>&lt;cacheManagerPeerProviderFactory
+class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"
+properties="connect=UDP(mcast_addr=231.12.21.132;mcast_port=45566;):PING:
+MERGE2:FD_SOCK:VERIFY_SUSPECT:pbcast.NAKACK:UNICAST:pbcast.STABLE:FRAG:pbcast.GMS"
+propertySeparator="::"
+/&gt;
+</code>
+</pre>
+
+<h2 id="example-configuration-using-tcp-unicast">Example configuration using TCP Unicast</h2>
+
+<p>The TCP protocol requires the IP address of all servers to be known. They are configured through the {<code>TCPPING</code> protocol} of Jgroups.</p>
+
+<p>Suppose you have 2 servers host1 and host2, then the configuration is:</p>
+
+<pre>
+   <code>&lt;cacheManagerPeerProviderFactory
+class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"
+properties="connect=TCP(start_port=7800):
+   TCPPING(initial_hosts=host1[7800],host2[7800];port_range=10;timeout=3000;
+   num_initial_members=3;up_thread=true;down_thread=true):
+   VERIFY_SUSPECT(timeout=1500;down_thread=false;up_thread=false):
+   pbcast.NAKACK(down_thread=true;up_thread=true;gc_lag=100;retransmit_timeout=3000):
+   pbcast.GMS(join_timeout=5000;join_retry_timeout=2000;shun=false;
+   print_local_addr=false;down_thread=true;up_thread=true)"
+propertySeparator="::" /&gt;
+</code>
+</pre>
+
+<h2 id="protocol-considerations.">Protocol considerations.</h2>
+
+<p>You should read the JGroups documentation to configure the protocols correctly.</p>
+
+<p>See <a href="http://www.jgroups.org/javagroupsnew/docs/manual/html_single/index.html">http://www.jgroups.org/javagroupsnew/docs/manual/html_single/index.html</a>.</p>
+
+<p>If using UDP you should at least configure PING, FD_SOCK (Failure detection), VERIFY_SUSPECT, pbcast.NAKACK (Message reliability),
+pbcast.STABLE (message garbage collection).</p>
+
+<h2 id="configuring-cachereplicators">Configuring CacheReplicators</h2>
+
+<p>Each cache that will be replicated needs to set a cache event listener
+which then replicates messages to the other CacheManager peers. This is
+done by adding a cacheEventListenerFactory element to each cache’s
+configuration. The properties are identical to the one used for RMI replication.
+The listener factory <em>must</em> be of type <code>JGroupsCacheReplicatorFactory</code>.</p>
+
+<pre>
+   <code>&lt;!-- Sample cache named sampleCache2. --&gt;
+&lt;cache name="sampleCache2"
+  maxEntriesLocalHeap="10"
+  eternal="false"
+  timeToIdleSeconds="100"
+  timeToLiveSeconds="100"
+  overflowToDisk="false"&gt;
+  &lt;cacheEventListenerFactory
+  class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"
+  properties="replicateAsynchronously=true, replicatePuts=true,
+  replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true" /&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<p>The configuration options are explained below:</p>
+
+<p>class - use net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory</p>
+
+<p>The factory recognises the following properties:</p>
+
+<ul>
+  <li>replicatePuts=true | false - whether new elements placed in a cache are
+ replicated to others. Defaults to true.</li>
+  <li>replicateUpdates=true | false - whether new elements which override an
+ element already existing with the same key are replicated. Defaults to true.</li>
+  <li>replicateRemovals=true - whether element removals are replicated. Defaults to true.</li>
+  <li>replicateAsynchronously=true | false - whether replications are
+ asyncrhonous (true) or synchronous (false). Defaults to true.</li>
+  <li>replicateUpdatesViaCopy=true | false - whether the new elements are
+ copied to other caches (true), or whether a remove message is sent. Defaults to true.</li>
+  <li>asynchronousReplicationIntervalMillis default 1000ms Time between updates when replication is asynchroneous</li>
+</ul>
+
+<h2 id="complete-sample-configuration">Complete Sample configuration</h2>
+
+<p>A typical complete configuration for one replicated cache configured for UDP will look like:</p>
+
+<pre>
+   <code>&lt;Ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../main/config/ehcache.xsd"&gt;
+  &lt;diskStore path="java.io.tmpdir/one"/&gt;
+  &lt;cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.jgroups
+    .JGroupsCacheManagerPeerProviderFactory"
+    properties="connect=UDP(mcast_addr=231.12.21.132;mcast_port=45566;ip_ttl=32;
+    mcast_send_buf_size=150000;mcast_recv_buf_size=80000):
+    PING(timeout=2000;num_initial_members=6):
+    MERGE2(min_interval=5000;max_interval=10000):
+    FD_SOCK:VERIFY_SUSPECT(timeout=1500):
+    pbcast.NAKACK(gc_lag=10;retransmit_timeout=3000):
+    UNICAST(timeout=5000):
+    pbcast.STABLE(desired_avg_gossip=20000):
+    FRAG:
+    pbcast.GMS(join_timeout=5000;join_retry_timeout=2000;
+    shun=false;print_local_addr=true)"
+    propertySeparator="::"
+  /&gt;
+  &lt;cache name="sampleCacheAsync"
+    maxEntriesLocalHeap="1000"
+    eternal="false"
+    timeToIdleSeconds="1000"
+    timeToLiveSeconds="1000"
+    overflowToDisk="false"&gt;
+  &lt;cacheEventListenerFactory
+    class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"
+    properties="replicateAsynchronously=true, replicatePuts=true,
+      replicateUpdates=true, replicateUpdatesViaCopy=false,
+      replicateRemovals=true" /&gt;
+  &lt;/cache&gt;
+&lt;/ehcache&gt;
+</code>
+</pre>
+
+<h2 id="common-problems">Common Problems</h2>
+
+<p>If replication using JGroups doesn’t work the way you have it configured try this configuration which
+has been extensively tested:</p>
+
+<pre>
+   <code>&lt;cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"/&gt;
+&lt;cache name="sampleCacheAsync"
+  maxEntriesLocalHeap="1000"
+  eternal="false"
+  timeToIdleSeconds="1000"
+  timeToLiveSeconds="1000"
+  overflowToDisk="false"&gt;
+  &lt;cacheEventListenerFactory
+    class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"
+    properties="replicateAsynchronously=true, replicatePuts=true,
+      replicateUpdates=true, replicateUpdatesViaCopy=false,
+      replicateRemovals=true" /&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<p>If this fails to replicate, see the example programs in the <a href="http://www.jgroups.org/manual/html/ch02.html">JGroups documentation</a>.</p>
+
+<p>Once you have figured out the connection string that works in your network for JGroups, you can directly paste it in the connect property of
+  <code>JGroupsCacheManagerPeerProviderFactory</code>.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

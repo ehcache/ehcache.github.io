@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/integrations/hibernate.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="using-hibernate-and-bigmemory-go">Using Hibernate and BigMemory Go</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#using-hibernate-and-bigmemory-go">
+                        <span class="toctext">Using Hibernate and BigMemory Go</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#download-and-install-">
+                              <span class="toctext">Download and Install </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#build-with-maven">
+                              <span class="toctext">Build with Maven</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#configure-bigmemory-go-as-the-second-level-cache-provider-">
+                              <span class="toctext">Configure BigMemory Go as the Second-Level Cache Provider </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#enable-second-level-cache-and-query-cache-settings">
+                              <span class="toctext">Enable Second-Level Cache and Query Cache Settings</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#optional">
+                              <span class="toctext">Optional</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#putting-it-all-together">
+                              <span class="toctext">Putting it all together</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-9">
+                           <a href="#configure-hibernate-entities-to-use-second-level-caching-">
+                              <span class="toctext">Configure Hibernate Entities to use Second-Level Caching </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-10">
+                           <a href="#configure-">
+                              <span class="toctext">Configure </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-11">
+                           <a href="#demo-app-">
+                              <span class="toctext">Demo App </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-12">
+                           <a href="#performance-tips-">
+                              <span class="toctext">Performance Tips </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-13">
+                           <a href="#faq">
+                              <span class="toctext">FAQ</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Big Memory Go easily integrates with the <a href="http://hibernate.org">Hibernate</a>
+Object/Relational persistence and query service. Gavin King, the
+maintainer of Hibernate, is also a committer to the BigMemory Go’s Ehcache project.
+This ensures BigMemory Go will remain a first class data store for Hibernate.
+Configuring BigMemory Go for Hibernate is simple.  The basic steps are:</p>
+
+<ul>
+  <li>Download and install BigMemory Go into your project</li>
+  <li>Configure BigMemory Go as a cache provider in your project’s Hibernate
+configuration.</li>
+  <li>Configure second-level caching in your project’s Hibernate configuration.</li>
+  <li>Configure Hibernate caching for each entity, collection, or query
+you wish to cache.</li>
+  <li>Configure the <code>ehcache.xml</code> file as necessary for each entity, collection, or
+query configured for caching.</li>
+</ul>
+
+<p>For more information regarding cache configuration in Hibernate see the
+<a href="http://www.hibernate.org/">Hibernate</a>
+documentation.</p>
+
+<h2 id="download-and-install-">Download and Install <a name="Downloading-and-Installing-Ehcache" id="Downloading-and-Installing-Ehcache"></a></h2>
+
+<p>The Hibernate provider is in the ehcache-core module. Download <a href="http://sourceforge.net/projects/ehcache/files/ehcache-core">the latest version</a> of the Ehcache core module.</p>
+
+<h2 id="build-with-maven">Build with Maven</h2>
+
+<p>Dependency versions vary with the specific kit you intend to use. Since kits are guaranteed
+to contain compatible artifacts, find the artifact versions you need by downloading a kit.
+Configure or add the following repository to your build (pom.xml):</p>
+
+<pre>
+   <code>&lt;repository&gt;
+   &lt;id&gt;terracotta-releases&lt;/id&gt;
+   &lt;url&gt;http://www.terracotta.org/download/reflector/releases&lt;/url&gt;
+   &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+   &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
+&lt;/repository&gt;
+</code>
+</pre>
+
+<p>Configure or add the the Ehcache core module defined
+by the following dependency to your build (pom.xml):</p>
+
+<pre>
+   <code>&lt;dependency&gt;
+   &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
+   &lt;artifactId&gt;ehcache-core&lt;/artifactId&gt;
+   &lt;version&gt;${ehcacheVersion}&lt;/version&gt;
+&lt;/dependency&gt;
+</code>
+</pre>
+
+<p>For the Hibernate-Ehcache integration, add the following dependency:</p>
+
+<pre>
+   <code>&lt;dependency&gt;
+  &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+  &lt;artifactId&gt;hibernate-ehcache&lt;/artifactId&gt;
+  &lt;version&gt;${hibernateVersion}&lt;/version&gt;
+&lt;/dependency&gt;
+</code>
+</pre>
+
+<p>For example, the Hibernate-Ehcache integration dependency for Hibernate 4.0.0 is:</p>
+
+<pre>
+   <code>&lt;dependency&gt;
+  &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+  &lt;artifactId&gt;hibernate-ehcache&lt;/artifactId&gt;
+  &lt;version&gt;4.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code>
+</pre>
+
+<p><strong>NOTE:</strong> Some versions of hibernate-ehcache may have a dependency on a specific version of Ehcache. Check the hibernate-ehcache POM for more information.</p>
+
+<h2 id="configure-bigmemory-go-as-the-second-level-cache-provider-">Configure BigMemory Go as the Second-Level Cache Provider <a name="Configure-Ehcache-as-the-Second-Level-Cache-Provider" id="Configure-Ehcache-as-the-Second-Level-Cache-Provider"></a></h2>
+
+<p>To configure BigMemory Go as a Hibernate second-level cache, set the region
+factory property to one of the following in the
+Hibernate configuration.
+Hibernate configuration is configured either via hibernate.cfg.xml,
+hibernate.properties or Spring. The format given is for hibernate.cfg.xml.</p>
+
+<h3 id="hibernate-33-and-higher">Hibernate 3.3 and higher</h3>
+
+<p>For instance creation:</p>
+
+<pre>
+   <code>&lt;property name="hibernate.cache.region.factory_class"&gt;
+         net.sf.ehcache.hibernate.EhCacheRegionFactory&lt;/property&gt;
+</code>
+</pre>
+
+<p>To force Hibernate to use a singleton of Ehcache CacheManager:</p>
+
+<pre>
+   <code>&lt;property name="hibernate.cache.region.factory_class"&gt;
+         net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory&lt;/property&gt;
+</code>
+</pre>
+
+<h3 id="hibernate-4x">Hibernate 4.x</h3>
+<p>For Hibernate 4, use <code>org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code>net.sf.ehcache.hibernate.EhCacheRegionFactory</code> and <code>org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</code> instead of <code>net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</code>.</p>
+
+<h2 id="enable-second-level-cache-and-query-cache-settings">Enable Second-Level Cache and Query Cache Settings</h2>
+
+<p>In addition to configuring the second-level cache provider setting,
+you will need to turn on the second-level cache (by default it is
+configured to off - ‘false’ - by Hibernate). This is done by
+setting the following property in your hibernate config:</p>
+
+<pre>
+   <code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
+</code>
+</pre>
+
+<p>You may also want to turn on the Hibernate query cache.  This is done
+by setting the following property in your hibernate config:</p>
+
+<pre>
+   <code>&lt;property name="hibernate.cache.use_query_cache"&gt;true&lt;/property&gt;
+</code>
+</pre>
+
+<h2 id="optional">Optional</h2>
+<p>The following settings or actions are optional.</p>
+
+<h3 id="configuration-resource-name">Configuration Resource Name</h3>
+<p>The <code>configurationResourceName</code> property is used to specify the
+location of the Ehcache configuration file to be used with the given
+Hibernate instance and cache provider/region-factory.
+The resource is searched for in the root of the classpath. It is used
+to support multiple CacheManagers in the same VM. It tells Hibernate
+which configuration to use. An example might be “ehcache-2.xml”.
+When using multiple Hibernate instances it is therefore recommended
+to use multiple non-singleton providers or region factories, each
+with a dedicated Ehcache configuration resource.</p>
+
+<pre>
+   <code>net.sf.ehcache.configurationResourceName=/name_of_ehcache.xml
+</code>
+</pre>
+
+<h3 id="set-the-hibernate-cache-provider-programmatically-a-nameset-the-hibernate-cache-provider-programmatically">Set the Hibernate cache provider programmatically <a name="Set-the-Hibernate-cache-provider-programmatically" id="Set-the-Hibernate-cache-provider-programmatically"></a></h3>
+<p>The provider can also be set programmatically in Hibernate by adding
+necessary Hibernate property settings to the configuration before creating
+the SessionFactory:</p>
+
+<pre>
+   <code>Configuration.setProperty("hibernate.cache.region.factory_class",
+                     "net.sf.ehcache.hibernate.EhCacheRegionFactory")
+</code>
+</pre>
+
+<p>For Hibernate 4, use <code>org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code>net.sf.ehcache.hibernate.EhCacheRegionFactory</code>.</p>
+
+<h2 id="putting-it-all-together">Putting it all together</h2>
+<p>If you are enabling both second-level caching
+and query caching, then your hibernate config file should contain the
+following:</p>
+
+<pre>
+   <code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
+&lt;property name="hibernate.cache.use_query_cache"&gt;true&lt;/property&gt;
+&lt;property name="hibernate.cache.region.factory_class"&gt;net.sf.ehcache.hibernate.EhCacheRegionFactory&lt;/property&gt;
+</code>
+</pre>
+
+<p>An equivalent Spring configuration file would contain:</p>
+
+<pre>
+   <code>&lt;prop key="hibernate.cache.use_second_level_cache"&gt;true&lt;/prop&gt;
+&lt;prop key="hibernate.cache.use_query_cache"&gt;true&lt;/prop&gt;
+&lt;prop key="hibernate.cache.region.factory_class"&gt;net.sf.ehcache.hibernate.EhCacheRegionFactory&lt;/prop&gt;
+</code>
+</pre>
+
+<p>For Hibernate 4, use <code>org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code>net.sf.ehcache.hibernate.EhCacheRegionFactory</code>.</p>
+
+<h2 id="configure-hibernate-entities-to-use-second-level-caching-">Configure Hibernate Entities to use Second-Level Caching <a name="Configure-Hibernate-Entities-to-use-Second-Level-Caching" id="Configure-Hibernate-Entities-to-use-Second-Level-Caching"></a></h2>
+<p>In addition to configuring the Hibernate second-level cache provider, Hibernate must also be told to enable caching for entities, collections, and queries.
+For example, to enable cache entries for the domain object
+com.somecompany.someproject.domain.Country there would be a mapping file
+something like the following:</p>
+
+<pre>
+   <code>&lt;hibernate-mapping&gt;
+&lt;class
+name="com.somecompany.someproject.domain.Country"
+table="ut_Countries"
+dynamic-update="false"
+dynamic-insert="false"
+&gt;
+...
+&lt;/class&gt;
+&lt;/hibernate-mapping&gt;
+</code>
+</pre>
+
+<p>To enable caching, add the following element.</p>
+
+<pre>
+   <code>&lt;cache usage="read-write|nonstrict-read-write|read-only" /&gt;
+</code>
+</pre>
+
+<p>For example:</p>
+
+<pre>
+   <code>&lt;hibernate-mapping&gt;
+&lt;class
+name="com.somecompany.someproject.domain.Country"
+table="ut_Countries"
+dynamic-update="false"
+dynamic-insert="false"
+&gt;
+ &lt;cache usage="read-write" /&gt;
+...
+&lt;/class&gt;
+&lt;/hibernate-mapping&gt;
+</code>
+</pre>
+
+<p>This can also be achieved using the @Cache annotation, e.g.</p>
+
+<pre>
+   <code>@Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Country {
+...
+"/&gt;
+</code>
+</pre>
+
+<h3 id="definition-of-the-different-cache-strategies">Definition of the different cache strategies</h3>
+
+<h4 id="read-only">read-only</h4>
+<p>Caches data that is never updated.</p>
+
+<h4 id="nonstrict-read-write">nonstrict-read-write</h4>
+<p>Caches data that is sometimes updated without ever locking the
+cache. If concurrent access to an item is possible, this
+concurrency strategy makes no guarantee that the item returned
+from the cache is the latest version available in the database.
+Configure your cache timeout accordingly!</p>
+
+<h4 id="read-write">read-write</h4>
+<p>Caches data that is sometimes updated while maintaining the semantics
+of “read committed” isolation level. If the database is set to
+“repeatable read”, this concurrency strategy almost maintains the
+semantics. Repeatable read isolation is compromised in the case
+of concurrent writes.</p>
+
+<h2 id="configure-">Configure <a name="ehcache-xml" id="ehcache-xml"></a></h2>
+<p>Because the <code>ehcache.xml</code> file has a defaultCache, caches will always be created
+when required by Hibernate. However more control can be exerted by
+specifying a configuration per cache, based on its name.
+In particular, because Hibernate caches are populated from databases,
+there is potential for them to get very large. This can be controlled
+by capping their maxEntriesLocalHeap and specifying whether to swap to disk beyond that.
+Hibernate uses a specific convention for the naming of caches of Domain
+Objects, Collections, and Queries.</p>
+
+<h3 id="domain-objects">Domain Objects</h3>
+<p>Hibernate creates caches named after the fully qualified name of Domain
+Objects.
+So, for example to create a cache for com.somecompany.someproject.domain.Country create a cache configuration
+entry similar to the following in ehcache.xml.</p>
+
+<pre>
+   <code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;ehcache&gt;
+ &lt;cache
+	name="com.somecompany.someproject.domain.Country"
+	maxEntriesLocalHeap="10000"
+	eternal="false"
+	timeToIdleSeconds="300"
+	timeToLiveSeconds="600"
+    &lt;persistence strategy="localTempSwap"/&gt;
+ /&gt;
+&lt;/ehcache&gt;
+</code>
+</pre>
+
+<h4 id="hibernate-cacheconcurrencystrategy">Hibernate CacheConcurrencyStrategy</h4>
+<p>read-write, nonstrict-read-write and read-only policies apply to Domain
+Objects.</p>
+
+<h3 id="collections">Collections</h3>
+<p>Hibernate creates collection caches named after the fully qualified
+name of the Domain Object followed by “.” followed by the collection
+field name.
+For example, a Country domain object has a set of
+advancedSearchFacilities. The Hibernate doclet for the accessor
+looks like:</p>
+
+<pre>
+   <code>/**
+* Returns the advanced search facilities that should appear for this country.
+* @hibernate.set cascade="all" inverse="true"
+* @hibernate.collection-key column="COUNTRY_ID"
+* @hibernate.collection-one-to-many class="com.wotif.jaguar.domain.AdvancedSearchFacility"
+* @hibernate.cache usage="read-write"
+*/
+public Set getAdvancedSearchFacilities() {
+return advancedSearchFacilities;
+"/&gt;
+</code>
+</pre>
+
+<p>You need an additional cache configured for the set. The ehcache.xml configuration looks like:</p>
+
+<pre>
+   <code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;ehcache&gt;
+ &lt;cache name="com.somecompany.someproject.domain.Country"
+	maxEntriesLocalHeap="50"
+	eternal="false"
+	timeToLiveSeconds="600"
+    &lt;persistence strategy="localTempSwap"/&gt;
+/&gt;
+ &lt;cache
+name="com.somecompany.someproject.domain.Country.advancedSearchFacilities"
+	maxEntriesLocalHeap="450"
+	eternal="false"
+	timeToLiveSeconds="600"
+    &lt;persistence strategy="localTempSwap"/&gt;
+/&gt;
+&lt;/ehcache&gt;
+</code>
+</pre>
+
+<h4 id="hibernate-cacheconcurrencystrategy-1">Hibernate CacheConcurrencyStrategy</h4>
+<p>read-write, nonstrict-read-write and read-only policies apply to Domain
+Object collections.</p>
+
+<h3 id="queries">Queries</h3>
+<p>Hibernate allows the caching of query results using two caches.</p>
+
+<h4 id="standardquerycache">StandardQueryCache</h4>
+<p>This cache is used if you use a query cache without setting a
+name. A typical ehcache.xml configuration is:</p>
+
+<pre>
+   <code>&lt;cache
+name="org.hibernate.cache.StandardQueryCache"
+maxEntriesLocalHeap="5"
+eternal="false"
+timeToLiveSeconds="120"
+&lt;persistence strategy="localTempSwap"/&gt;
+/&gt;
+</code>
+</pre>
+
+<h4 id="updatetimestampscache">UpdateTimestampsCache</h4>
+<p>Tracks the timestamps of the most recent updates to particular tables.
+It is important that the cache timeout of the underlying cache
+implementation be set to a higher value than the timeouts of any of the
+query caches. In fact, it is recommend that the the underlying cache
+not be configured for expiry at all.
+A typical ehcache.xml configuration is:</p>
+
+<pre>
+   <code>&lt;cache
+name="org.hibernate.cache.UpdateTimestampsCache"
+maxEntriesLocalHeap="5000"
+eternal="true"
+&lt;persistence strategy="localTempSwap"/&gt;
+/&gt;
+</code>
+</pre>
+
+<h4 id="named-query-caches">Named Query Caches</h4>
+<p>In addition, a QueryCache can be given a specific name in Hibernate
+using Query.setCacheRegion(String name). The name of the cache in
+ehcache.xml is then the name given in that method. The name can be
+whatever you want, but by convention you should use “query.” followed
+by a descriptive name.
+E.g.</p>
+
+<pre>
+   <code>&lt;cache name="query.AdministrativeAreasPerCountry"
+maxEntriesLocalHeap="5"
+eternal="false"
+timeToLiveSeconds="86400"
+&lt;persistence strategy="localTempSwap"/&gt;
+/&gt;
+</code>
+</pre>
+
+<h4 id="using-query-caches">Using Query Caches</h4>
+<p>For example, let’s say we have a common query running against the
+Country Domain.
+Code to use a query cache follows:</p>
+
+<pre>
+   <code>public List getStreetTypes(final Country country) throws HibernateException {
+final Session session = createSession();
+try {
+   final Query query = session.createQuery(
+    "select st.id, st.name"
+   + " from StreetType st "
+   + " where st.country.id = :countryId "
+   + " order by st.sortOrder desc, st.name");
+   query.setLong("countryId", country.getId().longValue());
+   query.setCacheable(true);
+   query.setCacheRegion("query.StreetTypes");
+   return query.list();
+} finally {
+   session.close();
+"/&gt;
+"/&gt;
+</code>
+</pre>
+
+<p>The <code>query.setCacheable(true)</code> line caches the query.
+The <code>query.setCacheRegion("query.StreetTypes")</code> line sets the name of the Query Cache.
+Alex Miller has a good article on the query cache
+<a href="http://tech.puredanger.com/2009/07/10/hibernate-query-cache/">here</a>.</p>
+
+<h4 id="hibernate-cacheconcurrencystrategy-2">Hibernate CacheConcurrencyStrategy</h4>
+<p>None of read-write, nonstrict-read-write and read-only policies apply
+to Domain Objects. Cache policies are not configurable for query cache.
+They act like a non-locking read only cache.</p>
+
+<h2 id="demo-app-">Demo App <a name="demo-apps" id="demo-apps"></a></h2>
+<p>We have  demo application showing how to use the Hibernate CacheRegionFactory.</p>
+
+<h3 id="hibernate-tutorial">Hibernate Tutorial</h3>
+<p>Check out from the <a href="http://svn.terracotta.org/svn/forge/projects/hibernate-tutorial-web/trunk">Terracotta Forge</a>.</p>
+
+<h2 id="performance-tips-">Performance Tips <a name="Performance-Tips" id="Performance-Tips"></a></h2>
+
+<h3 id="sessionload">Session.load</h3>
+<p><code>Session.load</code> will always try to use the cache.</p>
+
+<h3 id="sessionfind-and-queryfind">Session.find and Query.find</h3>
+<p><code>Session.find</code> does not use the cache for the primary object. Hibernate
+will try to use the cache for any associated objects. <code>Session.find</code> does
+however cause the cache to be populated.
+<code>Query.find</code> works in exactly the same way.
+Use these where the chance of getting a cache hit is low.</p>
+
+<h3 id="sessioniterate-and-queryiterate">Session.iterate and Query.iterate</h3>
+<p><code>Session.iterate</code> always uses the cache for the primary object and any
+associated objects.
+<code>Query.iterate</code> works in exactly the same way.
+Use these where the chance of getting a cache hit is high.</p>
+
+<h2 id="faq">FAQ</h2>
+
+<h3 id="if-im-using-bigmemory-go-with-my-app-and-with-hibernate-for-second-level-caching-should-i-try-to-use-the-cachemanager-created-by-hibernate-for-my-apps-caches">If I’m using BigMemory Go with my app and with Hibernate for second-level caching, should I try to use the CacheManager created by Hibernate for my app’s caches?</h3>
+
+<p>While you could share the resource file between the two CacheManagers, a clear separation between the two is recommended. Your app may have a different lifecycle than Hibernate, and in each case your CacheManager <a href="/documentation/2.7/bigmemorygo/get-started#configuring-bigmemory-go">Automatic Resource Control (ARC)</a> settings may need to be different.</p>
+
+<h3 id="should-i-use-the-provider-in-the-hibernate-distribution-or-in-bigmemory-gos-ehcache">Should I use the provider in the Hibernate distribution or in BigMemory Go’s Ehcache?</h3>
+<p>Since Hibernate 2.1, Hibernate has included an Ehcache <code>CacheProvider</code>. That provider
+is periodically synced up with the provider in the Ehcache Core distribution. New
+features are generally added in to the Ehcache Core provider and then the Hibernate one.</p>
+
+<h3 id="what-is-the-relationship-between-the-hibernate-and-ehcache-projects">What is the relationship between the Hibernate and Ehcache projects?</h3>
+<p>Gavin King and Greg Luck cooperated to create Ehcache and include it in Hibernate. Since
+2009, Greg Luck has been a committer on the Hibernate project so as to ensure Ehcache
+remains a first-class 2nd level cache for Hibernate.</p>
+
+<h3 id="does-bigmemory-go-support-the-transactional-strategy">Does BigMemory Go support the transactional strategy?</h3>
+<p>Yes. It was introduced in Ehcache 2.1.</p>
+
+<h3 id="why-do-certain-caches-sometimes-get-automatically-cleared-by-hibernate">Why do certain caches sometimes get automatically cleared by Hibernate?</h3>
+<p>Whenever a <code>Query.executeUpdate()</code> is run, for example, Hibernate invalidates affected cache regions (those corresponding to affected database tables) to ensure that no data stale data is cached. This should also happen whenever stored procedures are executed.</p>
+
+<p>For more information, see this <a href="https://hibernate.onjira.com/browse/HHH-2224">Hibernate bug report</a>.</p>
+
+<h3 id="how-are-hibernate-entities-keyed">How are Hibernate Entities keyed?</h3>
+<p>Hibernate identifies cached Entities via an object id. This is normally
+the primary key of a database row.</p>
+
+<h3 id="are-compound-keys-supported">Are compound keys supported?</h3>
+<p>Yes.</p>
+
+<h3 id="i-am-getting-this-error-message-an-item-was-expired-by-the-cache-while-it-was-locked-what-is-it">I am getting this error message: An item was expired by the cache while it was locked. What is it?</h3>
+<p>Soft locks are implemented by replacing a value with a special type that marks the element as locked, thus indicating
+to other threads to treat it differently to a normal element.  This is used in the Hibernate Read/Write strategy to
+force fall-through to the database during the two-phase commit - since we don’t know exactly what should be returned by
+the cache while the commit is in process (but the database does).
+If a soft-locked Element is evicted by the cache during the two-phase commit, then once the two-phase commit completes, the
+cache will fail to update (since the soft-locked Element was evicted) and the cache entry will be reloaded from the database
+on the next read of that object.  This is obviously non-fatal, but could cause a small rise in database load.</p>
+
+<p>So, in summary the Hibernate messages are not problematic.
+The underlying cause is the probabilistic evictor can theoretically evict recently loaded items. You can also use the deterministic evictor to avoid this problem. Specify the <code>java -Dnet.sf.ehcache.use.classic.lru=true</code>
+system property to turn on classic LRU which contains a deterministic evictor.</p>
+
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

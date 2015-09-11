@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.8 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.8/apis/transactions.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.8 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.8/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.8/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.8/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.8/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.8/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.8/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.8/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.8/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.8/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.8/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.8/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.8.5/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="transactions-in-ehcache">Transactions in Ehcache</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#transactions-in-ehcache">
+                        <span class="toctext">Transactions in Ehcache</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#when-to-use-transactional-modes">
+                              <span class="toctext">When to use transactional modes</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#requirements">
+                              <span class="toctext">Requirements</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#configuration">
+                              <span class="toctext">Configuration</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#global-transactions">
+                              <span class="toctext">Global Transactions</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#failure-recovery">
+                              <span class="toctext">Failure Recovery</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#sample-apps-">
+                              <span class="toctext">Sample Apps </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-9">
+                           <a href="#transaction-managers">
+                              <span class="toctext">Transaction Managers</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-10">
+                           <a href="#local-transactions">
+                              <span class="toctext">Local Transactions</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-11">
+                           <a href="#performance">
+                              <span class="toctext">Performance</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-12">
+                           <a href="#faq">
+                              <span class="toctext">FAQ</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Transactions are supported in versions of Ehcache 2.0 and higher.
+The 2.3.x or lower releases only support XA. However since ehcache 2.4 support for both Global Transactions
+with <code>xa_strict</code> and <code>xa</code> modes, and Local Transactions with <code>local</code> mode has been added.</p>
+
+<h3 id="all-or-nothing">All or nothing</h3>
+
+<p>If a cache is enabled for transactions, all operations on it must happen within a transaction context
+otherwise a <code>TransactionException</code> will be thrown.</p>
+
+<h3 id="change-visibility">Change Visibility</h3>
+
+<p>The isolation level offered in Ehcache is <code>READ_COMMITTED</code>. Ehcache can work as an XAResource in which case,
+full two-phase commit is supported.
+Specifically:</p>
+
+<ul>
+  <li>All mutating changes to the cache are transactional including <code>put</code>, <code>remove</code>, <code>putWithWriter</code>, <code>removeWithWriter</code> and <code>removeAll</code>.</li>
+  <li>Mutating changes are not visible to other transactions in the local JVM or across the cluster until <code>COMMIT</code> has been called.</li>
+  <li>Until then, read such as by <code>cache.get(...)</code> by other transactions will return the old copy. Reads do not block.</li>
+</ul>
+
+<h2 id="when-to-use-transactional-modes">When to use transactional modes</h2>
+
+<p>Transactional modes are a powerful extension of Ehcache allowing you to perform atomic operations on your caches and
+potentially other data stores, eg: to keep your cache in sync with your database.</p>
+
+<ul>
+  <li><code>local</code> When you want your changes across multiple caches to be performed atomically.
+  Use this mode when you need to update your caches atomically, ie: have all your changes be committed or rolled back
+using a straight simple API. This mode is most useful when a cache contains data calculated out of other cached data.</li>
+  <li><code>xa</code>
+  Use this mode when you cache data from other data stores (eg: DBMS, JMS) and want to do it in an atomic way under the
+control of the JTA API but don’t want to pay the price of full two-phase commit. In this mode, your cached data can
+get out of sync with the other resources participating in the transactions in case of a crash so only use it if you
+can afford to live with stale data for a brief period of time.</li>
+  <li><code>xa_strict</code>
+  Same as xa but use it only if you need strict XA disaster recovery guarantees. In this mode, the cached data can never
+get out of sync with the other resources participating in the transactions, even in case of a crash but you pay a high
+price in performance to get that extra safety.</li>
+</ul>
+
+<h2 id="requirements">Requirements</h2>
+<p>The objects you are going to store in your transactional cache must:</p>
+
+<ul>
+  <li>implement <code>java.io.Serializable</code>
+This is required to store cached objects when the cache is <a href="http://terracotta.org/documentation/2.8/bigmemorymax">distributed</a>, but it’s also required by the
+copy on read / copy on write mechanism used to implement isolation.</li>
+  <li>override <code>equals</code> and <code>hashcode</code>
+Those must be overridden as the transactional stores rely on element value comparison, see: <code>ElementValueComparator</code>
+and the <code>elementValueComparator</code> configuration setting.</li>
+</ul>
+
+<h2 id="configuration">Configuration</h2>
+<p>Transactions are enabled on a cache by cache basis with the <code>transactionalMode</code> cache attribute.
+The allowed values are:</p>
+
+<ul>
+  <li><code>xa_strict</code></li>
+  <li><code>xa</code></li>
+  <li><code>local</code></li>
+  <li><code>off</code></li>
+</ul>
+
+<p>The default value is off.
+Enabling a cache for <code>xa_strict</code> transactions is shown in the following example:</p>
+
+<pre>
+   <code>&lt;cache name="xaCache"
+   maxEntriesLocalHeap="500"
+   eternal="false"
+   timeToIdleSeconds="300"
+   timeToLiveSeconds="600"
+   diskExpiryThreadIntervalSeconds="1"
+   transactionalMode="xa_strict"&gt;
+   &lt;persistence strategy="none"/&gt;
+ &lt;/cache&gt;
+</code>
+</pre>
+
+<h3 id="transactional-caches-with-spring">Transactional Caches with Spring</h3>
+<p>Note the following when using Spring:</p>
+
+<ul>
+  <li>If you access the cache from an @Transactional Spring-annotated method, then begin/commit/rollback statements are not required in application code as they are emitted by Spring.</li>
+  <li>Both Spring and Ehcache need to access the transaction manager internally, and therefore you must inject your chosen transaction manager into Spring’s PlatformTransactionManager as well as use an appropriate lookup strategy for Ehcache.</li>
+  <li>The Ehcache default lookup strategy may not be able to detect your chosen transaction manager. For example, it cannot detect the WebSphere transaction manager (see <a href="#transaction-managers">Transactions Managers</a>).</li>
+  <li>Configuring a <code>&lt;tx:method&gt;</code> with read-only=true could be problematic with certain transaction managers such as WebSphere.</li>
+</ul>
+
+<h2 id="global-transactions">Global Transactions</h2>
+<p>Global Transactions are supported by Ehcache. Ehcache can act as an {XAResouce} to participate in
+JTA (“Java Transaction API”) transactions under the control of a Transaction Manager. This is typically provided by your
+application server, however you may also use a third party transaction manager such as Bitronix.
+To use Global Transactions, select either <code>xa_strict</code> or <code>xa</code> mode. The differences are explained in the sections below.</p>
+
+<h3 id="implementation">Implementation</h3>
+<p>Global transactions support is implemented at the Store level, through XATransactionStore and JtaLocalTransactionStore. The former actually
+decorates the underlying MemoryStore implementation, augmenting it with transaction isolation and two-phase commit support through
+an &lt;XAResouce&gt; implementation. The latter decorates a LocalTransactionStore-decorated cache to make it controllable by the standard JTA API
+instead of the proprietary TransactionController API.
+During its initialization, the Cache will lookup the TransactionManager using the provided TransactionManagerLookup implementation.
+Then, using the <code>TransactionManagerLookup.register(XAResouce)</code>, the newly created XAResource will be registered.
+The store is automatically configured to copy every Element read from the cache or written to it. Cache is copy-on-read and copy-on-write.</p>
+
+<h2 id="failure-recovery">Failure Recovery</h2>
+<p>In support of the JTA specification, only &lt;prepared&gt; transaction data is recoverable.
+Prepared data is persisted onto the cluster and locks on the memory are held. This basically means that non-distributed caches cannot persist
+transactions data, so recovery errors after a crash may be reported by the transaction manager.</p>
+
+<h3 id="recovery">Recovery</h3>
+<p>At any time after something went wrong, an <code>XAResource</code> may be asked to recover. Data that has been prepared may either be committed or rolled back
+during recovery. In accordance with XA, data that has not yet been <code>prepared</code> is discarded.
+The recovery guarantee differs depending on the xa mode.</p>
+
+<h4 id="xa-mode">xa Mode</h4>
+<p>With <code>xa</code>, the cache doesn’t get registered as an {XAResource} with the transaction manager but merely can follow the flow of a JTA
+transaction by registering a JTA {Synchronization}. The cache can end up inconsistent with the other resources if there is a JVM crash
+in the mutating node.
+In this mode, some inconsistency may occur between a cache and other XA resources (such as databases) after a crash. However,
+the cache’s data remains consistent because the transaction is still fully atomic on the cache itself.</p>
+
+<h4 id="xastrict-mode">xa_strict Mode</h4>
+<p>If <code>xa_strict</code> is used the cache will always respond to the TransactionManager’s recover calls with the list of
+prepared XIDs of failed transactions. Those transaction branches can then be committed or rolled back by the transaction manager.
+This mode supports the basic XA mechanism of the JTA standard.</p>
+
+<h2 id="sample-apps-">Sample Apps <a name="Sample-Apps" id="Sample-Apps"></a></h2>
+<p>We have three sample applications showing how to use XA with a variety of technologies.</p>
+
+<h3 id="xa-sample-app">XA Sample App</h3>
+<p>This sample application uses JBoss application server. It shows an example using User managed transactions. While we expect most people will use
+JTA from within Spring or EJB where the container rather than managing it themselves, it clearly shows what is going
+on.
+The following snippet from our SimpleTX servlet shows a complete transaction.</p>
+
+<pre>
+   <code>Ehcache cache = cacheManager.getEhcache("xaCache");
+UserTransaction ut = getUserTransaction();
+printLine(servletResponse, "Hello...");
+try {
+   ut.begin();
+   int index = serviceWithinTx(servletResponse, cache);
+   printLine(servletResponse, "Bye #" + index);
+   ut.commit();
+} catch(Exception e) {
+   printLine(servletResponse,
+       "Caught a " + e.getClass() + "! Rolling Tx back");
+   if(!printStackTrace) {
+       PrintWriter s = servletResponse.getWriter();
+       e.printStackTrace(s);
+       s.flush();
+   "/&gt;
+   rollbackTransaction(ut);
+"/&gt;
+</code>
+</pre>
+
+<p>The source code for the demo can be checked out from the <a href="http://svn.terracotta.org/svn/forge/projects/ehcache-jta-sample/trunk">Terracotta Forge</a>. A README.txt explains how to get the JTA Sample app going.</p>
+
+<h3 id="xa-banking-application">XA Banking Application</h3>
+<p>The Idea of this application is to show a real world scenario. A Web app reads &lt;account transfer&gt; messages from a queue
+and tries to execute these account transfers.
+With JTA turned on, failures are rolled back so that the cached account balance is always the same as the true balance
+summed from the database.
+This app is a Spring-based Java web app running in a Jetty container. It has (embedded) the following components:</p>
+
+<ul>
+  <li>A JMS Server (ActiveMQ)</li>
+  <li>2 databases (embedded Derby XA instances)</li>
+  <li>2 caches (JTA Ehcache)</li>
+</ul>
+
+<p>All XA Resources are managed by Atomikos TransactionManager. Transaction demarcation is done using Spring AOP’s <code>@Transactional</code> annotation. You can run it with: <code>mvn clean jetty:run</code>. Then point your browser at: <a href="http://localhost:9080">http://localhost:9080</a>.
+To see what happens without XA transactions: <code>mvn clean jetty:run -Dxa=no</code></p>
+
+<p>The source code for the demo can be checked out from the <a href="http://svn.terracotta.org/svn/forge/projects/ehcache-jta-banking/trunk">Terracotta Forge</a>. A README.txt explains how to get the JTA Sample app going.</p>
+
+<h2 id="transaction-managers">Transaction Managers</h2>
+
+<h3 id="automatically-detected-transaction-managers">Automatically Detected Transaction Managers</h3>
+<p>Ehcache automatically detects and uses the following transaction managers in the following order:</p>
+
+<ul>
+  <li>GenericJNDI (e.g. Glassfish, JBoss, JTOM and any others that register themselves in JNDI at the standard location of java:/TransactionManager</li>
+  <li>Weblogic (since 2.4.0)</li>
+  <li>Bitronix</li>
+  <li>Atomikos</li>
+</ul>
+
+<p>No configuration is required; they work out of the box.
+The first found is used.</p>
+
+<h3 id="configuring-a-transaction-manager">Configuring a Transaction Manager</h3>
+<p>If your Transaction Manager is not in the above list or you wish to change the priority, provide your own lookup class based on an implementation of <code>net.sf.ehcache.transaction.manager.TransactionManagerLookup</code>
+and specify it in place of
+the <code>DefaultTransactionManagerLookup</code> in <code>ehcache.xml</code>:</p>
+
+<pre>
+   <code>&lt;transactionManagerLookup
+  class= "com.mycompany.transaction.manager.MyTransactionManagerLookupClass"
+  properties="" propertySeparator=":"/&gt;
+</code>
+</pre>
+
+<p>Another option is to provide a different location for the JNDI lookup by passing the jndiName property to the DefaultTransactionManagerLookup.
+The example below provides the proper location for the TransactionManager in GlassFish v3:</p>
+
+<pre>
+   <code>&lt;transactionManagerLookup
+  class="net.sf.ehcache.transaction.manager.DefaultTransactionManagerLookup"
+  properties="jndiName=java:appserver/TransactionManager" propertySeparator=";"/&gt;
+</code>
+</pre>
+
+<h2 id="local-transactions">Local Transactions</h2>
+<p>Local Transactions allow single phase commit across multiple cache operations, across one or more caches,
+and in the same CacheManager, whether <a href="http://terracotta.org/documentation/2.8/bigmemorymax">distributed</a> or standalone.
+This lets you apply multiple changes to a CacheManager all in your own transaction. If you also want to apply changes
+to other resources such as a database then you need to open a transaction to them and manually handle commit and rollback
+to ensure consistency.
+Local transactions are not controlled by a Transaction Manager. Instead there is an explicit API where a reference is obtained
+to a <code>TransactionController</code> for the CacheManager using <code>cacheManager.getTransactionController()</code> and the steps in the
+transaction are called explicitly.
+The steps in a local transaction are:</p>
+
+<ul>
+  <li><code>transactionController.begin()</code> - This marks the beginning of the local transaction on the current thread. The changes are not visible to other threads or to
+ other transactions.</li>
+  <li><code>transactionController.commit()</code> - Commits work done in the current transaction on the calling thread.</li>
+  <li><code>transactionController.rollback()</code> - Rolls back work done in the current transaction on the calling thread. The changes done since begin are not applied to
+ the cache.
+These steps should be placed in a try-catch block which catches <code>TransactionException</code>. If any exceptions are thrown, rollback() should be
+called.
+Local Transactions has it’s own exceptions that can be thrown, which are all subclasses of <code>CacheException</code>. They are:</li>
+  <li><code>TransactionException</code> - a general exception</li>
+  <li><code>TransactionInterruptedException</code> - if Thread.interrupt() got called while the cache was processing a transaction.</li>
+  <li><code>TransactionTimeoutException</code> - if a cache operation or commit is called after the transaction timeout has elapsed.</li>
+</ul>
+
+<h3 id="introduction-video">Introduction Video</h3>
+<p>Ludovic Orban the primary author of Local Transactions presents an <a href="http://vimeo.com/21299785">introductory video</a> on Local Transactions.</p>
+
+<h3 id="configuration-1">Configuration</h3>
+<p>Local transactions are configured as follows:</p>
+
+<pre>
+   <code>&lt;cache name="sampleCache"
+   ...
+   transactionalMode="local"
+ &lt;/cache&gt;
+</code>
+</pre>
+
+<h3 id="isolation-level">Isolation Level</h3>
+<p>As with the other transaction modes, the isolation level is READ_COMMITTED.</p>
+
+<h3 id="transaction-timeouts">Transaction Timeouts</h3>
+<p>If a transaction cannot complete within the timeout period, then a <code>TransactionTimeoutException</code> will be thrown. To return the
+cache to a consistent state you need to call <code>transactionController.rollback()</code>.
+Because <code>TransactionController</code> is at the level of the CacheManager, a default timeout can be set which applies to all transactions
+across all caches in a CacheManager. If not set, it is 15 seconds.
+To change the defaultTimeout:</p>
+
+<pre>
+   <code>transactionController.setDefaultTransactionTimeout(int defaultTransactionTimeoutSeconds)
+</code>
+</pre>
+
+<p>The countdown starts straight after <code>begin()</code> is called. You might have another local transaction on a JDBC connection and you may
+be making multiple changes. If you think it could take longer than 15 seconds for an individual transaction, you can override the
+default when you begin the transaction with:</p>
+
+<pre>
+   <code>transactionController.begin(int transactionTimeoutSeconds) {
+</code>
+</pre>
+
+<h3 id="sample-code">Sample Code</h3>
+<p>This example shows a transaction which performs multiple operations across two caches.</p>
+
+<pre>
+   <code>CacheManager cacheManager = CacheManager.getInstance();
+try {
+   cacheManager.getTransactionController().begin();
+    cache1.put(new Element(1, "one"));
+   cache2.put(new Element(2, "two"));
+   cache1.remove(4);
+    cacheManager.getTransactionController().commit();
+} catch (CacheException e) {
+   cacheManager.getTransactionController().rollback()
+"/&gt;
+</code>
+</pre>
+
+<h3 id="what-can-go-wrong">What can go wrong</h3>
+
+<h4 id="jvm-crash-between-begin-and-commit">JVM crash between begin and commit</h4>
+<p>On restart none of the changes applied after begin are there.</p>
+
+<h2 id="performance">Performance</h2>
+
+<h3 id="managing-contention">Managing Contention</h3>
+<p>If two transactions attempt to perform a cache operation on the same element then the
+following rules apply:</p>
+
+<ul>
+  <li>The first transaction gets access</li>
+  <li>The following transactions will block on the cache operation until either the first transaction completes or the transaction timeout occurs.</li>
+</ul>
+
+<p>Under the covers, when an element is involved in a transaction, it is replaced with a new element with a marker that is locked, along
+with the transaction ID.</p>
+
+<h3 id="what-granularity-of-locking-is-used">What granularity of locking is used?</h3>
+<p>Ehcache standalone up to 2.3 used page level locking, where each segment in the <code>CompoundStore</code> is locked. From 2.4, it is one
+with soft locks stored in the Element itself and is on a key basis.
+<a href="http://terracotta.org/documentation/2.8/bigmemory">Distributed</a> caches are locked on the key level.</p>
+
+<h3 id="performance-comparisons">Performance Comparisons</h3>
+<p>Any transactional cache adds an overhead which is significant for writes and nearly negligible for reads.
+Within the modes the relative time take to perform writes, where off = 1, is:</p>
+
+<ul>
+  <li>off   - no overhead</li>
+  <li>xa_strict    - 20 times slower</li>
+  <li>xa - 3 times slower</li>
+  <li>local - 3 times slower
+The relative read performance is:</li>
+  <li>off   - no overhead</li>
+  <li>xa_strict    - 20 times slower</li>
+  <li>xa - 30% slower</li>
+  <li>local - 30% slower</li>
+</ul>
+
+<p>Accordingly, xa_strict should only be used where it’s full guarantees are required, othewise one of the other modes should be used.</p>
+
+<h2 id="faq">FAQ</h2>
+
+<h3 id="why-do-some-threads-regularly-time-out-and-throw-an-excption">Why do some threads regularly time out and throw an excption?</h3>
+<p>In transactional caches, write locks are in force whenever an element is updated, deleted, or added. With concurrent access, these locks cause some threads to block and appear to deadlock. Eventually the deadlocked threads time out (and throw an exception) to avoid being stuck in a deadlock condition.</p>
+
+<h3 id="is-ibm-websphere-transaction-manager-supported">Is IBM Websphere Transaction Manager supported?</h3>
+<p>Mostly. xa_strict is not supported due to each version of Websphere essentially being a custom implementation i.e. no stable interface to
+implement against. However, <code>xa</code>, which uses TransactionManager callbacks and <code>local</code> are supported.</p>
+
+<p>When using Spring, make sure your configuration is set up correctly with respect to the PlatformTransactionManager and the Websphere TM.</p>
+
+<p>To confirm that Ehcache will succeed, try to manually register a <code>com.ibm.websphere.jtaextensions.SynchronizationCallback</code> in the <code>com.ibm.websphere.jtaextensions.ExtendedJTATransaction</code>. Simply get <code>java:comp/websphere/ExtendedJTATransaction</code> from JNDI, cast that to <code>com.ibm.websphere.jtaextensions.ExtendedJTATransaction</code> and call the <code>registerSynchronizationCallbackForCurrentTran</code> method. If you succeed, then Ehcache should too.</p>
+
+<h3 id="how-do-transactions-interact-with-write-behind-and-write-through-caches">How do transactions interact with Write-behind and Write-through caches?</h3>
+<p>If your transactional enabled cache is being used with a writer, write operations will be queued until transaction commit time. Solely
+a Write-through approach would have its potential XAResource participate in the same transaction. Write-behind, while supported,
+should probably not be used with an XA transactional Cache, as the operations would never be part of the same transaction. Your writer
+would also be responsible for obtaining a new transaction…
+Using Write-through with a non XA resource would also work, but there is no guarantee the transaction will succeed after the write
+operations have been executed successfully. On the other hand, any thrown exception during these write operations would cause the
+transaction to be rolled back by having UserTransaction.commit() throw a RollbackException.</p>
+
+<h3 id="are-hibernate-transactions-supported">Are Hibernate Transactions supported?</h3>
+<p>Ehcache is a “transactional” cache for Hibernate purposes. The <code>net.sf.ehcache.hibernate.EhCacheRegionFactory</code>
+has support for Hibernate entities configured with &lt;cache usage=”transactional”/&gt;.</p>
+
+<h3 id="how-do-i-make-weblogic-10-work-with-ehcache-jta">How do I make WebLogic 10 work with Ehcache JTA?</h3>
+<p>WebLogic uses an optimization that is not supported by our implementation. By default WebLogic 10 will spawn threads to
+start the Transaction on each XAResource in parallel. As we need transaction work to be performed on the same Thread, you will have
+to turn this optimization off by setting <code>parallel-xa-enabled</code> option to <code>false</code> in your domain configuration :</p>
+
+<pre>
+   <code>&lt;jta&gt;
+  ...
+  &lt;checkpoint-interval-seconds&gt;300&lt;/checkpoint-interval-seconds&gt;
+  &lt;parallel-xa-enabled&gt;false&lt;/parallel-xa-enabled&gt;
+  &lt;unregister-resource-grace-period&gt;30&lt;/unregister-resource-grace-period&gt;
+...
+&lt;/jta&gt;
+</code>
+</pre>
+
+<h3 id="how-do-i-make-atomikos-work-with-ehcache-jtas-xa-mode">How do I make Atomikos work with Ehcache JTA’s <code>xa</code> mode?</h3>
+<p>Atomikos has <a href="http://fogbugz.atomikos.com/default.asp?community.6.802.3">a bug</a> which makes the <code>xa</code> mode’s normal transaction termination mechanism unreliable,
+There is an alternative termination mechanism built in that transaction mode that is automatically enabled when <code>net.sf.ehcache.transaction.xa.alternativeTerminationMode</code> is set to true or when Atomikos is detected as the controlling transaction manager.
+This alternative termination mode has strict requirement on the way threads are used by the transaction manager and Atomikos’s default settings won’t work. You have to configure this property to make it work:</p>
+
+<pre>
+   <code>com.atomikos.icatch.threaded_2pc=false
+</code>
+</pre>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

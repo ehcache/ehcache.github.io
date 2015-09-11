@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/get-started/storage-options.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="storage-options-">Storage Options <a name="Storage-Options" id="Storage-Options"></a></h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#storage-options-">
+                        <span class="toctext">Storage Options </span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#memorystore">
+                              <span class="toctext">MemoryStore</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#bigmemory-(off-heap-store)">
+                              <span class="toctext">BigMemory (Off-Heap Store)</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#diskstore-">
+                              <span class="toctext">DiskStore </span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#some-configuration-examples">
+                              <span class="toctext">Some Configuration Examples</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#performance-considerations">
+                              <span class="toctext">Performance Considerations</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+<p>Ehcache has three storage tiers:</p>
+
+<ul>
+  <li>a MemoryStore</li>
+  <li>an OffHeapStore (available via <a href="http://terracotta.org/products">BigMemory</a>)</li>
+  <li>a DiskStore</li>
+</ul>
+
+<p>This page presents these cache storage tiers and provides the suitable element types for each storage option.</p>
+
+<p>For information about sizing the tiers, refer to <a href="/documentation/2.7/configuration/cache-size#cache-configuration-sizing-attributes">Cache Configuration Sizing Attributes</a>.</p>
+
+<h2 id="memorystore">MemoryStore</h2>
+<p>The <code>MemoryStore</code> is always enabled. It is not directly manipulated, but is a component of every cache.</p>
+
+<h3 id="suitable-element-types">Suitable Element Types</h3>
+<p>All Elements are suitable for placement in the MemoryStore. It has the following characteristics:</p>
+
+<ul>
+  <li><strong>Safe</strong>
+    <ul>
+      <li>Thread safe for use by multiple concurrent threads.</li>
+      <li>Tested for memory leaks. The MemoryCacheTest passes for Ehcache but exploits a number of memory leaks in JCS. JCS will give an OutOfMemory error with a default 64M in 10 seconds.</li>
+    </ul>
+  </li>
+  <li><strong>Fast</strong>—The MemoryStore, being all in memory, is the fastest caching option.</li>
+</ul>
+
+<h3 id="memory-use-spooling-and-expiry-strategy">Memory Use, Spooling, and Expiry Strategy</h3>
+
+<p>All caches specify their maximum in-memory size, in terms of the number of elements, at configuration time.</p>
+
+<p>When an element is added to a cache and it goes beyond its maximum
+memory size, an existing element is either:</p>
+
+<ul>
+  <li>deleted, if overflow is not enabled, or</li>
+  <li>evaluated for spooling to another tier, if overflow is enabled.</li>
+</ul>
+
+<p>Overflow options are discussed <a href="/documentation/2.7/configuration/fast-restart#strategy-options">here</a>.</p>
+
+<p>If overflow is enabled, a check for expiry is carried out. Expired elements
+are deleted; unexpired elements are spooled. The eviction of an item from
+the memory store is based on the ‘MemoryStoreEvictionPolicy’ setting
+specified in the configuration file. <code>memoryStoreEvictionPolicy</code> is an optional attribute in <code>ehcache.xml</code>, first introduced in Ehcache 1.2. Legal values are LRU (default, consistent with all earlier releases of Ehcache), LFU and FIFO:</p>
+
+<ul>
+  <li><strong>Least Recently Used (LRU)</strong> *Default**—The eldest element, is the Least Recently Used (LRU). The last used timestamp is updated when an element is put into the cache or an element is retrieved from the cache with a get call.</li>
+  <li><strong>Least Frequently Used (LFU)</strong>—For each get call on the element the number of hits is updated. When a put call is made for a new element (and assuming that the max limit is reached for the MemoryStore) the element with least number of hits, the Less Frequently Used element, is evicted.</li>
+  <li><strong>First In First Out (FIFO)</strong>—Elements are evicted in the same order as they come in. When a put call is made for a new element (and assuming that the max limit is reached for the MemoryStore) the element that was placed first (First-In) in the store is the candidate for eviction (First-Out).</li>
+</ul>
+
+<p>For all the eviction policies there are also <code>putQuiet</code> and <code>getQuiet</code> methods which do not update the last used timestamp.</p>
+
+<p>When there is a <code>get</code> or a <code>getQuiet</code> on an element, it is checked for expiry. If expired, it is removed and null is returned.</p>
+
+<p>Note that at any point in time there will usually be some expired
+elements in the cache. Memory sizing of an application must always take into
+account the maximum size of each cache.</p>
+
+<p>There is a convenient method
+which can provide an estimate of the size in bytes of the <code>MemoryStore</code>, <a href="http://ehcache.org/apidocs/2.7.6/net/sf/ehcache/Cache.html#calculateInMemorySize%28%29">calculateInMemorySize()</a>.
+It returns the serialized size of the cache. However, do not use this method in production, as it is very slow. It is only meant to provide a rough estimate.</p>
+
+<p>An alternative would be to have an expiry thread. This is a trade-off between lower memory use and short locking periods and CPU utilization. The design is in favour of the latter. For those concerned with memory use, simply reduce the cache’s size in memory (see <a href="/documentation/2.7/configuration/cache-size">How to Size Caches</a> for more information).</p>
+
+<h2 id="bigmemory-(off-heap-store)">BigMemory (Off-Heap Store)</h2>
+
+<p><a href="http://www.terracotta.org/products">BigMemory</a> is a pure Java product from Terracotta that permits caches to use an additional
+type of memory store outside the object heap.  This off-heap store, which is not subject to Java GC, allows extremely large caches to be created.</p>
+
+<p>Because off-heap data is stored in bytes, there are two implications:</p>
+
+<ul>
+  <li>Only Serializable cache keys and values can be placed in the store, similar to DiskStore.</li>
+  <li>Serialization and deserialization take place on putting and getting from the store.</li>
+</ul>
+
+<p>The MemoryStore still holds the hottest subset of data from the off-heap store, already in deserialized form, to maintain performance. In practice, however, when the GC involved with larger heaps is taken into account, the off-heap store is faster.</p>
+
+<h2 id="diskstore-">DiskStore <a name="DiskStore" id="DiskStore"></a></h2>
+
+<p>The DiskStore provides a disk spooling facility that can be used for additional storage during cache operation and for persisting caches through system restarts.</p>
+
+<p>For more information about cache persistence on disk, refer to the <a href="/documentation/2.7/configuration/fast-restart">Persistence and Restartability</a> page.</p>
+
+<h4 id="diskstores-are-optional">DiskStores are Optional</h4>
+
+<p>The <code>diskStore</code> element in ehcache.xml is optional. If all caches use only MemoryStores,
+then there is no need to configure a DiskStore. This simplifies configuration, and uses less threads. It is also good when multiple CacheManagers are being used, and multiple disk store paths would need to be configured.</p>
+
+<p>DiskStores are configured on a per CacheManager basis. If one or more caches requires a DiskStore but none is configured, a default directory will be used and
+a warning message will be logged to encourage explicit configuration of the DiskStore path.</p>
+
+<h4 id="turning-off-diskstores">Turning off DiskStores</h4>
+
+<p>To turn off disk store path creation, comment out the <code>diskStore</code> element in ehcache.xml.</p>
+
+<p>The ehcache-failsafe.xml configuration uses a DiskStore. This will remain the case so as to not affect
+existing Ehcache deployments. So if you do not wish to use a DiskStore, make
+sure you specify your own ehcache.xml and comment out the <code>diskStore</code> element.</p>
+
+<h3 id="suitable-element-types-1">Suitable Element Types</h3>
+
+<p>Only Elements which are <code>Serializable</code> can be placed in the DiskStore. Any non-serializable
+Elements which attempt to overflow to the DiskStore will be removed instead, and a NotSerializableException will be thrown.</p>
+
+<p>DiskStores are thread safe.</p>
+
+<h4 id="serialization">Serialization</h4>
+<p>Writes to and from the disk use <code>ObjectInputStream</code> and the Java serialization mechanism.</p>
+
+<p>Serialization speed is affected by the size of the objects being
+serialized and their type. It has been found in the ElementTest that:</p>
+
+<ul>
+  <li>The serialization time for a Java object consisting of a large Map of String arrays was 126ms, where the serialized size was 349,225 bytes.</li>
+  <li>The serialization time for a byte[] was 7ms, where the serialized size was 310,232 bytes.</li>
+</ul>
+
+<p>Byte arrays are 20 times faster to serialize. Make use of byte arrays to increase DiskStore performance.</p>
+
+<h3 id="persistent-storage-options">Persistent Storage Options</h3>
+
+<p>Two DiskStore options are available:</p>
+
+<ul>
+  <li>“localTempSwap” for temporary overflow to disk.</li>
+  <li>“localRestartable” for disk persistence (<a href="http://www.terracotta.org/products/bigmemorygo">BigMemory Go</a> only)</li>
+</ul>
+
+<h4 id="localtempswap">localTempSwap</h4>
+
+<p>The “localTempSwap” strategy allows the cache to overflow to disk during cache operation, providing an extra tier for cache storage. This disk storage is temporary and is cleared after a restart.</p>
+
+<p>If the disk store path is not specified, a default path is used, and the default will be auto-resolved in the case of a conflict with another CacheManager.</p>
+
+<p>The TempSwap DiskStore creates a data file for each cache on startup called “<code>&lt;cache_name&gt;</code>.data”.</p>
+
+<h4 id="localrestartable">localRestartable</h4>
+
+<p>The “localRestartable” persistence strategy implements a restartable store that is a mirror of the in-memory cache. After any restart, data that was last in the cache will automatically load into the restartable store, and from there the data will be available to the cache.</p>
+
+<p>The path to the directory where any required disk files will be created is configured with the <code>&lt;diskStore&gt;</code> sub-element of the Ehcache configuration. In order to use the restartable store, a unique and explicitly specified path is required.</p>
+
+<h3 id="diskstore-configuration-element">DiskStore Configuration Element</h3>
+
+<p>Files are created in the directory specified by the <code>&lt;diskStore&gt;</code>
+configuration element. The <code>&lt;diskStore&gt;</code> element has one attribute called <code>path</code>.</p>
+
+<pre>
+   <code>&lt;diskStore path="/path/to/store/data"/&gt;
+</code>
+</pre>
+
+<p>Legal values for the path attibute are legal file-system paths. For example, for Unix:</p>
+
+<pre>
+/home/application/cache
+</pre>
+
+<p>The following system properties are also legal, in which case they are translated:</p>
+
+<ul>
+  <li>user.home - User’s home directory</li>
+  <li>user.dir - User’s current working directory</li>
+  <li>java.io.tmpdir - Default temp file path</li>
+  <li>ehcache.disk.store.dir - A system property you would normally specify on the command line—for example,
+<code>java -Dehcache.disk.store.dir=/u01/myapp/diskdir</code></li>
+</ul>
+
+<p>Subdirectories can be specified below the system property, for example:</p>
+
+<pre>
+user.dir/one
+</pre>
+
+<p>To programmatically set a DiskStore path:</p>
+
+<pre>
+   <code>DiskStoreConfiguration diskStoreConfiguration = new DiskStoreConfiguration();
+
+diskStoreConfiguration.setPath("/my/path/dir");
+
+// Already created a configuration object ...
+configuration.addDiskStore(diskStoreConfiguration);
+
+CacheManager mgr = new CacheManager(configuration);
+</code>
+</pre>
+
+<p><strong>Note</strong>: A CacheManager’s DiskStore path cannot be changed once it is set in configuration. If the DiskStore path is changed, the CacheManager must be recycled for the new path to take effect.</p>
+
+<h3 id="expiry-and-eviction">Expiry and Eviction</h3>
+<p>Expired elements are eventually evicted to free up disk space. The element is also removed from the in-memory index of elements.</p>
+
+<p>One thread per cache is used to remove expired elements. The optional attribute <code>diskExpiryThreadIntervalSeconds</code>
+sets the interval between runs of the expiry thread.</p>
+
+<p><strong>Warning</strong>: Setting <code>diskExpiryThreadIntervalSeconds</code> to a low value
+is not recommended. It can cause excessive DiskStore locking and high CPU utilization. The default value is 120 seconds.</p>
+
+<p>If a cache’s DiskStore has a limited size, Elements will be evicted from the DiskStore when it exceeds this limit.
+The LFU algorithm is used for these evictions. It is not configurable or changeable.</p>
+
+<p><strong>Note</strong>: With the “localTempSwap” strategy, you can use <code>maxEntriesLocalDisk</code> or <code>maxBytesLocalDisk</code> at either the Cache or CacheManager level to control the size of the swap-to-disk area.</p>
+
+<h2 id="some-configuration-examples">Some Configuration Examples</h2>
+
+<p>These examples show how to allocate 8GB of machine memory to different stores. It assumes a data set of 7GB - say for a cache of 7M items (each 1kb in size).</p>
+
+<p>For minimal application response-time variance (or minimizing GC pause times), the entire cache should fit into the off-heap store provided by <a href="http://www.terracotta.org/products">BigMemory</a>. Assuming that 1GB of heap is needed for the rest of the app, the Java config is set as follows:</p>
+
+<pre>
+java -Xms1G -Xmx1G -XX:maxDirectMemorySize=7G
+</pre>
+
+<p>Ehcache config is set as follows:</p>
+
+<pre>
+&lt;cache
+ maxEntriesLocalHeap=100
+ overflowToOffHeap="true"
+ maxBytesLocalOffHeap="6G"
+... /&gt;
+</pre>
+
+<p>To allow enough headroom for process-related data, a minimum of 256MB should be allotted via maxDirectMemorySize. This example allots an additional 1GB.</p>
+
+<p>For maximum performance, a combination of on-heap and off-heap is recommended. The heap will be used for the hot set, the offheap for the rest. For example, if the hot set is 1M items (or 1GB) of the 7GB data, set Java config as follows:</p>
+
+<pre>
+java -Xms2G -Xmx2G -XX:maxDirectMemorySize=6G
+</pre>
+
+<p>And Ehcache config as follows:</p>
+
+<pre>
+&lt;cache
+  maxEntriesLocalHeap=1M
+  overflowToOffHeap="true"
+  maxBytesLocalOffHeap="5G"
+  ...&gt;
+</pre>
+
+<p>This configuration will compare VERY favorably against the alternative of keeping the less-hot set in a database (100x slower) or caching on local disk (20x slower).</p>
+
+<p>Where the data set is small and pauses are not a problem, the whole data set can be kept on heap:</p>
+
+<pre>
+&lt;cache
+  maxEntriesLocalHeap=1M
+  overflowToOffHeap="false"
+  ...&gt;
+</pre>
+
+<p>Where latency isn’t an issue, overflow to disk can be used:</p>
+
+<pre>
+&lt;cache
+  maxEntriesLocalHeap=1M
+  <persistence strategy="localTempSwap"></persistence>
+  ...&gt;
+</pre>
+
+<p>Where Ehcache is being used without off-heap, do not use any of the off-heap sizing attributes. Use heap and disk (<code>maxEntrtiesLocalDisk</code>) sizing attributes to control overflow and conform to overall capacity.</p>
+
+<h2 id="performance-considerations">Performance Considerations</h2>
+
+<h3 id="relative-speeds">Relative Speeds</h3>
+
+<p>The MemoryStore is approximately an order of magnitude faster than the DiskStore. The reason is that the DiskStore incurs the following extra overhead:</p>
+
+<ul>
+  <li>Serialization of the key and value</li>
+  <li>Eviction from the MemoryStore using an eviction algorithm</li>
+  <li>Reading from disk</li>
+</ul>
+
+<p>Note that writing to disk is not a synchronous performance overhead because it is handled by a separate thread.</p>
+
+<h3 id="always-use-some-amount-of-heap">Always use some amount of Heap</h3>
+
+<p>For performance reasons, Ehcache should always use as much heap memory as possible without triggering GC pauses. Use <a href="http://www.terracotta.org/products">BigMemory</a> (the off-heap store) to hold the data that cannot fit in heap without causing GC pauses.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

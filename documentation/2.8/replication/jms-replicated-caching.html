@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.8 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.8/replication/jms-replicated-caching.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.8 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.8/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.8/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.8/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.8/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.8/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.8/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.8/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.8/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.8/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.8/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.8/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.8.5/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="replicated-caching-using-jms">Replicated Caching using JMS</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#replicated-caching-using-jms">
+                        <span class="toctext">Replicated Caching using JMS</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#ehcache-replication-and-external-publishers">
+                              <span class="toctext">Ehcache Replication and External Publishers</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#using-the-jmscacheloader">
+                              <span class="toctext">Using the JMSCacheLoader</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#configuring-clients-for-message-queue-reliability">
+                              <span class="toctext">Configuring Clients for Message Queue Reliability</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#tested-message-queues">
+                              <span class="toctext">Tested Message Queues</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#known-issues">
+                              <span class="toctext">Known Issues</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>As of version 1.6, JMS can be used as the underlying mechanism for
+the replicated operations in Ehcache with the jmsreplication module.</p>
+
+<p>JMS (Java Message Service) is a mechanism for interacting with message queues.
+Message queues themselves are a very mature piece of infrastructure used in many enterprise software contexts.
+Because they are a required part of the Java EE standard, the large enterprise vendors all provide their
+own implementations. There are also several open source choices including Open MQ and Active MQ. Ehcache
+is integration tested against both of these.</p>
+
+<p>The Ehcache jmsreplication module lets organisations with a message queue investment leverage it for caching.</p>
+
+<p>It provides:</p>
+
+<ul>
+  <li>replication between cache nodes using a replication topic, in accordance with ehcache’s standard replication mechanism</li>
+  <li>pushing of data directly to cache nodes from external topic publishers, in any language. This is done by sending
+ the data to the replication topic, where it automatically picked up by the cache subscribers.</li>
+  <li>a JMSCacheLoader, which sends cache load requests to a queue. Either an Ehcache cluster node, or an external
+ queue receiver can respond.</li>
+</ul>
+
+<h2 id="ehcache-replication-and-external-publishers">Ehcache Replication and External Publishers</h2>
+
+<p>Ehcache replicates using JMS as follows:</p>
+
+<ul>
+  <li>Each cache node subscribes to a predefined topic, configured as the &lt;topicBindingName&gt; in ehcache.xml.</li>
+  <li>Each replicated cache publishes cache <code>Element</code>s to that topic. Replication is configured per cache.</li>
+</ul>
+
+<p>To set up replicated caching based on JMS you need to configure a JMSCacheManagerPeerProviderFactory
+which is done globally for a CacheManager.</p>
+
+<p>For each cache that wishing to replicate, you add
+a JGroupsCacheReplicatorFactory element to the cache element.</p>
+
+<p>
+   <img src="/images/documentation/jms_replication.png" alt="Ehcache Image" />
+</p>
+
+<h3 id="configuration">Configuration</h3>
+
+<h4 id="message-queue-configuration">Message Queue Configuration</h4>
+
+<p>Each cluster needs to use a fixed topic name for replication. Set up a topic using the tools in your
+message queue. Out of the box, both ActiveMQ and Open MQ support auto creation of destinations, so this
+step may be optional.</p>
+
+<h4 id="ehcache-configuration">Ehcache Configuration</h4>
+
+<p>Configuration is done in the ehcache.xml.</p>
+
+<p>There are two things to configure:</p>
+
+<ul>
+  <li>The JMSCacheManagerPeerProviderFactory which is done once per CacheManager and therefore once per ehcache.xml file.</li>
+  <li>The JMSCacheReplicatorFactory which is added to each cache’s configuration if you want that cache replicated.</li>
+</ul>
+
+<p>The main configuration happens in the JGroupsCacheManagerPeerProviderFactory connect sub-property.
+A connect property is passed directly to the JGroups channel and therefore all the protocol
+stacks and options available in JGroups can be set.</p>
+
+<h5 id="configuring-the-jmscachemanagerpeerproviderfactory">Configuring the JMSCacheManagerPeerProviderFactory</h5>
+
+<p>Following is the configuration instructions as it appears in the sample ehcache.xml shipped with ehcache:</p>
+
+<pre>
+{Configuring JMS replication}.
+===========================
+<cachemanagerpeerproviderfactory class="net.sf.ehcache.distribution.jms.JMSCacheManagerPeerProviderFactory" properties="..." propertyseparator=","></cachemanagerpeerproviderfactory>
+
+The JMS PeerProviderFactory uses JNDI to maintain message queue independence.
+Refer to the manual for full configuration examples using ActiveMQ and Open Message Queue.
+
+Valid properties are:
+* initialContextFactoryName (mandatory) - the name of the factory used to create
+  the message queue initial context.
+* providerURL (mandatory) - the JNDI configuration information for the service
+  provider to use.
+* topicConnectionFactoryBindingName (mandatory) - the JNDI binding name for the
+  TopicConnectionFactory
+* topicBindingName (mandatory) - the JNDI binding name for the topic name
+* securityPrincipalName - the JNDI java.naming.security.principal
+* securityCredentials - the JNDI java.naming.security.credentials
+* urlPkgPrefixes - the JNDI java.naming.factory.url.pkgs
+* userName - the user name to use when creating the TopicConnection to the Message
+  Queue
+* password - the password to use when creating the TopicConnection to the Message
+  Queue
+* acknowledgementMode - the JMS Acknowledgement mode for both publisher and
+  subscriber.
+    The available choices are
+      AUTO_ACKNOWLEDGE, DUPS_OK_ACKNOWLEDGE and SESSION_TRANSACTED.
+    The default is AUTO_ACKNOWLEDGE.
+* listenToTopic - true or false. If false, this cache will send to the JMS topic
+  but will not listen for updates.
+* Default is true.
+</pre>
+
+<h5 id="example-configurations">Example Configurations</h5>
+<p>Usage is best illustrated with concrete examples for Active MQ and Open MQ.</p>
+
+<h6 id="configuring-the-jmscachemanagerpeerproviderfactory-for-active-mq">Configuring the JMSCacheManagerPeerProviderFactory for Active MQ</h6>
+
+<p>This configuration works with Active MQ out of the box.</p>
+
+<pre>
+   <code>&lt;cacheManagerPeerProviderFactory
+       class="net.sf.ehcache.distribution.jms.JMSCacheManagerPeerProviderFactory"
+       properties="initialContextFactoryName=ExampleActiveMQInitialContextFactory,
+           providerURL=tcp://localhost:61616,
+           topicConnectionFactoryBindingName=topicConnectionFactory,
+           topicBindingName=ehcache"
+       propertySeparator=","
+       /&gt;
+</code>
+</pre>
+
+<p>You need to provide your own ActiveMQInitialContextFactory for the initialContextFactoryName.
+An example which should work for most purposes is:</p>
+
+<pre>
+   <code>public class ExampleActiveMQInitialContextFactory
+  extends ActiveMQInitialContextFactory {
+    /**
+     * {@inheritDoc"/&gt;
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public Context getInitialContext(Hashtable environment)
+      throws NamingException
+    {
+	  Map&lt;String, Object&gt; data = new ConcurrentHashMap&lt;String, Object&gt;();
+	  String factoryBindingName =
+        (String)environment.get(JMSCacheManagerPeerProviderFactory
+          .TOPIC_CONNECTION_FACTORY_BINDING_NAME);
+	  try {
+	    data.put(factoryBindingName, createConnectionFactory(environment));
+	  } catch (URISyntaxException e) {
+	    throw new NamingException("Error initialisating ConnectionFactory"
+                                  + " with message "
+				      + e.getMessage());
+	  "/&gt;
+	  String topicBindingName =
+        (String)environment.get(JMSCacheManagerPeerProviderFactory
+	      .TOPIC_BINDING_NAME);
+	  data.put(topicBindingName, createTopic(topicBindingName));
+	  return createContext(environment, data);
+    "/&gt;
+}  
+</code>
+</pre>
+
+<h6 id="configuring-the-jmscachemanagerpeerproviderfactory-for-open-mq">Configuring the JMSCacheManagerPeerProviderFactory for {Open MQ”/&gt;</h6>
+<p>This configuration works with an out of the box Open MQ.</p>
+
+<pre>
+   <code>&lt;cacheManagerPeerProviderFactory
+  class="net.sf.ehcache.distribution.jms.JMSCacheManagerPeerProviderFactory"
+  properties="initialContextFactoryName=com.sun.jndi.fscontext.RefFSContextFactory,
+           providerURL=file:///tmp,
+           topicConnectionFactoryBindingName=MyConnectionFactory,
+           topicBindingName=ehcache"
+       propertySeparator=","
+       /&gt;
+</code>
+</pre>
+
+<p>To set up the Open MQ file system initial context to work with this example use the
+following <code>imqobjmgr</code> commands to create the requires objects in the context.</p>
+
+<pre>
+imqobjmgr add -t tf -l 'MyConnectionFactory' -j java.naming.provider.url \
+=file:///tmp -j java.naming.factory.initial=com.sun.jndi.fscontext.RefFSContextFactory -f
+imqobjmgr add -t t -l 'ehcache' -o 'imqDestinationName=EhcacheTopicDest'
+-j java.naming.provider.url\
+=file:///tmp -j java.naming.factory.initial=com.sun.jndi.fscontext.RefFSContextFactory -f
+</pre>
+
+<h5 id="configuring-the-jmscachereplicatorfactory">Configuring the JMSCacheReplicatorFactory</h5>
+<p>This is the same as configuring any of the cache replicators. The class should be
+   <code>net.sf.ehcache.distribution.jms.JMSCacheReplicatorFactory</code>.</p>
+
+<p>See the following example:</p>
+
+<pre>
+   <code>&lt;cache name="sampleCacheAsync"
+ maxEntriesLocalHeap="1000"
+ eternal="false"
+ timeToIdleSeconds="1000"
+ timeToLiveSeconds="1000"
+ overflowToDisk="false"&gt;
+  &lt;cacheEventListenerFactory
+     class="net.sf.ehcache.distribution.jms.JMSCacheReplicatorFactory"
+     properties="replicateAsynchronously=true,
+                  replicatePuts=true,
+                  replicateUpdates=true,
+                  replicateUpdatesViaCopy=true,
+                  replicateRemovals=true,
+                  asynchronousReplicationIntervalMillis=1000"
+      propertySeparator=","/&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<h3 id="external-jms-publishers">External JMS Publishers</h3>
+<p>Anything that can publish to a message queue can also add cache entries to ehcache. These are called non-cache
+publishers.</p>
+
+<h4 id="required-message-properties">Required Message Properties</h4>
+<p>Publishers need to set up to four String properties on each message: cacheName, action, mimeType and key.</p>
+
+<h5 id="cachename-property"><code>cacheName</code> Property</h5>
+<p>A JMS message property which contains the name of the cache to operate on.
+If no cacheName is set the message will be &lt;ignored&gt;. A warning log message will indicate that the message has been ignored.</p>
+
+<h5 id="action-property"><code>action</code> Property</h5>
+<p>A JMS message property which contains the action to perform on the cache.</p>
+
+<p>Available actions are strings labeled <code>PUT</code>, <code>REMOVE</code> and <code>REMOVE_ALL</code>.</p>
+
+<p>If not set no action is performed. A warning log message will indicate that the message has been ignored.</p>
+
+<h5 id="mimetype-property"><code>mimeType</code> Property</h5>
+<p>A JMS message property which contains the mimeType of the message. Applies to the <code>PUT</code> action. If not set the message is interpreted as follows:</p>
+
+<p>ObjectMessage - if it is an net.sf.ehcache.Element, then it is treated as such and stored in the cache.
+  For other objects, a new Element is created using the object in the ObjectMessage as the value and the key property
+ as a key. Because objects are already typed, the mimeType is ignored.</p>
+
+<p>TextMessage - Stored in the cache as value of MimeTypeByteArray. The mimeType should be specified. If not specified
+ it is stored as type <code>text/plain</code>.</p>
+
+<p>BytesMessage - Stored in the cache as value of MimeTypeByteArray. The mimeType should be specified. If not
+ specified it is stored as type <code>application/octet-stream</code>.</p>
+
+<p>Other message types are not supported.</p>
+
+<p>To send XML use a TextMessage or BytesMessage and set the mimeType to <code>application/xml</code>.It will be stored in the cache
+ as a value of MimeTypeByteArray.</p>
+
+<p>The <code>REMOVE</code> and <code>REMOVE_ALL</code> actions do not require a <code>mimeType</code> property.</p>
+
+<h5 id="key-property"><code>key</code> Property</h5>
+<p>The key in the cache on which to operate on. The key is of type String.</p>
+
+<p>The <code>REMOVE_ALL</code> action does not require a key property.</p>
+
+<p>If an ObjectMessage of type net.sf.ehcache.Element is sent, the key is contained in the element. Any key set as a property is ignored.</p>
+
+<p>If the key is required but not provided, a warning log message will indicate that the message has been ignored.</p>
+
+<h4 id="code-samples">Code Samples</h4>
+
+<p>These samples use Open MQ as the message queue and use it with out of the box defaults. They are heavily based on
+Ehcache’s own JMS integration tests. See the test source for more details.</p>
+
+<p>Messages should be sent to the topic that Ehcache is listening on. In these samples it is <code>EhcacheTopicDest</code>.</p>
+
+<p>All samples get a Topic Connection using the following method:</p>
+
+<pre>
+   <code>private TopicConnection getMQConnection() throws JMSException {
+  com.sun.messaging.ConnectionFactory factory =
+    new com.sun.messaging.ConnectionFactory();
+  factory.setProperty(ConnectionConfiguration.imqAddressList, "localhost:7676");
+  factory.setProperty(ConnectionConfiguration.imqReconnectEnabled, "true");
+  TopicConnection myConnection = factory.createTopicConnection();
+  return myConnection;
+"/&gt;
+</code>
+</pre>
+
+<h4 id="put-a-java-object-into-an-ehcache-cluster">PUT a Java Object into an Ehcache Cluster</h4>
+
+<pre>
+   <code>String payload = "this is an object";
+TopicConnection connection = getMQConnection();
+connection.start();
+TopicSession publisherSession =
+  connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+
+ObjectMessage message = publisherSession.createObjectMessage(payload);
+message.setStringProperty(ACTION_PROPERTY, "PUT");
+message.setStringProperty(CACHE_NAME_PROPERTY, "sampleCacheAsync");
+
+//don't set. Should work.
+//message.setStringProperty(MIME_TYPE_PROPERTY, null);
+//should work. Key should be ignored when sending an element.
+message.setStringProperty(KEY_PROPERTY, "1234");
+
+Topic topic = publisherSession.createTopic("EhcacheTopicDest");
+TopicPublisher publisher = publisherSession.createPublisher(topic);
+publisher.send(message);
+
+connection.stop();
+</code>
+</pre>
+
+<p>Ehcache will create an Element in cache “sampleCacheAsync” with key “1234” and a Java class String value of “this is an object”.</p>
+
+<h4 id="put-xml-into-an-ehcache-cluster">PUT XML into an Ehcache Cluster</h4>
+
+<pre>
+   <code>TopicConnection connection = getMQConnection();
+connection.start();
+TopicSession publisherSession = connection.createTopicSession(false,
+  Session.AUTO_ACKNOWLEDGE);
+
+String value = "&lt;?xml version=\"1.0\"?&gt;\n" +
+   "&lt;oldjoke&gt;\n" +
+   "&lt;burns&gt;Say &lt;quote&gt;goodnight&lt;/quote&gt;,\n" +
+   "Gracie.&lt;/burns&gt;\n" +
+   "&lt;allen&gt;&lt;quote&gt;Goodnight, \n" +
+   "Gracie.&lt;/quote&gt;&lt;/allen&gt;\n" +
+   "&lt;applause/&gt;\n" +
+   "&lt;/oldjoke&gt;";
+
+TextMessage message = publisherSession.createTextMessage(value);
+message.setStringProperty(ACTION_PROPERTY, "PUT");
+message.setStringProperty(CACHE_NAME_PROPERTY, "sampleCacheAsync");
+message.setStringProperty(MIME_TYPE_PROPERTY, "application/xml");
+message.setStringProperty(KEY_PROPERTY, "1234");
+
+Topic topic = publisherSession.createTopic("EhcacheTopicDest");
+TopicPublisher publisher = publisherSession.createPublisher(topic);
+publisher.send(message);
+
+connection.stop();
+</code>
+</pre>
+
+<p>Ehcache will create an Element in cache “sampleCacheAsync” with key “1234” and a value of type MimeTypeByteArray.</p>
+
+<p>On a get from the
+cache the MimeTypeByteArray will be returned. It is an Ehcache value object from which a mimeType and
+byte[] can be retrieved. The mimeType will be “application/xml”. The byte[] will contain the XML String
+encoded in bytes, using the platform’s default charset.</p>
+
+<h4 id="put-arbitrary-bytes-into-an-ehcache-cluster">PUT arbitrary bytes into an Ehcache Cluster</h4>
+
+<pre>
+   <code>byte[] bytes = new byte[]{0x34, (byte) 0xe3, (byte) 0x88};
+TopicConnection connection = getMQConnection();
+connection.start();
+
+TopicSession publisherSession = connection.createTopicSession(false,
+  Session.AUTO_ACKNOWLEDGE);
+
+BytesMessage message = publisherSession.createBytesMessage();
+message.writeBytes(bytes);
+message.setStringProperty(ACTION_PROPERTY, "PUT");
+message.setStringProperty(CACHE_NAME_PROPERTY, "sampleCacheAsync");
+message.setStringProperty(MIME_TYPE_PROPERTY, "application/octet-stream");
+message.setStringProperty(KEY_PROPERTY, "1234");
+
+Topic topic = publisherSession.createTopic("EhcacheTopicDest");
+TopicPublisher publisher = publisherSession.createPublisher(topic);
+publisher.send(message);
+</code>
+</pre>
+
+<p>Ehcache will create an Element in cache “sampleCacheAsync” with key “1234” in and a value of type MimeTypeByteArray.</p>
+
+<p>On a get from the
+cache the MimeTypeByteArray will be returned. It is an Ehcache value object from which a mimeType and
+byte[] can be retrieved. The mimeType will be “application/octet-stream”. The byte[] will contain the original
+bytes.</p>
+
+<h4 id="remove">REMOVE</h4>
+
+<pre>
+   <code>TopicConnection connection = getMQConnection();
+connection.start();
+
+TopicSession publisherSession = connection.createTopicSession(false,
+  Session.AUTO_ACKNOWLEDGE);
+
+ObjectMessage message = publisherSession.createObjectMessage();
+message.setStringProperty(ACTION_PROPERTY, "REMOVE");
+message.setStringProperty(CACHE_NAME_PROPERTY, "sampleCacheAsync");
+message.setStringProperty(KEY_PROPERTY, "1234");
+
+Topic topic = publisherSession.createTopic("EhcacheTopicDest");
+TopicPublisher publisher = publisherSession.createPublisher(topic);
+publisher.send(message);
+</code>
+</pre>
+
+<p>Ehcache will remove the Element with key “1234”  from cache “sampleCacheAsync” from the cluster.</p>
+
+<h4 id="removeall">REMOVE_ALL</h4>
+
+<pre>
+   <code>TopicConnection connection = getMQConnection();
+connection.start();
+
+TopicSession publisherSession = connection.createTopicSession(false,
+Session.AUTO_ACKNOWLEDGE);
+
+ObjectMessage message = publisherSession.createObjectMessage();
+message.setStringProperty(ACTION_PROPERTY, "REMOVE_ALL");
+message.setStringProperty(CACHE_NAME_PROPERTY, "sampleCacheAsync");
+
+Topic topic = publisherSession.createTopic("EhcacheTopicDest");
+TopicPublisher publisher = publisherSession.createPublisher(topic);
+publisher.send(message);
+
+connection.stop();
+</code>
+</pre>
+
+<p>Ehcache will remove all Elements from cache “sampleCacheAsync” in the cluster.</p>
+
+<h2 id="using-the-jmscacheloader">Using the JMSCacheLoader</h2>
+<p>The JMSCacheLoader is a CacheLoader which loads objects into the cache by sending requests to a JMS Queue.</p>
+
+<p>The loader places an ObjectMessage of type JMSEventMessage on the getQueue with an Action of type GET.</p>
+
+<p>It is configured with the following String properties, <code>loaderArgument</code>.</p>
+
+<p>The defaultLoaderArgument, or the loaderArgument if specified on the
+load request. To work with the JMSCacheManagerPeerProvider this should be the name of the cache to load from.
+For custom responders, it can be anything which has meaning to the responder.</p>
+
+<p>A queue responder will respond to the request. You can either create your own or use the one built-into
+the JMSCacheManagerPeerProviderFactory, which attempts to load the queue from its cache.</p>
+
+<p>The JMSCacheLoader uses JNDI to maintain message queue independence. Refer to the manual for full configuration
+examples using ActiveMQ and Open Message Queue.</p>
+
+<p>It is configured as per the following example:</p>
+
+<pre>
+   <code>&lt;cacheLoaderFactory class="net.sf.ehcache.distribution.jms.JMSCacheLoaderFactory"
+  properties="initialContextFactoryName=com.sun.jndi.fscontext.RefFSContextFactory,
+  providerURL=file:///tmp,
+  replicationTopicConnectionFactoryBindingName=MyConnectionFactory,
+  replicationTopicBindingName=ehcache,
+  getQueueConnectionFactoryBindingName=queueConnectionFactory,
+  getQueueBindingName=ehcacheGetQueue,
+  timeoutMillis=20000
+  defaultLoaderArgument=/&gt;
+</code>
+</pre>
+
+<p>Valid properties are:</p>
+
+<ul>
+  <li>initialContextFactoryName (mandatory) - the name of the factory used to create the message queue initial context.</li>
+  <li>providerURL (mandatory) - the JNDI configuration information for the service provider to use.</li>
+  <li>getQueueConnectionFactoryBindingName (mandatory) - the JNDI binding name for the QueueConnectionFactory</li>
+  <li>getQueueBindingName (mandatory) - the JNDI binding name for the queue name used to do make requests.</li>
+  <li>defaultLoaderArgument - (optional) - an application specific argument. If not supplied as a cache.load() parameter
+this default value will be used. The argument is passed in the JMS request as a StringProperty called loaderArgument.</li>
+  <li>timeoutMillis - time in milliseconds to wait for a reply.</li>
+  <li>securityPrincipalName - the JNDI java.naming.security.principal</li>
+  <li>securityCredentials - the JNDI java.naming.security.credentials</li>
+  <li>urlPkgPrefixes - the JNDI java.naming.factory.url.pkgs</li>
+  <li>userName - the user name to use when creating the TopicConnection to the Message Queue</li>
+  <li>password - the password to use when creating the TopicConnection to the Message Queue</li>
+  <li>acknowledgementMode - the JMS Acknowledgement mode for both publisher and subscriber. The available choices are
+                     AUTO_ACKNOWLEDGE, DUPS_OK_ACKNOWLEDGE and SESSION_TRANSACTED. The default is AUTO_ACKNOWLEDGE.</li>
+</ul>
+
+<h3 id="example-configuration-using-active-mq">Example Configuration Using Active MQ</h3>
+
+<pre>
+   <code>&lt;cache name="sampleCacheNorep"
+  maxEntriesLocalHeap="1000"
+  eternal="false"
+  timeToIdleSeconds="1000"
+  timeToLiveSeconds="1000"
+  overflowToDisk="false"&gt;
+  &lt;cacheEventListenerFactory
+   class="net.sf.ehcache.distribution.jms.JMSCacheReplicatorFactory"
+   properties="replicateAsynchronously=false, replicatePuts=false,
+   replicateUpdates=false, replicateUpdatesViaCopy=false,
+   replicateRemovals=false, loaderArgument=sampleCacheNorep"
+   propertySeparator=","/&gt;
+&lt;cacheLoaderFactory
+  class="net.sf.ehcache.distribution.jms.JMSCacheLoaderFactory"
+  properties="initialContextFactoryName=net.sf.ehcache.distribution.jms.
+       TestActiveMQInitialContextFactory,
+       providerURL=tcp://localhost:61616,
+       replicationTopicConnectionFactoryBindingName=topicConnectionFactory,
+       getQueueConnectionFactoryBindingName=queueConnectionFactory,
+       replicationTopicBindingName=ehcache,
+       getQueueBindingName=ehcacheGetQueue,
+       timeoutMillis=10000"/&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<h3 id="example-configuration-using-open-mq">Example Configuration Using Open MQ</h3>
+
+<pre>
+   <code>&lt;cache name="sampleCacheNorep"
+  maxEntriesLocalHeap="1000"
+  eternal="false"
+  timeToIdleSeconds="100000"
+  timeToLiveSeconds="100000"
+  overflowToDisk="false"&gt;
+  &lt;cacheEventListenerFactory
+    class="net.sf.ehcache.distribution.jms.JMSCacheReplicatorFactory"
+    properties="replicateAsynchronously=false, replicatePuts=false,
+                replicateUpdates=false, replicateUpdatesViaCopy=false,
+                replicateRemovals=false"
+                propertySeparator=","/&gt;
+  &lt;cacheLoaderFactory
+    class="net.sf.ehcache.distribution.jms.JMSCacheLoaderFactory"
+    properties="initialContextFactoryName=com.sun.jndi.fscontext.RefFSContextFactory,
+                providerURL=file:///tmp,
+                replicationTopicConnectionFactoryBindingName=MyConnectionFactory,
+                replicationTopicBindingName=ehcache,
+                getQueueConnectionFactoryBindingName=queueConnectionFactory,
+                getQueueBindingName=ehcacheGetQueue,
+                timeoutMillis=10000,
+                userName=test,
+                password=test"/&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<h2 id="configuring-clients-for-message-queue-reliability">Configuring Clients for Message Queue Reliability</h2>
+
+<p>Ehcache replication and cache loading is designed to gracefully degrade if the message queue infrastructure
+stops. Replicates and loads will fail. But when the message queue comes back, these operations will start
+up again.</p>
+
+<p>For this to work, the ConnectionFactory used with the specific message queue needs to be configured correctly.
+For example, with Open MQ, reconnection is configured as follows:</p>
+
+<ul>
+  <li>imqReconnect=’true’ - without this reconnect will not happen</li>
+  <li>imqPingInterval=’5’ - Consumers will not reconnect until they notice the connection is down. The ping interval</li>
+  <li>does this. The default is 30. Set it lower if you want the Ehcache cluster to reform more quickly.</li>
+  <li>Finally, unlimited retry attempts are recommended. This is also the default.</li>
+</ul>
+
+<p>For greater reliability consider using a message queue cluster. Most message queues support clustering. The
+cluster configuration is once again placed in the ConnectionFactory configuration.</p>
+
+<h2 id="tested-message-queues">Tested Message Queues</h2>
+
+<h3 id="open-mq">Open MQ</h3>
+<p>This open source message queue is tested in integration tests. It works perfectly.</p>
+
+<h3 id="active-mq">Active MQ</h3>
+<p>This open source message queue  is tested in integration tests. It works perfectly other than having a problem
+with temporary reply queues which prevents the use of JMSCacheLoader. JMSCacheLoader is not used during replication.</p>
+
+<h3 id="oracle-aq">Oracle AQ</h3>
+<p>Versions up to an including 0.4 do not work, due to Oracle not supporting the unified API (send) for topics.</p>
+
+<h3 id="jboss-queue">JBoss Queue</h3>
+<p>Works as reported by a user.</p>
+
+<h2 id="known-issues">Known Issues</h2>
+
+<h3 id="active-mq-temporary-destinatons">Active MQ Temporary Destinatons</h3>
+<p>ActiveMQ seems to have a bug in at least ActiveMQ 5.1 where it does not cleanup temporary queues, even though they have been
+deleted. That bug appears to be long standing but was though to have been fixed. See http://issues.apache.org/activemq/browse/AMQ-1255.</p>
+
+<p>The JMSCacheLoader uses temporary reply queues when loading. The Active MQ issue is readily reproduced in
+Ehcache integration testing. Accordingly, use of the JMSCacheLoader with ActiveMQ is not recommended. Open MQ
+tests fine.</p>
+
+<p>Active MQ works fine for replication.</p>
+
+<h3 id="websphere-5-and-6">WebSphere 5 and 6</h3>
+
+<p>Websphere Application Server prevents MessageListeners, which are not MDBs, from being created in the container.</p>
+
+<p>While this is a general Java EE limitation, most other app servers either are permissive or can be configured
+to be permissive. WebSphere 4 worked, but 5 and 6 enforce the restriction.</p>
+
+<p>Accordingly, Ehcache together with JMS cannot be used with WebSphere 5 and 6.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

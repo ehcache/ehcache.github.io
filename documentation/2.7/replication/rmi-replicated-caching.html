@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 2.7 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.7/replication/rmi-replicated-caching.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 2.7 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.7/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.7/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.7/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.7/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.7/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.7/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.7/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.7/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.7/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.7/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.7/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.7/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+         
+      </header>
+      <article class="post-content">
+        <h1 id="replicated-caching-using-rmi">Replicated Caching using RMI</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#replicated-caching-using-rmi">
+                        <span class="toctext">Replicated Caching using RMI</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#suitable-element-types">
+                              <span class="toctext">Suitable Element Types</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#configuring-the-peer-provider">
+                              <span class="toctext">Configuring the Peer Provider</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#configuring-the-cachemanagerpeerlistener">
+                              <span class="toctext">Configuring the CacheManagerPeerListener</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#configuring-cache-replicators">
+                              <span class="toctext">Configuring Cache Replicators</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#configuring-bootstrap-from-a-cache-peer">
+                              <span class="toctext">Configuring Bootstrap from a Cache Peer</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#full-example">
+                              <span class="toctext">Full Example</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-9">
+                           <a href="#common-problems">
+                              <span class="toctext">Common Problems</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Replicated caching using RMI is desirable because:</p>
+
+<ul>
+  <li>RMI is the default remoting mechanism in Java</li>
+  <li>it allows tuning of TCP socket options</li>
+  <li>Element keys and values for disk storage must already be Serializable, therefore directly transmittable over RMI
+  without the need for conversion to a third format such as XML.</li>
+  <li>it can be configured to pass through firewalls</li>
+</ul>
+
+<p>
+   <img src="/images/documentation/rmi_replication.png" alt="Ehcache Image" />
+</p>
+
+<p>While RMI is a point-to-point protocol, which can generate a lot of network
+traffic, Ehcache manages this through batching of communications for the
+asynchronous replicator.</p>
+
+<p>To set up replicated caching with RMI you need to configure the CacheManager with:</p>
+
+<ul>
+  <li>a PeerProvider</li>
+  <li>a CacheManagerPeerListener</li>
+</ul>
+
+<p>For each cache that will be replicated, you then need to add
+one of the RMI cacheEventListener types to propagate messages.
+You can also optionally configure a cache to bootstrap from other caches in the cluster.</p>
+
+<h2 id="suitable-element-types">Suitable Element Types</h2>
+
+<p>Only Serializable Elements are suitable for replication.</p>
+
+<p>Some operations, such as remove, work off Element keys rather than the full Element itself. In this case
+the operation will be replicated provided the key is Serializable, even if the Element is not.</p>
+
+<h2 id="configuring-the-peer-provider">Configuring the Peer Provider</h2>
+
+<h3 id="peer-discovery">Peer Discovery</h3>
+
+<p>Ehcache has the notion of a group of caches acting as a replicated
+cache. Each of the caches is a peer to the others. There is no
+master cache. How do you know about the other caches that are in your
+cluster? This problem can be given the name Peer Discovery.
+Ehcache provides two mechanisms for peer discovery:
+manual and automatic.</p>
+
+<p>To use one of the built-in peer discovery mechanisms, specify the class
+attribute of <code>cacheManagerPeerProviderFactory</code> as
+<code>net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory</code>
+in the ehcache.xml configuration file.</p>
+
+<h3 id="automatic-peer-discovery">Automatic Peer Discovery</h3>
+
+<p>Automatic discovery uses TCP multicast to establish and maintain a
+multicast group. It features minimal configuration and automatic
+addition to and deletion of members from
+the group. No a priori knowledge of the servers in the
+cluster is required. This is recommended as the default option.
+Peers send heartbeats to the group once per second. If a peer has
+not been heard of for 5 seconds it is dropped from the group. If a new
+peer starts sending heartbeats it is admitted to the group.</p>
+
+<p>Any cache within the configuration set up as replicated will be made
+available for discovery by other peers.</p>
+
+<p>To set automatic peer discovery, specify the properties attribute of <code>cacheManagerPeerProviderFactory</code>
+as follows:</p>
+
+<p>peerDiscovery=automatic<br />
+multicastGroupAddress=multicast address | multicast host name<br />
+multicastGroupPort=port<br />
+timeToLive=0-255 <em>(See below in common problems before setting this)</em><br />
+hostName=<em>the hostname or IP of the interface to be used for sending and receiving multicast packets
+      (relevant to mulithomed hosts only)</em></p>
+
+<h4 id="example">Example</h4>
+<p>Suppose you have two servers in a cluster, server1 and server2. You wish to distribute
+sampleCache11 and sampleCache12. The configuration
+required for each server is identical, so the configuration for both server1 and server2 is the following:</p>
+
+<pre>
+   <code>&lt;cacheManagerPeerProviderFactory
+class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+properties="peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,
+multicastGroupPort=4446, timeToLive=32"/&gt;
+</code>
+</pre>
+
+<h3 id="manual-peer-discovery-a-namemanual-peer-discovery">Manual Peer Discovery <a name="Manual Peer Discovery" id="Manual Peer Discovery"></a></h3>
+
+<p>Manual peer configuration requires the IP address and port of each
+listener to be known. Peers cannot be added or removed at
+runtime. Manual peer discovery is recommended where there are technical
+difficulties using multicast, such as a router between servers in a
+cluster that does not propagate multicast datagrams. You can also use
+it to set up one way replications of data, by having server2 know about
+server1 but not vice versa.</p>
+
+<p>To set manual peer discovery, specify the properties attribute
+of <code>cacheManagerPeerProviderFactory</code> as follows:</p>
+
+<p>peerDiscovery=manual<br />
+rmiUrls=//server:port/cacheName, …</p>
+
+<p>The rmiUrls is a list of the cache peers of the server being
+configured. Do not include the server being configured in the list.</p>
+
+<h4 id="example-1">Example</h4>
+
+<p>Suppose you have two servers in a cluster, server1 and server2. You wish to distribute
+sampleCache11 and sampleCache12. The following is the configuration
+required for server1:</p>
+
+<pre>
+   <code>&lt;cacheManagerPeerProviderFactory
+class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+properties="peerDiscovery=manual,
+rmiUrls=//server2:40001/sampleCache11|//server2:40001/sampleCache12"/&gt;
+</code>
+</pre>
+
+<p>The following is the configuration required for server2:</p>
+
+<pre>
+   <code>&lt;cacheManagerPeerProviderFactory
+class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+properties="peerDiscovery=manual,
+rmiUrls=//server1:40001/sampleCache11|//server1:40001/sampleCache12"/&gt;
+</code>
+</pre>
+
+<h2 id="configuring-the-cachemanagerpeerlistener">Configuring the CacheManagerPeerListener</h2>
+
+<p>A CacheManagerPeerListener listens for messages from peers to the
+current CacheManager.</p>
+
+<p>You configure the CacheManagerPeerListener by specifiying a
+CacheManagerPeerListenerFactory which is used to create the
+CacheManagerPeerListener using the plugin mechanism.</p>
+
+<p>The attributes of cacheManagerPeerListenerFactory are:</p>
+
+<ul>
+  <li>class - a fully qualified factory class name</li>
+  <li>properties - comma separated properties having meaning only to the factory.</li>
+</ul>
+
+<p>Ehcache comes with a built-in RMI-based distribution system. The
+listener component is RMICacheManagerPeerListener which is configured
+using RMICacheManagerPeerListenerFactory. It is configured as per the
+following example:</p>
+
+<pre>
+   <code>&lt;cacheManagerPeerListenerFactory
+class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+properties="hostName=localhost, port=40001,
+socketTimeoutMillis=2000"/&gt;
+</code>
+</pre>
+
+<p>Valid properties are:</p>
+
+<ul>
+  <li>hostName (optional) - the hostName of the host the listener is
+running on. Specify where the host is multihomed and you want to
+control the interface over which cluster messages are received.
+The hostname is checked for reachability during CacheManager initialisation.
+If the hostName is unreachable, the CacheManager will refuse to start and an
+CacheException will be thrown indicating connection was refused.
+If unspecified, the hostname will use <code>InetAddress.getLocalHost().getHostAddress()</code>, which corresponds to the default
+host network interface.
+Warning: Explicitly setting this to localhost refers to the local loopback of 127.0.0.1, which is not network visible
+and will cause no replications to be received from remote hosts. You should only use this setting when multiple
+CacheManagers are on the same machine.</li>
+  <li>port (mandatory) - the port the listener listens on.</li>
+  <li>socketTimeoutMillis (optional) - the number of seconds client sockets will wait
+when sending messages to this listener until they give up. By default
+this is 2000ms.</li>
+</ul>
+
+<h2 id="configuring-cache-replicators">Configuring Cache Replicators</h2>
+
+<p>Each cache that will be replicated needs to set a cache event listener
+which then replicates messages to the other CacheManager peers. This is
+done by adding a cacheEventListenerFactory element to each cache’s
+configuration.</p>
+
+<pre>
+   <code>&lt;!-- Sample cache named sampleCache2. --&gt;
+&lt;cache name="sampleCache2"
+  maxEntriesLocalHeap="10"
+  eternal="false"
+  timeToIdleSeconds="100"
+  timeToLiveSeconds="100"
+  overflowToDisk="false"&gt;
+&lt;cacheEventListenerFactory
+class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,
+replicateUpdatesViaCopy=false, replicateRemovals=true "/&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<p>class - use net.sf.ehcache.distribution.RMICacheReplicatorFactory</p>
+
+<p>The factory recognises the following properties:</p>
+
+<ul>
+  <li>replicatePuts=true | false - whether new elements placed in a cache are
+ replicated to others. Defaults to true.</li>
+  <li>replicateUpdates=true | false - whether new elements which override an
+ element already existing with the same key are replicated. Defaults to true.</li>
+  <li>replicateRemovals=true - whether element removals are replicated. Defaults to true.</li>
+  <li>replicateAsynchronously=true | false - whether replications are
+ asyncrhonous (true) or synchronous (false). Defaults to true.</li>
+  <li>replicateUpdatesViaCopy=true | false - whether the new elements are
+ copied to other caches (true), or whether a remove message is sent. Defaults to true.</li>
+</ul>
+
+<p>To reduce typing if you want default behaviour, which is replicate everything in asynchronous mode, you can leave off
+the <code>RMICacheReplicatorFactory</code> properties as per the following example:</p>
+
+<pre>
+   <code>&lt;!-- Sample cache named sampleCache4. All missing RMICacheReplicatorFactory properties
+    default to true --&gt;
+&lt;cache name="sampleCache4"
+      maxEntriesLocalHeap="10"
+      eternal="true"
+      overflowToDisk="false"
+      memoryStoreEvictionPolicy="LFU"&gt;
+   &lt;cacheEventListenerFactory
+       class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/&gt;
+&lt;/cache&gt;
+</code>
+</pre>
+
+<h2 id="configuring-bootstrap-from-a-cache-peer">Configuring Bootstrap from a Cache Peer</h2>
+
+<p>When a peer comes up, it will be incoherent with other caches. When the bootstrap completes it will be partially
+ coherent. Bootstrap gets the list of keys from a random peer, and then loads those in batches from random
+ peers. If bootstrap fails then the Cache will not start. However if a cache replication operation occurs
+ which is then overwritten by bootstrap there is a chance that the cache could be inconsistent.</p>
+
+<p>Here are some scenarios:</p>
+
+<p><strong>Delete overwritten by boostrap put</strong><br />
+Cache A keys with values: 1, 2, 3, 4, 5<br />
+Cache B starts bootstrap<br />
+Cache A removes key 2<br />
+Cache B removes key 2 and then bootstrap puts it back</p>
+
+<p><strong>Put overwritten by boostrap put</strong><br />
+Cache A keys with values: 1, 2, 3, 4, 5<br />
+Cache B starts bootstrap<br />
+Cache A updates the value of key 2<br />
+Cache B updates the value of key 2 and then bootstrap overwrites it with the
+old value</p>
+
+<p>The solution is for bootstrap to get a list of keys and write them all before committing transactions.</p>
+
+<p>This could cause synchronous transaction replicates to back up. To solve this problem, commits will be
+  accepted, but not written to the cache until after bootstrap. Coherency is maintained because the cache
+  is not available until bootstrap has completed and the transactions have been completed.</p>
+
+<h2 id="full-example">Full Example</h2>
+
+<p>Ehcache’s own integration tests provide complete examples of RMI-based replication.</p>
+
+<p>The best example is the integration test for cache replication. You can see it online here:
+  <a href="http://ehcache.org/xref-test/net/sf/ehcache/distribution/RMICacheReplicatorTest.html">http://ehcache.org/xref-test/net/sf/ehcache/distribution/RMICacheReplicatorTest.html</a></p>
+
+<p>The test uses five ehcache.xml files representing five CacheManagers set up to replicate using RMI.</p>
+
+<h2 id="common-problems">Common Problems</h2>
+
+<h3 id="tomcat-on-windows">Tomcat on Windows</h3>
+
+<p>Any RMI listener will fail to start on Tomcat, if the installation path has spaces in it. Because the default on Windows is to install Tomcat in “Program Files”, this issue will occur by default. The workaround is to remove the spaces in your Tomcat installation path.</p>
+
+<h3 id="multicast-blocking">Multicast Blocking</h3>
+
+<p>The automatic peer discovery process relies on multicast. Multicast can be blocked by routers.
+ Virtualisation technologies like Xen and VMWare may be blocking multicast. If so enable it.
+ You may also need to turn it on in the configuration for your network interface card.
+ An easy way to tell if your multicast is getting through is to use the Ehcache remote debugger
+ and watch for the heartbeat packets to arrive.</p>
+
+<h3 id="multicast-not-propagating-far-enough-or-propagating-too-far">Multicast Not Propagating Far Enough or Propagating Too Far</h3>
+
+<p>You can control how far the multicast packets propagate by setting the badly misnamed time to live.
+ Using the multicast IP protocol, the timeToLive value indicates the scope or range in which a packet may be forwarded.</p>
+
+<p>By convention:</p>
+
+<p>0 is restricted to the same host<br />
+1 is restricted to the same subnet<br />
+32 is restricted to the same site<br />
+64 is restricted to the same region<br />
+128 is restricted to the same continent<br />
+255 is unrestricted</p>
+
+<p>The default value in Java is 1, which propagates to the same subnet. Change the
+timeToLive property to restrict or expand propagation.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>
