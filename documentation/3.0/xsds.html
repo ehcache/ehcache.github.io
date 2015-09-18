@@ -357,7 +357,7 @@
           &lt;/xs:sequence&gt;
           &lt;xs:attribute type="xs:positiveInteger" name="concurrency" default="1" use="optional"/&gt;
           &lt;xs:attribute type="xs:positiveInteger" name="size" default="2147483647" use="optional"/&gt;
-          &lt;xs:attribute type="xs:boolean" name="coalesce" use="optional"/&gt;
+          &lt;xs:attribute type="xs:boolean" name="coalesce" default="false" use="optional"/&gt;
           &lt;xs:attribute name="ratelimitpersecond" type="xs:positiveInteger" default="2147483647" use="optional"/&gt;
           &lt;xs:attribute name="minWriteDelay" type="xs:nonNegativeInteger" default="0" use="optional"/&gt;
           &lt;xs:attribute name="maxWriteDelay" type="xs:positiveInteger" default="2147483647" use="optional"/&gt;
@@ -580,6 +580,36 @@
     &lt;xs:attribute name="name" type="xs:ID" use="required" /&gt;
     &lt;xs:attribute name="template" type="xs:IDREF" use="required" /&gt;
   &lt;/xs:complexType&gt;
+&lt;/xs:schema&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="xa-transactions-extension">XA transactions extension</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-xsd" data-lang="xsd">&lt;xs:schema version="1.0"
+           xmlns:tx="http://www.ehcache.org/v3/tx"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="http://www.ehcache.org/v3/tx"&gt;
+
+  &lt;xs:element name="xa-store-provider"/&gt;
+
+  &lt;xs:element name="xa-store" type="tx:xa-store-config-type"/&gt;
+
+  &lt;xs:element name="jta-tm" type="tx:jta-tm-type"/&gt;
+
+  &lt;xs:complexType name="xa-store-config-type"&gt;
+    &lt;xs:attribute name="unique-XAResource-id" type="xs:string" use="required"/&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="jta-tm-type"&gt;
+    &lt;xs:attribute name="transaction-manager-provider-class" type="xs:string" use="required"/&gt;
+  &lt;/xs:complexType&gt;
+
 &lt;/xs:schema&gt;</code></pre>
 </div>
 </div>

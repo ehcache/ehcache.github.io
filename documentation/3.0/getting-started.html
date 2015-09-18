@@ -304,6 +304,9 @@ See <a href="usermanaged.html">the user managed cache documentation</a> for more
 </table>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="tiering">Tiering</h3>
 <div class="sect3">
 <h4 id="off-heap">Off-heap</h4>
 <div class="listingblock">
@@ -433,12 +436,15 @@ then be passed to the said method so as to trigger the update.</td>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Presently, <code>updateResourcePools()</code> only supports updating heap and disk tiers, if they are defined with <code>EntryUnit.ENTRIES</code> as the unit of measure.
+Presently, <code>updateResourcePools()</code> only supports updating tiers that use <code>EntryUnit.ENTRIES</code> as the unit of measure.
 </td>
 </tr>
 </table>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="integration">Integration</h3>
 <div class="sect3">
 <h4 id="cache-event-listeners">Cache Event Listeners</h4>
 <div class="listingblock">
@@ -688,15 +694,20 @@ underlying resource.</td>
 <div class="sect2">
 <h3 id="serializers">Serializers</h3>
 <div class="paragraph">
-<p>Serialization is primarily used in ehcache to store the data in the non-heap tiers. So whenever the user uses a<br />
-multi-tiered cache, serialization and deserialization happens when the data is moved between the tiers. Ehcache provides<br />
-a serializer that can serialize any <code>Serializable</code> type. So if you are using standard <code>Serializable</code> types as your keys<br />
-and values, no extra serializers need to be configured as the inbuilt serializer would handle those cases. But if you<br />
-use your own custom types in ehcache that are not serializable, the stock serializer won’t be able to perform the<br />
-serialization/deserialization on its own. So you need to provide the serialization logic as well. Inorder to do this you<br />
-can register your own custom serializers to the cache/cache manager. So if you register a serializer for some type of<br />
-data, that serializer would be used to perform all the serialization/deserialization for that type.<br />
-You can configure a set of serializers on the cache manager:</p>
+<p>Serialization is primarily used in Ehcache to store the data in the non-heap tiers.<br />
+So whenever the user configures a multi-tiered cache, serialization and deserialization can happen when the data is moved to and from the tiers.<br />
+Ehcache provides default serializers that can serialize any <code>Serializable</code> type.<br />
+So if you are using standard <code>Serializable</code> types as your keys and values, no extra serializers need to be configured as the built-in serializer will handle those cases.<br />
+But if you use your own custom types in Ehcache that are not serializable, the stock serializer will not be able to perform the serialization/deserialization on its own.</p>
+</div>
+<div class="sect3">
+<h4 id="custom-serializers">Custom serializers</h4>
+<div class="paragraph">
+<p>You can register your own custom serializers to the cache/cache manager.<br />
+So if you register a serializer for a given type of objects, it would be used to perform all the serialization/deserialization for that type.</p>
+</div>
+<div class="paragraph">
+<p>You can configure serializers on the cache manager, to be applied to all caches:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -774,17 +785,45 @@ cacheManager.close();</code></pre>
 </tr>
 </table>
 </div>
+<div class="sect4">
+<h5 id="implementation-of-a-code-serializer-code">Implementation of a <code>Serializer</code></h5>
+<div class="paragraph">
+<p>When implementing a <code>org.ehcache.spi.serialization.Serializer</code>, you obviously need to respect the interface contract.<br />
+In addition, there are a few implicit contracts:</p>
 </div>
-<div class="sect2">
-<h3 id="store-by-value-caches-with-copiers">Store-By-Value Caches with Copiers</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Your implementation must have a public constructor taking a <code>ClassLoader</code> as parameter.</p>
+</li>
+<li>
+<p>There are two annotations that you have to use to mark your <code>Serializer</code> - a single implementation can use both:</p>
+</li>
+<li>
+<p><code>org.ehcache.spi.serialization.Serializer.Transient</code>: With this annotation you indicate that the <code>Serializer</code><br />
+implementation is fit for use inside a transient cache.</p>
+</li>
+<li>
+<p><code>org.ehcache.spi.serialization.Serializer.Persistent</code>: With this annotation you indicate that the <code>Serializer</code><br />
+implementation is fit for use inside a persistent cache. The constructor can take an additional parameter, a<br />
+<code>org.ehcache.spi.service.FileBasedPersistenceContext</code> which can then be used to persist serialization metadata.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="store-by-value-caches-with-copiers">Store-By-Value Caches with Copiers</h4>
 <div class="paragraph">
 <p>JSR-107 mandates that the caches should support a store-by-value mechanism that makes a copy of the keys and values<br />
-before storing them in the cache. Ehcache supports store-by-reference by default and the user needs to configure the<br />
-cache explicitly to use store-by-value. The user can specify custom <code>Copiers</code> for keys and values to be used for<br />
-copying. The user can create a copier by implementing the Copier&lt;T&gt; interface directly if he has separate copying logic<br />
-for reads and writes or implement the helper class <code>ReadWriteCopier</code> that just has a_copy(T obj)_ method that needs to be<br />
-overridden with the generic copying logic for both reads and writes for the type used. If no copiers are provided, the<br />
-cache will be a store-by-reference cache.</p>
+before storing them in the cache. Ehcache supports store-by-reference by default on heap and the user needs to configure the<br />
+cache explicitly to use store-by-value.</p>
+</div>
+<div class="paragraph">
+<p>The user can specify custom copy logic for keys and values to be used for copying.<br />
+The user can create a copier by implementing the <code>Copier&lt;T&gt;</code> interface directly if he has different needs for reads and writes.<br />
+Another option is to implement the helper class <code>ReadWriteCopier&lt;T&gt;</code> that has an abstract <code>copy(T obj)</code> method used by the <code>Copier&lt;T&gt;</code> methods.<br />
+If no copiers are provided, the cache will be a store-by-reference cache.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -832,8 +871,8 @@ cache as follows to use serializing copier:</p>
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
     .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
-    .add(new DefaultCopierConfiguration&lt;Long&gt;((Class)SerializingCopier.class,   <i class="conum" data-value="1"></i><b>(1)</b>
-        CopierConfiguration.Type.KEY))
+    .add(new DefaultCopierConfiguration&lt;Person&gt;((Class)SerializingCopier.class,   <i class="conum" data-value="1"></i><b>(1)</b>
+        CopierConfiguration.Type.VALUE))
     .buildConfig(Long.class, Person.class);</code></pre>
 </div>
 </div>
@@ -847,9 +886,9 @@ have to do. It is that simple.</td>
 </table>
 </div>
 <div class="paragraph">
-<p>If you look at the cache configuration in the above example, there are no copiers configured for the values, and that is<br />
-fine in ehcache. If a copier is not configured, we fall back to store-by-reference. So with the above configuration, you<br />
-get a cache that stores keys by-value and values by-reference.</p>
+<p>If you look at the cache configuration in the above example, there are no copiers configured for the keys, and that is<br />
+fine in Ehcache. If a copier is not configured, we fall back to store-by-reference. So with the above configuration, you<br />
+get a cache that stores keys <em>by-reference</em> and values <em>by-value</em>.</p>
 </div>
 <div class="paragraph">
 <p>You can also have default copiers configured at the cache manager level so that you don’t have to configure the same<br />
@@ -908,6 +947,7 @@ cacheManager.close();</code></pre>
 <td>The <code>PersonCopier</code> configured at the cache manager level will be used for this cache.</td>
 </tr>
 </table>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1007,11 +1047,12 @@ create your <code>CacheManager</code> instance using the <code>Configuration</co
 <h2 id="current-release">Current release</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We released the Milestone 2 on August 11, 2015. In addition to the JSR-107 compatibility,<br />
-it introduces up to 3 level tiering, offering offheap as well as a new disk persistence option; write-behind, …​</p>
+<p>We released the Milestone 3 on September 18th, 2015. In addition to the JSR-107 compatibility,<br />
+it introduces up to 3 level tiering, offering offheap as well as a new disk persistence option; write-behind, XA transactional<br />
+caches, makes custom serialization possible, …​</p>
 </div>
 <div class="paragraph">
-<p>The <a href="https://github.com/ehcache/ehcache3/releases/tag/v3.0.0.m2">release notes</a> contain the links to the documentation<br />
+<p>The <a href="https://github.com/ehcache/ehcache3/releases/tag/v3.0.0.m3">release notes</a> contain the links to the documentation<br />
 to help you get started</p>
 </div>
 </div>
@@ -1020,8 +1061,8 @@ to help you get started</p>
 <h2 id="current-development-next-release">Current development &amp; next release</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We are now working on the next milestone, aka <a href="https://github.com/ehcache/ehcache3/milestones/Milestone%203">Milestone 3</a> :<br />
-All missing features from the existing Ehcache 2.x line, exposed using the new API, but Automatic Resource Control (planned for M4).</p>
+<p>We are now working on the next milestone, aka <a href="https://github.com/ehcache/ehcache3/milestones/Milestone%204">Milestone 4</a> :<br />
+Automatic Resource Control will be the big item in this upcoming release.</p>
 </div>
 <div class="paragraph">
 <p>See the <a href="https://github.com/ehcache/ehcache3/milestones">Milestones on GitHub</a> for more details on the current status.</p>

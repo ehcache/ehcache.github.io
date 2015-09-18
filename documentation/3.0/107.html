@@ -377,6 +377,10 @@ constraint. All that’s needed is adding a <code>jsr107</code> service in your 
   &lt;service&gt; <i class="conum" data-value="2"></i><b>(2)</b>
     &lt;jsr107:defaults default-template="tinyCache"&gt; <i class="conum" data-value="3"></i><b>(3)</b>
       &lt;jsr107:cache name="foos" template="stringCache"/&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+      &lt;jsr107:cache name="byRefCache" template="byRefTemplate"/&gt;
+      &lt;jsr107:cache name="byValCache" template="byValueTemplate"/&gt;
+      &lt;jsr107:cache name="weirdCache1" template="mixedTemplate1"/&gt;
+      &lt;jsr107:cache name="weirdCache2" template="mixedTemplate2"/&gt;
     &lt;/jsr107:defaults&gt;
   &lt;/service&gt;
 
@@ -393,6 +397,29 @@ constraint. All that’s needed is adding a <code>jsr107</code> service in your 
     &lt;heap size="20" unit="entries"/&gt;
   &lt;/cache-template&gt;
 
+  &lt;cache-template name="byRefTemplate"&gt;
+    &lt;key-type copier="org.ehcache.internal.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.internal.copy.IdentityCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap size="10" unit="entries"/&gt;
+  &lt;/cache-template&gt;
+
+  &lt;cache-template name="byValueTemplate"&gt;
+    &lt;key-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap size="10" unit="entries"/&gt;
+  &lt;/cache-template&gt;
+
+  &lt;cache-template name="mixedTemplate1"&gt;
+    &lt;key-type copier="org.ehcache.internal.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap size="10" unit="entries"/&gt;
+  &lt;/cache-template&gt;
+
+  &lt;cache-template name="mixedTemplate2"&gt;
+    &lt;key-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.internal.copy.IdentityCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap size="10" unit="entries"/&gt;
+  &lt;/cache-template&gt;
 &lt;/config&gt;</code></pre>
 </div>
 </div>
@@ -448,19 +475,23 @@ CacheRuntimeConfiguration&lt;Long, String&gt; ehcacheConfig = (CacheRuntimeConfi
     Eh107Configuration.class).unwrap(CacheRuntimeConfiguration.class); <i class="conum" data-value="3"></i><b>(3)</b>
 ehcacheConfig.getResourcePools().getPoolForResource(ResourceType.Core.HEAP).getSize(); <i class="conum" data-value="4"></i><b>(4)</b>
 
+Cache&lt;Long, String&gt; anotherCache = manager.createCache("byRefCache", mutableConfiguration);
+assertFalse(anotherCache.getConfiguration(Configuration.class).isStoreByValue()); <i class="conum" data-value="5"></i><b>(5)</b>
+
 MutableConfiguration&lt;String, String&gt; otherConfiguration = new MutableConfiguration&lt;String, String&gt;();
 otherConfiguration.setTypes(String.class, String.class);
-otherConfiguration.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE)); <i class="conum" data-value="5"></i><b>(5)</b>
+otherConfiguration.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE)); <i class="conum" data-value="6"></i><b>(6)</b>
 
-Cache&lt;String, String&gt; foosCache = manager.createCache("foos", otherConfiguration);<i class="conum" data-value="6"></i><b>(6)</b>
+Cache&lt;String, String&gt; foosCache = manager.createCache("foos", otherConfiguration);<i class="conum" data-value="7"></i><b>(7)</b>
 CacheRuntimeConfiguration&lt;Long, String&gt; foosEhcacheConfig = (CacheRuntimeConfiguration&lt;Long, String&gt;)foosCache.getConfiguration(
     Eh107Configuration.class).unwrap(CacheRuntimeConfiguration.class);
-foosEhcacheConfig.getExpiry().getExpiryForCreation(42L, "Answer!").getAmount(); <i class="conum" data-value="7"></i><b>(7)</b>
+foosEhcacheConfig.getExpiry().getExpiryForCreation(42L, "Answer!").getAmount(); <i class="conum" data-value="8"></i><b>(8)</b>
 
 CompleteConfiguration&lt;String, String&gt; foosConfig = foosCache.getConfiguration(CompleteConfiguration.class);
 
 try {
-  ExpiryPolicy expiryPolicy = foosConfig.getExpiryPolicyFactory().create(); <i class="conum" data-value="8"></i><b>(8)</b>
+  final Factory&lt;ExpiryPolicy&gt; expiryPolicyFactory = foosConfig.getExpiryPolicyFactory();
+  ExpiryPolicy expiryPolicy = expiryPolicyFactory.create(); <i class="conum" data-value="9"></i><b>(9)</b>
   throw new AssertionError("Expected UnsupportedOperationException");
 } catch (UnsupportedOperationException e) {
   // Expected
@@ -471,7 +502,7 @@ try {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Assume existing JSR-107 configuration code</td>
+<td>Assume existing JSR-107 configuration code, which is store-by-value by default</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -487,19 +518,40 @@ try {
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Templates will also override JSR-107 config, see here a configuration with TTL 1 minute</td>
+<td>The cache template will override the JSR-107 cache’s store-by-value config to store-by-ref since the <code>byRefTemplate</code><br />
+template that is used to create the cache is configured explicitly using <code>IdentityCopier</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>used to create a cache where the template says TTL 2 minutes.</td>
+<td>Templates will also override JSR-107 config, see here a configuration with TTL 1 minute</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>And we can indeed verify that the template provided configuration has been applied, duration will be <em>2 minutes</em> and not <em>1</em>.</td>
+<td>used to create a cache where the template says TTL 2 minutes.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>And we can indeed verify that the template provided configuration has been applied, duration will be <em>2 minutes</em> and not <em>1</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
 <td>One drawback of this is that when getting at the <code>CompleteConfiguration</code>, you no longer have access to the factories from JSR-107.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As mentioned in step 5, in order to override store-by-value configuration of a JSR-107 cache using templates you<br />
+can explicitly configure the template using <code>IdentityCopier</code>. But the usage of <code>IdentityCopier</code> is not mandatory to get<br />
+a store-by-ref cache. You can use any custom copier implementation that does not perform any "copying" but returns<br />
+the exact same reference that gets passed into the copy methods. <code>IdentityCopier</code> is just one that we have provided to<br />
+make your life easier.
+</td>
 </tr>
 </table>
 </div>
