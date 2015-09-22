@@ -535,8 +535,6 @@ XAResource identifier as some transaction managers require this.</td>
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">BitronixTransactionManager transactionManager =
     TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
-Class&lt;CacheLoaderWriter&lt;?, ?&gt;&gt; klazz = (Class&lt;CacheLoaderWriter&lt;?, ?&gt;&gt;) (Class) (SampleLoaderWriter.class);
-
 PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
     .with(new CacheManagerPersistenceConfiguration(new File(getStoragePath(), "testXACacheWithThreeTiers"))) <i class="conum" data-value="3"></i><b>(3)</b>
@@ -547,18 +545,17 @@ PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheMana
                     .disk(20, MemoryUnit.MB, true)
             )
             .add(new XAStoreConfiguration("xaCache")) <i class="conum" data-value="6"></i><b>(6)</b>
-            .add(new DefaultCacheLoaderWriterConfiguration(klazz, singletonMap(1L, "eins"))) <i class="conum" data-value="7"></i><b>(7)</b>
             .buildConfig(Long.class, String.class)
     )
     .build(true);
 
 final Cache&lt;Long, String&gt; xaCache = persistentCacheManager.getCache("xaCache", Long.class, String.class);
 
-transactionManager.begin(); <i class="conum" data-value="8"></i><b>(8)</b>
+transactionManager.begin(); <i class="conum" data-value="7"></i><b>(7)</b>
 {
-  xaCache.put(1L, "one"); <i class="conum" data-value="9"></i><b>(9)</b>
+  xaCache.put(1L, "one"); <i class="conum" data-value="8"></i><b>(8)</b>
 }
-transactionManager.commit(); <i class="conum" data-value="10"></i><b>(10)</b>
+transactionManager.commit(); <i class="conum" data-value="9"></i><b>(9)</b>
 
 persistentCacheManager.close();
 transactionManager.shutdown();</code></pre>
@@ -577,21 +574,20 @@ during the cache manager initialization if BTM isn’t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Register a cache the normal way.</td>
+<td>Register a <code>LocalPersistenceService</code> with your <code>CacheManager</code> to use disk storage.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Give it the resources you wish.</td>
+<td>Register a cache the normal way.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Add a <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique<br />
-XAResource identifier as some transaction managers require this.</td>
+<td>Give it the resources you wish.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>configure the <code>CacheLoaderWriter</code> here. this is a mocked SoR backed by a map for illustration that contains <code>1L</code>/<code>"eins"</code><br />
-key/value pair at startup.</td>
+<td>Add a <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique<br />
+XAResource identifier as some transaction managers require this.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
@@ -599,14 +595,10 @@ key/value pair at startup.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>The cache is empty at startup, so the <code>CacheLoaderWriter</code> will be called to load the value.</td>
+<td>Update the value.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
-<td>Update the value. This will make the <code>CacheLoaderWriter</code> write to the SoR.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="10"></i><b>10</b></td>
 <td>Commit the JTA transaction. Other transactions can now see the changes you made to the cache and the SoR.</td>
 </tr>
 </table>
