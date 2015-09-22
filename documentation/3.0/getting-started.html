@@ -798,7 +798,8 @@ In addition, there are a few implicit contracts:</p>
 </li>
 <li>
 <p>There are two annotations that you have to use to mark your <code>Serializer</code> - a single implementation can use both:</p>
-</li>
+<div class="ulist">
+<ul>
 <li>
 <p><code>org.ehcache.spi.serialization.Serializer.Transient</code>: With this annotation you indicate that the <code>Serializer</code><br />
 implementation is fit for use inside a transient cache.</p>
@@ -807,6 +808,9 @@ implementation is fit for use inside a transient cache.</p>
 <p><code>org.ehcache.spi.serialization.Serializer.Persistent</code>: With this annotation you indicate that the <code>Serializer</code><br />
 implementation is fit for use inside a persistent cache. The constructor can take an additional parameter, a<br />
 <code>org.ehcache.spi.service.FileBasedPersistenceContext</code> which can then be used to persist serialization metadata.</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
