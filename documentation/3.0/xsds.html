@@ -163,6 +163,59 @@
           &lt;/xs:documentation&gt;
         &lt;/xs:annotation&gt;
       &lt;/xs:element&gt;
+      &lt;xs:element name="default-serializers" type="ehcache:serializer-type" minOccurs="0" maxOccurs="1"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            This element represents Serializers.
+            It is a collection of serializer tags that require a type and fully qualified class names of serializers
+            that are to be registered
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="default-copiers" type="ehcache:copier-type" minOccurs="0" maxOccurs="1"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            This element represents Copiers.
+            It is a collection of copier tags that require a type and fully qualified class names of copiers
+            that are to be registered
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="persistence" type="ehcache:persistence-type" minOccurs="0" maxOccurs="1"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            Location where data needs be stored on disk
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="thread-pools" type="ehcache:thread-pools-type" minOccurs="0" maxOccurs="1"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            This element configures the sets of constrained threads used to run asynchronous tasks for the caches of this manager.
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="event-dispatch" type="ehcache:thread-pool-reference-type" minOccurs="0" maxOccurs="1"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            The element configures the default thread pool used for cache event dispatch.
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="write-behind" type="ehcache:thread-pool-reference-type" minOccurs="0" maxOccurs="1"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            The element configures the default thread pool used for write behind caches.
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="disk-store" type="ehcache:thread-pool-reference-type" minOccurs="0" maxOccurs="1"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            The element configures the default thread pool used for writing to disk resources.
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
       &lt;xs:choice minOccurs="0" maxOccurs="unbounded"&gt;
         &lt;xs:element name="cache" type="ehcache:cache-type"&gt;
           &lt;xs:annotation&gt;
@@ -171,10 +224,10 @@
             &lt;/xs:documentation&gt;
           &lt;/xs:annotation&gt;
         &lt;/xs:element&gt;
-        &lt;xs:element name="cache-template" type="ehcache:cacheTemplate-type"&gt;
+        &lt;xs:element name="cache-template" type="ehcache:cache-template-type"&gt;
           &lt;xs:annotation&gt;
             &lt;xs:documentation xml:lang="en"&gt;
-              A cache template definition that can be reference in &amp;lt;cache&amp;gt; definitions using the 'usesTemplate'
+              A cache template definition that can be reference in &amp;lt;cache&amp;gt; definitions using the 'uses-template'
               attribute.
             &lt;/xs:documentation&gt;
           &lt;/xs:annotation&gt;
@@ -185,9 +238,6 @@
 
   &lt;xs:complexType name="service-type"&gt;
     &lt;xs:choice&gt;
-      &lt;xs:element name="default-serializers" type="ehcache:serializer-type" minOccurs="0" maxOccurs="1"/&gt;
-      &lt;xs:element name="default-copiers" type="ehcache:copier-type" minOccurs="0" maxOccurs="1"/&gt;
-      &lt;xs:element name="persistence" type="ehcache:persistence-type" minOccurs="0" maxOccurs="1"/&gt;
       &lt;xs:any namespace="##other" minOccurs="0" maxOccurs="1"/&gt;
     &lt;/xs:choice&gt;
   &lt;/xs:complexType&gt;
@@ -224,9 +274,26 @@
     &lt;/xs:sequence&gt;
   &lt;/xs:complexType&gt;
 
+  &lt;xs:complexType name="thread-pools-type"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="thread-pool" maxOccurs="unbounded" minOccurs="1"&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:attribute name="alias" use="required" type="xs:string"/&gt;
+          &lt;xs:attribute name="default" use="optional" type="xs:boolean" default="false"/&gt;
+          &lt;xs:attribute name="min-size" use="required" type="xs:nonNegativeInteger"/&gt;
+          &lt;xs:attribute name="max-size" use="required" type="xs:positiveInteger"/&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:sequence&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="thread-pool-reference-type"&gt;
+    &lt;xs:attribute name="thread-pool" use="required" type="xs:string"/&gt;
+  &lt;/xs:complexType&gt;
+
   &lt;xs:complexType name="cache-type"&gt;
     &lt;xs:complexContent&gt;
-      &lt;xs:extension base="ehcache:baseCache-type"&gt;
+      &lt;xs:extension base="ehcache:base-cache-type"&gt;
         &lt;xs:attribute name="alias" use="required" type="xs:string"&gt;
           &lt;xs:annotation&gt;
             &lt;xs:documentation xml:lang="en"&gt;
@@ -234,7 +301,7 @@
             &lt;/xs:documentation&gt;
           &lt;/xs:annotation&gt;
         &lt;/xs:attribute&gt;
-        &lt;xs:attribute name="usesTemplate" use="optional" type="xs:IDREF"&gt;
+        &lt;xs:attribute name="uses-template" use="optional" type="xs:IDREF"&gt;
           &lt;xs:annotation&gt;
             &lt;xs:documentation xml:lang="en"&gt;
               The optional &amp;lt;cache-template&amp;gt; to use to source a default configuration from.
@@ -246,14 +313,14 @@
     &lt;/xs:complexContent&gt;
   &lt;/xs:complexType&gt;
 
-  &lt;xs:complexType name="cacheTemplate-type"&gt;
+  &lt;xs:complexType name="cache-template-type"&gt;
     &lt;xs:complexContent&gt;
-      &lt;xs:extension base="ehcache:baseCache-type"&gt;
+      &lt;xs:extension base="ehcache:base-cache-type"&gt;
         &lt;xs:attribute name="name" type="xs:ID" use="required"&gt;
           &lt;xs:annotation&gt;
             &lt;xs:documentation xml:lang="en"&gt;
               The name of this &amp;lt;cache-template&amp;gt; definition.
-              Used by cache element's 'usesTemplate' attribute.
+              Used by cache element's 'uses-template' attribute.
             &lt;/xs:documentation&gt;
           &lt;/xs:annotation&gt;
         &lt;/xs:attribute&gt;
@@ -261,7 +328,7 @@
     &lt;/xs:complexContent&gt;
   &lt;/xs:complexType&gt;
 
-  &lt;xs:complexType name="baseCache-type" abstract="true"&gt;
+  &lt;xs:complexType name="base-cache-type" abstract="true"&gt;
     &lt;xs:sequence&gt;
       &lt;xs:element name="key-type" type="ehcache:cache-entry-type" minOccurs="0" maxOccurs="1" default="java.lang.Object"&gt;
         &lt;xs:annotation&gt;
@@ -300,10 +367,17 @@
           &lt;/xs:documentation&gt;
         &lt;/xs:annotation&gt;
       &lt;/xs:element&gt;
-      &lt;xs:element name="integration" type="ehcache:cache-integration" minOccurs="0" maxOccurs="1"&gt;
+      &lt;xs:element name="integration" type="ehcache:cache-integration-type" minOccurs="0" maxOccurs="1"&gt;
         &lt;xs:annotation&gt;
           &lt;xs:documentation xml:lang="en"&gt;
             Configures the Cache as fronting a system of record that it'll be kept in sync with.
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="listeners" type="ehcache:listeners-type" minOccurs="0" maxOccurs="1"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            Configures the listeners for the Cache.
           &lt;/xs:documentation&gt;
         &lt;/xs:annotation&gt;
       &lt;/xs:element&gt;
@@ -323,13 +397,63 @@
           &lt;/xs:annotation&gt;
         &lt;/xs:element&gt;
       &lt;/xs:choice&gt;
+      &lt;xs:element name="disk-store-settings" type="ehcache:disk-store-settings-type" minOccurs="0" maxOccurs="1"&gt;
+        &lt;xs:annotation&gt;
+          &lt;xs:documentation xml:lang="en"&gt;
+            Configures advanced properties of the disk tier
+          &lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+      &lt;/xs:element&gt;
       &lt;xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/&gt;
     &lt;/xs:sequence&gt;
   &lt;/xs:complexType&gt;
 
-  &lt;xs:complexType name="cache-integration"&gt;
+  &lt;xs:complexType name="listeners-type"&gt;
     &lt;xs:sequence&gt;
-      &lt;xs:element name="loaderwriter" minOccurs="0" maxOccurs="1"&gt;
+      &lt;xs:element name="listener" minOccurs="0" maxOccurs="unbounded"&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:sequence&gt;
+            &lt;xs:element name="class" type="ehcache:fqcn-type" minOccurs="1" maxOccurs="1"&gt;
+              &lt;xs:annotation&gt;
+                &lt;xs:documentation xml:lang="en"&gt;
+                  A fully qualified class name to a concrete type that implements
+                  org.ehcache.spi.event.CacheEventListener and has a public
+                  default no argument constructor.
+                &lt;/xs:documentation&gt;
+              &lt;/xs:annotation&gt;
+            &lt;/xs:element&gt;
+            &lt;xs:element name="event-firing-mode" type="ehcache:event-firing-type" minOccurs="1" maxOccurs="1"&gt;
+              &lt;xs:annotation&gt;
+                &lt;xs:documentation xml:lang="en"&gt;
+                  Indicates which EventFiring firing mode to use
+                &lt;/xs:documentation&gt;
+              &lt;/xs:annotation&gt;
+            &lt;/xs:element&gt;
+            &lt;xs:element name="event-ordering-mode" type="ehcache:event-ordering-type" minOccurs="1" maxOccurs="1"&gt;
+              &lt;xs:annotation&gt;
+                &lt;xs:documentation xml:lang="en"&gt;
+                  Indicates which EventOrdering ordering mode to use
+                &lt;/xs:documentation&gt;
+              &lt;/xs:annotation&gt;
+            &lt;/xs:element&gt;
+            &lt;xs:element name="events-to-fire-on" type="ehcache:event-type" minOccurs="1" maxOccurs="5"&gt;
+              &lt;xs:annotation&gt;
+                &lt;xs:documentation xml:lang="en"&gt;
+                  Indicates on which EventType an event has to be fired
+                &lt;/xs:documentation&gt;
+              &lt;/xs:annotation&gt;
+            &lt;/xs:element&gt;
+            &lt;xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/&gt;
+          &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attribute name="thread-pool" type="xs:string" use="optional"/&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="cache-integration-type"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="loader-writer" minOccurs="0" maxOccurs="1"&gt;
         &lt;xs:complexType&gt;
           &lt;xs:sequence&gt;
             &lt;xs:element name="class" type="ehcache:fqcn-type" minOccurs="1" maxOccurs="1"&gt;
@@ -345,60 +469,25 @@
           &lt;/xs:sequence&gt;
         &lt;/xs:complexType&gt;
       &lt;/xs:element&gt;
-      &lt;xs:element name="writebehind" minOccurs="0" maxOccurs="1"&gt;
+      &lt;xs:element name="write-behind" minOccurs="0" maxOccurs="1"&gt;
         &lt;xs:complexType&gt;
           &lt;xs:sequence&gt;
-            &lt;xs:element name="retry" minOccurs="0" maxOccurs="1"&gt;
-              &lt;xs:complexType&gt;
-                &lt;xs:attribute type="xs:positiveInteger" name="attempts" use="required"/&gt;
-                &lt;xs:attribute type="xs:positiveInteger" name="delay" use="required"/&gt;
-              &lt;/xs:complexType&gt;
-            &lt;/xs:element&gt;
+            &lt;xs:choice&gt;
+              &lt;xs:element name="batching"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:all minOccurs="1"&gt;
+                    &lt;xs:element name="max-write-delay" type="ehcache:time-type"/&gt;
+                  &lt;/xs:all&gt;
+                  &lt;xs:attribute name="batch-size" type="xs:positiveInteger" use="required"/&gt;
+                  &lt;xs:attribute name="coalesce" type="xs:boolean" default="false" use="optional"/&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element name="non-batching"/&gt;
+            &lt;/xs:choice&gt;
           &lt;/xs:sequence&gt;
-          &lt;xs:attribute type="xs:positiveInteger" name="concurrency" default="1" use="optional"/&gt;
-          &lt;xs:attribute type="xs:positiveInteger" name="size" default="2147483647" use="optional"/&gt;
-          &lt;xs:attribute type="xs:boolean" name="coalesce" default="false" use="optional"/&gt;
-          &lt;xs:attribute name="ratelimitpersecond" type="xs:positiveInteger" default="2147483647" use="optional"/&gt;
-          &lt;xs:attribute name="minWriteDelay" type="xs:nonNegativeInteger" default="0" use="optional"/&gt;
-          &lt;xs:attribute name="maxWriteDelay" type="xs:positiveInteger" default="2147483647" use="optional"/&gt;
-          &lt;xs:attribute name="batchsize" type="xs:positiveInteger" default="1" use="optional"/&gt;
-        &lt;/xs:complexType&gt;
-      &lt;/xs:element&gt;
-      &lt;xs:element name="listener" minOccurs="0" maxOccurs="unbounded"&gt;
-        &lt;xs:complexType&gt;
-          &lt;xs:sequence&gt;
-            &lt;xs:element name="class" type="ehcache:fqcn-type" minOccurs="1" maxOccurs="1"&gt;
-              &lt;xs:annotation&gt;
-                &lt;xs:documentation xml:lang="en"&gt;
-                  A fully qualified class name to a concrete type that implements
-                  org.ehcache.spi.event.CacheEventListener and has a public
-                  default no argument constructor.
-                &lt;/xs:documentation&gt;
-              &lt;/xs:annotation&gt;
-            &lt;/xs:element&gt;
-            &lt;xs:element name="eventFiringMode" type="ehcache:eventFiring-type" minOccurs="1" maxOccurs="1"&gt;
-              &lt;xs:annotation&gt;
-                &lt;xs:documentation xml:lang="en"&gt;
-                  Indicates which EventFiring firing mode to use
-                &lt;/xs:documentation&gt;
-              &lt;/xs:annotation&gt;
-            &lt;/xs:element&gt;
-            &lt;xs:element name="eventOrderingMode" type="ehcache:eventOrdering-type" minOccurs="1" maxOccurs="1"&gt;
-              &lt;xs:annotation&gt;
-                &lt;xs:documentation xml:lang="en"&gt;
-                  Indicates which EventOrdering ordering mode to use
-                &lt;/xs:documentation&gt;
-              &lt;/xs:annotation&gt;
-            &lt;/xs:element&gt;
-            &lt;xs:element name="eventsToFireOn" type="ehcache:event-type" minOccurs="1" maxOccurs="5"&gt;
-              &lt;xs:annotation&gt;
-                &lt;xs:documentation xml:lang="en"&gt;
-                  Indicates on which EventType an event has to be fired
-                &lt;/xs:documentation&gt;
-              &lt;/xs:annotation&gt;
-            &lt;/xs:element&gt;
-            &lt;xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/&gt;
-          &lt;/xs:sequence&gt;
+          &lt;xs:attribute name="concurrency" type="xs:positiveInteger" default="1" use="optional"/&gt;
+          &lt;xs:attribute name="size" type="xs:positiveInteger" default="2147483647" use="optional"/&gt;
+          &lt;xs:attribute name="thread-pool" type="xs:string" use="optional"/&gt;
         &lt;/xs:complexType&gt;
       &lt;/xs:element&gt;
     &lt;/xs:sequence&gt;
@@ -496,6 +585,11 @@
     &lt;/xs:sequence&gt;
   &lt;/xs:complexType&gt;
 
+  &lt;xs:complexType name="disk-store-settings-type"&gt;
+    &lt;xs:attribute name="thread-pool" type="xs:string" use="optional"/&gt;
+    &lt;xs:attribute name="writer-threads" type="xs:positiveInteger" use="optional" default="1"/&gt;
+  &lt;/xs:complexType&gt;
+
   &lt;xs:simpleType name="time-unit"&gt;
     &lt;xs:restriction base="xs:string"&gt;
       &lt;xs:enumeration value="nanos"/&gt;
@@ -518,13 +612,13 @@
       &lt;xs:enumeration value="pb"/&gt;
     &lt;/xs:restriction&gt;
   &lt;/xs:simpleType&gt;
-  &lt;xs:simpleType name="eventFiring-type"&gt;
+  &lt;xs:simpleType name="event-firing-type"&gt;
     &lt;xs:restriction base="xs:string"&gt;
       &lt;xs:enumeration value="ASYNCHRONOUS" /&gt;
       &lt;xs:enumeration value="SYNCHRONOUS" /&gt;
     &lt;/xs:restriction&gt;
   &lt;/xs:simpleType&gt;
-  &lt;xs:simpleType name="eventOrdering-type"&gt;
+  &lt;xs:simpleType name="event-ordering-type"&gt;
     &lt;xs:restriction base="xs:string"&gt;
       &lt;xs:enumeration value="UNORDERED" /&gt;
       &lt;xs:enumeration value="ORDERED" /&gt;
@@ -573,7 +667,7 @@
       &lt;/xs:element&gt;
     &lt;/xs:sequence&gt;
     &lt;xs:attribute name="default-template" type="xs:IDREF" use="optional"/&gt;
-    &lt;xs:attribute name="jsr107CompliantAtomics" type="xs:boolean" use="optional"/&gt;
+    &lt;xs:attribute name="jsr-107-compliant-atomics" type="xs:boolean" use="optional"/&gt;
   &lt;/xs:complexType&gt;
 
   &lt;xs:complexType name="cache-type"&gt;

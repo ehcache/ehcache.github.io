@@ -625,14 +625,11 @@ Class&lt;CacheLoaderWriter&lt;?, ?&gt;&gt; klazz = (Class&lt;CacheLoaderWriter&l
 final Cache&lt;Long, String&gt; writeBehindCache = cacheManager.createCache("writeBehindCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder()
         .add(new DefaultCacheLoaderWriterConfiguration(klazz, singletonMap(41L, "zero"))) <i class="conum" data-value="1"></i><b>(1)</b>
-        .add(WriteBehindConfigurationBuilder.newWriteBehindConfiguration() <i class="conum" data-value="2"></i><b>(2)</b>
-            .queueSize(3)<i class="conum" data-value="3"></i><b>(3)</b>
-            .concurrencyLevel(1) <i class="conum" data-value="4"></i><b>(4)</b>
-            .batchSize(3) <i class="conum" data-value="5"></i><b>(5)</b>
-            .enableCoalescing() <i class="conum" data-value="6"></i><b>(6)</b>
-            .retry(2, 1) <i class="conum" data-value="7"></i><b>(7)</b>
-            .rateLimit(2) <i class="conum" data-value="8"></i><b>(8)</b>
-            .delay(1, 1)) <i class="conum" data-value="9"></i><b>(9)</b>
+        .add(WriteBehindConfigurationBuilder <i class="conum" data-value="2"></i><b>(2)</b>
+            .newBatchedWriteBehindConfiguration(1, TimeUnit.SECONDS, 3)<i class="conum" data-value="3"></i><b>(3)</b>
+            .queueSize(3)<i class="conum" data-value="4"></i><b>(4)</b>
+            .concurrencyLevel(1) <i class="conum" data-value="5"></i><b>(5)</b>
+            .enableCoalescing()) <i class="conum" data-value="6"></i><b>(6)</b>
         .buildConfig(Long.class, String.class));
 
 assertThat(writeBehindCache.get(41L), is("zero"));
@@ -658,34 +655,21 @@ and register using <code>DefaultCacheLoaderWriterConfiguration</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Configure maximum size of the writebehind queue.</td>
+<td>Enable write-behind queue to batch the updates to underlying resource.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Define the concurrency level of writebehind queue, at a time these many writer threads will update<br />
-the  underlying resource asynchronously.</td>
+<td>Configure maximum size of the writebehind queue.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Enable write-behind queue to batch the updates to underlying resource.</td>
+<td>Define the concurrency level of writebehind queue, at a time these many writer threads will update<br />
+the  underlying resource asynchronously.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
 <td>Enable the write coalescing behavior, which ensures that only latest update on a key hits the<br />
 underlying resource.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>You can configure write-behind queue to retry failed updates for <code>retryAttempts</code> times with<br />
-<code>retryAttemptDelaySeconds</code> delay.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>Control maximum number of updates allowed per second.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="9"></i><b>9</b></td>
-<td>Configure maximum and minimum number of seconds to wait before writing to the underlying resource.</td>
 </tr>
 </table>
 </div>
@@ -785,34 +769,40 @@ cacheManager.close();</code></pre>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Serializer instances are created per cache for keys and values separately.<br />
+That is, even if you configure the same serializer type for multiple caches, different instances are created for each cache.<br />
+The same applies to the serializers configured at the cache manager level as well.<br />
+Similarly, even within a cache, if you configure the same serializer type for both key and value, different instances are created.</p>
+</div>
 <div class="sect4">
 <h5 id="implementation-of-a-code-serializer-code">Implementation of a <code>Serializer</code></h5>
 <div class="paragraph">
-<p>When implementing a <code>org.ehcache.spi.serialization.Serializer</code>, you obviously need to respect the interface contract.<br />
-In addition, there are a few implicit contracts:</p>
+<p>When implementing a <code>org.ehcache.spi.serialization.Serializer</code>, you obviously need to respect the interface contract.</p>
+</div>
+<div class="paragraph">
+<p>In addition, if you are using the <code>DefaultSerializationProvider</code> service provided by Ehcache; which would be the case<br />
+for most of the users, unless they are using their own implementation of <code>SerializationProvider</code> service; there are a<br />
+few implicit contracts:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Your implementation must have a public constructor taking a <code>ClassLoader</code> as parameter.</p>
+<p>A serializer implementation to be used with transient caches must have a public constructor taking a <code>ClassLoader</code> as parameter.</p>
 </li>
 <li>
-<p>There are two annotations that you have to use to mark your <code>Serializer</code> - a single implementation can use both:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>org.ehcache.spi.serialization.Serializer.Transient</code>: With this annotation you indicate that the <code>Serializer</code><br />
-implementation is fit for use inside a transient cache.</p>
-</li>
-<li>
-<p><code>org.ehcache.spi.serialization.Serializer.Persistent</code>: With this annotation you indicate that the <code>Serializer</code><br />
-implementation is fit for use inside a persistent cache. The constructor can take an additional parameter, a<br />
-<code>org.ehcache.spi.service.FileBasedPersistenceContext</code> which can then be used to persist serialization metadata.</p>
+<p>A serializer implementation to be used with persistent caches must have a public two-argument constructor taking a <code>ClassLoader</code> and a <code>FileBasedPersistenceContext</code> as parameters.</p>
 </li>
 </ul>
 </div>
-</li>
-</ul>
+<div class="paragraph">
+<p>You are free to have as many extra constructors as you want. But these are the only constructors that will be used by<br />
+Ehcache to instantiate these serializers. For a transient cache the single-argument constructor will be used and for a<br />
+persistent cache the two-argument constructor will be used. Even though the user is enforced to have either or both the<br />
+constructors in his serializer implementation, the usage of these arguments is up to the user. The user can decide to<br />
+completely ignore these parameters. But the presence of these constructors is a strict requirement. Now, even though the<br />
+usage of the constructor arguments is not enforced, it is highly recommended to use the <code>FileBasedPersistenceContext</code> to<br />
+persist the state of the serializers, if there is any.</p>
 </div>
 </div>
 </div>
@@ -910,7 +900,7 @@ CacheConfiguration&lt;Long, Person&gt; anotherCacheConfiguration = CacheConfigur
 
 DefaultCopyProviderConfiguration defaultCopierConfig = new DefaultCopyProviderConfiguration()
     .addCopierFor(Description.class, DescriptionCopier.class)   <i class="conum" data-value="1"></i><b>(1)</b>
-    .addCopierFor(Person.class, PersonCopier.class);
+    .addCopierFor(Person.class, (Class) SerializingCopier.class);
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .using(defaultCopierConfig)   <i class="conum" data-value="2"></i><b>(2)</b>
@@ -952,6 +942,70 @@ cacheManager.close();</code></pre>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>The samples above demonstrated the configuration of different services at the cache and the cache manager levels.<br />
+In none of the samples did we really create instances of copiers, serializers etc.<br />
+Instead we supplied the class types with the service configurations and the instantiation was done internally by Ehcache.<br />
+Even though that is the recommended way of configuring services, it is still possible to configure a service with actual<br />
+instances.</p>
+</div>
+<div class="paragraph">
+<p>The following sample demonstrates the same for copier service. Other services can also be configured in a similar way:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
+    .add(new DefaultCopierConfiguration&lt;Description&gt;(DescriptionCopier.class, <i class="conum" data-value="1"></i><b>(1)</b>
+        CopierConfiguration.Type.KEY))
+    .add(new DefaultCopierConfiguration&lt;Person&gt;(new PersonCopier(), <i class="conum" data-value="2"></i><b>(2)</b>
+        CopierConfiguration.Type.VALUE))
+    .buildConfig(Description.class, Person.class);</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configuring the <code>DescriptionCopier</code> copier using class type(the old way).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configuring the copier using an actual instance: The <code>PersonCopier</code> instance here.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The former way of configuring services using class types is still the recommended way as that ensures that<br />
+the service instances are not shared between caches. Sharing services can have disastrous effects in your application if<br />
+the user is not careful enough. The latter way of configuring services using instances opens the door for sharing the<br />
+same service instance across caches but that feature should be used with extra care.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+By now you are familiar with configuring different services using actual instances or using class types of<br />
+loader-writers, serializers etc. It is desirable to have some cleanup performed on these instances once you are done<br />
+using the cache that uses these instances. You can achieve this by making your custom class types <code>Closeable</code> and<br />
+keeping your resource release logic in the <em>close</em> method. Ehcache will make sure that this <em>close</em> will be invoked when<br />
+the cache is removed from the cache manager or when the cache manager is closed.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -975,11 +1029,11 @@ cacheManager.close();</code></pre>
     &lt;heap size="200" unit="entries"/&gt;
   &lt;/cache-template&gt;
 
-  &lt;cache alias="bar" usesTemplate="myDefaults"&gt; <i class="conum" data-value="6"></i><b>(6)</b>
+  &lt;cache alias="bar" uses-template="myDefaults"&gt; <i class="conum" data-value="6"></i><b>(6)</b>
     &lt;key-type&gt;java.lang.Number&lt;/key-type&gt;
   &lt;/cache&gt;
 
-  &lt;cache alias="simpleCache" usesTemplate="myDefaults" /&gt; <i class="conum" data-value="7"></i><b>(7)</b></code></pre>
+  &lt;cache alias="simpleCache" uses-template="myDefaults" /&gt; <i class="conum" data-value="7"></i><b>(7)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1048,29 +1102,8 @@ create your <code>CacheManager</code> instance using the <code>Configuration</co
 </div>
 </div>
 <div class="sect1">
-<h2 id="current-release">Current release</h2>
+<h2 id="current-development">Current development</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>We released the Milestone 3 on September 18th, 2015. In addition to the JSR-107 compatibility,<br />
-it introduces up to 3 level tiering, offering offheap as well as a new disk persistence option; write-behind, XA transactional<br />
-caches, makes custom serialization possible, …​</p>
-</div>
-<div class="paragraph">
-<p>The <a href="https://github.com/ehcache/ehcache3/releases/tag/v3.0.0.m3">release notes</a> contain the links to the documentation<br />
-to help you get started</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="current-development-next-release">Current development &amp; next release</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>We are now working on the next milestone, aka <a href="https://github.com/ehcache/ehcache3/milestones/Milestone%204">Milestone 4</a> :<br />
-Automatic Resource Control will be the big item in this upcoming release.</p>
-</div>
-<div class="paragraph">
-<p>See the <a href="https://github.com/ehcache/ehcache3/milestones">Milestones on GitHub</a> for more details on the current status.</p>
-</div>
 <div class="paragraph">
 <p>For developer information, you might want to go check the <a href="https://github.com/ehcache/ehcache3/wiki">Ehcache 3.0 project wiki on GitHub</a>.</p>
 </div>

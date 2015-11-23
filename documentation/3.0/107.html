@@ -171,6 +171,18 @@ You can also force use of <code>org.ehcache.EhCachingProvider</code> by using th
 </tr>
 </table>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+See [the section on using Ehcache 3 and JSR-107](<a href="http://www.ehcache.org/#using_jsr107_api" class="bare">http://www.ehcache.org/#using_jsr107_api</a>) for details on required libraries.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -290,9 +302,9 @@ to use XML based configuration. See <a href="xml.html">the XML documentation</a>
     &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
     &lt;value-type&gt;com.pany.domain.Product&lt;/value-type&gt;
     &lt;integration&gt;
-      &lt;loaderwriter&gt;
+      &lt;loader-writer&gt;
         &lt;class&gt;com.pany.ehcache.integration.ProductCacheLoaderWriter&lt;/class&gt;
-      &lt;/loaderwriter&gt;
+      &lt;/loader-writer&gt;
     &lt;/integration&gt;
     &lt;heap size="100" unit="entries"/&gt;
   &lt;/cache&gt;

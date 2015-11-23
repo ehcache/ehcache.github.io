@@ -335,10 +335,10 @@ http://localhost:8080/ehcache-demos/01-CacheAside/.</p>
         OPTIONAL
           The FQCN implementing org.ehcache.spi.loaderwriter.CacheLoaderWriter
       --&gt;
-      &lt;ehcache:loaderwriter&gt;
+      &lt;ehcache:loader-writer&gt;
         &lt;ehcache:class&gt;com.pany.ehcache.integration.ProductCacheLoaderWriter&lt;/ehcache:class&gt;
         &lt;!-- Any further elements in another namespace --&gt;
-      &lt;/ehcache:loaderwriter&gt;
+      &lt;/ehcache:loader-writer&gt;
     &lt;/ehcache:integration&gt;
 
     &lt;!--
@@ -369,9 +369,9 @@ http://localhost:8080/ehcache-demos/01-CacheAside/.</p>
   &lt;/ehcache:cache-template&gt;
 
   &lt;!--
-    A &lt;cache&gt; that uses the template above by referencing the cache-template's name in the usesTemplate attribute:
+    A &lt;cache&gt; that uses the template above by referencing the cache-template's name in the uses-template attribute:
   --&gt;
-  &lt;ehcache:cache alias="customerCache" usesTemplate="myDefaultTemplate"&gt;
+  &lt;ehcache:cache alias="customerCache" uses-template="myDefaultTemplate"&gt;
     &lt;!--
       Adds the key and value type configuration
     --&gt;

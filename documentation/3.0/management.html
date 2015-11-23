@@ -178,25 +178,32 @@ cache manager builder as a service:</p>
     .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
     .buildConfig(Long.class, String.class);
 
-ManagementRegistry managementRegistry = new DefaultManagementRegistry(); <i class="conum" data-value="1"></i><b>(1)</b>
+DefaultManagementRegistryConfiguration registryConfiguration = new DefaultManagementRegistryConfiguration().setCacheManagerAlias("myCacheManager"); <i class="conum" data-value="1"></i><b>(1)</b>
+ManagementRegistry managementRegistry = new DefaultManagementRegistry(registryConfiguration); <i class="conum" data-value="2"></i><b>(2)</b>
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .withCache("aCache", cacheConfiguration)
-    .using(managementRegistry) <i class="conum" data-value="2"></i><b>(2)</b>
+    .using(managementRegistry) <i class="conum" data-value="3"></i><b>(3)</b>
     .build(true);
 
 
 Cache&lt;Long, String&gt; aCache = cacheManager.getCache("aCache", Long.class, String.class);
-aCache.get(0L); <i class="conum" data-value="3"></i><b>(3)</b>
+aCache.get(0L); <i class="conum" data-value="4"></i><b>(4)</b>
 aCache.get(0L);
 aCache.get(0L);
 
-Map&lt;String, String&gt; context = createContext(managementRegistry); <i class="conum" data-value="4"></i><b>(4)</b>
+Context context = createContext(managementRegistry); <i class="conum" data-value="5"></i><b>(5)</b>
 
-Collection&lt;Counter&gt; counters = managementRegistry.collectStatistics(context, "org.ehcache.management.providers.statistics.EhcacheStatisticsProvider", "GetCounter"); <i class="conum" data-value="5"></i><b>(5)</b>
+ContextualStatistics counters = managementRegistry.withCapability("StatisticsCapability") <i class="conum" data-value="6"></i><b>(6)</b>
+    .queryStatistic("GetCounter")
+    .on(context)
+    .build()
+    .execute()
+    .getSingleResult();
+
 Assert.assertThat(counters.size(), Matchers.is(1));
-Counter getCounter = counters.iterator().next();
+Counter getCounter = counters.getStatistic(Counter.class);
 
-Assert.assertThat(getCounter.getValue(), Matchers.equalTo(3L)); <i class="conum" data-value="6"></i><b>(6)</b>
+Assert.assertThat(getCounter.getValue(), Matchers.equalTo(3L)); <i class="conum" data-value="7"></i><b>(7)</b>
 
 cacheManager.close();</code></pre>
 </div>
@@ -205,26 +212,30 @@ cacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Create an instance of <code>org.ehcache.management.registry.DefaultManagementRegistry</code></td>
+<td>Optional: give a name to your cache manager by using a custom configuration</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Pass it as a service to the cache manager</td>
+<td>Create an instance of <code>org.ehcache.management.registry.DefaultManagementRegistry</code>. This is only required because the service is used below.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Perform a few gets to increment the statistic’s counter</td>
+<td>Pass it as a service to the cache manager (if you only want to configure the ManagementRegistry, you can just pass the configuration instead)</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Create the target statistic’s context</td>
+<td>Perform a few gets to increment the statistic’s counter</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Collect the get count statistic</td>
+<td>Create the target statistic’s context</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Collect the get count statistic</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
 <td>Check that the statistic reports the expected count</td>
 </tr>
 </table>
@@ -256,7 +267,7 @@ CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .build(true);
 
 
-Collection&lt;Capability&gt; capabilities = managementRegistry.capabilities(); <i class="conum" data-value="1"></i><b>(1)</b>
+Collection&lt;Capability&gt; capabilities = managementRegistry.getCapabilities(); <i class="conum" data-value="1"></i><b>(1)</b>
 Assert.assertThat(capabilities.isEmpty(), Matchers.is(false));
 Capability capability = capabilities.iterator().next();
 String capabilityName = capability.getName(); <i class="conum" data-value="2"></i><b>(2)</b>
@@ -273,9 +284,7 @@ CapabilityContext.Attribute attribute2 = iterator.next();
 Assert.assertThat(attribute2.getName(), Matchers.equalTo("cacheName")); <i class="conum" data-value="6"></i><b>(6)</b>
 Assert.assertThat(attribute2.isRequired(), Matchers.is(true));
 
-Collection&lt;ContextContainer&gt; contexts = managementRegistry.contexts();  <i class="conum" data-value="7"></i><b>(7)</b>
-Assert.assertThat(contexts.size(), Matchers.is(1));
-ContextContainer contextContainer = contexts.iterator().next();
+ContextContainer contextContainer = managementRegistry.getContext();  <i class="conum" data-value="7"></i><b>(7)</b>
 Assert.assertThat(contextContainer.getName(), Matchers.equalTo("cacheManagerName"));  <i class="conum" data-value="8"></i><b>(8)</b>
 Assert.assertThat(contextContainer.getValue(), Matchers.startsWith("cache-manager-"));
 Collection&lt;ContextContainer&gt; subContexts = contextContainer.getSubContexts();
@@ -358,9 +367,13 @@ CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
 Cache&lt;Long, String&gt; aCache = cacheManager.getCache("aCache", Long.class, String.class);
 aCache.put(0L, "zero"); <i class="conum" data-value="1"></i><b>(1)</b>
 
-Map&lt;String, String&gt; context = createContext(managementRegistry); <i class="conum" data-value="2"></i><b>(2)</b>
+Context context = createContext(managementRegistry); <i class="conum" data-value="2"></i><b>(2)</b>
 
-managementRegistry.callAction(context, "org.ehcache.management.providers.actions.EhcacheActionProvider", "clear", new String[0], new Object[0]); <i class="conum" data-value="3"></i><b>(3)</b>
+managementRegistry.withCapability("ActionsCapability") <i class="conum" data-value="3"></i><b>(3)</b>
+    .call("clear")
+    .on(context)
+    .build()
+    .execute();
 
 Assert.assertThat(aCache.get(0L), Matchers.is(Matchers.nullValue())); <i class="conum" data-value="4"></i><b>(4)</b>
 
@@ -406,16 +419,36 @@ manager by default, but sometimes you may want one <code>ManagementRegistry</cod
     .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
     .buildConfig(Long.class, String.class);
 
-ManagementRegistry managementRegistry = new DefaultManagementRegistry(); <i class="conum" data-value="1"></i><b>(1)</b>
+SharedManagementService sharedManagementService = new DefaultSharedManagementService(); <i class="conum" data-value="1"></i><b>(1)</b>
 CacheManager cacheManager1 = CacheManagerBuilder.newCacheManagerBuilder()
     .withCache("aCache", cacheConfiguration)
-    .using(managementRegistry) <i class="conum" data-value="2"></i><b>(2)</b>
+    .using(new DefaultManagementRegistryConfiguration().setCacheManagerAlias("myCacheManager-1"))
+    .using(sharedManagementService) <i class="conum" data-value="2"></i><b>(2)</b>
     .build(true);
 
 CacheManager cacheManager2 = CacheManagerBuilder.newCacheManagerBuilder()
     .withCache("aCache", cacheConfiguration)
-    .using(managementRegistry) <i class="conum" data-value="3"></i><b>(3)</b>
+    .using(new DefaultManagementRegistryConfiguration().setCacheManagerAlias("myCacheManager-2"))
+    .using(sharedManagementService) <i class="conum" data-value="3"></i><b>(3)</b>
     .build(true);
+
+Context context1 = Context.create()
+  .with("cacheManagerName", "myCacheManager-1")
+  .with("cacheName", "aCache");
+
+Context context2 = Context.create()
+  .with("cacheManagerName", "myCacheManager-2")
+  .with("cacheName", "aCache");
+
+ResultSet&lt;ContextualStatistics&gt; counters = sharedManagementService.withCapability("StatisticsCapability")
+    .queryStatistic("GetCounter")
+    .on(context1)
+    .on(context2)
+    .build()
+    .execute();
+
+ContextualStatistics statistics = counters.getResult(context1);
+Counter counter = statistics.getStatistic(Counter.class, "GetCounter");
 
 cacheManager2.close();
 cacheManager1.close();</code></pre>
@@ -425,7 +458,7 @@ cacheManager1.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Create an instance of <code>org.ehcache.management.registry.DefaultManagementRegistry</code></td>
+<td>Create an instance of <code>org.ehcache.management.SharedManagementService</code></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>

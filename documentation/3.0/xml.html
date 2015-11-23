@@ -176,11 +176,32 @@ extension point of the XML configuration (and Ehcache 3’s modular architecture
 </div>
 </div>
 <div class="sect2">
+<h3 id="code-default-serializers-code-element"><code>&lt;default-serializers&gt;</code> element</h3>
+<div class="paragraph">
+<p>A <code>&lt;default-serializers&gt;</code> element represents <code>Serializers</code> configured at <code>CacheManager</code> level.<br />
+It is a collection of <code>serializer</code> tags that require a <code>type</code> and a fully qualified class name of the <code>Serializer</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="code-default-copiers-code-element"><code>&lt;default-copiers&gt;</code> element</h3>
+<div class="paragraph">
+<p>A <code>&lt;default-copiers&gt;</code> element represents <code>Copiers</code> configured at <code>CacheManager</code> level.<br />
+It is a collection of <code>copier</code> tags that requires a <code>type</code> and a fully qualified class name of the <code>Copier</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="code-persistence-code-element"><code>&lt;persistence&gt;</code> element</h3>
+<div class="paragraph">
+<p>A <code>&lt;persistence&gt;</code> element represents <code>Persistence</code>, to be used when creating a <code>PersistentCacheManager</code>.<br />
+It requires the <code>directory</code> location where data needs be stored on disk.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="code-cache-code-elements"><code>&lt;cache&gt;</code> elements</h3>
 <div class="paragraph">
 <p>A <code>&lt;cache&gt;</code> element represent a <code>Cache</code> instance that will be created and managed by the <code>CacheManager</code>.<br />
 Each <code>&lt;cache&gt;</code> requires the <code>alias</code> attribute, used at runtime to retrieve the corresponding <code>Cache&lt;K, V&gt;</code> instance using<br />
-the <code>org.ehcache.CacheManager.getCache(String, Class&lt;K&gt;, Class&lt;V&gt;)</code> method. The optional <code>usesTemplate</code> attribute, lets you reference<br />
+the <code>org.ehcache.CacheManager.getCache(String, Class&lt;K&gt;, Class&lt;V&gt;)</code> method. The optional <code>uses-template</code> attribute, lets you reference<br />
 a <code>&lt;cache-template&gt;</code> element’s <code>name</code> attribute. See the <a href="#__code_cache_template_code_elements">cache-template section</a><br />
 for further details on using them.</p>
 </div>
@@ -196,9 +217,6 @@ for further details on using them.</p>
 <p><code>&lt;value-type&gt;</code>: FQCN of the values (<code>&lt;V&gt;</code>) held in the <code>Cache</code>; defaults to <code>java.lang.Object</code></p>
 </li>
 <li>
-<p><code>&lt;capacity&gt;</code>: a positive numerical value; defaults to <code>null</code>, i.e. unconstrained</p>
-</li>
-<li>
 <p><code>&lt;expiry&gt;</code>: control the expiry type and its parameters</p>
 </li>
 <li>
@@ -210,6 +228,9 @@ for further details on using them.</p>
 <li>
 <p><code>&lt;integration&gt;</code>: configure a <code>CacheLoaderWriter</code> for a <em>cache-through</em> pattern</p>
 </li>
+<li>
+<p><code>&lt;resources&gt;</code>: configure the tiers and their capacity. When using on-heap only, you can replace this element by the <code>&lt;heap&gt;</code> one.</p>
+</li>
 </ol>
 </div>
 </div>
@@ -218,7 +239,7 @@ for further details on using them.</p>
 <div class="paragraph">
 <p><code>&lt;cache-template&gt;</code> elements represent a uniquely named (specified using the mandatory <code>name</code> attribute) template for<br />
 <code>&lt;cache&gt;</code> elements to inherit from.  A <code>&lt;cache&gt;</code> element that references a <code>&lt;cache-template&gt;</code> by<br />
-its <code>name</code> using the <code>usesTemplate</code> attribute, will inherit all properties of the <code>&lt;cache-template&gt;</code>. A <code>&lt;cache&gt;</code><br />
+its <code>name</code> using the <code>uses-template</code> attribute, will inherit all properties of the <code>&lt;cache-template&gt;</code>. A <code>&lt;cache&gt;</code><br />
 can override these properties as it needs.</p>
 </div>
 <div class="paragraph">
