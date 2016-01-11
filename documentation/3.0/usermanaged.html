@@ -143,9 +143,9 @@
          
       </header>
       <article class="post-content">
-        <h1 id="user-managed-caches" class="sect0">User managed caches</h1>
+        <h1 id="user-managed-caches" class="sect0"><a class="anchor" href="#user-managed-caches"></a>User managed caches</h1>
 <div class="sect1">
-<h2 id="what-are-user-managed-caches-and-what-do-they-offer">What are user managed caches and what do they offer?</h2>
+<h2 id="what-are-user-managed-caches-and-what-do-they-offer"><a class="anchor" href="#what-are-user-managed-caches-and-what-do-they-offer"></a>What are user managed caches and what do they offer?</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>User managed caches is a new concept introduced in Ehcache 3.<br />
@@ -157,14 +157,14 @@ Hence the name of <em>user managed</em> caches.</p>
 Ideas are: method local caches, thread local caches or any other place where the lifecycle of the cache is shorter than the application lifecycle.</p>
 </div>
 <div class="sect2">
-<h3 id="limitations">Limitations</h3>
+<h3 id="limitations"><a class="anchor" href="#limitations"></a>Limitations</h3>
 <div class="paragraph">
 <p>As there is no longer a cache manager offering up services, the main limitation of user managed caches is that the user has to configure all required services by hand.<br />
 Of course, if you find yourself requiring plenty of services, maybe the cache manager is a better option!</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="api-extensions">API extensions</h3>
+<h3 id="api-extensions"><a class="anchor" href="#api-extensions"></a>API extensions</h3>
 <div class="paragraph">
 <p>While a <code>UserManagedCache</code> extends <code>Cache</code>, it offers additional methods:</p>
 </div>
@@ -251,10 +251,10 @@ public interface PersistentUserManagedCache&lt;K, V&gt; extends UserManagedCache
 </div>
 </div>
 <div class="sect1">
-<h2 id="getting-started-with-user-managed-caches">Getting started with user managed caches</h2>
+<h2 id="getting-started-with-user-managed-caches"><a class="anchor" href="#getting-started-with-user-managed-caches"></a>Getting started with user managed caches</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="basic-example">Basic example</h3>
+<h3 id="basic-example"><a class="anchor" href="#basic-example"></a>Basic example</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; userManagedCache =
@@ -290,7 +290,7 @@ managed caches simultaneously, the <code>CacheManager.close()</code> operation w
 </div>
 </div>
 <div class="sect2">
-<h3 id="disk-persistent-example">Disk persistent example</h3>
+<h3 id="disk-persistent-example"><a class="anchor" href="#disk-persistent-example"></a>Disk persistent example</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">    LocalPersistenceService persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(getStoragePath(), "myUserData"))); <i class="conum" data-value="1"></i><b>(1)</b>

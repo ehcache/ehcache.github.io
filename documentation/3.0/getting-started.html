@@ -143,9 +143,9 @@
          
       </header>
       <article class="post-content">
-        <h1 id="ehcache-3.0-documentation" class="sect0">Ehcache 3.0 Documentation</h1>
+        <h1 id="ehcache-3.0-documentation" class="sect0"><a class="anchor" href="#ehcache-3-0-documentation"></a>Ehcache 3.0 Documentation</h1>
 <div class="sect1">
-<h2 id="getting-started-with-the-new-api">Getting started with the new API</h2>
+<h2 id="getting-started-with-the-new-api"><a class="anchor" href="#getting-started-with-the-new-api"></a>Getting started with the new API</h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
@@ -173,9 +173,9 @@ If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you sho
 </table>
 </div>
 <div class="sect2">
-<h3 id="configuring-it-all-in-java">Configuring it all in Java</h3>
+<h3 id="configuring-it-all-in-java"><a class="anchor" href="#configuring-it-all-in-java"></a>Configuring it all in Java</h3>
 <div class="sect3">
-<h4 id="managed-cache">Managed cache</h4>
+<h4 id="managed-cache"><a class="anchor" href="#managed-cache"></a>Managed cache</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
@@ -257,7 +257,7 @@ it manages, you have to invoke <code>CacheManager.close()</code>, which in turns
 </div>
 </div>
 <div class="sect3">
-<h4 id="user-managed-cache">User managed cache</h4>
+<h4 id="user-managed-cache"><a class="anchor" href="#user-managed-cache"></a>User managed cache</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; userManagedCache =
@@ -306,9 +306,9 @@ See <a href="usermanaged.html">the user managed cache documentation</a> for more
 </div>
 </div>
 <div class="sect2">
-<h3 id="tiering">Tiering</h3>
+<h3 id="tiering"><a class="anchor" href="#tiering"></a>Tiering</h3>
 <div class="sect3">
-<h4 id="off-heap">Off-heap</h4>
+<h4 id="off-heap"><a class="anchor" href="#off-heap"></a>Off-heap</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().withCache("tieredCache",
@@ -334,7 +334,7 @@ cacheManager.close();</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="disk-persistence">Disk persistence</h4>
+<h4 id="disk-persistence"><a class="anchor" href="#disk-persistence"></a>Disk persistence</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
@@ -365,7 +365,7 @@ data should be stored on disk to the <code>CacheManagerBuilder.persistence(Strin
 </div>
 </div>
 <div class="sect3">
-<h4 id="three-tiers">Three tiers</h4>
+<h4 id="three-tiers"><a class="anchor" href="#three-tiers"></a>Three tiers</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
@@ -406,7 +406,7 @@ data should be stored on disk to the <code>CacheManagerBuilder.persistence(Strin
 </div>
 </div>
 <div class="sect3">
-<h4 id="update-resourcepools">Update ResourcePools</h4>
+<h4 id="update-resourcepools"><a class="anchor" href="#update-resourcepools"></a>Update ResourcePools</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">ResourcePools pools = ResourcePoolsBuilder.newResourcePoolsBuilder().heap(20L, EntryUnit.ENTRIES).build(); <i class="conum" data-value="1"></i><b>(1)</b>
@@ -444,9 +444,9 @@ Presently, <code>updateResourcePools()</code> only supports updating tiers that 
 </div>
 </div>
 <div class="sect2">
-<h3 id="integration">Integration</h3>
+<h3 id="integration"><a class="anchor" href="#integration"></a>Integration</h3>
 <div class="sect3">
-<h4 id="cache-event-listeners">Cache Event Listeners</h4>
+<h4 id="cache-event-listeners"><a class="anchor" href="#cache-event-listeners"></a>Cache Event Listeners</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheEventListenerConfigurationBuilder cacheEventListenerConfiguration = CacheEventListenerConfigurationBuilder
@@ -584,7 +584,7 @@ Eviction and expiration events can be triggered by both internal processes and b
 </table>
 </div>
 <div class="sect3">
-<h4 id="write-through-cache">Write-Through Cache</h4>
+<h4 id="write-through-cache"><a class="anchor" href="#write-through-cache"></a>Write-Through Cache</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
@@ -615,7 +615,7 @@ Cache using <code>DefaultCacheLoaderWriterConfiguration</code>.</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="write-behind-cache">Write-Behind Cache</h4>
+<h4 id="write-behind-cache"><a class="anchor" href="#write-behind-cache"></a>Write-Behind Cache</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
@@ -676,7 +676,7 @@ underlying resource.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="serializers">Serializers</h3>
+<h3 id="serializers"><a class="anchor" href="#serializers"></a>Serializers</h3>
 <div class="paragraph">
 <p>Serialization is primarily used in Ehcache to store the data in the non-heap tiers.<br />
 So whenever the user configures a multi-tiered cache, serialization and deserialization can happen when the data is moved to and from the tiers.<br />
@@ -685,7 +685,7 @@ So if you are using standard <code>Serializable</code> types as your keys and va
 But if you use your own custom types in Ehcache that are not serializable, the stock serializer will not be able to perform the serialization/deserialization on its own.</p>
 </div>
 <div class="sect3">
-<h4 id="custom-serializers">Custom serializers</h4>
+<h4 id="custom-serializers"><a class="anchor" href="#custom-serializers"></a>Custom serializers</h4>
 <div class="paragraph">
 <p>You can register your own custom serializers to the cache/cache manager.<br />
 So if you register a serializer for a given type of objects, it would be used to perform all the serialization/deserialization for that type.</p>
@@ -776,7 +776,7 @@ The same applies to the serializers configured at the cache manager level as wel
 Similarly, even within a cache, if you configure the same serializer type for both key and value, different instances are created.</p>
 </div>
 <div class="sect4">
-<h5 id="implementation-of-a-code-serializer-code">Implementation of a <code>Serializer</code></h5>
+<h5 id="implementation-of-a-code-serializer-code"><a class="anchor" href="#implementation-of-a-code-serializer-code"></a>Implementation of a <code>Serializer</code></h5>
 <div class="paragraph">
 <p>When implementing a <code>org.ehcache.spi.serialization.Serializer</code>, you obviously need to respect the interface contract.</p>
 </div>
@@ -807,7 +807,7 @@ persist the state of the serializers, if there is any.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="store-by-value-caches-with-copiers">Store-By-Value Caches with Copiers</h4>
+<h4 id="store-by-value-caches-with-copiers"><a class="anchor" href="#store-by-value-caches-with-copiers"></a>Store-By-Value Caches with Copiers</h4>
 <div class="paragraph">
 <p>JSR-107 mandates that the caches should support a store-by-value mechanism that makes a copy of the keys and values<br />
 before storing them in the cache. Ehcache supports store-by-reference by default on heap and the user needs to configure the<br />
@@ -1009,7 +1009,7 @@ the cache is removed from the cache manager or when the cache manager is closed.
 </div>
 </div>
 <div class="sect2">
-<h3 id="it-wouldn-t-be-java-without-em-some-em-xml">It wouldn’t be Java without <em>some</em> XML</h3>
+<h3 id="it-wouldn-t-be-java-without-em-some-em-xml"><a class="anchor" href="#it-wouldn-t-be-java-without-em-some-em-xml"></a>It wouldn’t be Java without <em>some</em> XML</h3>
 <div class="paragraph">
 <p>You can create a XML file to configure a <code>CacheManager</code>:</p>
 </div>
@@ -1102,7 +1102,7 @@ create your <code>CacheManager</code> instance using the <code>Configuration</co
 </div>
 </div>
 <div class="sect1">
-<h2 id="current-development">Current development</h2>
+<h2 id="current-development"><a class="anchor" href="#current-development"></a>Current development</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For developer information, you might want to go check the <a href="https://github.com/ehcache/ehcache3/wiki">Ehcache 3.0 project wiki on GitHub</a>.</p>

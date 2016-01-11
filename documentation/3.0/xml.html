@@ -143,16 +143,16 @@
          
       </header>
       <article class="post-content">
-        <h1 id="xml-configuration" class="sect0">XML Configuration</h1>
+        <h1 id="xml-configuration" class="sect0"><a class="anchor" href="#xml-configuration"></a>XML Configuration</h1>
 <div class="sect1">
-<h2 id="introduction">Introduction</h2>
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Using an XML file you can configure a <code>CacheManager</code> at creation time, according to<br />
 <a href="xsds.html#_core">this schema definition</a>.</p>
 </div>
 <div class="sect2">
-<h3 id="code-config-code-root-element"><code>&lt;config&gt;</code> root element</h3>
+<h3 id="code-config-code-root-element"><a class="anchor" href="#code-config-code-root-element"></a><code>&lt;config&gt;</code> root element</h3>
 <div class="paragraph">
 <p>The root element of our XML configuration. One <code>&lt;config&gt;</code> element and, by implication, one XML file,<br />
 provides the definition for a <code>CacheManager</code>.  With Ehcache 3.0, however, you may create multiple<br />
@@ -161,7 +161,7 @@ provides the definition for a <code>CacheManager</code>.  With Ehcache 3.0, howe
 </div>
 </div>
 <div class="sect2">
-<h3 id="code-service-code-elements"><code>&lt;service&gt;</code> elements</h3>
+<h3 id="code-service-code-elements"><a class="anchor" href="#code-service-code-elements"></a><code>&lt;service&gt;</code> elements</h3>
 <div class="paragraph">
 <p>Currently, no built-in services are provided. <code>&lt;service&gt;</code> elements are an extension point for<br />
 specifying <code>CacheManager</code> managed services.  Each <code>Service</code> defined in this way is managed with the<br />
@@ -176,28 +176,28 @@ extension point of the XML configuration (and Ehcache 3’s modular architecture
 </div>
 </div>
 <div class="sect2">
-<h3 id="code-default-serializers-code-element"><code>&lt;default-serializers&gt;</code> element</h3>
+<h3 id="code-default-serializers-code-element"><a class="anchor" href="#code-default-serializers-code-element"></a><code>&lt;default-serializers&gt;</code> element</h3>
 <div class="paragraph">
 <p>A <code>&lt;default-serializers&gt;</code> element represents <code>Serializers</code> configured at <code>CacheManager</code> level.<br />
 It is a collection of <code>serializer</code> tags that require a <code>type</code> and a fully qualified class name of the <code>Serializer</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="code-default-copiers-code-element"><code>&lt;default-copiers&gt;</code> element</h3>
+<h3 id="code-default-copiers-code-element"><a class="anchor" href="#code-default-copiers-code-element"></a><code>&lt;default-copiers&gt;</code> element</h3>
 <div class="paragraph">
 <p>A <code>&lt;default-copiers&gt;</code> element represents <code>Copiers</code> configured at <code>CacheManager</code> level.<br />
 It is a collection of <code>copier</code> tags that requires a <code>type</code> and a fully qualified class name of the <code>Copier</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="code-persistence-code-element"><code>&lt;persistence&gt;</code> element</h3>
+<h3 id="code-persistence-code-element"><a class="anchor" href="#code-persistence-code-element"></a><code>&lt;persistence&gt;</code> element</h3>
 <div class="paragraph">
 <p>A <code>&lt;persistence&gt;</code> element represents <code>Persistence</code>, to be used when creating a <code>PersistentCacheManager</code>.<br />
 It requires the <code>directory</code> location where data needs be stored on disk.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="code-cache-code-elements"><code>&lt;cache&gt;</code> elements</h3>
+<h3 id="code-cache-code-elements"><a class="anchor" href="#code-cache-code-elements"></a><code>&lt;cache&gt;</code> elements</h3>
 <div class="paragraph">
 <p>A <code>&lt;cache&gt;</code> element represent a <code>Cache</code> instance that will be created and managed by the <code>CacheManager</code>.<br />
 Each <code>&lt;cache&gt;</code> requires the <code>alias</code> attribute, used at runtime to retrieve the corresponding <code>Cache&lt;K, V&gt;</code> instance using<br />
@@ -235,7 +235,7 @@ for further details on using them.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="code-cache-template-code-elements"><code>&lt;cache-template&gt;</code> elements</h3>
+<h3 id="code-cache-template-code-elements"><a class="anchor" href="#code-cache-template-code-elements"></a><code>&lt;cache-template&gt;</code> elements</h3>
 <div class="paragraph">
 <p><code>&lt;cache-template&gt;</code> elements represent a uniquely named (specified using the mandatory <code>name</code> attribute) template for<br />
 <code>&lt;cache&gt;</code> elements to inherit from.  A <code>&lt;cache&gt;</code> element that references a <code>&lt;cache-template&gt;</code> by<br />
@@ -261,7 +261,7 @@ We’ve setup a complete configuration <a href="examples.html#_xml_with_107_exte
 </div>
 </div>
 <div class="sect1">
-<h2 id="xml-programmatic-parsing">XML programmatic parsing</h2>
+<h2 id="xml-programmatic-parsing"><a class="anchor" href="#xml-programmatic-parsing"></a>XML programmatic parsing</h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
