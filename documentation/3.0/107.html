@@ -178,7 +178,7 @@ You can also force use of <code>org.ehcache.jsr107.EhcacheCachingProvider</code>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-See [the section on using Ehcache 3 and JSR-107](<a href="http://www.ehcache.org/#using_jsr107_api" class="bare">http://www.ehcache.org/#using_jsr107_api</a>) for details on required libraries.
+See <a href="http://www.ehcache.org/#using_jsr107_api">the section on using Ehcache 3 and JSR-107</a> for details on required libraries.
 </td>
 </tr>
 </table>
@@ -236,8 +236,8 @@ When using this mechanism, no JSR-107 <code>CompleteConfiguration</code> is used
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
-    .buildConfig(Long.class, String.class); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
+    .build(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 Cache&lt;Long, String&gt; cache = cacheManager.createCache("myCache",
     Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration)); <i class="conum" data-value="2"></i><b>(2)</b>
@@ -301,12 +301,10 @@ to use XML based configuration. See <a href="xml.html">the XML documentation</a>
   &lt;cache alias="ready-cache"&gt;
     &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
     &lt;value-type&gt;com.pany.domain.Product&lt;/value-type&gt;
-    &lt;integration&gt;
-      &lt;loader-writer&gt;
-        &lt;class&gt;com.pany.ehcache.integration.ProductCacheLoaderWriter&lt;/class&gt;
-      &lt;/loader-writer&gt;
-    &lt;/integration&gt;
-    &lt;heap size="100" unit="entries"/&gt;
+    &lt;loader-writer&gt;
+      &lt;class&gt;com.pany.ehcache.integration.ProductCacheLoaderWriter&lt;/class&gt;
+    &lt;/loader-writer&gt;
+    &lt;heap unit="entries"&gt;100&lt;/heap&gt;
   &lt;/cache&gt;
 
 &lt;/config&gt;</code></pre>
@@ -402,35 +400,35 @@ constraint. All that’s needed is adding a <code>jsr107</code> service in your 
     &lt;expiry&gt;
       &lt;ttl unit="minutes"&gt;2&lt;/ttl&gt;
     &lt;/expiry&gt;
-    &lt;heap size="2000" unit="entries"/&gt;
+    &lt;heap unit="entries"&gt;2000&lt;/heap&gt;
   &lt;/cache-template&gt;
 
   &lt;cache-template name="tinyCache"&gt;
-    &lt;heap size="20" unit="entries"/&gt;
+    &lt;heap unit="entries"&gt;20&lt;/heap&gt;
   &lt;/cache-template&gt;
 
   &lt;cache-template name="byRefTemplate"&gt;
-    &lt;key-type copier="org.ehcache.internal.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
-    &lt;value-type copier="org.ehcache.internal.copy.IdentityCopier"&gt;java.lang.String&lt;/value-type&gt;
-    &lt;heap size="10" unit="entries"/&gt;
+    &lt;key-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;10&lt;/heap&gt;
   &lt;/cache-template&gt;
 
   &lt;cache-template name="byValueTemplate"&gt;
-    &lt;key-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
-    &lt;value-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;java.lang.String&lt;/value-type&gt;
-    &lt;heap size="10" unit="entries"/&gt;
+    &lt;key-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;10&lt;/heap&gt;
   &lt;/cache-template&gt;
 
   &lt;cache-template name="mixedTemplate1"&gt;
-    &lt;key-type copier="org.ehcache.internal.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
-    &lt;value-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;java.lang.String&lt;/value-type&gt;
-    &lt;heap size="10" unit="entries"/&gt;
+    &lt;key-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;10&lt;/heap&gt;
   &lt;/cache-template&gt;
 
   &lt;cache-template name="mixedTemplate2"&gt;
-    &lt;key-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
-    &lt;value-type copier="org.ehcache.internal.copy.IdentityCopier"&gt;java.lang.String&lt;/value-type&gt;
-    &lt;heap size="10" unit="entries"/&gt;
+    &lt;key-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;10&lt;/heap&gt;
   &lt;/cache-template&gt;
 &lt;/config&gt;</code></pre>
 </div>

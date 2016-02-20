@@ -169,9 +169,6 @@ transactional cache.</p>
 <p>Configured cache eviction veto policies are ignored.</p>
 </li>
 <li>
-<p>Configured cache eviction prioritization policies are ignored.</p>
-</li>
-<li>
 <p>Accessing a cache access outside of a JTA transaction context is forbidden.</p>
 </li>
 <li>
@@ -208,12 +205,12 @@ else, meaning it will auto-detect and integrate with the Bitronix transaction ma
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
-    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder() <i class="conum" data-value="3"></i><b>(3)</b>
+    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="3"></i><b>(3)</b>
         .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="4"></i><b>(4)</b>
                 .heap(10, EntryUnit.ENTRIES)
         )
         .add(new XAStoreConfiguration("xaCache")) <i class="conum" data-value="5"></i><b>(5)</b>
-        .buildConfig(Long.class, String.class)
+        .build()
     )
     .build(true);
 
@@ -291,12 +288,12 @@ CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
     .using(new TransactionManagerProviderConfiguration(
         new TransactionManagerWrapper(transactionManager, new BitronixXAResourceRegistry()))) <i class="conum" data-value="3"></i><b>(3)</b>
-    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder() <i class="conum" data-value="4"></i><b>(4)</b>
+    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="4"></i><b>(4)</b>
         .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="5"></i><b>(5)</b>
                 .heap(10, EntryUnit.ENTRIES)
         )
         .add(new XAStoreConfiguration("xaCache")) <i class="conum" data-value="6"></i><b>(6)</b>
-        .buildConfig(Long.class, String.class)
+        .build()
     )
     .build(true);
 
@@ -377,13 +374,13 @@ Class&lt;CacheLoaderWriter&lt;?, ?&gt;&gt; klazz = (Class&lt;CacheLoaderWriter&l
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
-    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder() <i class="conum" data-value="3"></i><b>(3)</b>
+    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="3"></i><b>(3)</b>
             .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="4"></i><b>(4)</b>
                     .heap(10, EntryUnit.ENTRIES)
             )
             .add(new XAStoreConfiguration("xaCache")) <i class="conum" data-value="5"></i><b>(5)</b>
             .add(new DefaultCacheLoaderWriterConfiguration(klazz, singletonMap(1L, "eins"))) <i class="conum" data-value="6"></i><b>(6)</b>
-            .buildConfig(Long.class, String.class)
+            .build()
     )
     .build(true);
 
@@ -461,12 +458,12 @@ will result in <code>XACacheException</code> to be thrown.</p>
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
-    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder() <i class="conum" data-value="3"></i><b>(3)</b>
+    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="3"></i><b>(3)</b>
         .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="4"></i><b>(4)</b>
                 .heap(10, EntryUnit.ENTRIES)
         )
         .add(new XAStoreConfiguration("xaCache")) <i class="conum" data-value="5"></i><b>(5)</b>
-        .buildConfig(Long.class, String.class)
+        .build()
     )
     .build(true);
 
@@ -538,14 +535,14 @@ XAResource identifier as some transaction managers require this.</td>
 PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
     .with(new CacheManagerPersistenceConfiguration(new File(getStoragePath(), "testXACacheWithThreeTiers"))) <i class="conum" data-value="3"></i><b>(3)</b>
-    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder() <i class="conum" data-value="4"></i><b>(4)</b>
+    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="4"></i><b>(4)</b>
             .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="5"></i><b>(5)</b>
                     .heap(10, EntryUnit.ENTRIES)
                     .offheap(10, MemoryUnit.MB)
                     .disk(20, MemoryUnit.MB, true)
             )
             .add(new XAStoreConfiguration("xaCache")) <i class="conum" data-value="6"></i><b>(6)</b>
-            .buildConfig(Long.class, String.class)
+            .build()
     )
     .build(true);
 
@@ -625,7 +622,7 @@ XA caches:</p>
   &lt;cache alias="xaCache"&gt; <i class="conum" data-value="3"></i><b>(3)</b>
     &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
     &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
-    &lt;heap size="20" unit="entries"/&gt;
+    &lt;heap unit="entries"&gt;20&lt;/heap&gt;
     &lt;tx:xa-store unique-XAResource-id="xaCache" /&gt; <i class="conum" data-value="4"></i><b>(4)</b>
   &lt;/cache&gt;</code></pre>
 </div>

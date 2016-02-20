@@ -285,13 +285,13 @@ http://localhost:8080/ehcache-demos/01-CacheAside/.</p>
       OPTIONAL, defaults to java.lang.Object
         The FQCN of the type of keys K we'll use with the Cache&lt;K, V&gt;
     --&gt;
-    &lt;ehcache:key-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;java.lang.Long&lt;/ehcache:key-type&gt;
+    &lt;ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.Long&lt;/ehcache:key-type&gt;
 
     &lt;!--
       OPTIONAL, defaults to java.lang.Object
         The FQCN of the type of values V we'll use with the Cache&lt;K, V&gt;
     --&gt;
-    &lt;ehcache:value-type copier="org.ehcache.internal.copy.SerializingCopier"&gt;com.pany.domain.Product&lt;/ehcache:value-type&gt;
+    &lt;ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;com.pany.domain.Product&lt;/ehcache:value-type&gt;
 
     &lt;!--
       OPTIONAL, defaults to no expiry
@@ -317,34 +317,22 @@ http://localhost:8080/ehcache-demos/01-CacheAside/.</p>
     &lt;ehcache:eviction-veto&gt;com.pany.ehcache.MyEvictionVeto&lt;/ehcache:eviction-veto&gt;
 
     &lt;!--
-      OPTIONAL, defaults to no prioritization
-        An eviction prioritizer, which will be used to order the random sample picked for eviction
-        FQCN of a org.ehcache.config.EvictionPrioritizer implementation or either values
-        from the enum org.ehcache.config.Eviction.Prioritizer:
-          LRU, LFU or FIFO
-    --&gt;
-    &lt;ehcache:eviction-prioritizer&gt;LFU&lt;/ehcache:eviction-prioritizer&gt;
-
-    &lt;!--
       OPTIONAL,
         Let's you configure your cache as a "cache-through",
         i.e. a Cache that uses a CacheLoaderWriter to load on misses, and write on mutative operations.
     --&gt;
-    &lt;ehcache:integration&gt;
+    &lt;ehcache:loader-writer&gt;
       &lt;!--
-        OPTIONAL
           The FQCN implementing org.ehcache.spi.loaderwriter.CacheLoaderWriter
       --&gt;
-      &lt;ehcache:loader-writer&gt;
-        &lt;ehcache:class&gt;com.pany.ehcache.integration.ProductCacheLoaderWriter&lt;/ehcache:class&gt;
+      &lt;ehcache:class&gt;com.pany.ehcache.integration.ProductCacheLoaderWriter&lt;/ehcache:class&gt;
         &lt;!-- Any further elements in another namespace --&gt;
-      &lt;/ehcache:loader-writer&gt;
-    &lt;/ehcache:integration&gt;
+    &lt;/ehcache:loader-writer&gt;
 
     &lt;!--
         The maximal number of entries to be held in the Cache, prior to eviction starting
     --&gt;
-    &lt;ehcache:heap size="200" unit="entries"/&gt;
+    &lt;ehcache:heap unit="entries"&gt;200&lt;/ehcache:heap&gt;
 
     &lt;!--
        OPTIONAL
@@ -361,7 +349,6 @@ http://localhost:8080/ehcache-demos/01-CacheAside/.</p>
     &lt;ehcache:expiry&gt;
       &lt;ehcache:none/&gt;
     &lt;/ehcache:expiry&gt;
-    &lt;ehcache:eviction-prioritizer&gt;LRU&lt;/ehcache:eviction-prioritizer&gt;
     &lt;!--
        OPTIONAL
         Any further elements in another namespace
@@ -381,7 +368,7 @@ http://localhost:8080/ehcache-demos/01-CacheAside/.</p>
     &lt;!--
       Overwrites the capacity limit set by the template to a new value
     --&gt;
-    &lt;ehcache:heap size="200" unit="entries"/&gt;
+    &lt;ehcache:heap unit="entries"&gt;200&lt;/ehcache:heap&gt;
   &lt;/ehcache:cache&gt;
 
 &lt;/ehcache:config&gt;</code></pre>

@@ -293,22 +293,21 @@ managed caches simultaneously, the <code>CacheManager.close()</code> operation w
 <h3 id="disk-persistent-example"><a class="anchor" href="#disk-persistent-example"></a>Disk persistent example</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">    LocalPersistenceService persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(getStoragePath(), "myUserData"))); <i class="conum" data-value="1"></i><b>(1)</b>
-//    persistenceService.start(, null);
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">LocalPersistenceService persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(getStoragePath(), "myUserData"))); <i class="conum" data-value="1"></i><b>(1)</b>
 
-    PersistentUserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
-        .with(new UserManagedPersistenceContext&lt;Long, String&gt;("cache-name", persistenceService)) <i class="conum" data-value="2"></i><b>(2)</b>
-        .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
-            .heap(10L, EntryUnit.ENTRIES)
-            .disk(10L, MemoryUnit.MB, true)) <i class="conum" data-value="3"></i><b>(3)</b>
-        .build(true);
+PersistentUserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+    .with(new UserManagedPersistenceContext&lt;Long, String&gt;("cache-name", persistenceService)) <i class="conum" data-value="2"></i><b>(2)</b>
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+        .heap(10L, EntryUnit.ENTRIES)
+        .disk(10L, MemoryUnit.MB, true)) <i class="conum" data-value="3"></i><b>(3)</b>
+    .build(true);
 
-    // Work with the cache
-    cache.put(42L, "The Answer!");
-    assertThat(cache.get(42L), is("The Answer!"));
+// Work with the cache
+cache.put(42L, "The Answer!");
+assertThat(cache.get(42L), is("The Answer!"));
 
-    cache.close(); <i class="conum" data-value="4"></i><b>(4)</b>
-    cache.toMaintenance().destroy(); <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+cache.close(); <i class="conum" data-value="4"></i><b>(4)</b>
+cache.toMaintenance().destroy(); <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -332,6 +331,290 @@ managed caches simultaneously, the <code>CacheManager.close()</code> operation w
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>To delete the data, the cache need to be put in maintenance mode and destroy has to be explicitly invoked.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-copier-example"><a class="anchor" href="#cache-copier-example"></a>Cache copier example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+    .withKeyCopier(new LongCopier()) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withValueCopier(new StringCopier()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .build(true);
+
+// Work with the cache
+cache.put(42L, "The Answer!");
+assertThat(cache.get(42L), is("The Answer!"));
+
+cache.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure a key copier.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure a value copier.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-serializing-copier-example"><a class="anchor" href="#cache-serializing-copier-example"></a>Cache serializing copier example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+    .withKeySerializingCopier() <i class="conum" data-value="1"></i><b>(1)</b>
+    .withValueSerializingCopier() <i class="conum" data-value="2"></i><b>(2)</b>
+    .build(true);
+
+// Work with the cache
+cache.put(42L, "The Answer!");
+assertThat(cache.get(42L), is("The Answer!"));
+
+cache.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure a <code>SerializingCopier</code> as the key copier.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure a <code>SerializingCopier</code> is the value copier.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-copier-and-serializer-example"><a class="anchor" href="#cache-copier-and-serializer-example"></a>Cache copier and serializer example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+    .withKeyCopier(new LongCopier()) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withValueCopier(new StringCopier()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .withKeySerializer(new LongSerializer()) <i class="conum" data-value="3"></i><b>(3)</b>
+    .withValueSerializer(new StringSerializer()) <i class="conum" data-value="4"></i><b>(4)</b>
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+        .heap(10L, EntryUnit.ENTRIES) <i class="conum" data-value="5"></i><b>(5)</b>
+        .offheap(10L, MemoryUnit.MB)) <i class="conum" data-value="6"></i><b>(6)</b>
+    .build(true);
+
+// Work with the cache
+cache.put(42L, "The Answer!");
+assertThat(cache.get(42L), is("The Answer!"));
+
+cache.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure a key copier.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure a value copier.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Configure a key serializer.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configure a value serializer.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Configure a heap tier.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Configure a off-heap tier.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>By default, the heap tier stores by reference, unless a copier is configured. The other tiers must use a serializer<br />
+to copy the keys and values.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-serializing-copier-and-serializer-example"><a class="anchor" href="#cache-serializing-copier-and-serializer-example"></a>Cache serializing copier and serializer example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+    .withKeySerializer(new LongSerializer()) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withValueSerializer(new StringSerializer()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .withValueSerializingCopier() <i class="conum" data-value="3"></i><b>(3)</b>
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+        .heap(10L, EntryUnit.ENTRIES) <i class="conum" data-value="4"></i><b>(4)</b>
+        .offheap(10L, MemoryUnit.MB)) <i class="conum" data-value="5"></i><b>(5)</b>
+    .build(true);
+
+// Work with the cache
+cache.put(42L, "The Answer!");
+assertThat(cache.get(42L), is("The Answer!"));
+
+cache.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure a key serializer.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure a value serializer.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Configure a <code>SerializingCopier</code> is the value copier.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configure a heap tier.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Configure a off-heap tier.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In this case, the heap tier is storing keys by reference since no key copier has been configured, and it is storing<br />
+values by value since a serializing copier has been configured. Such copier is going to use the configured<br />
+serializer to perform the necessary copies.<br />
+The off-heap tier will use both the key serializer as well as the value one to make its copies.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="write-through-cache-example"><a class="anchor" href="#write-through-cache-example"></a>Write-Through Cache example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+    .withLoaderWriter(new SampleLoaderWriter&lt;Long, String&gt;()) <i class="conum" data-value="1"></i><b>(1)</b>
+    .build(true);
+
+// Work with the cache
+cache.put(42L, "The Answer!");
+assertThat(cache.get(42L), is("The Answer!"));
+
+cache.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you wish to use a cache in read-through/write-through caching pattern, you’ll have to implement<br />
+<code>CacheLoaderWriter</code> and register it.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-with-eviction-veto-example"><a class="anchor" href="#cache-with-eviction-veto-example"></a>Cache with Eviction veto example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+    .withEvictionVeto(new OddKeysEvictionVeto&lt;Long, String&gt;()) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+        .heap(2L, EntryUnit.ENTRIES)) <i class="conum" data-value="2"></i><b>(2)</b>
+    .build(true);
+
+// Work with the cache
+cache.put(42L, "The Answer!");
+cache.put(41L, "The wrong Answer!");
+cache.put(39L, "The other wrong Answer!");
+
+cache.close(); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you want to hint the eviction algorithm to veto the eviction of some mappings, you have to<br />
+configure an instance of <code>EvictionVeto</code>.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-with-listeners-example"><a class="anchor" href="#cache-with-listeners-example"></a>Cache with Listeners example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+    .withEventExecutors(Executors.newSingleThreadExecutor(), Executors.newSingleThreadExecutor()) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withEventListeners(CacheEventListenerConfigurationBuilder
+        .newEventListenerConfiguration(ListenerObject.class, EventType.CREATED, EventType.UPDATED)
+        .asynchronous()
+        .unordered()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+        .heap(3, EntryUnit.ENTRIES))
+    .build(true);
+
+cache.put(1L, "Put it");
+cache.put(1L, "Update it");
+
+cache.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Provide ExecutorService for ordered and unordered event delivery. Note, it is required to provide either a<br />
+CacheEventDispatcher or ordered/unOrdered ExecutorService for proper event delivery.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Provide listener configuration using CacheEventListenerConfigurationBuilder.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="byte-sized-cache-example"><a class="anchor" href="#byte-sized-cache-example"></a>Byte Sized Cache example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+    .withSizeOfMaxObjectSize(500, MemoryUnit.B)
+    .withSizeOfMaxObjectGraph(1000) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+        .heap(3, MemoryUnit.MB)) <i class="conum" data-value="2"></i><b>(2)</b>
+    .build(true);
+
+cache.put(1L, "Put");
+cache.put(1L, "Update");
+
+assertThat(cache.get(1L), is("Update"));
+
+cache.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The sizing mechanism can be configured along two axis: The first one specifies the maximum number<br />
+of objects to traverse while walking the object graph, the second defines the maximum size of a<br />
+single object.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Size the heap tier in bytes.</td>
 </tr>
 </table>
 </div>

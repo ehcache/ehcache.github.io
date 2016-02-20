@@ -148,7 +148,7 @@
 <h2 id="intro"><a class="anchor" href="#intro"></a>Intro</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Managed objects like caches, cache managers and stores are registered into a <code>org.ehcache.management.ManagementRegistry</code><br />
+<p>Managed objects like caches, cache managers and stores are registered into a <code>org.ehcache.management.ManagementRegistryService</code><br />
 instance.</p>
 </div>
 <div class="paragraph">
@@ -174,12 +174,12 @@ cache manager builder as a service:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
     .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
-    .buildConfig(Long.class, String.class);
+    .build();
 
 DefaultManagementRegistryConfiguration registryConfiguration = new DefaultManagementRegistryConfiguration().setCacheManagerAlias("myCacheManager"); <i class="conum" data-value="1"></i><b>(1)</b>
-ManagementRegistry managementRegistry = new DefaultManagementRegistry(registryConfiguration); <i class="conum" data-value="2"></i><b>(2)</b>
+ManagementRegistryService managementRegistry = new DefaultManagementRegistryService(registryConfiguration); <i class="conum" data-value="2"></i><b>(2)</b>
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .withCache("aCache", cacheConfiguration)
     .using(managementRegistry) <i class="conum" data-value="3"></i><b>(3)</b>
@@ -216,7 +216,7 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Create an instance of <code>org.ehcache.management.registry.DefaultManagementRegistry</code>. This is only required because the service is used below.</td>
+<td>Create an instance of <code>org.ehcache.management.registry.DefaultManagementRegistryService</code>. This is only required because the service is used below.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -256,11 +256,11 @@ and a cache name to uniquely identify the cache on which you want to query stats
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
     .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
-    .buildConfig(Long.class, String.class);
+    .build();
 
-ManagementRegistry managementRegistry = new DefaultManagementRegistry();
+ManagementRegistryService managementRegistry = new DefaultManagementRegistryService();
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .withCache("aCache", cacheConfiguration)
     .using(managementRegistry)
@@ -271,7 +271,7 @@ Collection&lt;Capability&gt; capabilities = managementRegistry.getCapabilities()
 Assert.assertThat(capabilities.isEmpty(), Matchers.is(false));
 Capability capability = capabilities.iterator().next();
 String capabilityName = capability.getName(); <i class="conum" data-value="2"></i><b>(2)</b>
-Collection&lt;Descriptor&gt; capabilityDescriptions = capability.getDescriptions(); <i class="conum" data-value="3"></i><b>(3)</b>
+Collection&lt;Descriptor&gt; capabilityDescriptions = capability.getDescriptors(); <i class="conum" data-value="3"></i><b>(3)</b>
 Assert.assertThat(capabilityDescriptions.isEmpty(), Matchers.is(false));
 CapabilityContext capabilityContext = capability.getCapabilityContext();
 Collection&lt;CapabilityContext.Attribute&gt; attributes = capabilityContext.getAttributes(); <i class="conum" data-value="4"></i><b>(4)</b>
@@ -284,7 +284,7 @@ CapabilityContext.Attribute attribute2 = iterator.next();
 Assert.assertThat(attribute2.getName(), Matchers.equalTo("cacheName")); <i class="conum" data-value="6"></i><b>(6)</b>
 Assert.assertThat(attribute2.isRequired(), Matchers.is(true));
 
-ContextContainer contextContainer = managementRegistry.getContext();  <i class="conum" data-value="7"></i><b>(7)</b>
+ContextContainer contextContainer = managementRegistry.getContextContainer();  <i class="conum" data-value="7"></i><b>(7)</b>
 Assert.assertThat(contextContainer.getName(), Matchers.equalTo("cacheManagerName"));  <i class="conum" data-value="8"></i><b>(8)</b>
 Assert.assertThat(contextContainer.getValue(), Matchers.startsWith("cache-manager-"));
 Collection&lt;ContextContainer&gt; subContexts = contextContainer.getSubContexts();
@@ -354,11 +354,11 @@ a managed object. Examples of actions could be: clear caches, get their config o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
     .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
-    .buildConfig(Long.class, String.class);
+    .build();
 
-ManagementRegistry managementRegistry = new DefaultManagementRegistry();
+ManagementRegistryService managementRegistry = new DefaultManagementRegistryService();
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .withCache("aCache", cacheConfiguration)
     .using(managementRegistry)
@@ -415,9 +415,9 @@ manager by default, but sometimes you may want one <code>ManagementRegistry</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder()
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
     .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
-    .buildConfig(Long.class, String.class);
+    .build();
 
 SharedManagementService sharedManagementService = new DefaultSharedManagementService(); <i class="conum" data-value="1"></i><b>(1)</b>
 CacheManager cacheManager1 = CacheManagerBuilder.newCacheManagerBuilder()
@@ -432,11 +432,11 @@ CacheManager cacheManager2 = CacheManagerBuilder.newCacheManagerBuilder()
     .using(sharedManagementService) <i class="conum" data-value="3"></i><b>(3)</b>
     .build(true);
 
-Context context1 = Context.create()
+Context context1 = Context.empty()
   .with("cacheManagerName", "myCacheManager-1")
   .with("cacheName", "aCache");
 
-Context context2 = Context.create()
+Context context2 = Context.empty()
   .with("cacheManagerName", "myCacheManager-2")
   .with("cacheName", "aCache");
 
