@@ -339,7 +339,7 @@ cacheManager.close();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .with(new CacheManagerPersistenceConfiguration(new File(getStoragePath(), "myData"))) <i class="conum" data-value="1"></i><b>(1)</b>
+    .with(CacheManagerBuilder.persistence(getStoragePath() + File.separator + "myData")) <i class="conum" data-value="1"></i><b>(1)</b>
     .withCache("persistent-cache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
         .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
             .heap(10, EntryUnit.ENTRIES)
@@ -370,7 +370,7 @@ data should be stored on disk to the <code>CacheManagerBuilder.persistence(Strin
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .with(new CacheManagerPersistenceConfiguration(new File(getStoragePath(), "myData"))) <i class="conum" data-value="1"></i><b>(1)</b>
+    .with(CacheManagerBuilder.persistence(getStoragePath() + File.separator + "myData")) <i class="conum" data-value="1"></i><b>(1)</b>
     .withCache("threeTieredCache",
         CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
             .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
