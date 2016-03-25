@@ -204,7 +204,7 @@ else, meaning it will auto-detect and integrate with the Bitronix transaction ma
     TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .using(new TransactionManagerProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
     .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="3"></i><b>(3)</b>
         .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="4"></i><b>(4)</b>
                 .heap(10, EntryUnit.ENTRIES)
@@ -235,7 +235,7 @@ during the cache manager initialization if BTM isn’t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the cache manager such as it can handle <code>XAStoreConfiguration</code>.</td>
+<td>Configure the cache manager such as it can handle transactions by having a <code>TransactionManagerProvider</code> loaded.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -285,25 +285,24 @@ those pending changes.</td>
     TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
     .using(new TransactionManagerProviderConfiguration(
-        new TransactionManagerWrapper(transactionManager, new BitronixXAResourceRegistry()))) <i class="conum" data-value="3"></i><b>(3)</b>
-    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="4"></i><b>(4)</b>
-        .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="5"></i><b>(5)</b>
+        new TransactionManagerWrapper(transactionManager, new BitronixXAResourceRegistry()))) <i class="conum" data-value="2"></i><b>(2)</b>
+    .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="3"></i><b>(3)</b>
+        .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="4"></i><b>(4)</b>
                 .heap(10, EntryUnit.ENTRIES)
         )
-        .add(new XAStoreConfiguration("xaCache")) <i class="conum" data-value="6"></i><b>(6)</b>
+        .add(new XAStoreConfiguration("xaCache")) <i class="conum" data-value="5"></i><b>(5)</b>
         .build()
     )
     .build(true);
 
 final Cache&lt;Long, String&gt; xaCache = cacheManager.getCache("xaCache", Long.class, String.class);
 
-transactionManager.begin(); <i class="conum" data-value="7"></i><b>(7)</b>
+transactionManager.begin(); <i class="conum" data-value="6"></i><b>(6)</b>
 {
-  xaCache.put(1L, "one"); <i class="conum" data-value="8"></i><b>(8)</b>
+  xaCache.put(1L, "one"); <i class="conum" data-value="7"></i><b>(7)</b>
 }
-transactionManager.commit(); <i class="conum" data-value="9"></i><b>(9)</b>
+transactionManager.commit(); <i class="conum" data-value="8"></i><b>(8)</b>
 
 cacheManager.close();
 transactionManager.shutdown();</code></pre>
@@ -318,7 +317,12 @@ during the cache manager initialization if BTM isn’t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the cache manager such as it can handle <code>XAStoreConfiguration</code>.</td>
+<td>Specify a <code>TransactionManagerProviderConfiguration</code> containing a <code>TransactionManagerWrapper</code> instance to be added to<br />
+the builder. The <code>TransactionManagerWrapper</code> class is constructed with both the <code>javax.transaction.TransactionManager</code><br />
+instance as well as a <code>XAResourceRegistry</code> instance. The latter is used to register the<br />
+<code>javax.transaction.xa.XAResource</code> instances of the cache with the transaction manager using an<br />
+implementation-specific mechanism. If your JTA implementation doesn’t require that, you can use the<br />
+<code>NullXAResourceRegistry</code> instead.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -335,24 +339,15 @@ XAResource identifier as some transaction managers require this.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>A <code>TransactionManagerProviderConfiguration</code> containing a <code>TransactionManagerWrapper</code> instance must be added to the<br />
-builder. The <code>TransactionManagerWrapper</code> class is constructed with both the <code>javax.transaction.TransactionManager</code><br />
-instance as well as a <code>XAResourceRegistry</code> instance. The latter is used to register the<br />
-<code>javax.transaction.xa.XAResource</code> instances of the cache with the transaction manager using an<br />
-implementation-specific mechanism. If your JTA implementation doesn’t require that, you can use the<br />
-<code>NullXAResourceRegistry</code> instead.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="7"></i><b>7</b></td>
 <td>Begin a JTA transaction the normal way.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
 <td>Work with the cache the normal way, all operations are supported. Note that concurrent transactions will not see<br />
 those pending changes.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
 <td>Commit the JTA transaction. Other transactions can now see the changes you made to the cache.</td>
 </tr>
 </table>
@@ -373,7 +368,7 @@ transaction context. Nothing special needs to be configured for this to happen, 
 Class&lt;CacheLoaderWriter&lt;?, ?&gt;&gt; klazz = (Class&lt;CacheLoaderWriter&lt;?, ?&gt;&gt;) (Class) (SampleLoaderWriter.class);
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .using(new TransactionManagerProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
     .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="3"></i><b>(3)</b>
             .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="4"></i><b>(4)</b>
                     .heap(10, EntryUnit.ENTRIES)
@@ -406,7 +401,7 @@ during the cache manager initialization if BTM isn’t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the cache manager such as it can handle <code>XAStoreConfiguration</code>.</td>
+<td>Configure the cache manager such as it can handle transactions by having a <code>TransactionManagerProvider</code> loaded.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -457,7 +452,7 @@ will result in <code>XACacheException</code> to be thrown.</p>
     TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .using(new TransactionManagerProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
     .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="3"></i><b>(3)</b>
         .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="4"></i><b>(4)</b>
                 .heap(10, EntryUnit.ENTRIES)
@@ -489,7 +484,7 @@ during the cache manager initialization if BTM isn’t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the cache manager such as it can handle <code>XAStoreConfiguration</code>.</td>
+<td>Configure the cache manager such as it can handle transactions by having a <code>TransactionManagerProvider</code> loaded.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -533,7 +528,7 @@ XAResource identifier as some transaction managers require this.</td>
     TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .using(new XAStoreProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .using(new TransactionManagerProviderConfiguration()) <i class="conum" data-value="2"></i><b>(2)</b>
     .with(new CacheManagerPersistenceConfiguration(new File(getStoragePath(), "testXACacheWithThreeTiers"))) <i class="conum" data-value="3"></i><b>(3)</b>
     .withCache("xaCache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class) <i class="conum" data-value="4"></i><b>(4)</b>
             .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() <i class="conum" data-value="5"></i><b>(5)</b>
@@ -567,7 +562,7 @@ during the cache manager initialization if BTM isn’t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the cache manager such as it can handle <code>XAStoreConfiguration</code>.</td>
+<td>Configure the cache manager such as it can handle transactions by having a <code>TransactionManagerProvider</code> loaded.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -613,17 +608,14 @@ XA caches:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">  &lt;service&gt;
-    &lt;tx:xa-store-provider/&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-  &lt;/service&gt;
-  &lt;service&gt;
-    &lt;tx:jta-tm transaction-manager-provider-class="com.pany.BitronixProvider"/&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;tx:jta-tm transaction-manager-provider-class="com.pany.BitronixProvider"/&gt; <i class="conum" data-value="1"></i><b>(1)</b>
   &lt;/service&gt;
 
-  &lt;cache alias="xaCache"&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+  &lt;cache alias="xaCache"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
     &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
     &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
     &lt;heap unit="entries"&gt;20&lt;/heap&gt;
-    &lt;tx:xa-store unique-XAResource-id="xaCache" /&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+    &lt;tx:xa-store unique-XAResource-id="xaCache" /&gt; <i class="conum" data-value="3"></i><b>(3)</b>
   &lt;/cache&gt;</code></pre>
 </div>
 </div>
@@ -631,18 +623,14 @@ XA caches:</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure the cache manager such as it can handle XA stores configuration.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>Declare a <code>TransactionManagerProvider</code> that will lookup your transaction manager.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>Configure a <code>xaCache</code> cache the normal way.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>Configure <code>xaCache</code> as an XA cache, giving it <code>xaCache</code> as its unique XAResource ID.</td>
 </tr>
 </table>
@@ -680,7 +668,7 @@ XA caches:</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Using the static <code>org.ehcache.CacheManagerBuilder.newCacheManager(org.ehcache.config.Configuration)</code> lets you<br />
+<td>Using the static <code>org.ehcache.config.builders.CacheManagerBuilder.newCacheManager(org.ehcache.config.Configuration)</code> lets you<br />
 create your <code>CacheManager</code> instance using the <code>Configuration</code> from the <code>XmlConfiguration</code>.</td>
 </tr>
 </table>

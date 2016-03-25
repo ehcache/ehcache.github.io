@@ -150,6 +150,7 @@
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-xsd" data-lang="xsd">&lt;xs:schema version="1.0" xmlns:ehcache="http://www.ehcache.org/v3" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0"
            elementFormDefault="qualified" targetNamespace="http://www.ehcache.org/v3"&gt;
   &lt;xs:element name="config" type="ehcache:config-type"/&gt;
 
@@ -244,10 +245,17 @@
   &lt;/xs:complexType&gt;
 
   &lt;xs:complexType name="service-type"&gt;
-    &lt;xs:choice&gt;
-      &lt;xs:any namespace="##other" minOccurs="0" maxOccurs="1"/&gt;
-    &lt;/xs:choice&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element ref="ehcache:service-creation-configuration" minOccurs="1" maxOccurs="1"/&gt;
+    &lt;/xs:sequence&gt;
   &lt;/xs:complexType&gt;
+  &lt;xs:element name="service-creation-configuration" abstract="true"&gt;
+    &lt;xs:annotation&gt;
+      &lt;xs:appinfo&gt;
+        &lt;jaxb:dom/&gt;
+      &lt;/xs:appinfo&gt;
+    &lt;/xs:annotation&gt;
+  &lt;/xs:element&gt;
 
   &lt;xs:complexType name="persistence-type"&gt;
     &lt;xs:attribute name="directory" type="xs:string" use="required"/&gt;
@@ -394,10 +402,10 @@
         &lt;/xs:annotation&gt;
       &lt;/xs:element&gt;
       &lt;xs:choice minOccurs="0" maxOccurs="1"&gt;
-        &lt;xs:element name="heap" type="ehcache:resource-type" minOccurs="1" maxOccurs="1"&gt;
+        &lt;xs:element ref="ehcache:heap" minOccurs="1" maxOccurs="1"&gt;
           &lt;xs:annotation&gt;
             &lt;xs:documentation xml:lang="en"&gt;
-              Shortcut for configuring a heap-only Cache.
+              Shortcut for configuring a heap Cache.
             &lt;/xs:documentation&gt;
           &lt;/xs:annotation&gt;
         &lt;/xs:element&gt;
@@ -423,9 +431,16 @@
           &lt;/xs:documentation&gt;
         &lt;/xs:annotation&gt;
       &lt;/xs:element&gt;
-      &lt;xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/&gt;
+      &lt;xs:element ref="ehcache:service-configuration" minOccurs="0" maxOccurs="unbounded"/&gt;
     &lt;/xs:sequence&gt;
   &lt;/xs:complexType&gt;
+  &lt;xs:element name="service-configuration" abstract="true"&gt;
+    &lt;xs:annotation&gt;
+      &lt;xs:appinfo&gt;
+        &lt;jaxb:dom/&gt;
+      &lt;/xs:appinfo&gt;
+    &lt;/xs:annotation&gt;
+  &lt;/xs:element&gt;
 
   &lt;xs:complexType name="listeners-type"&gt;
     &lt;xs:sequence&gt;
@@ -462,7 +477,6 @@
                 &lt;/xs:documentation&gt;
               &lt;/xs:annotation&gt;
             &lt;/xs:element&gt;
-            &lt;xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/&gt;
           &lt;/xs:sequence&gt;
         &lt;/xs:complexType&gt;
       &lt;/xs:element&gt;
@@ -612,12 +626,39 @@
     &lt;/xs:complexContent&gt;
   &lt;/xs:complexType&gt;
 
+  &lt;xs:element name="resource" abstract="true"&gt;
+    &lt;xs:annotation&gt;
+      &lt;xs:appinfo&gt;
+        &lt;jaxb:dom/&gt;
+      &lt;/xs:appinfo&gt;
+    &lt;/xs:annotation&gt;
+  &lt;/xs:element&gt;
+
+  &lt;xs:element name="heap" type="ehcache:resource-type" substitutionGroup="ehcache:resource"&gt;
+    &lt;xs:annotation&gt;
+      &lt;xs:appinfo&gt;
+        &lt;jaxb:class/&gt;
+      &lt;/xs:appinfo&gt;
+    &lt;/xs:annotation&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name="offheap" type="ehcache:memory-type" substitutionGroup="ehcache:resource"&gt;
+    &lt;xs:annotation&gt;
+      &lt;xs:appinfo&gt;
+        &lt;jaxb:class/&gt;
+      &lt;/xs:appinfo&gt;
+    &lt;/xs:annotation&gt;
+  &lt;/xs:element&gt;
+  &lt;xs:element name="disk" type="ehcache:persistable-memory-type" substitutionGroup="ehcache:resource"&gt;
+    &lt;xs:annotation&gt;
+      &lt;xs:appinfo&gt;
+        &lt;jaxb:class/&gt;
+      &lt;/xs:appinfo&gt;
+    &lt;/xs:annotation&gt;
+  &lt;/xs:element&gt;
+
   &lt;xs:complexType name="resources-type"&gt;
     &lt;xs:sequence&gt;
-      &lt;xs:element name="heap" type="ehcache:resource-type" minOccurs="0" maxOccurs="1"/&gt;
-      &lt;xs:element name="offheap" type="ehcache:memory-type" minOccurs="0" maxOccurs="1"/&gt;
-      &lt;xs:element name="disk" type="ehcache:persistable-memory-type" minOccurs="0" maxOccurs="1"/&gt;
-      &lt;xs:any namespace="##other" minOccurs="0"/&gt;
+      &lt;xs:element ref="ehcache:resource" minOccurs="1" maxOccurs="unbounded"/&gt;
     &lt;/xs:sequence&gt;
   &lt;/xs:complexType&gt;
 
@@ -695,9 +736,14 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xsd" data-lang="xsd">&lt;xs:schema version="1.0" xmlns:jsr107="http://www.ehcache.org/v3/jsr107" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.ehcache.org/v3/jsr107"&gt;
+<pre class="prettyprint highlight"><code class="language-xsd" data-lang="xsd">&lt;xs:schema version="1.0"
+           xmlns:jsr107="http://www.ehcache.org/v3/jsr107"
+           xmlns:eh="http://www.ehcache.org/v3"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified" targetNamespace="http://www.ehcache.org/v3/jsr107"&gt;
+  &lt;xs:import namespace="http://www.ehcache.org/v3"/&gt;
 
-  &lt;xs:element name="defaults" type="jsr107:defaults-type"&gt;
+  &lt;xs:element name="defaults" type="jsr107:defaults-type" substitutionGroup="eh:service-creation-configuration"&gt;
     &lt;xs:key name="default-template-ref"&gt;
       &lt;xs:selector xpath="cache-template"/&gt;
       &lt;xs:field xpath="@name"/&gt;
@@ -733,15 +779,15 @@
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-xsd" data-lang="xsd">&lt;xs:schema version="1.0"
            xmlns:tx="http://www.ehcache.org/v3/tx"
+           xmlns:eh="http://www.ehcache.org/v3"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            elementFormDefault="qualified"
            targetNamespace="http://www.ehcache.org/v3/tx"&gt;
+  &lt;xs:import namespace="http://www.ehcache.org/v3"/&gt;
 
-  &lt;xs:element name="xa-store-provider"/&gt;
+  &lt;xs:element name="xa-store" type="tx:xa-store-config-type" substitutionGroup="eh:service-configuration"/&gt;
 
-  &lt;xs:element name="xa-store" type="tx:xa-store-config-type"/&gt;
-
-  &lt;xs:element name="jta-tm" type="tx:jta-tm-type"/&gt;
+  &lt;xs:element name="jta-tm" type="tx:jta-tm-type" substitutionGroup="eh:service-creation-configuration"/&gt;
 
   &lt;xs:complexType name="xa-store-config-type"&gt;
     &lt;xs:attribute name="unique-XAResource-id" type="xs:string" use="required"/&gt;

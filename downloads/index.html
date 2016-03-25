@@ -142,7 +142,7 @@
 <h4 id="ehcache-3">Ehcache 3</h4>
 
 <blockquote>
-  <p><a href="https://github.com/ehcache/ehcache3/releases/download/v3.0.0.rc1/ehcache-3.0.0.rc1.jar">Ehcache 3.0 Release Candidate 1</a> .jar</p>
+  <p><a href="https://github.com/ehcache/ehcache3/releases/download/v3.0.0.rc1/ehcache-3.0.0.rc2.jar">Ehcache 3.0 Release Candidate 2</a> .jar</p>
 </blockquote>
 
 <p>More files related to milestone releases of Ehcache 3 are available on the project’s <a href="https://github.com/ehcache/ehcache3/releases">GitHub release page</a>.</p>
@@ -174,7 +174,7 @@
 <pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">    &lt;dependency&gt;
       &lt;groupId&gt;org.ehcache&lt;/groupId&gt;
       &lt;artifactId&gt;ehcache&lt;/artifactId&gt;
-      &lt;version&gt;3.0.0.rc1&lt;/version&gt;
+      &lt;version&gt;3.0.0.rc2&lt;/version&gt;
     &lt;/dependency&gt;
 </code></pre>
 
@@ -186,30 +186,28 @@
 
 <h4 id="releases">Releases</h4>
 
-<p>Ehcache publishes releases for all modules to the SourceForge Maven repository at:</p>
+<p><em>Releases are available on Maven Central</em>.</p>
 
-<p><a href="http://oss.sonatype.org/">http://oss.sonatype.org/</a></p>
+<p>Ehcache publishes releases for all modules to the Sonatype Maven repository at: <a href="http://oss.sonatype.org/">http://oss.sonatype.org/</a></p>
 
-<p>You can browse the repo <a href="http://oss.sonatype.org/content/repositories/sourceforge-releases/net/sf/ehcache">here ›</a>
-From there the releases are immediately synced with the Maven central repository.</p>
+<p>You can browse the repository <a href="https://oss.sonatype.org/content/repositories/releases/">here ›</a> look for Ehcache 2.x under <code>net/sf/ehcache</code> and Ehcache 3.x under <code>org/ehcache</code>.</p>
+
+<p>From there the releases are immediately synced with the Maven central repository.</p>
 
 <h4 id="snapshots">Snapshots</h4>
 
-<p>Ehcache publishes regular snapshots for all modules to the Sonatype Maven repository mentioned above</p>
+<p>Ehcache publishes regular snapshots for Ehcache 3.x to the Sonatype Snapshot Maven repository.</p>
 
 <p>Note that snapshots are recommended for developer testing only.</p>
 
-<p>You can browse the snapshot repo <a href="http://oss.sonatype.org/content/repositories/sourceforge-snapshots/net/sf/ehcache">here ›</a></p>
+<p>You can browse the snapshot repository <a href="http://oss.sonatype.org/content/repositories/sourceforge-snapshots">here ›</a> look for Ehcache 3.x under <code>org/ehcache</code>.</p>
 
 <p>To get snapshots you will need to add the following repository to your maven config:</p>
 
 <pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">    &lt;repositories&gt;
       &lt;repository&gt;
         &lt;id&gt;sourceforge&lt;/id&gt;
-        &lt;url&gt;http://oss.sonatype.org/content/groups/sourceforge/&lt;/url&gt;
-        &lt;releases&gt;
-          &lt;enabled&gt;true&lt;/enabled&gt;
-        &lt;/releases&gt;
+        &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots/&lt;/url&gt;
         &lt;snapshots&gt;
           &lt;enabled&gt;true&lt;/enabled&gt;
         &lt;/snapshots&gt;

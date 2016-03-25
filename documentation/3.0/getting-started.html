@@ -160,18 +160,6 @@ If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you sho
 </tr>
 </table>
 </div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-<strong>This is still a work in progress</strong>. While it represents the API as it exists today, the final version will be represented in the Ehcache 3.0 OSS Beta.
-</td>
-</tr>
-</table>
-</div>
 <div class="sect2">
 <h3 id="configuring-it-all-in-java"><a class="anchor" href="#configuring-it-all-in-java"></a>Configuring it all in Java</h3>
 <div class="sect3">
@@ -203,7 +191,7 @@ cacheManager.close(); <i class="conum" data-value="10"></i><b>(10)</b></code></p
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Static method <code>org.ehcache.CacheManagerBuilder.newCacheManagerBuilder</code> that returns a new <code>org.ehcache.CacheManagerBuilder</code><br />
+<td>Static method <code>org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder</code> that returns a new <code>org.ehcache.config.builders.CacheManagerBuilder</code><br />
 instance;</td>
 </tr>
 <tr>
@@ -307,6 +295,9 @@ See <a href="usermanaged.html">the user managed cache documentation</a> for more
 </div>
 <div class="sect2">
 <h3 id="tiering"><a class="anchor" href="#tiering"></a>Tiering</h3>
+<div class="paragraph">
+<p>Ehcache 3, as in previous versions, offers a tiering model to allow storing increasing amounts of data on slower tiers.</p>
+</div>
 <div class="sect3">
 <h4 id="off-heap"><a class="anchor" href="#off-heap"></a>Off-heap</h4>
 <div class="listingblock">
@@ -331,7 +322,10 @@ cacheManager.close();</code></pre>
 </table>
 </div>
 <div class="paragraph">
-<p>Do not forget to define in the java options the -XX:MaxDirectMemorySize option, according to the off-heap size you intend to use.</p>
+<p>The example above allocates a very small amount of off-heap.<br />
+Remember that data stored off-heap will have to be serialized and deserialized.<br />
+You should thus favor off-heap for large amounts of data where on heap would have too severe an impact on garbage collection.<br />
+Do not forget to define in the java options the <code>-XX:MaxDirectMemorySize</code> option, according to the off-heap size you intend to use.</p>
 </div>
 </div>
 <div class="sect3">
@@ -354,9 +348,8 @@ persistentCacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you wish to use disk storage (like for persistent <code>Cache</code> instances), you’ll have to register a<br />
-<code>LocalPersistenceService</code> with your <code>CacheManager</code>, which you can do by providing the location where<br />
-data should be stored on disk to the <code>CacheManagerBuilder.persistence(String)</code> static method.</td>
+<td>If you wish to use disk storage (like for persistent <code>Cache</code> instances), you’ll have to provide a<br />
+location where data should be stored on disk to the <code>CacheManagerBuilder.persistence(String)</code> static method.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -387,9 +380,8 @@ persistentCacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you wish to use disk storage (like for persistent <code>Cache</code> instances), you’ll have to register a<br />
-<code>LocalPersistenceService</code> with your <code>CacheManager</code>, which you can do by providing the location where<br />
-data should be stored on disk to the <code>CacheManagerBuilder.persistence(String)</code> static method.</td>
+<td>If you wish to use disk storage (like for persistent <code>Cache</code> instances), you’ll have to provide a<br />
+location where data should be stored on disk to the <code>CacheManagerBuilder.persistence(String)</code> static method.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -407,7 +399,22 @@ data should be stored on disk to the <code>CacheManagerBuilder.persistence(Strin
 </div>
 </div>
 <div class="sect3">
-<h4 id="byte-sized-tiering"><a class="anchor" href="#byte-sized-tiering"></a>Byte Sized Tiering</h4>
+<h4 id="byte-sized-heap"><a class="anchor" href="#byte-sized-heap"></a>Byte sized heap</h4>
+<div class="paragraph">
+<p>You can also size the heap tier using memory units instead of entry count.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Byte sizing has a runtime performance impact that depends on the size and graph complexity of the data cached.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; usesConfiguredInCacheConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
@@ -468,6 +475,21 @@ explicitly.</td>
 </div>
 <div class="sect3">
 <h4 id="update-resourcepools"><a class="anchor" href="#update-resourcepools"></a>Update ResourcePools</h4>
+<div class="paragraph">
+<p>Limited size adjustment can be performed on a live cache.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Presently, <code>updateResourcePools()</code> only supports updating the heap tier and without changing the resource type.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">ResourcePools pools = ResourcePoolsBuilder.newResourcePoolsBuilder().heap(20L, EntryUnit.ENTRIES).build(); <i class="conum" data-value="1"></i><b>(1)</b>
@@ -487,18 +509,6 @@ then be passed to the said method so as to trigger the update.</td>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>To update capacity of <code>ResourcePools</code>, <code>updateResourcePools(ResourcePools)</code> method in <code>RuntimeConfiguration</code> can be of help.<br />
 <code>ResourcePools</code> object created earlier can then be passed to this method so as to trigger the update.</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Presently, <code>updateResourcePools()</code> only supports updating tiers that use <code>EntryUnit.ENTRIES</code> as the unit of measure.
-</td>
 </tr>
 </table>
 </div>
@@ -763,6 +773,19 @@ enough room for mapping with even keys.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
+Veto status is computed when a mapping is written to the cache.<br />
+This means that proper veto implementations are expected to be constant for a key-value pair.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 Please keep in mind that configuring an eviction veto can slow down eviction: the more often you veto, the<br />
 harder the cache has to work to evict an element when room is required. After a certain time, if a cache determines<br />
 that the configured eviction veto rejected too many eviction candidates, the cache can decide to completely bypass<br />
@@ -795,7 +818,7 @@ cacheManager.close();</code></pre>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>If you wish to use a cache in read-through/write-through caching pattern, you’ll have to implement<br />
-<code>CacheLoaderWriter</code> and register it.</td>
+a <code>CacheLoaderWriter</code> and configure it.</td>
 </tr>
 </table>
 </div>
@@ -829,21 +852,19 @@ cacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>A Cache can be used in write-behind pattern as well. You will have to implement <code>CacheLoaderWriter</code><br />
-and register it.</td>
+<td>A Cache can be used in write-behind pattern as well. You will have to implement a <code>CacheLoaderWriter</code> and configure it.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Additionally, register a <code>WriteBehindConfiguration</code> service to Cache by using a<br />
-<code>WriteBehindConfigurationBuilder</code>.</td>
+<td>Additionally, register a <code>WriteBehindConfiguration</code> on the Cache by using the <code>WriteBehindConfigurationBuilder</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Enable write-behind queue to batch the updates to underlying resource.</td>
+<td>Here we configure write behind with a batch size of 3 and a max wait time of 1 second.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Configure maximum size of the writebehind queue.</td>
+<td>We also set the maximum size of the writebehind queue.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
@@ -852,7 +873,7 @@ the  underlying resource asynchronously.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Enable the write coalescing behavior, which ensures that only latest update on a key hits the<br />
+<td>Enable the write coalescing behavior, which ensures that only one update per key per batch hits the<br />
 underlying resource.</td>
 </tr>
 </table>
@@ -1033,11 +1054,11 @@ cacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure the copier to be used for keys. <strong>DescriptionCopier</strong> in this case  as the keys are <strong>Description</strong> objects.</td>
+<td>Configure the copier to be used for keys. <code>DescriptionCopier</code> in this case  as the keys are <code>Description</code> objects.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the copier to be used for values. <strong>PersonCopier</strong> in this case as the values are <strong>Person</strong> objects.</td>
+<td>Configure the copier to be used for values. <code>PersonCopier</code> in this case as the values are <code>Person</code> objects.</td>
 </tr>
 </table>
 </div>
@@ -1163,7 +1184,7 @@ It is the responsibility of the user to ensure that the service instances are no
 Sharing services can have disastrous effects in your application if the user is not careful enough.<br />
 Configuring services using instances opens the door for sharing the same service instance across caches but that feature<br />
 should be used with extra care.<br />
-Configuring services using classes is the recommended way as Ehcache will create and inject the required instances itself.
+Configuring services using class references is the recommended way as Ehcache will then create and inject the required instances itself.
 </td>
 </tr>
 </table>
@@ -1271,7 +1292,7 @@ CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <i
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Using the static <code>org.ehcache.CacheManagerBuilder.newCacheManager(org.ehcache.config.Configuration)</code> lets you<br />
+<td>Using the static <code>org.ehcache.config.builders.CacheManagerBuilder.newCacheManager(org.ehcache.config.Configuration)</code> lets you<br />
 create your <code>CacheManager</code> instance using the <code>Configuration</code> from the <code>XmlConfiguration</code></td>
 </tr>
 </table>
