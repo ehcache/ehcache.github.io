@@ -131,6 +131,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
         </ul>
@@ -174,8 +177,7 @@ cache manager builder as a service:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
     .build();
 
 DefaultManagementRegistryConfiguration registryConfiguration = new DefaultManagementRegistryConfiguration().setCacheManagerAlias("myCacheManager"); <i class="conum" data-value="1"></i><b>(1)</b>
@@ -256,8 +258,7 @@ and a cache name to uniquely identify the cache on which you want to query stats
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
     .build();
 
 ManagementRegistryService managementRegistry = new DefaultManagementRegistryService();
@@ -354,8 +355,7 @@ a managed object. Examples of actions could be: clear caches, get their config o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
     .build();
 
 ManagementRegistryService managementRegistry = new DefaultManagementRegistryService();
@@ -415,8 +415,7 @@ manager by default, but sometimes you may want one <code>ManagementRegistry</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).build())
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
     .build();
 
 SharedManagementService sharedManagementService = new DefaultSharedManagementService(); <i class="conum" data-value="1"></i><b>(1)</b>

@@ -131,6 +131,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
         </ul>
@@ -169,7 +172,7 @@ If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you sho
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
     = CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
     .withCache("preConfigured",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)) <i class="conum" data-value="2"></i><b>(2)</b>
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))) <i class="conum" data-value="2"></i><b>(2)</b>
     .build(); <i class="conum" data-value="3"></i><b>(3)</b>
 cacheManager.init(); <i class="conum" data-value="4"></i><b>(4)</b>
 
@@ -177,7 +180,7 @@ Cache&lt;Long, String&gt; preConfigured =
     cacheManager.getCache("preConfigured", Long.class, String.class); <i class="conum" data-value="5"></i><b>(5)</b>
 
 Cache&lt;Long, String&gt; myCache = cacheManager.createCache("myCache", <i class="conum" data-value="6"></i><b>(6)</b>
-    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class).build());
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10)).build());
 
 myCache.put(1L, "da one!"); <i class="conum" data-value="7"></i><b>(7)</b>
 String value = myCache.get(1L); <i class="conum" data-value="8"></i><b>(8)</b>
@@ -303,8 +306,8 @@ See <a href="usermanaged.html">the user managed cache documentation</a> for more
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().withCache("tieredCache",
-    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-        .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+        ResourcePoolsBuilder.newResourcePoolsBuilder()
             .heap(10, EntryUnit.ENTRIES)
             .offheap(10, MemoryUnit.MB)) <i class="conum" data-value="1"></i><b>(1)</b>
         )
@@ -334,8 +337,8 @@ Do not forget to define in the java options the <code>-XX:MaxDirectMemorySize</c
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .with(CacheManagerBuilder.persistence(getStoragePath() + File.separator + "myData")) <i class="conum" data-value="1"></i><b>(1)</b>
-    .withCache("persistent-cache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-        .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+    .withCache("persistent-cache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+        ResourcePoolsBuilder.newResourcePoolsBuilder()
             .heap(10, EntryUnit.ENTRIES)
             .disk(10L, MemoryUnit.MB, true)) <i class="conum" data-value="2"></i><b>(2)</b>
         )
@@ -365,8 +368,8 @@ location where data should be stored on disk to the <code>CacheManagerBuilder.pe
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .with(CacheManagerBuilder.persistence(getStoragePath() + File.separator + "myData")) <i class="conum" data-value="1"></i><b>(1)</b>
     .withCache("threeTieredCache",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-            .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+            ResourcePoolsBuilder.newResourcePoolsBuilder()
                 .heap(10, EntryUnit.ENTRIES) <i class="conum" data-value="2"></i><b>(2)</b>
                 .offheap(1, MemoryUnit.MB) <i class="conum" data-value="3"></i><b>(3)</b>
                 .disk(20, MemoryUnit.MB) <i class="conum" data-value="4"></i><b>(4)</b>
@@ -417,18 +420,18 @@ Byte sizing has a runtime performance impact that depends on the size and graph 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; usesConfiguredInCacheConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
-        .heap(10, MemoryUnit.KB) <i class="conum" data-value="1"></i><b>(1)</b>
-        .offheap(10, MemoryUnit.MB))
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; usesConfiguredInCacheConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+        ResourcePoolsBuilder.newResourcePoolsBuilder()
+            .heap(10, MemoryUnit.KB) <i class="conum" data-value="1"></i><b>(1)</b>
+            .offheap(10, MemoryUnit.MB))
     .withSizeOfMaxObjectGraph(1000)
     .withSizeOfMaxObjectSize(1000, MemoryUnit.B) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();
 
-CacheConfiguration&lt;Long, String&gt; usesDefaultSizeOfEngineConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
-        .heap(10, MemoryUnit.KB)
-        .offheap(10, MemoryUnit.MB))
+CacheConfiguration&lt;Long, String&gt; usesDefaultSizeOfEngineConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+        ResourcePoolsBuilder.newResourcePoolsBuilder()
+            .heap(10, MemoryUnit.KB)
+            .offheap(10, MemoryUnit.MB))
     .build();
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
@@ -526,7 +529,7 @@ then be passed to the said method so as to trigger the update.</td>
 
 final CacheManager manager = CacheManagerBuilder.newCacheManagerBuilder()
     .withCache("foo",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class)
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(10))
             .add(cacheEventListenerConfiguration) <i class="conum" data-value="3"></i><b>(3)</b>
     ).build(true);
 
@@ -708,8 +711,8 @@ The following <code>put()</code> and <code>remove()</code> cache calls will have
 <h4 id="event-processing-queues"><a class="anchor" href="#event-processing-queues"></a>Event Processing Queues</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(5L, EntryUnit.ENTRIES).build())
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                                                                      ResourcePoolsBuilder.heap(5L))
     .withOrderedEventParallelism(10) <i class="conum" data-value="1"></i><b>(1)</b>
     .withEventListenersThreadPool("listeners-pool")
     .build();</code></pre>
@@ -728,10 +731,9 @@ The following <code>put()</code> and <code>remove()</code> cache calls will have
 <h4 id="cache-with-eviction-veto"><a class="anchor" href="#cache-with-eviction-veto"></a>Cache with Eviction veto</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withEvictionVeto(new OddKeysEvictionVeto&lt;Long, String&gt;()) <i class="conum" data-value="1"></i><b>(1)</b>
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
-        .heap(2L, EntryUnit.ENTRIES)) <i class="conum" data-value="2"></i><b>(2)</b>
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                                                                    ResourcePoolsBuilder.heap(2L)) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withEvictionVeto(new OddKeysEvictionVeto&lt;Long, String&gt;()) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
@@ -752,12 +754,12 @@ cacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you want to hint the eviction algorithm to veto the eviction of some mappings, you have to<br />
-configure an instance of <code>EvictionVeto</code>.</td>
+<td>Configure a constrained heap, as the eviction veto is only relevant when mappings get evicted from the cache.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure a constrained heap, as the eviction veto is only called when mappings get evicted from the cache.</td>
+<td>If you want to hint the eviction algorithm to veto the eviction of some mappings, you have to<br />
+configure an instance of <code>EvictionVeto</code>.</td>
 </tr>
 </table>
 </div>
@@ -802,7 +804,7 @@ the eviction veto and evict anything it sees fit.
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 
 final Cache&lt;Long, String&gt; writeThroughCache = cacheManager.createCache("writeThroughCache",
-    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
         .withLoaderWriter(new SampleLoaderWriter&lt;Long, String&gt;(singletonMap(41L, "zero"))) <i class="conum" data-value="1"></i><b>(1)</b>
         .build());
 
@@ -830,7 +832,7 @@ a <code>CacheLoaderWriter</code> and configure it.</td>
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 
 final Cache&lt;Long, String&gt; writeBehindCache = cacheManager.createCache("writeBehindCache",
-    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
         .withLoaderWriter(new SampleLoaderWriter&lt;Long, String&gt;(singletonMap(41L, "zero"))) <i class="conum" data-value="1"></i><b>(1)</b>
         .add(WriteBehindConfigurationBuilder <i class="conum" data-value="2"></i><b>(2)</b>
             .newBatchedWriteBehindConfiguration(1, TimeUnit.SECONDS, 3)<i class="conum" data-value="3"></i><b>(3)</b>
@@ -900,9 +902,9 @@ So if you register a serializer for a given type of objects, it would be used to
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withResourcePools(ResourcePoolsBuilder
-        .newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).offheap(1, MemoryUnit.MB))
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+      ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES)
+          .offheap(1, MemoryUnit.MB))
     .build();
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
@@ -934,20 +936,20 @@ either there is one configured for the exact declared type, or the first type-co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).offheap(10, MemoryUnit.MB))
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Person.class,
+        ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).offheap(10, MemoryUnit.MB))
     .withKeySerializer(new LongSerializer()) <i class="conum" data-value="1"></i><b>(1)</b>
-    .withValueSerializer((Serializer) new CharSequenceSerializer()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .withValueSerializer(new PersonSerializer()) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .withCache("cache", cacheConfiguration)
     .build(true);
 
-Cache&lt;Long, String&gt; cache = cacheManager.getCache("cache", Long.class, String.class);
+Cache&lt;Long, Person&gt; cache = cacheManager.getCache("cache", Long.class, Person.class);
 
-cache.put(1L, "one");
-assertThat(cache.get(1L), equalTo("one"));
+cache.put(1L, new Person("person one", 32));
+assertThat(cache.get(1L), equalTo(new Person("person one", 32)));
 
 cacheManager.close();</code></pre>
 </div>
@@ -960,9 +962,7 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the value’s serializer. Note that the casting is required as the serializer’s type does not exactly match<br />
-the configured value type. This is okay as long as the serializer guarantees that the deserialized class will be<br />
-exactly the serialized class.</td>
+<td>Configure the value’s serializer.</td>
 </tr>
 </table>
 </div>
@@ -979,7 +979,7 @@ use them or not, will not by default.</p>
 </td>
 <td class="content">
 By default, there are serializers already configured for types <code>java.io.Serializable</code>, <code>java.lang.String</code>, <code>java.lang.Long</code>,<br />
-<code>java.lang.Integer</code>, <code>java.lang.Double</code>, <code>java.lang.Float</code> and <code>java.lang.Character</code>.
+<code>java.lang.Integer</code>, <code>java.lang.Double</code>, <code>java.lang.Float</code>, <code>java.lang.Character</code> and <code>byte[]</code>.
 </td>
 </tr>
 </table>
@@ -1030,8 +1030,8 @@ If no copiers are provided, the cache will be a store-by-reference cache.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Description.class, Person.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Description.class, Person.class,
+                                                                                      ResourcePoolsBuilder.heap(10))
     .withKeyCopier(new DescriptionCopier()) <i class="conum" data-value="1"></i><b>(1)</b>
     .withValueCopier(new PersonCopier()) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();
@@ -1070,8 +1070,8 @@ cache as follows to use serializing copier:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Person.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Person.class,
+                                                                                      ResourcePoolsBuilder.heap(10))
     .withValueSerializingCopier() <i class="conum" data-value="1"></i><b>(1)</b>
     .build();</code></pre>
 </div>
@@ -1095,13 +1095,11 @@ copiers again and again for multiple caches managed by the same cache manager. T
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Description.class, Person.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
-    .build();
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Description.class, Person.class,
+    ResourcePoolsBuilder.heap(10)).build();
 
-CacheConfiguration&lt;Long, Person&gt; anotherCacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Person.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
-    .build();
+CacheConfiguration&lt;Long, Person&gt; anotherCacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Person.class,
+    ResourcePoolsBuilder.heap(10)).build();
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .withCopier(Description.class, DescriptionCopier.class) <i class="conum" data-value="1"></i><b>(1)</b>
@@ -1154,8 +1152,8 @@ configurations at the cache level and leave the instantiation be done internally
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Description.class, Person.class)
-    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Description.class, Person.class,
+                                                                                          ResourcePoolsBuilder.heap(10))
     .withKeyCopier(DescriptionCopier.class) <i class="conum" data-value="1"></i><b>(1)</b>
     .withValueCopier(new PersonCopier()) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();</code></pre>
@@ -1218,7 +1216,7 @@ the cache is removed from the cache manager or when the cache manager is closed.
     &lt;key-type&gt;java.lang.String&lt;/key-type&gt; <i class="conum" data-value="2"></i><b>(2)</b>
     &lt;resources&gt;
       &lt;heap unit="entries"&gt;2000&lt;/heap&gt; <i class="conum" data-value="3"></i><b>(3)</b>
-      &lt;offheap unit="mb"&gt;500&lt;/offheap&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+      &lt;offheap unit="MB"&gt;500&lt;/offheap&gt; <i class="conum" data-value="4"></i><b>(4)</b>
     &lt;/resources&gt;
   &lt;/cache&gt;
 

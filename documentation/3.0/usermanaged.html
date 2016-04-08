@@ -131,6 +131,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
         </ul>
@@ -238,12 +241,11 @@ public interface UserManagedCache&lt;K, V&gt; extends Cache&lt;K, V&gt; {
 public interface PersistentUserManagedCache&lt;K, V&gt; extends UserManagedCache&lt;K, V&gt; {
 
   /**
-   * Lets you manipulate the persistent data structures for this {@link PersistentUserManagedCache}
+   * Destroy all persistent data structures for this {@code PersistentUserManagedCache}.
    *
-   * @return a {@link org.ehcache.Maintainable} for this {@link PersistentUserManagedCache}
    * @throws java.lang.IllegalStateException if state {@link org.ehcache.Status#MAINTENANCE} couldn't be reached
    */
-  Maintainable toMaintenance();
+  void destroy();
 }</code></pre>
 </div>
 </div>
@@ -307,7 +309,7 @@ cache.put(42L, "The Answer!");
 assertThat(cache.get(42L), is("The Answer!"));
 
 cache.close(); <i class="conum" data-value="4"></i><b>(4)</b>
-cache.toMaintenance().destroy(); <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+cache.destroy(); <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -330,7 +332,7 @@ cache.toMaintenance().destroy(); <i class="conum" data-value="5"></i><b>(5)</b><
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>To delete the data, the cache need to be put in maintenance mode and destroy has to be explicitly invoked.</td>
+<td>To delete the data, after closing the cache, destroy has to be explicitly invoked.</td>
 </tr>
 </table>
 </div>

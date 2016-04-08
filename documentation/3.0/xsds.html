@@ -131,6 +131,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
         </ul>
@@ -593,7 +596,7 @@
   &lt;xs:complexType name="memory-type"&gt;
     &lt;xs:simpleContent&gt;
       &lt;xs:extension base="xs:positiveInteger"&gt;
-        &lt;xs:attribute name="unit" type="ehcache:memory-unit" default="b" use="optional"&gt;
+        &lt;xs:attribute name="unit" type="ehcache:memory-unit" default="B" use="optional"&gt;
           &lt;xs:annotation&gt;
             &lt;xs:documentation xml:lang="en"&gt;
               The memory unit (see org.ehcache.config.units.MemoryUnit) this value is expressed in.
@@ -680,24 +683,24 @@
   &lt;/xs:simpleType&gt;
   &lt;xs:simpleType name="memory-unit"&gt;
     &lt;xs:restriction base="xs:string"&gt;
-      &lt;xs:enumeration value="b"/&gt;
-      &lt;xs:enumeration value="kb"/&gt;
-      &lt;xs:enumeration value="mb"/&gt;
-      &lt;xs:enumeration value="gb"/&gt;
-      &lt;xs:enumeration value="tb"/&gt;
-      &lt;xs:enumeration value="pb"/&gt;
+      &lt;xs:enumeration value="B"/&gt;
+      &lt;xs:enumeration value="kB"/&gt;
+      &lt;xs:enumeration value="MB"/&gt;
+      &lt;xs:enumeration value="GB"/&gt;
+      &lt;xs:enumeration value="TB"/&gt;
+      &lt;xs:enumeration value="PB"/&gt;
     &lt;/xs:restriction&gt;
   &lt;/xs:simpleType&gt;
   &lt;!-- Keeping the below explicit instead of union with the above to ease auto complete --&gt;
   &lt;xs:simpleType name="resource-unit"&gt;
     &lt;xs:restriction base="xs:string"&gt;
       &lt;xs:enumeration value="entries"/&gt;
-      &lt;xs:enumeration value="b"/&gt;
-      &lt;xs:enumeration value="kb"/&gt;
-      &lt;xs:enumeration value="mb"/&gt;
-      &lt;xs:enumeration value="gb"/&gt;
-      &lt;xs:enumeration value="tb"/&gt;
-      &lt;xs:enumeration value="pb"/&gt;
+      &lt;xs:enumeration value="B"/&gt;
+      &lt;xs:enumeration value="kB"/&gt;
+      &lt;xs:enumeration value="MB"/&gt;
+      &lt;xs:enumeration value="GB"/&gt;
+      &lt;xs:enumeration value="TB"/&gt;
+      &lt;xs:enumeration value="PB"/&gt;
     &lt;/xs:restriction&gt;
   &lt;/xs:simpleType&gt;
   &lt;xs:simpleType name="event-firing-type"&gt;
@@ -794,7 +797,7 @@
   &lt;/xs:complexType&gt;
 
   &lt;xs:complexType name="jta-tm-type"&gt;
-    &lt;xs:attribute name="transaction-manager-provider-class" type="xs:string" use="required"/&gt;
+    &lt;xs:attribute name="transaction-manager-lookup-class" type="xs:string" use="required"/&gt;
   &lt;/xs:complexType&gt;
 
 &lt;/xs:schema&gt;</code></pre>

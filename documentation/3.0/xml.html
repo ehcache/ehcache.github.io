@@ -131,6 +131,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
         </ul>
@@ -149,7 +152,7 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p>Using an XML file you can configure a <code>CacheManager</code> at creation time, according to<br />
-<a href="xsds.html#_core">this schema definition</a>.</p>
+<a href="xsds.html#core">this schema definition</a>.</p>
 </div>
 <div class="sect2">
 <h3 id="code-config-code-root-element"><a class="anchor" href="#code-config-code-root-element"></a><code>&lt;config&gt;</code> root element</h3>
@@ -172,7 +175,7 @@ is called during <code>CacheManager.init</code> processing and the <code>Service
 <div class="paragraph">
 <p>These <code>Service</code> instances can then be used by <code>Cache</code> instances managed by the <code>CacheManager</code>.  JSR-107 uses this<br />
 extension point of the XML configuration (and Ehcache 3’s modular architecture), as explained in the<br />
-<a href="107.html#_supplement_jsr_107_s_configurations">JSR-107 configuration section</a>.</p>
+<a href="107.html#supplement-jsr-107-s-configurations">JSR-107 configuration section</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -202,7 +205,7 @@ It requires the <code>directory</code> location where data needs be stored on di
 <p>A <code>&lt;cache&gt;</code> element represent a <code>Cache</code> instance that will be created and managed by the <code>CacheManager</code>.<br />
 Each <code>&lt;cache&gt;</code> requires the <code>alias</code> attribute, used at runtime to retrieve the corresponding <code>Cache&lt;K, V&gt;</code> instance using<br />
 the <code>org.ehcache.CacheManager.getCache(String, Class&lt;K&gt;, Class&lt;V&gt;)</code> method. The optional <code>uses-template</code> attribute, lets you reference<br />
-a <code>&lt;cache-template&gt;</code> element’s <code>name</code> attribute. See the <a href="#__code_cache_template_code_elements">cache-template section</a><br />
+a <code>&lt;cache-template&gt;</code> element’s <code>name</code> attribute. See the <a href="#code-cache-template-code-elements">cache-template section</a><br />
 for further details on using them.</p>
 </div>
 <div class="paragraph">
@@ -249,7 +252,7 @@ can override these properties as it needs.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-We’ve setup a complete configuration <a href="examples.html#_xml_with_107_extension">example</a> to inspire you.
+We’ve setup a complete configuration <a href="examples.html#xml-with-107-extension">example</a> to inspire you.
 </td>
 </tr>
 </table>

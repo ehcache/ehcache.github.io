@@ -131,6 +131,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
         </ul>
@@ -236,8 +239,8 @@ When using this mechanism, no JSR-107 <code>CompleteConfiguration</code> is used
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
-    .build(); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+    ResourcePoolsBuilder.heap(10)).build(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 Cache&lt;Long, String&gt; cache = cacheManager.createCache("myCache",
     Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration)); <i class="conum" data-value="2"></i><b>(2)</b>
@@ -360,7 +363,7 @@ You can also use the <code>CachingProvider.getCacheManager()</code> method that 
 <h3 id="supplement-jsr-107-s-configurations"><a class="anchor" href="#supplement-jsr-107-s-configurations"></a>Supplement JSR-107’s configurations</h3>
 <div class="paragraph">
 <p>As of Ehcache 3.0, you can also create <code>cache-templates</code>.  See the<br />
-<a href="xml.html#__code_cache_template_code_elements">Cache Templates</a> section of the XML Documentation for more details. The Ehcache 3.0<br />
+<a href="xml.html#code-cache-template-code-elements">Cache Templates</a> section of the XML Documentation for more details. The Ehcache 3.0<br />
 JSR-107 Caching Provider comes with an extension to the regular XML configuration so you can:</p>
 </div>
 <div class="olist arabic">
@@ -386,7 +389,7 @@ constraint. All that’s needed is adding a <code>jsr107</code> service in your 
 
   &lt;service&gt; <i class="conum" data-value="2"></i><b>(2)</b>
     &lt;jsr107:defaults default-template="tinyCache"&gt; <i class="conum" data-value="3"></i><b>(3)</b>
-      &lt;jsr107:cache name="foos" template="stringCache"/&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+      &lt;jsr107:cache name="foos" template="clientCache"/&gt; <i class="conum" data-value="4"></i><b>(4)</b>
       &lt;jsr107:cache name="byRefCache" template="byRefTemplate"/&gt;
       &lt;jsr107:cache name="byValCache" template="byValueTemplate"/&gt;
       &lt;jsr107:cache name="weirdCache1" template="mixedTemplate1"/&gt;
@@ -394,9 +397,9 @@ constraint. All that’s needed is adding a <code>jsr107</code> service in your 
     &lt;/jsr107:defaults&gt;
   &lt;/service&gt;
 
-  &lt;cache-template name="stringCache"&gt;
+  &lt;cache-template name="clientCache"&gt;
     &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
-    &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+    &lt;value-type&gt;com.pany.domain.Client&lt;/value-type&gt;
     &lt;expiry&gt;
       &lt;ttl unit="minutes"&gt;2&lt;/ttl&gt;
     &lt;/expiry&gt;
@@ -409,25 +412,25 @@ constraint. All that’s needed is adding a <code>jsr107</code> service in your 
 
   &lt;cache-template name="byRefTemplate"&gt;
     &lt;key-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
-    &lt;value-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;com.pany.domain.Client&lt;/value-type&gt;
     &lt;heap unit="entries"&gt;10&lt;/heap&gt;
   &lt;/cache-template&gt;
 
   &lt;cache-template name="byValueTemplate"&gt;
     &lt;key-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
-    &lt;value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;com.pany.domain.Client&lt;/value-type&gt;
     &lt;heap unit="entries"&gt;10&lt;/heap&gt;
   &lt;/cache-template&gt;
 
   &lt;cache-template name="mixedTemplate1"&gt;
     &lt;key-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
-    &lt;value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;com.pany.domain.Client&lt;/value-type&gt;
     &lt;heap unit="entries"&gt;10&lt;/heap&gt;
   &lt;/cache-template&gt;
 
   &lt;cache-template name="mixedTemplate2"&gt;
     &lt;key-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
-    &lt;value-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.String&lt;/value-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;com.pany.domain.Client&lt;/value-type&gt;
     &lt;heap unit="entries"&gt;10&lt;/heap&gt;
   &lt;/cache-template&gt;
 &lt;/config&gt;</code></pre>
@@ -465,7 +468,7 @@ as well as insuring both key and value types are <code>String</code>.</td>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-See <a href="xsds.html#_jsr_107_extension">this xsd</a> for complete definition
+See <a href="xsds.html#jsr-107-extension">this xsd</a> for complete definition
 </td>
 </tr>
 </table>
@@ -476,26 +479,27 @@ without modifying the application code.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">MutableConfiguration&lt;Long, String&gt; mutableConfiguration = new MutableConfiguration&lt;Long, String&gt;();
-mutableConfiguration.setTypes(Long.class, String.class); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">MutableConfiguration&lt;Long, Client&gt; mutableConfiguration = new MutableConfiguration&lt;Long, Client&gt;();
+mutableConfiguration.setTypes(Long.class, Client.class); <i class="conum" data-value="1"></i><b>(1)</b>
 
-Cache&lt;Long, String&gt; anyCache = manager.createCache("anyCache", mutableConfiguration); <i class="conum" data-value="2"></i><b>(2)</b>
+Cache&lt;Long, Client&gt; anyCache = manager.createCache("anyCache", mutableConfiguration); <i class="conum" data-value="2"></i><b>(2)</b>
 
-CacheRuntimeConfiguration&lt;Long, String&gt; ehcacheConfig = (CacheRuntimeConfiguration&lt;Long, String&gt;)anyCache.getConfiguration(
+CacheRuntimeConfiguration&lt;Long, Client&gt; ehcacheConfig = (CacheRuntimeConfiguration&lt;Long, Client&gt;)anyCache.getConfiguration(
     Eh107Configuration.class).unwrap(CacheRuntimeConfiguration.class); <i class="conum" data-value="3"></i><b>(3)</b>
 ehcacheConfig.getResourcePools().getPoolForResource(ResourceType.Core.HEAP).getSize(); <i class="conum" data-value="4"></i><b>(4)</b>
 
-Cache&lt;Long, String&gt; anotherCache = manager.createCache("byRefCache", mutableConfiguration);
+Cache&lt;Long, Client&gt; anotherCache = manager.createCache("byRefCache", mutableConfiguration);
 assertFalse(anotherCache.getConfiguration(Configuration.class).isStoreByValue()); <i class="conum" data-value="5"></i><b>(5)</b>
 
-MutableConfiguration&lt;String, String&gt; otherConfiguration = new MutableConfiguration&lt;String, String&gt;();
-otherConfiguration.setTypes(String.class, String.class);
+MutableConfiguration&lt;String, Client&gt; otherConfiguration = new MutableConfiguration&lt;String, Client&gt;();
+otherConfiguration.setTypes(String.class, Client.class);
 otherConfiguration.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE)); <i class="conum" data-value="6"></i><b>(6)</b>
 
-Cache&lt;String, String&gt; foosCache = manager.createCache("foos", otherConfiguration);<i class="conum" data-value="7"></i><b>(7)</b>
-CacheRuntimeConfiguration&lt;Long, String&gt; foosEhcacheConfig = (CacheRuntimeConfiguration&lt;Long, String&gt;)foosCache.getConfiguration(
+Cache&lt;String, Client&gt; foosCache = manager.createCache("foos", otherConfiguration);<i class="conum" data-value="7"></i><b>(7)</b>
+CacheRuntimeConfiguration&lt;Long, Client&gt; foosEhcacheConfig = (CacheRuntimeConfiguration&lt;Long, Client&gt;)foosCache.getConfiguration(
     Eh107Configuration.class).unwrap(CacheRuntimeConfiguration.class);
-foosEhcacheConfig.getExpiry().getExpiryForCreation(42L, "Answer!").getAmount(); <i class="conum" data-value="8"></i><b>(8)</b>
+Client client1 = new Client("client1", 1);
+foosEhcacheConfig.getExpiry().getExpiryForCreation(42L, client1).getAmount(); <i class="conum" data-value="8"></i><b>(8)</b>
 
 CompleteConfiguration&lt;String, String&gt; foosConfig = foosCache.getConfiguration(CompleteConfiguration.class);
 

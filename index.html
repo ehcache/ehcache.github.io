@@ -135,15 +135,16 @@
 <p>Ehcache is an open source, standards-based cache that boosts performance, offloads your database, and simplifies scalability. It's the most widely-used Java-based cache because it's robust, proven, full-featured, and integrates with other popular libraries and frameworks. Ehcache scales from in-process caching, all the way to mixed in-process/out-of-process deployments with terabyte-sized caches.</p>
 
       <hr/>
-      <h2>Ehcache 3 : Release Candidate 2 reached - Performance and documentation!</h2>
+      <h2>Ehcache 3 : Release Candidate 3 reached - Performance and documentation!</h2>
 
-      Release candidate 2 comes with around 20 issues closed and includes:
+      Release candidate 3 comes with around 15 issues closed and includes:
       <ul>
-        <li>performance improvements,</li>
-        <li>documentation improvements, for example reduced and focused javadoc on user facing types</li>
-        <li><a href="https://github.com/ehcache/ehcache3/issues?q=milestone%3ARC2+is%3Aclosed">See all closed issues</a></li>
+      	<li>A major change that makes caches have no default size, which impacts <code>CacheConfigurationBuilder</code> API and XML</li>
+      	<li>a few extra final tweaks on public API,</li>
+        <li>more performance and documentation improvements,</li>
+        <li><a href="https://github.com/ehcache/ehcache3/issues?q=milestone%3ARC3+is%3Aclosed">See all closed issues</a></li>
       </ul>
-      "Official" builds of rc1 are available on the project's GitHub <a href="https://github.com/ehcache/ehcache3/releases/tag/v3.0.0.rc2">release page</a> or from Maven Central - see below.
+      "Official" builds of rc3 are available on the project's GitHub <a href="https://github.com/ehcache/ehcache3/releases/tag/v3.0.0.rc3">release page</a> or from Maven Central - see below.
 
     </div>
   </div>
@@ -178,7 +179,7 @@
       <pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">    &lt;dependency&gt;
       &lt;groupId&gt;org.ehcache&lt;/groupId&gt;
       &lt;artifactId&gt;ehcache&lt;/artifactId&gt;
-      &lt;version&gt;3.0.0.rc2&lt;/version&gt;
+      &lt;version&gt;3.0.0.rc3&lt;/version&gt;
     &lt;/dependency&gt;      </code></pre>
 
       <h3>Coding to the Ehcache 3 API</h3>
@@ -186,7 +187,8 @@
       <pre class="prettyprint highlight"><code class="language-java" data-lang="java">
       CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
           .withCache("preConfigured",
-               CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class)
+               CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                              ResourcePoolsBuilder.heap(100))
                .build())
           .build(true);
 
@@ -194,7 +196,8 @@
           = cacheManager.getCache("preConfigured", Long.class, String.class);
 
       Cache&lt;Long, String&gt; myCache = cacheManager.createCache("myCache",
-          CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class).build());
+          CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                        ResourcePoolsBuilder.heap(100)).build());
 
       myCache.put(1L, "da one!");
       String value = myCache.get(1L);
