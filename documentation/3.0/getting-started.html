@@ -116,6 +116,7 @@
         <h1>Ehcache 3.0 Documentation</h1>
       </div>
       <div>
+        <BR/>
         <br/>
 
 <div class="container-fluid">
@@ -127,15 +128,33 @@
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <ul class="nav">
           <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
-          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
         </ul>
     </div>
 
@@ -146,10 +165,14 @@
          
       </header>
       <article class="post-content">
-        <h1 id="ehcache-3.0-documentation" class="sect0"><a class="anchor" href="#ehcache-3-0-documentation"></a>Ehcache 3.0 Documentation</h1>
+        <h1 id="ehcache-3.0-documentation">Ehcache 3.0 Documentation</h1>
 <div class="sect1">
-<h2 id="getting-started-with-the-new-api"><a class="anchor" href="#getting-started-with-the-new-api"></a>Getting started with the new API</h2>
+<h2 id="configuring-ehcache"><a class="anchor" href="#configuring-ehcache"></a>Configuring Ehcache</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>In order to start using Ehcache, you will need to configure your first <code>CacheManager</code> and <code>Cache</code>.<br />
+This can be achieved through <a href="#configuring-with-java">programmatic configuration</a> or <a href="#configuring-with-xml">XML</a>.</p>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -158,15 +181,21 @@
 </td>
 <td class="content">
 If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you should start by reading<br />
-      <a href="107.html">the Ehcache 3.x JSR-107 Provider page</a>
+      <a href="107.html">the Ehcache 3.x JSR-107 Provider page</a>.
 </td>
 </tr>
 </table>
 </div>
 <div class="sect2">
-<h3 id="configuring-it-all-in-java"><a class="anchor" href="#configuring-it-all-in-java"></a>Configuring it all in Java</h3>
+<h3 id="configuring-with-java"><a class="anchor" href="#configuring-with-java"></a>Configuring with Java</h3>
+<div class="paragraph">
+<p>Java configuration is most easily achieved through the use of builders that offer a fluent API.</p>
+</div>
 <div class="sect3">
 <h4 id="managed-cache"><a class="anchor" href="#managed-cache"></a>Managed cache</h4>
+<div class="paragraph">
+<p>As with the previous versions of Ehcache, the canonical way of dealing with <code>Cache</code> is through a <code>CacheManager</code>:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
@@ -235,7 +264,7 @@ accessed through the <code>CacheManager.getCache</code> API.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
-<td>We can also <code>CacheManager.remove()</code> a given <code>Cache</code>. The <code>CacheManager</code> will not only remove it’s reference to the<br />
+<td>We can also <code>CacheManager.removeCache(String)</code> a given <code>Cache</code>. The <code>CacheManager</code> will not only remove it’s reference to the<br />
 <code>Cache</code>, but will also close it. The <code>Cache</code> releases all locally held transient resources (such as memory).<br />
 References to this <code>Cache</code> become unusable.</td>
 </tr>
@@ -249,6 +278,9 @@ it manages, you have to invoke <code>CacheManager.close()</code>, which in turns
 </div>
 <div class="sect3">
 <h4 id="user-managed-cache"><a class="anchor" href="#user-managed-cache"></a>User managed cache</h4>
+<div class="paragraph">
+<p>Ehcache 3 introduces the concept of <code>UserManagedCache</code>:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; userManagedCache =
@@ -297,9 +329,15 @@ See <a href="usermanaged.html">the user managed cache documentation</a> for more
 </div>
 </div>
 <div class="sect2">
-<h3 id="tiering"><a class="anchor" href="#tiering"></a>Tiering</h3>
+<h3 id="storage-tiers"><a class="anchor" href="#storage-tiers"></a>Storage Tiers</h3>
 <div class="paragraph">
-<p>Ehcache 3, as in previous versions, offers a tiering model to allow storing increasing amounts of data on slower tiers.</p>
+<p>Ehcache 3, as in previous versions, offers a tiering model to allow storing increasing amounts of data on slower tiers<br />
+(which are generally more abundant).</p>
+</div>
+<div class="paragraph">
+<p>The idea is that resources related to faster storage are more rare, but are where the 'hottest' data is preferred to be.<br />
+Thus less-hot (less frequently used) data is moved to the more abundant but slower tiers. Hotter data is faulted onto<br />
+the faster tiers.</p>
 </div>
 <div class="sect3">
 <h4 id="off-heap"><a class="anchor" href="#off-heap"></a>Off-heap</h4>
@@ -320,15 +358,17 @@ cacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you wish to use off-heap, you’ll have to define resource pool, giving the memory size you want to allocate.</td>
+<td>If you wish to use off-heap, you’ll have to define a resource pool, giving the memory size you want to allocate.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
 <p>The example above allocates a very small amount of off-heap.<br />
-Remember that data stored off-heap will have to be serialized and deserialized.<br />
-You should thus favor off-heap for large amounts of data where on heap would have too severe an impact on garbage collection.<br />
-Do not forget to define in the java options the <code>-XX:MaxDirectMemorySize</code> option, according to the off-heap size you intend to use.</p>
+Remember that data stored off-heap will have to be serialized and deserialized - and is thus slower than heap.<br />
+You should thus favor off-heap for large amounts of data where on-heap would have too severe an impact on garbage collection.</p>
+</div>
+<div class="paragraph">
+<p>Do not forget to define in the java options the <code>-XX:MaxDirectMemorySize</code> option, according to the off-heap size you intend to use.</p>
 </div>
 </div>
 <div class="sect3">
@@ -340,7 +380,7 @@ Do not forget to define in the java options the <code>-XX:MaxDirectMemorySize</c
     .withCache("persistent-cache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.newResourcePoolsBuilder()
             .heap(10, EntryUnit.ENTRIES)
-            .disk(10L, MemoryUnit.MB, true)) <i class="conum" data-value="2"></i><b>(2)</b>
+            .disk(10, MemoryUnit.MB, true)) <i class="conum" data-value="2"></i><b>(2)</b>
         )
     .build(true);
 
@@ -359,6 +399,16 @@ location where data should be stored on disk to the <code>CacheManagerBuilder.pe
 <td>You define a resource pool for the disk.</td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>The example above allocates a very small amount of disk storage.<br />
+Remember that data stored on disk will have to be serialized / deserialized and written / read from disk -<br />
+and is thus slower than heap and offheap.<br />
+You should thus favor disk for large amounts of data.</p>
+</div>
+<div class="paragraph">
+<p>Another reason to use disk storage is persistence across application restarts.<br />
+Note that Ehcache 3 only offers persistence in case of clean shutdowns.</p>
 </div>
 </div>
 <div class="sect3">
@@ -402,7 +452,7 @@ location where data should be stored on disk to the <code>CacheManagerBuilder.pe
 </div>
 </div>
 <div class="sect3">
-<h4 id="byte-sized-heap"><a class="anchor" href="#byte-sized-heap"></a>Byte sized heap</h4>
+<h4 id="byte-sized-heap"><a class="anchor" href="#byte-sized-heap"></a>Byte-sized heap</h4>
 <div class="paragraph">
 <p>You can also size the heap tier using memory units instead of entry count.</p>
 </div>
@@ -470,7 +520,7 @@ cache will be ignored.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>A default configuration can be provided at CacheManager level to be used the caches unless defined<br />
+<td>A default configuration can be provided at CacheManager level to be used by the caches unless defined<br />
 explicitly.</td>
 </tr>
 </table>
@@ -518,695 +568,10 @@ then be passed to the said method so as to trigger the update.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="integration"><a class="anchor" href="#integration"></a>Integration</h3>
-<div class="sect3">
-<h4 id="cache-event-listeners"><a class="anchor" href="#cache-event-listeners"></a>Cache Event Listeners</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheEventListenerConfigurationBuilder cacheEventListenerConfiguration = CacheEventListenerConfigurationBuilder
-    .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED) <i class="conum" data-value="1"></i><b>(1)</b>
-    .unordered().asynchronous(); <i class="conum" data-value="2"></i><b>(2)</b>
-
-final CacheManager manager = CacheManagerBuilder.newCacheManagerBuilder()
-    .withCache("foo",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(10))
-            .add(cacheEventListenerConfiguration) <i class="conum" data-value="3"></i><b>(3)</b>
-    ).build(true);
-
-final Cache&lt;String, String&gt; cache = manager.getCache("foo", String.class, String.class);
-cache.put("Hello", "World"); <i class="conum" data-value="4"></i><b>(4)</b>
-cache.put("Hello", "Everyone"); <i class="conum" data-value="5"></i><b>(5)</b>
-cache.remove("Hello"); <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Create a <code>CacheEventListenerConfiguration</code> using the builder indicating the listener and the events to receive</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Optionally indicate the delivery mode - defaults are <em>asynchronous</em> and <em>un-ordered</em></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Pass the configuration of the listener into the cache configuration</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>You will be notified on creation</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>And on update</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>But not on removal</td>
-</tr>
-</table>
-</div>
+<h3 id="configuring-with-xml"><a class="anchor" href="#configuring-with-xml"></a>Configuring With XML</h3>
 <div class="paragraph">
-<p>Created, updated, and removed events are triggered by user execution of mutative methods as outlined in the table below.<br />
-Eviction and expiration events can be triggered by both internal processes and by user execution of methods targeting both related and unrelated keys within the cache.</p>
+<p>…​It wouldn’t be Java without <em>some</em> XML</p>
 </div>
-<table class="tableblock frame-topbot grid-all spread">
-<caption class="title">Table 1. Cache entry event firing behaviors for mutative methods</caption>
-<colgroup>
-<col style="width: 10%;" />
-<col style="width: 40%;" />
-<col style="width: 10%;" />
-<col style="width: 40%;" />
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-center valign-top">input</th>
-<th class="tableblock halign-left valign-top">operation</th>
-<th class="tableblock halign-center valign-top">output</th>
-<th class="tableblock halign-left valign-top">event {key, old-value, new-value}</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>put(K, V)</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>created {K, null, V}</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>put(K, V2)</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V2}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updated {K, V1, V2}</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>put(K, V) [immediately expired]</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>none</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>put(K, V2) [immediately expired]</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>none</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>putIfAbsent(K, V)</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>created {K, null, V}</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>putIfAbsent(K, V) [immediately expired]</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>none</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>replace(K, V2)</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V2}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updated {K, V1, V2}</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>replace(K, V2) [immediately expired]</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>none</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>replace(K, V1, V2)</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V2}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updated {K, V1, V2}</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>replace(K, V1, V2) [immediately expired]</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>no events</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>remove(K)</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>removed {K, V, null}</code></p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Ehcache provides a <code>CacheEventAdapter</code> to help implementation of event listeners when you are interested only on specific events.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="registering-event-listeners-at-runtime"><a class="anchor" href="#registering-event-listeners-at-runtime"></a>Registering Event Listeners at runtime</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">ListenerObject listener = new ListenerObject(); <i class="conum" data-value="1"></i><b>(1)</b>
-cache.getRuntimeConfiguration().registerCacheEventListener(listener, EventOrdering.ORDERED,
-    EventFiring.ASYNCHRONOUS, EnumSet.of(EventType.CREATED, EventType.REMOVED)); <i class="conum" data-value="2"></i><b>(2)</b>
-
-cache.put(1L, "one");
-cache.put(2L, "two");
-cache.remove(1L);
-cache.remove(2L);
-
-cache.getRuntimeConfiguration().deregisterCacheEventListener(listener); <i class="conum" data-value="3"></i><b>(3)</b>
-
-cache.put(1L, "one again");
-cache.remove(1L);</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Create a <code>CacheEventListener</code> implementation instance.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Register it on the <code>RuntimeConfiguration</code>, indicating the delivery mode and events of interest.<br />
-The following <code>put()</code> and <code>remove()</code> cache calls will make the listener receive events.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Unregister the previously registered <code>CacheEventListener</code> instance.<br />
-The following <code>put()</code> and <code>remove()</code> cache calls will have no effect on the listener anymore.</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="event-processing-queues"><a class="anchor" href="#event-processing-queues"></a>Event Processing Queues</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
-                                                                                      ResourcePoolsBuilder.heap(5L))
-    .withOrderedEventParallelism(10) <i class="conum" data-value="1"></i><b>(1)</b>
-    .withEventListenersThreadPool("listeners-pool")
-    .build();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Simply specify over how many buckets should ordered events be spread</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="cache-with-eviction-veto"><a class="anchor" href="#cache-with-eviction-veto"></a>Cache with Eviction veto</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
-                                                                                    ResourcePoolsBuilder.heap(2L)) <i class="conum" data-value="1"></i><b>(1)</b>
-    .withEvictionVeto(new OddKeysEvictionVeto&lt;Long, String&gt;()) <i class="conum" data-value="2"></i><b>(2)</b>
-    .build();
-
-CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .withCache("cache", cacheConfiguration)
-    .build(true);
-
-Cache&lt;Long, String&gt; cache = cacheManager.getCache("cache", Long.class, String.class);
-
-// Work with the cache
-cache.put(42L, "The Answer!");
-cache.put(41L, "The wrong Answer!");
-cache.put(39L, "The other wrong Answer!");
-
-cacheManager.close();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure a constrained heap, as the eviction veto is only relevant when mappings get evicted from the cache.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>If you want to hint the eviction algorithm to veto the eviction of some mappings, you have to<br />
-configure an instance of <code>EvictionVeto</code>.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>In this particular example, the <code>OddKeysEvictionVeto</code> class will veto eviction of any key that is an odd number.<br />
-By the time the cache manager gets closed, only mappings with odd keys should be left in the cache as there isn’t<br />
-enough room for mapping with even keys.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Veto status is computed when a mapping is written to the cache.<br />
-This means that proper veto implementations are expected to be constant for a key-value pair.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Please keep in mind that configuring an eviction veto can slow down eviction: the more often you veto, the<br />
-harder the cache has to work to evict an element when room is required. After a certain time, if a cache determines<br />
-that the configured eviction veto rejected too many eviction candidates, the cache can decide to completely bypass<br />
-the eviction veto and evict anything it sees fit.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="write-through-cache"><a class="anchor" href="#write-through-cache"></a>Write-Through Cache</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
-
-final Cache&lt;Long, String&gt; writeThroughCache = cacheManager.createCache("writeThroughCache",
-    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
-        .withLoaderWriter(new SampleLoaderWriter&lt;Long, String&gt;(singletonMap(41L, "zero"))) <i class="conum" data-value="1"></i><b>(1)</b>
-        .build());
-
-assertThat(writeThroughCache.get(41L), is("zero"));
-writeThroughCache.put(42L, "one");
-assertThat(writeThroughCache.get(42L), equalTo("one"));
-
-cacheManager.close();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you wish to use a cache in read-through/write-through caching pattern, you’ll have to implement<br />
-a <code>CacheLoaderWriter</code> and configure it.</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="write-behind-cache"><a class="anchor" href="#write-behind-cache"></a>Write-Behind Cache</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
-
-final Cache&lt;Long, String&gt; writeBehindCache = cacheManager.createCache("writeBehindCache",
-    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
-        .withLoaderWriter(new SampleLoaderWriter&lt;Long, String&gt;(singletonMap(41L, "zero"))) <i class="conum" data-value="1"></i><b>(1)</b>
-        .add(WriteBehindConfigurationBuilder <i class="conum" data-value="2"></i><b>(2)</b>
-            .newBatchedWriteBehindConfiguration(1, TimeUnit.SECONDS, 3)<i class="conum" data-value="3"></i><b>(3)</b>
-            .queueSize(3)<i class="conum" data-value="4"></i><b>(4)</b>
-            .concurrencyLevel(1) <i class="conum" data-value="5"></i><b>(5)</b>
-            .enableCoalescing()) <i class="conum" data-value="6"></i><b>(6)</b>
-        .build());
-
-assertThat(writeBehindCache.get(41L), is("zero"));
-writeBehindCache.put(42L, "one");
-writeBehindCache.put(43L, "two");
-writeBehindCache.put(42L, "This goes for the record");
-assertThat(writeBehindCache.get(42L), equalTo("This goes for the record"));
-
-cacheManager.close();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>A Cache can be used in write-behind pattern as well. You will have to implement a <code>CacheLoaderWriter</code> and configure it.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Additionally, register a <code>WriteBehindConfiguration</code> on the Cache by using the <code>WriteBehindConfigurationBuilder</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Here we configure write behind with a batch size of 3 and a max wait time of 1 second.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>We also set the maximum size of the writebehind queue.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Define the concurrency level of writebehind queue, at a time these many writer threads will update<br />
-the  underlying resource asynchronously.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Enable the write coalescing behavior, which ensures that only one update per key per batch hits the<br />
-underlying resource.</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="serializers"><a class="anchor" href="#serializers"></a>Serializers</h3>
-<div class="paragraph">
-<p>Serialization is primarily used in Ehcache to store the data in the non-heap tiers.<br />
-So whenever the user configures a multi-tiered cache, serialization and deserialization can happen when the data is moved to and from the tiers.<br />
-Ehcache provides default serializers that can serialize any <code>Serializable</code> type.<br />
-So if you are using standard <code>Serializable</code> types as your keys and values, no extra serializers need to be configured as the built-in serializer will handle those cases.<br />
-But if you use your own custom types in Ehcache that are not serializable, the stock serializer will not be able to perform the serialization/deserialization on its own.</p>
-</div>
-<div class="sect3">
-<h4 id="custom-serializers"><a class="anchor" href="#custom-serializers"></a>Custom serializers</h4>
-<div class="paragraph">
-<p>You can register your own custom serializers to the cache/cache manager.<br />
-So if you register a serializer for a given type of objects, it would be used to perform all the serialization/deserialization for that type.</p>
-</div>
-<div class="paragraph">
-<p>You can configure serializers on the cache manager, to be applied to all caches:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
-      ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES)
-          .offheap(1, MemoryUnit.MB))
-    .build();
-
-CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .withCache("cache", cacheConfiguration)
-    .withSerializer(String.class, StringSerializer.class) <i class="conum" data-value="1"></i><b>(1)</b>
-    .build(true);
-
-Cache&lt;Long, String&gt; cache = cacheManager.getCache("cache", Long.class, String.class);
-
-cache.put(1L, "one");
-assertThat(cache.get(1L), equalTo("one"));
-
-cacheManager.close();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure a global set of serializers. Each serializer is mapped to a type and the cache’s declared key and value<br />
-types are used to select the best serializer from the list. Each cache will pick a serializer for both key and value<br />
-during initialization. If none is found, an error will be thrown. The serializer is chosen according to two rules:<br />
-either there is one configured for the exact declared type, or the first type-compatible one from the list is chosen.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Or you can configure specific serializers on the cache itself:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Person.class,
-        ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES).offheap(10, MemoryUnit.MB))
-    .withKeySerializer(new LongSerializer()) <i class="conum" data-value="1"></i><b>(1)</b>
-    .withValueSerializer(new PersonSerializer()) <i class="conum" data-value="2"></i><b>(2)</b>
-    .build();
-
-CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .withCache("cache", cacheConfiguration)
-    .build(true);
-
-Cache&lt;Long, Person&gt; cache = cacheManager.getCache("cache", Long.class, Person.class);
-
-cache.put(1L, new Person("person one", 32));
-assertThat(cache.get(1L), equalTo(new Person("person one", 32)));
-
-cacheManager.close();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure the key’s serializer.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the value’s serializer.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Serializer instances are created per cache for keys and values separately.<br />
-By default, serializers are automatically used by tiers that require them (off-heap and disk) but the on-heap tier, while it can<br />
-use them or not, will not by default.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-By default, there are serializers already configured for types <code>java.io.Serializable</code>, <code>java.lang.String</code>, <code>java.lang.Long</code>,<br />
-<code>java.lang.Integer</code>, <code>java.lang.Double</code>, <code>java.lang.Float</code>, <code>java.lang.Character</code> and <code>byte[]</code>.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect4">
-<h5 id="implementation-of-a-code-serializer-code"><a class="anchor" href="#implementation-of-a-code-serializer-code"></a>Implementation of a <code>Serializer</code></h5>
-<div class="paragraph">
-<p>When implementing a <code>org.ehcache.spi.serialization.Serializer</code> and adding it to the default list, you obviously need to respect the interface contract.</p>
-</div>
-<div class="paragraph">
-<p>In addition, if you are using the <code>DefaultSerializationProvider</code> service provided by Ehcache; which would be the case<br />
-for most of the users, unless they are using their own implementation of <code>SerializationProvider</code> service; there are a<br />
-few implicit contracts:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>A serializer implementation to be used with transient caches must have a public constructor taking a <code>ClassLoader</code> as parameter.</p>
-</li>
-<li>
-<p>A serializer implementation to be used with persistent caches must have a public two-argument constructor taking a <code>ClassLoader</code> and a <code>FileBasedPersistenceContext</code> as parameters.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>You are free to have as many extra constructors as you want. But these are the only constructors that will be used by<br />
-Ehcache to instantiate these serializers. For a transient cache the single-argument constructor will be used and for a<br />
-persistent cache the two-argument constructor will be used. Even though the user is enforced to have either or both the<br />
-constructors in his serializer implementation, the usage of these arguments is up to the user. The user can decide to<br />
-completely ignore these parameters. But the presence of these constructors is a strict requirement. Now, even though the<br />
-usage of the constructor arguments is not enforced, it is highly recommended to use the <code>FileBasedPersistenceContext</code> to<br />
-persist the state of the serializers, if there is any.</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="store-by-value-caches-with-copiers"><a class="anchor" href="#store-by-value-caches-with-copiers"></a>Store-By-Value Caches with Copiers</h4>
-<div class="paragraph">
-<p>JSR-107 mandates that the caches should support a store-by-value mechanism that makes a copy of the keys and values<br />
-before storing them in the cache. Ehcache supports store-by-reference by default on heap and the user needs to configure the<br />
-cache explicitly to use store-by-value.</p>
-</div>
-<div class="paragraph">
-<p>The user can specify custom copy logic for keys and values to be used for copying.<br />
-The user can create a copier by implementing the <code>Copier&lt;T&gt;</code> interface directly if he has different needs for reads and writes.<br />
-Another option is to implement the helper class <code>ReadWriteCopier&lt;T&gt;</code> that has an abstract <code>copy(T obj)</code> method used by the <code>Copier&lt;T&gt;</code> methods.<br />
-If no copiers are provided, the cache will be a store-by-reference cache.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Description.class, Person.class,
-                                                                                      ResourcePoolsBuilder.heap(10))
-    .withKeyCopier(new DescriptionCopier()) <i class="conum" data-value="1"></i><b>(1)</b>
-    .withValueCopier(new PersonCopier()) <i class="conum" data-value="2"></i><b>(2)</b>
-    .build();
-
-CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .withCache("cache", cacheConfiguration)
-    .build(true);
-
-Cache&lt;Description, Person&gt; cache = cacheManager.getCache("cache", Description.class, Person.class);
-
-Description desc = new Description(1234, "foo");
-Person person = new Person("Bar", 24);
-cache.put(desc, person);
-assertThat(cache.get(desc), equalTo(person));
-
-cacheManager.close();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure the copier to be used for keys. <code>DescriptionCopier</code> in this case  as the keys are <code>Description</code> objects.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the copier to be used for values. <code>PersonCopier</code> in this case as the values are <code>Person</code> objects.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Now, if the user does not want to create his own custom copiers and still wants to have a store-by-value cache, ehcache<br />
-provides a <code>SerializingCopier</code> that the user can directly use. <code>SerializingCopier</code> internally uses serialization to<br />
-perform the copying. For serialization the serializers configured for the keys/values are used. You can configure the<br />
-cache as follows to use serializing copier:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Person.class,
-                                                                                      ResourcePoolsBuilder.heap(10))
-    .withValueSerializingCopier() <i class="conum" data-value="1"></i><b>(1)</b>
-    .build();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure the value to use the <code>SerializingCopier</code>.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>If you look at the cache configuration in the above example, there are no copiers configured for the keys, and that is<br />
-fine in Ehcache. If a copier is not configured, we fall back to store-by-reference. So with the above configuration, you<br />
-get a cache that stores keys <em>by-reference</em> and values <em>by-value</em>.</p>
-</div>
-<div class="paragraph">
-<p>You can also have default copiers configured at the cache manager level so that you don’t have to configure the same<br />
-copiers again and again for multiple caches managed by the same cache manager. This is how you can do that:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Description.class, Person.class,
-    ResourcePoolsBuilder.heap(10)).build();
-
-CacheConfiguration&lt;Long, Person&gt; anotherCacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Person.class,
-    ResourcePoolsBuilder.heap(10)).build();
-
-CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-    .withCopier(Description.class, DescriptionCopier.class) <i class="conum" data-value="1"></i><b>(1)</b>
-    .withCopier(Person.class, PersonCopier.class)
-    .withCache("cache", cacheConfiguration)  <i class="conum" data-value="2"></i><b>(2)</b>
-    .withCache("anotherCache", anotherCacheConfiguration)  <i class="conum" data-value="3"></i><b>(3)</b>
-    .build(true);
-
-Cache&lt;Description, Person&gt; cache = cacheManager.getCache("cache", Description.class, Person.class);
-Cache&lt;Long, Person&gt; anotherCache = cacheManager.getCache("anotherCache", Long.class, Person.class);
-
-Description desc = new Description(1234, "foo");
-Person person = new Person("Bar", 24);
-cache.put(desc, person);
-assertThat(cache.get(desc), equalTo(person));
-assertThat(cache.get(desc), is(not(sameInstance(person))));
-
-anotherCache.put(1L, person);
-assertThat(anotherCache.get(1L), equalTo(person));
-
-cacheManager.close();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Add all the required default copiers.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The <code>DescriptionCopier</code> and <code>PersonCopier</code> configured at the cache manager level will be used for this cache.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The <code>PersonCopier</code> configured at the cache manager level will be used for this cache.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The samples above demonstrated the configuration of different services at the cache and the cache manager levels.<br />
-At the cache manager level, we did not create instances of copiers, serializers etc while we did at the cache level.</p>
-</div>
-<div class="paragraph">
-<p>We cannot supply instances at the cache manager level, but we could supply the class types with the service<br />
-configurations at the cache level and leave the instantiation be done internally by Ehcache.</p>
-</div>
-<div class="paragraph">
-<p>The following sample demonstrates the same for copier service. Other services can also be configured in a similar way:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Description, Person&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Description.class, Person.class,
-                                                                                          ResourcePoolsBuilder.heap(10))
-    .withKeyCopier(DescriptionCopier.class) <i class="conum" data-value="1"></i><b>(1)</b>
-    .withValueCopier(new PersonCopier()) <i class="conum" data-value="2"></i><b>(2)</b>
-    .build();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configuring the <code>DescriptionCopier</code> copier using class type.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configuring the copier using an actual <code>PersonCopier</code> instance.</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-It is the responsibility of the user to ensure that the service instances are not shared between caches.<br />
-Sharing services can have disastrous effects in your application if the user is not careful enough.<br />
-Configuring services using instances opens the door for sharing the same service instance across caches but that feature<br />
-should be used with extra care.<br />
-Configuring services using class references is the recommended way as Ehcache will then create and inject the required instances itself.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-By now you are familiar with configuring different services using actual instances or using class types of<br />
-loader-writers, serializers etc. It is desirable to have some cleanup performed on these instances once you are done<br />
-using the cache that uses these instances. You can achieve this by making your custom class types <code>Closeable</code> and<br />
-keeping your resource release logic in the <em>close</em> method. Ehcache will make sure that this <em>close</em> will be invoked when<br />
-the cache is removed from the cache manager or when the cache manager is closed.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="it-wouldn-t-be-java-without-em-some-em-xml"><a class="anchor" href="#it-wouldn-t-be-java-without-em-some-em-xml"></a>It wouldn’t be Java without <em>some</em> XML</h3>
 <div class="paragraph">
 <p>You can create a XML file to configure a <code>CacheManager</code>:</p>
 </div>
@@ -1303,6 +668,9 @@ create your <code>CacheManager</code> instance using the <code>Configuration</co
 <div class="sectionbody">
 <div class="paragraph">
 <p>For developer information, you might want to go check the <a href="https://github.com/ehcache/ehcache3/wiki">Ehcache 3.0 project wiki on GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>The next version, 3.1, will bring back the <a href="http://terracotta.org">Terracotta clustering</a> option that existed in Ehcache 2.x.</p>
 </div>
 </div>
 </div>

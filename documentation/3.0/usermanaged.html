@@ -116,6 +116,7 @@
         <h1>Ehcache 3.0 Documentation</h1>
       </div>
       <div>
+        <BR/>
         <br/>
 
 <div class="container-fluid">
@@ -127,15 +128,33 @@
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <ul class="nav">
           <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
-          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
         </ul>
     </div>
 
@@ -146,7 +165,7 @@
          
       </header>
       <article class="post-content">
-        <h1 id="user-managed-caches" class="sect0"><a class="anchor" href="#user-managed-caches"></a>User managed caches</h1>
+        <h1 id="user-managed-caches">User managed caches</h1>
 <div class="sect1">
 <h2 id="what-are-user-managed-caches-and-what-do-they-offer"><a class="anchor" href="#what-are-user-managed-caches-and-what-do-they-offer"></a>What are user managed caches and what do they offer?</h2>
 <div class="sectionbody">
@@ -176,44 +195,46 @@ Of course, if you find yourself requiring plenty of services, maybe the cache ma
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">package org.ehcache;
 
 /**
- * Represents a Cache that is not managed by a {@link org.ehcache.CacheManager}, as such that needs to
- * have {@link #close()} invoked in order to release all its resources.
+ * Represents a {@link Cache} that is not managed by a {@link org.ehcache.CacheManager CacheManager}.
+ * &lt;P&gt;
+ *   These caches must be {@link #close() closed} in order to release all their resources.
+ * &lt;/P&gt;
  *
- * @param &lt;K&gt; the type of the keys used to access data within this cache
- * @param &lt;V&gt; the type of the values held within this cache
- *
- * @author Alex Snaps
+ * @param &lt;K&gt; the key type for the cache
+ * @param &lt;V&gt; the value type for the cache
  */
 public interface UserManagedCache&lt;K, V&gt; extends Cache&lt;K, V&gt; {
 
   /**
-   * Attempts at having this UserManagedCache go to {@link org.ehcache.Status#AVAILABLE}.
-   * &lt;p&gt;
-   * Should this throw, while the UserManagedCache isn't yet {@link org.ehcache.Status#AVAILABLE}, it will try to go back
-   * to {@link org.ehcache.Status#UNINITIALIZED} properly.
+   * Transitions this {@code UserManagedCache} to {@link org.ehcache.Status#AVAILABLE AVAILABLE}.
+   * &lt;P&gt;
+   * If an error occurs before the {@code UserManagedCache} is {@code AVAILABLE}, it will revert to
+   * {@link org.ehcache.Status#UNINITIALIZED UNINITIALIZED} and attempt to properly release all resources.
+   * &lt;/P&gt;
    *
-   * @throws java.lang.IllegalStateException if the UserManagedCache isn't in {@link org.ehcache.Status#UNINITIALIZED} state
-   * @throws org.ehcache.exceptions.StateTransitionException if the UserManagedCache couldn't be made {@link org.ehcache.Status#AVAILABLE}
-   * @throws java.lang.RuntimeException if any exception is thrown, but still results in the UserManagedCache transitioning to {@link org.ehcache.Status#AVAILABLE}
+   * @throws IllegalStateException if the {@code UserManagedCache} is not {@code UNINITIALIZED}
+   * @throws StateTransitionException if the {@code UserManagedCache} could not be made {@code AVAILABLE}
    */
-  void init();
+  void init() throws StateTransitionException;
 
   /**
-   * Releases all data held in this UserManagedCache.
-   * &lt;p&gt;
-   * Should this throw, while the UserManagedCache isn't yet {@link org.ehcache.Status#UNINITIALIZED}, it will keep on
-   * trying to go to {@link org.ehcache.Status#UNINITIALIZED} properly.
+   * Transitions this {@code UserManagedCache} to {@link Status#UNINITIALIZED UNINITIALIZED}.
+   * &lt;P&gt;
+   *   This will release all resources held by this cache.
+   * &lt;/P&gt;
+   * &lt;P&gt;
+   *   Failure to release a resource will not prevent other resources from being released.
+   * &lt;/P&gt;
    *
-   * @throws org.ehcache.exceptions.StateTransitionException if the UserManagedCache couldn't be cleanly made
-   *                                                         {@link org.ehcache.Status#UNINITIALIZED},
-   *                                                         wrapping the first exception encountered
-   * @throws java.lang.RuntimeException if any exception is thrown, like from Listeners
+   * @throws StateTransitionException if the {@code UserManagedCache} could not reach {@code UNINITIALIZED} cleanly
+   * @throws IllegalStateException if the {@code UserManagedCache} is not {@code AVAILABLE}
    */
-  void close();
+  void close() throws StateTransitionException;
 
   /**
-   * Returns the current {@link org.ehcache.Status} for this CacheManager
-   * @return the current {@link org.ehcache.Status}
+   * Returns the current {@link org.ehcache.Status Status} of this {@code UserManagedCache}.
+   *
+   * @return the current {@code Status}
    */
   Status getStatus();
 
@@ -231,21 +252,20 @@ public interface UserManagedCache&lt;K, V&gt; extends Cache&lt;K, V&gt; {
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">package org.ehcache;
 
 /**
- * A {@link UserManagedCache} that holds data that outlives the JVM's process
+ * A {@link UserManagedCache} that holds data that can outlive the JVM.
  *
- * @param &lt;K&gt; the type of the keys used to access data within this cache
- * @param &lt;V&gt; the type of the values held within this cache
- *
- * @author Alex Snaps
+ * @param &lt;K&gt; the key type for the cache
+ * @param &lt;V&gt; the value type for the cache
  */
 public interface PersistentUserManagedCache&lt;K, V&gt; extends UserManagedCache&lt;K, V&gt; {
 
   /**
-   * Destroy all persistent data structures for this {@code PersistentUserManagedCache}.
+   * Destroys all persistent data structures for this {@code PersistentUserManagedCache}.
    *
-   * @throws java.lang.IllegalStateException if state {@link org.ehcache.Status#MAINTENANCE} couldn't be reached
+   * @throws java.lang.IllegalStateException if state {@link org.ehcache.Status#MAINTENANCE MAINTENANCE} couldn't be reached
+   * @throws CachePersistenceException if the persistent data cannot be destroyed
    */
-  void destroy();
+  void destroy() throws CachePersistenceException;
 }</code></pre>
 </div>
 </div>
@@ -526,11 +546,11 @@ cache.close();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="cache-with-eviction-veto-example"><a class="anchor" href="#cache-with-eviction-veto-example"></a>Cache with Eviction veto example</h3>
+<h3 id="cache-with-eviction-advisor-example"><a class="anchor" href="#cache-with-eviction-advisor-example"></a>Cache with Eviction Advisor example</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
-    .withEvictionVeto(new OddKeysEvictionVeto&lt;Long, String&gt;()) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withEvictionAdvisor(new OddKeysEvictionAdvisor&lt;Long, String&gt;()) <i class="conum" data-value="1"></i><b>(1)</b>
     .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
         .heap(2L, EntryUnit.ENTRIES)) <i class="conum" data-value="2"></i><b>(2)</b>
     .build(true);
@@ -547,8 +567,8 @@ cache.close(); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you want to hint the eviction algorithm to veto the eviction of some mappings, you have to<br />
-configure an instance of <code>EvictionVeto</code>.</td>
+<td>If you want to hint the eviction algorithm to advise against the eviction of some mappings, you have to<br />
+configure an instance of <code>EvictionAdvisor</code>.</td>
 </tr>
 </table>
 </div>

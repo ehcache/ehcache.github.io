@@ -116,6 +116,7 @@
         <h1>Ehcache 3.0 Documentation</h1>
       </div>
       <div>
+        <BR/>
         <br/>
 
 <div class="container-fluid">
@@ -127,15 +128,33 @@
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <ul class="nav">
           <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
-          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
         </ul>
     </div>
 
@@ -146,7 +165,61 @@
          
       </header>
       <article class="post-content">
-        <h1 id="ehcache-xsds" class="sect0"><a class="anchor" href="#ehcache-xsds"></a>Ehcache XSDs</h1>
+        <h1 id="ehcache-xsds">Ehcache XSDs</h1>
+<div class="sect1">
+<h2 id="xsd-namespaces-and-locations"><a class="anchor" href="#xsd-namespaces-and-locations"></a>XSD namespaces and locations</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Core namespace: <code><a href="http://www.ehcache.org/v3" class="bare">http://www.ehcache.org/v3</a></code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Location for 3.0: <code><a href="http://www.ehcache.org/schema/ehcache-core-3.0.xsd" class="bare">http://www.ehcache.org/schema/ehcache-core-3.0.xsd</a></code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>JSR-107 namespace: <code><a href="http://www.ehcache.org/v3/jsr107" class="bare">http://www.ehcache.org/v3/jsr107</a></code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Location for 3.0: <code><a href="http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd" class="bare">http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd</a></code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Transactions namespace: <code><a href="http://www.ehcache.org/v3/tx" class="bare">http://www.ehcache.org/v3/tx</a></code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Location for 3.0: <code><a href="http://www.ehcache.org/schema/ehcache-tx-ext-3.0.xsd" class="bare">http://www.ehcache.org/schema/ehcache-tx-ext-3.0.xsd</a></code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="usage-example"><a class="anchor" href="#usage-example"></a>Usage example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;eh:config
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:eh='http://www.ehcache.org/v3'
+    xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
+    xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd
+        http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd"&gt;
+&lt;/eh:config&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="core"><a class="anchor" href="#core"></a>Core</h2>
 <div class="sectionbody">
@@ -382,11 +455,11 @@
           &lt;/xs:documentation&gt;
         &lt;/xs:annotation&gt;
       &lt;/xs:element&gt;
-      &lt;xs:element name="eviction-veto" type="ehcache:fqcn-type" minOccurs="0" maxOccurs="1"&gt;
+      &lt;xs:element name="eviction-advisor" type="ehcache:fqcn-type" minOccurs="0" maxOccurs="1"&gt;
         &lt;xs:annotation&gt;
           &lt;xs:documentation xml:lang="en"&gt;
             A fully qualified class name to a concrete type that implements
-            org.ehcache.config.EvictionVeto and has a public default no argument constructor.
+            org.ehcache.config.EvictionAdvisor and has a public default no argument constructor.
           &lt;/xs:documentation&gt;
         &lt;/xs:annotation&gt;
       &lt;/xs:element&gt;
@@ -484,8 +557,8 @@
         &lt;/xs:complexType&gt;
       &lt;/xs:element&gt;
     &lt;/xs:sequence&gt;
-    &lt;xs:attribute name="thread-pool" type="xs:string" use="optional"/&gt;
-    &lt;xs:attribute name="parallelism-level" type="xs:positiveInteger" use="optional" default="8"/&gt;
+    &lt;xs:attribute name="dispatcher-thread-pool" type="xs:string" use="optional"/&gt;
+    &lt;xs:attribute name="dispatcher-concurrency" type="xs:positiveInteger" use="optional" default="8"/&gt;
   &lt;/xs:complexType&gt;
 
   &lt;xs:complexType name="cache-loader-writer-type"&gt;
@@ -667,7 +740,7 @@
 
   &lt;xs:complexType name="disk-store-settings-type"&gt;
     &lt;xs:attribute name="thread-pool" type="xs:string" use="optional"/&gt;
-    &lt;xs:attribute name="writer-threads" type="xs:positiveInteger" use="optional" default="1"/&gt;
+    &lt;xs:attribute name="writer-concurrency" type="xs:positiveInteger" use="optional" default="1"/&gt;
   &lt;/xs:complexType&gt;
 
   &lt;xs:simpleType name="time-unit"&gt;

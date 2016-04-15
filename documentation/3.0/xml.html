@@ -116,6 +116,7 @@
         <h1>Ehcache 3.0 Documentation</h1>
       </div>
       <div>
+        <BR/>
         <br/>
 
 <div class="container-fluid">
@@ -127,15 +128,33 @@
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <ul class="nav">
           <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
-          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
         </ul>
     </div>
 
@@ -146,7 +165,7 @@
          
       </header>
       <article class="post-content">
-        <h1 id="xml-configuration" class="sect0"><a class="anchor" href="#xml-configuration"></a>XML Configuration</h1>
+        <h1 id="xml-configuration">XML Configuration</h1>
 <div class="sect1">
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
 <div class="sectionbody">
@@ -166,30 +185,34 @@ provides the definition for a <code>CacheManager</code>.  With Ehcache 3.0, howe
 <div class="sect2">
 <h3 id="code-service-code-elements"><a class="anchor" href="#code-service-code-elements"></a><code>&lt;service&gt;</code> elements</h3>
 <div class="paragraph">
-<p>Currently, no built-in services are provided. <code>&lt;service&gt;</code> elements are an extension point for<br />
-specifying <code>CacheManager</code> managed services.  Each <code>Service</code> defined in this way is managed with the<br />
+<p><code>&lt;service&gt;</code> elements are an extension point for specifying <code>CacheManager</code> managed services.</p>
+</div>
+<div class="paragraph">
+<p>Each <code>Service</code> defined in this way is managed with the<br />
 same lifecycle as the <code>CacheManager</code> — for each <code>Service</code> defined for a <code>CacheManager, the `Service.start</code><br />
 is called during <code>CacheManager.init</code> processing and the <code>Service.stop</code> method is called during<br />
 <code>CacheManager.close</code> processing.</p>
 </div>
 <div class="paragraph">
-<p>These <code>Service</code> instances can then be used by <code>Cache</code> instances managed by the <code>CacheManager</code>.  JSR-107 uses this<br />
-extension point of the XML configuration (and Ehcache 3’s modular architecture), as explained in the<br />
-<a href="107.html#supplement-jsr-107-s-configurations">JSR-107 configuration section</a>.</p>
+<p>These <code>Service</code> instances can then be used by <code>Cache</code> instances managed by the <code>CacheManager</code>.</p>
+</div>
+<div class="paragraph">
+<p>JSR-107 uses this extension point of the XML configuration (and Ehcache 3’s modular architecture), as explained in the<br />
+<a href="107.html#supplement-jsr-107-configurations">JSR-107 configuration section</a>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="code-default-serializers-code-element"><a class="anchor" href="#code-default-serializers-code-element"></a><code>&lt;default-serializers&gt;</code> element</h3>
 <div class="paragraph">
 <p>A <code>&lt;default-serializers&gt;</code> element represents <code>Serializers</code> configured at <code>CacheManager</code> level.<br />
-It is a collection of <code>serializer</code> tags that require a <code>type</code> and a fully qualified class name of the <code>Serializer</code>.</p>
+It is a collection of <code>&lt;serializer&gt;</code> elements that require a <code>type</code> and a fully qualified class name of the <code>Serializer</code>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="code-default-copiers-code-element"><a class="anchor" href="#code-default-copiers-code-element"></a><code>&lt;default-copiers&gt;</code> element</h3>
 <div class="paragraph">
 <p>A <code>&lt;default-copiers&gt;</code> element represents <code>Copiers</code> configured at <code>CacheManager</code> level.<br />
-It is a collection of <code>copier</code> tags that requires a <code>type</code> and a fully qualified class name of the <code>Copier</code>.</p>
+It is a collection of <code>&lt;copier&gt;</code> elements that requires a <code>type</code> and a fully qualified class name of the <code>Copier</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -205,7 +228,7 @@ It requires the <code>directory</code> location where data needs be stored on di
 <p>A <code>&lt;cache&gt;</code> element represent a <code>Cache</code> instance that will be created and managed by the <code>CacheManager</code>.<br />
 Each <code>&lt;cache&gt;</code> requires the <code>alias</code> attribute, used at runtime to retrieve the corresponding <code>Cache&lt;K, V&gt;</code> instance using<br />
 the <code>org.ehcache.CacheManager.getCache(String, Class&lt;K&gt;, Class&lt;V&gt;)</code> method. The optional <code>uses-template</code> attribute, lets you reference<br />
-a <code>&lt;cache-template&gt;</code> element’s <code>name</code> attribute. See the <a href="#code-cache-template-code-elements">cache-template section</a><br />
+a <code>&lt;cache-template&gt;</code> element’s <code>name</code> attribute. See the <a href="#cache-template-elements">cache-template section</a><br />
 for further details on using them.</p>
 </div>
 <div class="paragraph">
@@ -223,7 +246,7 @@ for further details on using them.</p>
 <p><code>&lt;expiry&gt;</code>: control the expiry type and its parameters</p>
 </li>
 <li>
-<p><code>&lt;eviction-veto&gt;</code>: FQCN of a <code>org.ehcache.config.EvictionVeto&lt;K, V&gt;</code> implementation, defaults to <code>null</code>, i.e. none</p>
+<p><code>&lt;eviction-advisor&gt;</code>: FQCN of a <code>org.ehcache.config.EvictionAdvisor&lt;K, V&gt;</code> implementation, defaults to <code>null</code>, i.e. none</p>
 </li>
 <li>
 <p><code>&lt;integration&gt;</code>: configure a <code>CacheLoaderWriter</code> for a <em>cache-through</em> pattern</p>
@@ -235,7 +258,7 @@ for further details on using them.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="code-cache-template-code-elements"><a class="anchor" href="#code-cache-template-code-elements"></a><code>&lt;cache-template&gt;</code> elements</h3>
+<h3 id="cache-template-elements"><a class="anchor" href="#cache-template-elements"></a><code>&lt;cache-template&gt;</code> elements</h3>
 <div class="paragraph">
 <p><code>&lt;cache-template&gt;</code> elements represent a uniquely named (specified using the mandatory <code>name</code> attribute) template for<br />
 <code>&lt;cache&gt;</code> elements to inherit from.  A <code>&lt;cache&gt;</code> element that references a <code>&lt;cache-template&gt;</code> by<br />
@@ -278,7 +301,7 @@ If you are obtaining your <code>CacheManager</code> through the JSR-107 API, wha
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">final URL myUrl = this.getClass().getResource("/my-config.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">final URL myUrl = getClass().getResource("/configs/docs/getting-started.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
 XmlConfiguration xmlConfig = new XmlConfiguration(myUrl); <i class="conum" data-value="2"></i><b>(2)</b>
 CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
@@ -306,9 +329,11 @@ to use a <code>&lt;cache-template&gt;</code> element from a XML file, e.g. the <
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache:cache-template name="example"&gt;
-  &lt;ehcache:capacity&gt;120&lt;/ehcache:capacity&gt;
-&lt;/ehcache:cache-template&gt;</code></pre>
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache-template name="example"&gt;
+  &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
+  &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+  &lt;heap unit="entries"&gt;200&lt;/heap&gt;
+&lt;/cache-template&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -316,15 +341,16 @@ to use a <code>&lt;cache-template&gt;</code> element from a XML file, e.g. the <
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfigurationBuilder&lt;String, Object&gt; cacheBuilder = xmlConfig.newCacheConfigurationBuilderFromTemplate("example", String.class, Object.class); <i class="conum" data-value="1"></i><b>(1)</b>
-cacheBuilder.capacityConstraint(100L); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">XmlConfiguration xmlConfiguration = new XmlConfiguration(getClass().getResource("/configs/docs/template-sample.xml"));
+CacheConfigurationBuilder&lt;Long, String&gt; configurationBuilder = xmlConfiguration.newCacheConfigurationBuilderFromTemplate("example", Long.class, String.class); <i class="conum" data-value="1"></i><b>(1)</b>
+configurationBuilder = configurationBuilder.withResourcePools(ResourcePoolsBuilder.heap(1000)); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Creates a builder, inheriting the capacity constraint of 120 entries, specializing the key type to <code>java.lang.String</code></td>
+<td>Creates a builder, inheriting the capacity constraint of 200 entries</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>

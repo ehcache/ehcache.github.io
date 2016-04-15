@@ -116,6 +116,7 @@
         <h1>Ehcache 3.0 Documentation</h1>
       </div>
       <div>
+        <BR/>
         <br/>
 
 <div class="container-fluid">
@@ -127,15 +128,33 @@
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <ul class="nav">
           <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
-          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
         </ul>
     </div>
 
@@ -146,7 +165,7 @@
          
       </header>
       <article class="post-content">
-        <h1 id="the-ehcache-3.x-jsr-107-provider" class="sect0"><a class="anchor" href="#the-ehcache-3-x-jsr-107-provider"></a>The Ehcache 3.x JSR-107 Provider</h1>
+        <h1 id="the-ehcache-3.x-jsr-107-provider">The Ehcache 3.x JSR-107 Provider</h1>
 <div class="sect1">
 <h2 id="getting-started-with-ehcache-3-0-jsr-107"><a class="anchor" href="#getting-started-with-ehcache-3-0-jsr-107"></a>Getting started with Ehcache 3.0 &amp; JSR-107</h2>
 <div class="sectionbody">
@@ -360,10 +379,10 @@ You can also use the <code>CachingProvider.getCacheManager()</code> method that 
 </div>
 </div>
 <div class="sect2">
-<h3 id="supplement-jsr-107-s-configurations"><a class="anchor" href="#supplement-jsr-107-s-configurations"></a>Supplement JSR-107’s configurations</h3>
+<h3 id="supplement-jsr-107-configurations"><a class="anchor" href="#supplement-jsr-107-configurations"></a>Supplement JSR-107’s configurations</h3>
 <div class="paragraph">
 <p>As of Ehcache 3.0, you can also create <code>cache-templates</code>.  See the<br />
-<a href="xml.html#code-cache-template-code-elements">Cache Templates</a> section of the XML Documentation for more details. The Ehcache 3.0<br />
+<a href="xml.html#cache-template-elements">Cache Templates</a> section of the XML Documentation for more details. The Ehcache 3.0<br />
 JSR-107 Caching Provider comes with an extension to the regular XML configuration so you can:</p>
 </div>
 <div class="olist arabic">
@@ -499,7 +518,7 @@ Cache&lt;String, Client&gt; foosCache = manager.createCache("foos", otherConfigu
 CacheRuntimeConfiguration&lt;Long, Client&gt; foosEhcacheConfig = (CacheRuntimeConfiguration&lt;Long, Client&gt;)foosCache.getConfiguration(
     Eh107Configuration.class).unwrap(CacheRuntimeConfiguration.class);
 Client client1 = new Client("client1", 1);
-foosEhcacheConfig.getExpiry().getExpiryForCreation(42L, client1).getAmount(); <i class="conum" data-value="8"></i><b>(8)</b>
+foosEhcacheConfig.getExpiry().getExpiryForCreation(42L, client1).getLength(); <i class="conum" data-value="8"></i><b>(8)</b>
 
 CompleteConfiguration&lt;String, String&gt; foosConfig = foosCache.getConfiguration(CompleteConfiguration.class);
 

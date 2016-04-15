@@ -116,6 +116,7 @@
         <h1>Downloads</h1>
       </div>
       <div>
+        <BR/>
         <br/>
 
 <div class="container">
@@ -126,6 +127,18 @@
 
   <article class="post-content">
     <h2 id="directmanual-downloads">Direct/Manual Downloads</h2>
+
+<h4 id="ehcache-3">Ehcache 3</h4>
+
+<blockquote>
+  <p><a href="https://github.com/ehcache/ehcache3/releases/download/v3.0.0/ehcache-3.0.0.jar">Ehcache 3.0 GA</a> .jar</p>
+</blockquote>
+
+<p>More files related to releases of Ehcache 3 are available on the project’s <a href="https://github.com/ehcache/ehcache3/releases">GitHub release page</a>.</p>
+
+<p><a href="/about/license.html">License</a> (Apache 2.0),  <a href="/files/legal/TOE_3.0.pdf">3rd Party Licenses</a> (Apache 2.0),  <a href="http://documentation.softwareag.com/legal/" target="_blank">Legal Notices</a></p>
+
+<hr />
 
 <h4 id="ehcache-2x">Ehcache 2.x</h4>
 
@@ -139,19 +152,22 @@
 
 <hr />
 
-<h4 id="ehcache-3">Ehcache 3</h4>
-
-<blockquote>
-  <p><a href="https://github.com/ehcache/ehcache3/releases/download/v3.0.0.rc3/ehcache-3.0.0.rc3.jar">Ehcache 3.0 Release Candidate 3</a> .jar</p>
-</blockquote>
-
-<p>More files related to milestone releases of Ehcache 3 are available on the project’s <a href="https://github.com/ehcache/ehcache3/releases">GitHub release page</a>.</p>
-
-<hr />
-
 <h2 id="maven">Maven</h2>
 
 <h3 id="maven-snippet">Maven Snippet</h3>
+
+<h4 id="ehcache-3-1">Ehcache 3</h4>
+
+<p>To include Ehcache 3.x in your project, use:</p>
+
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">    &lt;dependency&gt;
+      &lt;groupId&gt;org.ehcache&lt;/groupId&gt;
+      &lt;artifactId&gt;ehcache&lt;/artifactId&gt;
+      &lt;version&gt;3.0.0&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+
+<p><em>Note: Be sure to substitute the version number above with the version number of Ehcache that you want to use.</em></p>
 
 <h4 id="ehcache-2">Ehcache 2</h4>
 
@@ -167,19 +183,6 @@
 
 <p><em>Note: Be sure to substitute the version number above with the version number of Ehcache that you want to use.</em></p>
 
-<h4 id="ehcache-3-1">Ehcache 3</h4>
-
-<p>To include Ehcache 3.x in your project, use:</p>
-
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">    &lt;dependency&gt;
-      &lt;groupId&gt;org.ehcache&lt;/groupId&gt;
-      &lt;artifactId&gt;ehcache&lt;/artifactId&gt;
-      &lt;version&gt;3.0.0.rc3&lt;/version&gt;
-    &lt;/dependency&gt;
-</code></pre>
-
-<p><em>Note: Be sure to substitute the version number above with the version number of Ehcache that you want to use.</em></p>
-
 <hr />
 
 <h3 id="general-maven-info">General Maven Info</h3>
@@ -190,7 +193,7 @@
 
 <p>Ehcache publishes releases for all modules to the Sonatype Maven repository at: <a href="http://oss.sonatype.org/">http://oss.sonatype.org/</a></p>
 
-<p>You can browse the repository <a href="https://oss.sonatype.org/content/repositories/releases/">here ›</a> look for Ehcache 2.x under <code>net/sf/ehcache</code> and Ehcache 3.x under <code>org/ehcache</code>.</p>
+<p>You can browse the repository <a href="https://oss.sonatype.org/content/repositories/releases/">here ›</a> look for Ehcache 3.x under <code>org/ehcache</code> and Ehcache 2.x under <code>net/sf/ehcache</code>.</p>
 
 <p>From there the releases are immediately synced with the Maven central repository.</p>
 
