@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?Fm Condition DITA-Comment Red NO_OVERRIDE show AsIs?>
+<?Fm Condition DITA-Prolog Red NO_OVERRIDE show AsIs?>
+<?Fm Condition DITA-Topicmeta Red NO_OVERRIDE show AsIs?>
+<?Fm Condition FM8_TRACK_CHANGES_ADDED Forest%20Green SINGLE_UNDERLINE hide AsIs?>
+<?Fm Condition FM8_TRACK_CHANGES_DELETED Red STRIKETHROUGH hide AsIs?>
+<?Fm Condition otherprops=hidden SAG%20Desert%20Orange NO_OVERRIDE show AsIs?>
+<?Fm Condition otherprops=online Red NO_OVERRIDE show AsIs?>
+<?Fm Condition otherprops=pdf Blue NO_OVERRIDE show AsIs?>
+<?Fm Condition status=changed AsIs CHANGEBAR show AsIs?>
+<?Fm Condition status=deleted AsIs STRIKETHROUGH show AsIs?>
+<?Fm Condition status=new AsIs CHANGEBAR show AsIs?>
+<?Fm Condition FM8_SYSTEM_HIDEELEMENT Dark%20Grey NO_OVERRIDE hide AsIs?>
+<?Fm Condition otherprops=ref-link SAG%20Laguna%20Blue NO_OVERRIDE show AsIs?>
+<?Fm Condition otherprops=ref-text SAG%20Vineyard%20Red NO_OVERRIDE show AsIs?>
+<?Fm BoolCondExpr "otherprops=ref-link"OR"otherprops=ref-text" State 0?>
+<?Fm TagBoolCondExpr Default%20Expression?>
+<?Fm TrackChange Off PreviewState PREVIEW_OFF_TRACK_CHANGE ?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
+<concept xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="d1e1" xml:lang="en-us" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic concept/concept ">
+<title class="- topic/title ">Dynamically Changing Cache Configuration</title>
+<conbody class="- topic/body  concept/conbody ">
+<p class="- topic/p ">
+<draft-comment translate="no" class="- topic/draft-comment ">&lt;&lt;THIS TOPIC IS SHARED
+BY EHC, BMG AND BMM PRODUCTS!!!&gt;&gt;</draft-comment>While most of the <ph product="EHC" class="- topic/ph ">Ehcache</ph>
+<ph product="BMG" class="- topic/ph ">BigMemory Go</ph>
+<ph product="BMM" class="- topic/ph ">BigMemory Max</ph> configuration
+is not changeable after startup, <ph product="EHC" class="- topic/ph ">
+<draft-comment translate="no" class="- topic/draft-comment ">!!!EHC!!!</draft-comment>since
+Ehcache 2.0, </ph> certain cache configuration parameters can be
+modified dynamically at runtime. These include the following:</p>
+<ul class="- topic/ul ">
+<li class="- topic/li ">Expiration settings<ul class="- topic/ul ">
+<li class="- topic/li ">
+<p class="- topic/p ">
+<parmname outputclass="inlinetitle" class="+ topic/keyword pr-d/parmname ">timeToLive</parmname> –
+The maximum number of seconds an element can exist in the cache
+regardless of access. The element expires at this limit and will
+no longer be returned from the cache. The default value is 0, which
+means no TTL eviction takes place (infinite lifetime).</p>
+</li>
+<li class="- topic/li ">
+<p class="- topic/p ">
+<parmname outputclass="inlinetitle" class="+ topic/keyword pr-d/parmname ">timeToIdle</parmname> –
+The maximum number of seconds an element can exist in the cache
+without being accessed. The element expires at this limit and will
+no longer be returned from the cache. The default value is 0, which
+means no TTI eviction takes place (infinite lifetime).</p>
+</li>
+</ul>
+<p class="- topic/p ">Note that the <parmname class="+ topic/keyword pr-d/parmname ">eternal</parmname> attribute,
+when set to "true", overrides <parmname class="+ topic/keyword pr-d/parmname ">timeToLive</parmname> and <parmname class="+ topic/keyword pr-d/parmname ">timeToIdle</parmname> so
+that no expiration can take place.</p>
+</li>
+<li class="- topic/li ">Local sizing attributes<ul class="- topic/ul ">
+<li class="- topic/li ">
+<parmname class="+ topic/keyword pr-d/parmname ">maxEntriesLocalHeap</parmname>
+</li>
+<li class="- topic/li ">
+<parmname class="+ topic/keyword pr-d/parmname ">maxBytesLocalHeap</parmname>
+</li>
+<li class="- topic/li ">
+<parmname class="+ topic/keyword pr-d/parmname ">maxEntriesLocalDisk</parmname>
+</li>
+<li class="- topic/li ">
+<parmname class="+ topic/keyword pr-d/parmname ">maxBytesLocalDisk</parmname>.</li>
+</ul>
+</li>
+<li class="- topic/li ">memory-store eviction policy.</li>
+<li class="- topic/li ">
+<p class="- topic/p ">CacheEventListeners
+can be added and removed dynamically</p>
+</li>
+</ul>
+<p class="- topic/p ">This example shows how to dynamically modify
+the cache configuration of a running cache:</p>
+<codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">Cache cache = manager.getCache("sampleCache"); 
+CacheConfiguration config = cache.getCacheConfiguration(); 
+config.setTimeToIdleSeconds(60); 
+config.setTimeToLiveSeconds(120); 
+config.setmaxEntriesLocalHeap(10000); 
+config.setmaxEntriesLocalDisk(1000000);</codeblock>
+<p class="- topic/p ">Dynamic cache configurations can also be
+disabled to prevent future changes:</p>
+<codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">Cache cache = manager.getCache("sampleCache"); 
+cache.disableDynamicFeatures();</codeblock>
+<p class="- topic/p ">In ehcache.xml, you can disable dynamic
+configuration by setting the <codeph class="+ topic/ph pr-d/codeph ">&lt;ehcache&gt;</codeph> element's <codeph class="+ topic/ph pr-d/codeph ">dynamicConfig</codeph> attribute
+to "false".</p>
+</conbody>
+</concept>
