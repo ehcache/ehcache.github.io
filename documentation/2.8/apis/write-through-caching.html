@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="write-through-and-write-behind-caching-with-the-cachewriter-">Write-through and Write-behind Caching with the CacheWriter <a name="Write-through-and-Write-behind-Caching-with-the-CacheWriter" id="Write-through-and-Write-behind-Caching-with-the-CacheWriter"></a></h1><div id="toc-container">
@@ -290,7 +293,7 @@ CacheWriter. Possible examples are:</p>
   <li>
     <p>Working with versioning in the cache elements.</p>
 
-    <p>You may have to explicitly version elements. Auto-versioning is off by default and is effective only for unclustered MemoryStore caches. Distributed caches or caches that use off-heap or disk stores cannot use auto-versioning. To enable auto-versioning, set the system property <code>net.sf.ehcache.element.version.auto</code> (it is false by default). Note that if this property is turned on for one of the ineligible caches, auto-versioning will silently fail.</p>
+    <p>You may have to explicitly version elements. Auto-versioning is off by default and is effective only for unclustered MemoryStore caches. Distributed caches or caches that use off-heap or disk stores cannot use auto-versioning. To enable auto-versioning, set the system property <code class="highlighter-rouge">net.sf.ehcache.element.version.auto</code> (it is false by default). Note that if this property is turned on for one of the ineligible caches, auto-versioning will silently fail.</p>
   </li>
   <li>
     <p>Verifications with the underlying resource to check if the scheduled write-behind operation is still relevant.</p>
@@ -308,10 +311,10 @@ The following aspects of read-through with write-behind should be considered:</p
 
 <h3 id="lazy-loading">Lazy Loading</h3>
 <p>The entire data set does not need to be loaded into the cache on startup. A read-through cache
-uses a <code>CacheLoader</code> that loads data into the cache on demand. In this way the cache can be populated lazily.</p>
+uses a <code class="highlighter-rouge">CacheLoader</code> that loads data into the cache on demand. In this way the cache can be populated lazily.</p>
 
 <h3 id="caching-of-a-partial-dataset">Caching of a Partial Dataset</h3>
-<p>If the entire dataset cannot fit in the cache, then some reads will miss the cache and fall through to the <code>CacheLoader</code> which will
+<p>If the entire dataset cannot fit in the cache, then some reads will miss the cache and fall through to the <code class="highlighter-rouge">CacheLoader</code> which will
   in turn hit the database. If a write has occurred but has not yet hit the database due to write-behind, then the database will be inconsistent.
 The simplest solution is to ensure that the entire dataset is in the cache. This then places some implications on cache configuration
   in the areas of expiry and eviction.</p>
@@ -320,8 +323,8 @@ The simplest solution is to ensure that the entire dataset is in the cache. This
 <p>Eviction or flushing of elements, occurs when the maximum elements for the cache have been exceeded. Be sure to size the cache appropriately to avoid eviction or flushing. See <a href="/documentation/2.8/configuration/cache-size.html">How to Size Caches</a> for more information.</p>
 
 <h4 id="expiry">Expiry</h4>
-<p>Even if all of the dataset can fit in the cache, it could be evicted if Elements expire. Accordingly, both <code>timeToLive</code> and
-  <code>timeToIdle</code> should be set to eternal (“0”) to prevent this from happening.</p>
+<p>Even if all of the dataset can fit in the cache, it could be evicted if Elements expire. Accordingly, both <code class="highlighter-rouge">timeToLive</code> and
+  <code class="highlighter-rouge">timeToIdle</code> should be set to eternal (“0”) to prevent this from happening.</p>
 
 <h2 id="introductory-video">Introductory Video</h2>
 <p>Alex Snaps the primary author of Write Behind presents an <a href="http://vimeo.com/21193026">introductory video</a> on Write Behind.</p>
@@ -345,11 +348,10 @@ will be lost on JVM shutdown.</p>
 for durability and HA. The data is still kept in the originating node for performance.</p>
 
 <h2 id="configuration">Configuration</h2>
-<p>There are many configuration options. See the <code>CacheWriterConfiguration</code> for properties that may be set and their effect.
+<p>There are many configuration options. See the <code class="highlighter-rouge">CacheWriterConfiguration</code> for properties that may be set and their effect.
 Below is an example of how to configure the cache writer in XML:</p>
 
-<pre>
-   <code>&lt;cache name="writeThroughCache1" ... &gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="writeThroughCache1" ... &gt;
 &lt;cacheWriter writeMode="write-behind" maxWriteDelay="8" rateLimitPerSecond="5"
         writeCoalescing="true" writeBatching="true" writeBatchSize="20"
         retryAttempts="2" retryAttemptDelaySeconds="2"&gt;
@@ -357,13 +359,12 @@ Below is an example of how to configure the cache writer in XML:</p>
                    properties="just.some.property=test; another.property=test2" propertySeparator=";"/&gt;
 &lt;/cacheWriter&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Further examples:</p>
 
-<pre>
-   <code>&lt;cache name="writeThroughCache2" ... &gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="writeThroughCache2" ... &gt;
  &lt;cacheWriter/&gt;
 &lt;/cache&gt;
 &lt;cache name="writeThroughCache3" ... &gt;
@@ -386,13 +387,12 @@ Below is an example of how to configure the cache writer in XML:</p>
                  properties="just.some.property=test; another.property=test2" propertySeparator=";"/&gt;
  &lt;/cacheWriter&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
-<p>This configuration can also be achieved through the <code>Cache</code> constructor in Java:</p>
+<p>This configuration can also be achieved through the <code class="highlighter-rouge">Cache</code> constructor in Java:</p>
 
-<pre>
-   <code>Cache cache = new Cache(
+<div class="highlighter-rouge"><pre class="highlight"><code>Cache cache = new Cache(
 new CacheConfiguration("cacheName", 10)
 .cacheWriter(new CacheWriterConfiguration()
 .writeMode(CacheWriterConfiguration.WriteMode.WRITE-BEHIND)
@@ -407,19 +407,18 @@ new CacheConfiguration("cacheName", 10)
    .className("com.company.MyCacheWriterFactory")
    .properties("just.some.property=test; another.property=test2")
    .propertySeparator(";"))));
-</code>
-</pre>
+</code></pre>
+</div>
 
-<p>Instead of relying on a <code>CacheWriterFactoryConfiguration</code> to create a <code>CacheWriter</code>, it’s also possible to explicitly
-register a <code>CacheWriter</code> instance from within Java code. This allows you to refer to local resources like database
+<p>Instead of relying on a <code class="highlighter-rouge">CacheWriterFactoryConfiguration</code> to create a <code class="highlighter-rouge">CacheWriter</code>, it’s also possible to explicitly
+register a <code class="highlighter-rouge">CacheWriter</code> instance from within Java code. This allows you to refer to local resources like database
 connections or file handles.</p>
 
-<pre>
-   <code>Cache cache = manager.getCache("cacheName");
+<div class="highlighter-rouge"><pre class="highlight"><code>Cache cache = manager.getCache("cacheName");
 MyCacheWriter writer = new MyCacheWriter(jdbcConnection);
 cache.registerCacheWriter(writer);
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h3 id="configuration-attributes">Configuration Attributes</h3>
 <p>The CacheWriterFactory supports the following attributes:</p>
@@ -448,8 +447,8 @@ cache.registerCacheWriter(writer);
 <h4 id="write-behind-mode-only">write-behind mode only</h4>
 
 <ul>
-  <li>writeBehindMaxQueueSize - The maximum number of elements allowed per queue, or per bucket (if the queue has multiple buckets). “0” means unbounded (default). When an attempt to add an element is made, the queue size (or bucket size) is checked, and if full then the operation is blocked until the size drops by one. Note that elements or a batch currently being processed (and coalesced elements) are not included in the size value. Programmatically, this attribute can be set with <code>net.sf.ehcache.config.CacheWriterConfiguration.setWriteBehindMaxQueueSize()</code>.</li>
-  <li>writeBehindConcurrency - The number of thread-bucket pairs on the node for the given cache (default is 1). Each thread uses the settings configured for write-behind. For example, if rateLimitPerSecond is set to 100, each thread-bucket pair will perform up to 100 operations per second. In this case, setting writeBehindConcurrency=”4” means that up to 400 operations per second will occur on the node for the given cache. Programmatically, this attribute can be set with <code>net.sf.ehcache.config.CacheWriterConfiguration.setWriteBehindConcurrency()</code>.</li>
+  <li>writeBehindMaxQueueSize - The maximum number of elements allowed per queue, or per bucket (if the queue has multiple buckets). “0” means unbounded (default). When an attempt to add an element is made, the queue size (or bucket size) is checked, and if full then the operation is blocked until the size drops by one. Note that elements or a batch currently being processed (and coalesced elements) are not included in the size value. Programmatically, this attribute can be set with <code class="highlighter-rouge">net.sf.ehcache.config.CacheWriterConfiguration.setWriteBehindMaxQueueSize()</code>.</li>
+  <li>writeBehindConcurrency - The number of thread-bucket pairs on the node for the given cache (default is 1). Each thread uses the settings configured for write-behind. For example, if rateLimitPerSecond is set to 100, each thread-bucket pair will perform up to 100 operations per second. In this case, setting writeBehindConcurrency=”4” means that up to 400 operations per second will occur on the node for the given cache. Programmatically, this attribute can be set with <code class="highlighter-rouge">net.sf.ehcache.config.CacheWriterConfiguration.setWriteBehindConcurrency()</code>.</li>
   <li>maxWriteDelaySeconds - The maximum number of seconds to wait before writing behind. Defaults to 0. If set to a value greater than 0, it permits operations to build up in the queue to enable effective coalescing and batching optimisations.</li>
   <li>rateLimitPerSecond - The maximum number of store operations to allow per second.</li>
   <li>writeCoalescing - Whether to use write coalescing. Defaults to false. When set to true, if multiple operations on the same key are present in the write-behind queue, then only the latest write is done (the others are redundant). This can dramatically reduce load on the underlying resource.</li>
@@ -460,12 +459,11 @@ cache.registerCacheWriter(writer);
 </ul>
 
 <h2 id="api">API</h2>
-<p>CacheLoaders are exposed for API use through the <code>cache.getWithLoader(...)</code> method. CacheWriters are exposed with
-<code>cache.putWithWriter(...)</code> and <code>cache.removeWithWriter(...)</code> methods.
-For example, following is the method signature for <code>cache.putWithWriter(...)</code>.</p>
+<p>CacheLoaders are exposed for API use through the <code class="highlighter-rouge">cache.getWithLoader(...)</code> method. CacheWriters are exposed with
+<code class="highlighter-rouge">cache.putWithWriter(...)</code> and <code class="highlighter-rouge">cache.removeWithWriter(...)</code> methods.
+For example, following is the method signature for <code class="highlighter-rouge">cache.putWithWriter(...)</code>.</p>
 
-<pre>
-   <code>/**
+<div class="highlighter-rouge"><pre class="highlight"><code>/**
 * Put an element in the cache writing through a CacheWriter. If no CacheWriter has been
 * set for the cache, then this method has the same effect as cache.put().
 *
@@ -487,17 +485,16 @@ For example, following is the method signature for <code>cache.putWithWriter(...
 */
 void putWithWriter(Element element) throws IllegalArgumentException, IllegalStateException,
 CacheException;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>See the Cache JavaDoc for the complete API.</p>
 
 <h2 id="spi">SPI</h2>
-<p>The Ehcache write-through SPI is the <code>CacheWriter</code> interface. Implementers perform writes to the underlying resource
+<p>The Ehcache write-through SPI is the <code class="highlighter-rouge">CacheWriter</code> interface. Implementers perform writes to the underlying resource
 in their implementation.</p>
 
-<pre>
-   <code>/**
+<div class="highlighter-rouge"><pre class="highlight"><code>/**
 * A CacheWriter is an interface used for write-through and write-behind caching to a
 * underlying resource.
 * &lt;p/&gt;
@@ -614,16 +611,16 @@ void deleteAll(Collection&lt;CacheEntry&gt; entries) throws CacheException;
 void throwAway(Element element, SingleOperationType operationType, RuntimeException e);
 
 "/&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h2 id="faq">FAQ</h2>
 
 <h3 id="is-there-a-way-to-monitor-the-write-behind-queue-size">Is there a way to monitor the write-behind queue size?</h3>
-<p>Use the method <code>net.sf.ehcache.statistics.LiveCacheStatistics#getWriterQueueLength()</code>. This method returns the number of elements on the local queue (in all local buckets) that are waiting to be processed, or -1 if no write-behind queue exists. Note that elements or a batch currently being processed (and coalesced elements) are not included in the returned value.</p>
+<p>Use the method <code class="highlighter-rouge">net.sf.ehcache.statistics.LiveCacheStatistics#getWriterQueueLength()</code>. This method returns the number of elements on the local queue (in all local buckets) that are waiting to be processed, or -1 if no write-behind queue exists. Note that elements or a batch currently being processed (and coalesced elements) are not included in the returned value.</p>
 
 <h3 id="what-happens-if-an-exception-occurs-when-the-writer-is-called">What happens if an exception occurs when the writer is called?</h3>
-<p>Once all retry attempts have been executed, on exception the element (or all elements of that batch) will be passed to the <code>net.sf.ehcache.writer.CacheWriter#throwAway</code> method.
+<p>Once all retry attempts have been executed, on exception the element (or all elements of that batch) will be passed to the <code class="highlighter-rouge">net.sf.ehcache.writer.CacheWriter#throwAway</code> method.
 The user can then act one last time on the element that failed to write. A reference to the last thrown RuntimeException, and the type of operation that failed to execute for the element, are received.
 Any Exception thrown from that method will simply be logged and ignored. The element will be lost forever. It is important that implementers are careful about proper Exception handling in that last method.</p>
 
@@ -725,7 +722,7 @@ Any Exception thrown from that method will simply be logged and ignored. The ele
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

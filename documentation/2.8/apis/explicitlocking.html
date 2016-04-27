@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="explicit-locking-">Explicit Locking <a name="explicit-locking" id="explicit-locking"></a></h1><div id="toc-container">
@@ -200,16 +203,16 @@
 using Read and Write locks.
 It is possible to get more control over Ehcache’s locking behaviour to allow business logic
 to apply an atomic change with guaranteed ordering across one or more keys in one or more caches. It can therefore
-be used as a custom alternative to <code>XA</code> Transactions or <code>Local</code> transactions.</p>
+be used as a custom alternative to <code class="highlighter-rouge">XA</code> Transactions or <code class="highlighter-rouge">Local</code> transactions.</p>
 
 <p>With that power comes a caution. It is possible to create deadlocks in your own business logic using this
 API.</p>
 
 <p>Note that prior to Ehcache 2.4, this API was implemented as a CacheDecorator and was available in the
-<code>ehcache-explicitlocking</code> module. It is now built into the <code>core</code> module.</p>
+<code class="highlighter-rouge">ehcache-explicitlocking</code> module. It is now built into the <code class="highlighter-rouge">core</code> module.</p>
 
 <h2 id="the-api">The API</h2>
-<p>The following methods are available on <code>Cache</code> and <code>Ehcache</code>.</p>
+<p>The following methods are available on <code class="highlighter-rouge">Cache</code> and <code class="highlighter-rouge">Ehcache</code>.</p>
 
 <pre>
    <code>/**
@@ -322,7 +325,7 @@ cache.releaseWriteLockOnKey(key);
 READ lock cannot be obtained if there is an outstanding WRITE lock - it will queue.
 A WRITE lock cannot be obtained while there are outstanding READ locks - it will queue.
 In each case the lock should be released after use to avoid locking problems. The lock
-release should be in a <code>finally</code> block.
+release should be in a <code class="highlighter-rouge">finally</code> block.
 If before each read you acquire a READ lock and then before each write you acquire a WRITE
 lock, then an isolation level akin to READ_COMMITTED is achieved.</p>
 
@@ -422,7 +425,7 @@ lock, then an isolation level akin to READ_COMMITTED is achieved.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

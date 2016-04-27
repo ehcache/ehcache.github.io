@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="upgrading-from-ehcache-versions-prior-to-2.0--">Upgrading From Ehcache versions prior to 2.0  <a name="Upgrading-From-Ehcache-versions-prior-to-20" id="Upgrading-From-Ehcache-versions-prior-to-20"></a></h1><div id="toc-container">
@@ -162,26 +165,21 @@
                      </a>
                      <ul>
                         <li class="toc_level-2 toc_section-2">
-                           <a href="#introduction">
-                              <span class="toctext">Introduction</span>
-                           </a>
-                        </li>
-                        <li class="toc_level-2 toc_section-3">
                            <a href="#support-for-hibernate-3.3-spi">
                               <span class="toctext">Support for Hibernate 3.3 SPI</span>
                            </a>
                         </li>
-                        <li class="toc_level-2 toc_section-4">
+                        <li class="toc_level-2 toc_section-3">
                            <a href="#support-for-hibernate-3.5-spi">
                               <span class="toctext">Support for Hibernate 3.5 SPI</span>
                            </a>
                         </li>
-                        <li class="toc_level-2 toc_section-5">
+                        <li class="toc_level-2 toc_section-4">
                            <a href="#backward-compatibility">
                               <span class="toctext">Backward Compatibility</span>
                            </a>
                         </li>
-                        <li class="toc_level-2 toc_section-6">
+                        <li class="toc_level-2 toc_section-5">
                            <a href="#unification-with-terracotta’s-hibernate-3.2-provider">
                               <span class="toctext">Unification with Terracotta’s Hibernate 3.2 Provider</span>
                            </a>
@@ -195,8 +193,8 @@
    </table>
 </div>
 
-<h2 id="introduction">Introduction</h2>
-<p>This page contains notes for users upgrading from older versions Ehcache prior to 2.0.</p>
+<p>##Introduction
+This page contains notes for users upgrading from older versions Ehcache prior to 2.0.</p>
 
 <h2 id="support-for-hibernate-3.3-spi">Support for Hibernate 3.3 SPI</h2>
 <p>Beginning with  Ehcache 2.0 there is support for the Hibernate 3.3 SPI implementation.
@@ -206,10 +204,10 @@ This is important because Hibernate 3.3 has an updated caching SPI. Although sti
 <p>The SPI further changes in Hibernate 3.5. The Ehcache 2.0 implementation is forward-compatible with Hibernate 3.5.</p>
 
 <h2 id="backward-compatibility">Backward Compatibility</h2>
-<p>The <code>EhCacheProvider</code> class, which implements the 3.2 API is provided for backward compatibility.
+<p>The <code class="highlighter-rouge">EhCacheProvider</code> class, which implements the 3.2 API is provided for backward compatibility.
 Anyone already using Ehcache with Hibernate will be using this version. We encourage you to upgrade
-to the new class, <code>net.sf.ehcache.hibernate.EhCacheRegionFactory</code> in preparation for when Hibernate drops support for
-the old SPI. In recognition of this, we have marked <code>net.sf.ehcache.hibernate.EhCacheProvider</code> as deprecated.
+to the new class, <code class="highlighter-rouge">net.sf.ehcache.hibernate.EhCacheRegionFactory</code> in preparation for when Hibernate drops support for
+the old SPI. In recognition of this, we have marked <code class="highlighter-rouge">net.sf.ehcache.hibernate.EhCacheProvider</code> as deprecated.
 The new cache region factory takes advantage of the new SPI to provide higher performance. The old
 SPI had heavy synchronization to ensure all of the different caching providers were thread-safe.
 The new SPI leaves that to the implementer. Ehcache does not require extra synchronization, so this
@@ -218,11 +216,10 @@ overhead is avoided.</p>
 <h2 id="unification-with-terracotta’s-hibernate-3.2-provider">Unification with Terracotta’s Hibernate 3.2 Provider</h2>
 <p>In September 2009 Terracotta released its Hibernate Caching Provider which was set as follows:</p>
 
-<pre>
-   <code>&lt;property name="hibernate.cache.provider_class"&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.provider_class"&gt;
 org.terracotta.hibernate.TerracottaHibernateCacheProvider&lt;/property&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>It features high performance clustered Hibernate caching using the Terracotta Server Array.
 The new 3.3 EhCacheRegionFactory replaces that provider and the old Ehcache provider - it is a superset
@@ -326,7 +323,7 @@ We recommend existing Terracotta Hibernate users upgrade to the Ehcache 2.0 prov
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

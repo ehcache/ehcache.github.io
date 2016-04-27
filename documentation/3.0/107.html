@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 3.0 Documentation</title>
+  <title>The Ehcache 3.x JSR-107 Provider</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 3.0 Documentation</h1>
+        <h1>The Ehcache 3.x JSR-107 Provider</h1>
       </div>
       <div>
         <BR/>
@@ -162,16 +162,18 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title">The Ehcache 3.x JSR-107 Provider</h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
-        <h1 id="the-ehcache-3.x-jsr-107-provider">The Ehcache 3.x JSR-107 Provider</h1>
-<div class="sect1">
+        <div class="sect1">
 <h2 id="getting-started-with-ehcache-3-0-jsr-107"><a class="anchor" href="#getting-started-with-ehcache-3-0-jsr-107"></a>Getting started with Ehcache 3.0 &amp; JSR-107</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There is nothing special for you to do to use Ehcache 3.0 as the caching provider for your application: add the<br />
-<code>ehcache-3.0.0.jar</code> to your application’s classpath (possibly removing the previous provider’s jar) and you are ready to<br />
+<p>There is nothing special for you to do to use Ehcache 3.0 as the caching provider for your application: add the<br>
+<code>ehcache-3.0.0.jar</code> to your application&#8217;s classpath (possibly removing the previous provider&#8217;s jar) and you are ready to<br>
 go:</p>
 </div>
 <div class="listingblock">
@@ -184,7 +186,7 @@ CacheManager cacheManager = provider.getCacheManager(); <i class="conum" data-va
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Retrieves the default <code>CachingProvider</code>, this should be <code>org.ehcache.jsr107.EhcacheCachingProvider</code>.<br />
+<td>Retrieves the default <code>CachingProvider</code>, this should be <code>org.ehcache.jsr107.EhcacheCachingProvider</code>.<br>
 You can also force use of <code>org.ehcache.jsr107.EhcacheCachingProvider</code> by using the <code>Caching.getCachingProvider(String)</code> static method instead.</td>
 </tr>
 <tr>
@@ -213,7 +215,7 @@ See <a href="http://www.ehcache.org/#using_jsr107_api">the section on using Ehca
 <div class="sect2">
 <h3 id="starting-from-jsr-107-created-caches"><a class="anchor" href="#starting-from-jsr-107-created-caches"></a>Starting from JSR-107 created caches</h3>
 <div class="paragraph">
-<p>When you create a <code>Cache</code> on a <code>CacheManager</code> using a <code>MutableConfiguration</code> - that is you only use JSR-107 types -<br />
+<p>When you create a <code>Cache</code> on a <code>CacheManager</code> using a <code>MutableConfiguration</code> - that is you only use JSR-107 types -<br>
 you can still get to the underlying Ehcache <code>RuntimeCacheConfiguration</code>:</p>
 </div>
 <div class="listingblock">
@@ -253,7 +255,7 @@ CacheRuntimeConfiguration&lt;Long, String&gt; runtimeConfiguration = eh107Config
 <div class="sect2">
 <h3 id="building-the-configuration-using-ehcache-apis"><a class="anchor" href="#building-the-configuration-using-ehcache-apis"></a>Building the configuration using Ehcache APIs</h3>
 <div class="paragraph">
-<p>You can also create a JSR-107 <code>Cache</code> using an Ehcache <code>CacheConfiguration</code>.<br />
+<p>You can also create a JSR-107 <code>Cache</code> using an Ehcache <code>CacheConfiguration</code>.<br>
 When using this mechanism, no JSR-107 <code>CompleteConfiguration</code> is used and so you cannot get to one.</p>
 </div>
 <div class="listingblock">
@@ -289,7 +291,7 @@ try {
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Get back to the Ehcache <code>CacheConfiguration</code> …​</td>
+<td>Get back to the Ehcache <code>CacheConfiguration</code> &#8230;&#8203;</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -305,7 +307,7 @@ try {
 <div class="sect2">
 <h3 id="getting-jsr-107-caches-configured-through-ehcache-xml"><a class="anchor" href="#getting-jsr-107-caches-configured-through-ehcache-xml"></a>Getting JSR-107 caches configured through Ehcache XML</h3>
 <div class="paragraph">
-<p>Another way to have the full Ehcache configuration options on your caches while having no code dependency on the provider is<br />
+<p>Another way to have the full Ehcache configuration options on your caches while having no code dependency on the provider is<br>
 to use XML based configuration. See <a href="xml.html">the XML documentation</a> for more details on configuring `Cache`s in XML.</p>
 </div>
 <div class="paragraph">
@@ -353,7 +355,7 @@ Cache&lt;Long, Product&gt; readyCache = manager.getCache("ready-cache", Long.cla
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>the second argument being the <code>ClassLoader</code> to use to load user-types if needed; i.e. <code>Class</code> instances that are<br />
+<td>the second argument being the <code>ClassLoader</code> to use to load user-types if needed; i.e. <code>Class</code> instances that are<br>
 stored in the <code>Cache</code> managed by our <code>CacheManager</code>.</td>
 </tr>
 <tr>
@@ -369,9 +371,9 @@ stored in the <code>Cache</code> managed by our <code>CacheManager</code>.</td>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You can also use the <code>CachingProvider.getCacheManager()</code> method that takes no arguments instead.<br />
-      The <code>URI</code> and <code>ClassLoader</code> used to configure the <code>CacheManager</code> will then use the<br />
-      vendor specific values returned by <code>CachingProvider.getDefaultURI</code> and <code>.getDefaultClassLoader</code> respectively.<br />
+You can also use the <code>CachingProvider.getCacheManager()</code> method that takes no arguments instead.<br>
+      The <code>URI</code> and <code>ClassLoader</code> used to configure the <code>CacheManager</code> will then use the<br>
+      vendor specific values returned by <code>CachingProvider.getDefaultURI</code> and <code>.getDefaultClassLoader</code> respectively.<br>
       Be aware that these are not entirely specified for Ehcache 3.0 and may change in future releases!
 </td>
 </tr>
@@ -379,10 +381,10 @@ You can also use the <code>CachingProvider.getCacheManager()</code> method that 
 </div>
 </div>
 <div class="sect2">
-<h3 id="supplement-jsr-107-configurations"><a class="anchor" href="#supplement-jsr-107-configurations"></a>Supplement JSR-107’s configurations</h3>
+<h3 id="supplement-jsr-107-configurations"><a class="anchor" href="#supplement-jsr-107-configurations"></a>Supplement JSR-107&#8217;s configurations</h3>
 <div class="paragraph">
-<p>As of Ehcache 3.0, you can also create <code>cache-templates</code>.  See the<br />
-<a href="xml.html#cache-template-elements">Cache Templates</a> section of the XML Documentation for more details. The Ehcache 3.0<br />
+<p>As of Ehcache 3.0, you can also create <code>cache-templates</code>.  See the<br>
+<a href="xml.html#cache-template-elements">Cache Templates</a> section of the XML Documentation for more details. The Ehcache 3.0<br>
 JSR-107 Caching Provider comes with an extension to the regular XML configuration so you can:</p>
 </div>
 <div class="olist arabic">
@@ -396,8 +398,8 @@ JSR-107 Caching Provider comes with an extension to the regular XML configuratio
 </ol>
 </div>
 <div class="paragraph">
-<p>This feature is particularly useful to configure <code>Cache</code> beyond the JSR-107 specification, for example, giving <code>Cache</code> a capacity<br />
-constraint. All that’s needed is adding a <code>jsr107</code> service in your XML configuration file:</p>
+<p>This feature is particularly useful to configure <code>Cache</code> beyond the JSR-107 specification, for example, giving <code>Cache</code> a capacity<br>
+constraint. All that&#8217;s needed is adding a <code>jsr107</code> service in your XML configuration file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -467,15 +469,15 @@ constraint. All that’s needed is adding a <code>jsr107</code> service in your 
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The element takes an optional attribute <code>default-template</code>, which references the <code>cache-template</code> to use for all<br />
-<code>javax.cache.Cache</code> created by the application at runtime using <code>javax.cache.CacheManager.createCache</code>. In<br />
-this example, the default <code>cache-template</code> used will be <code>tinyCache</code>, meaning that atop of their particular config,<br />
+<td>The element takes an optional attribute <code>default-template</code>, which references the <code>cache-template</code> to use for all<br>
+<code>javax.cache.Cache</code> created by the application at runtime using <code>javax.cache.CacheManager.createCache</code>. In<br>
+this example, the default <code>cache-template</code> used will be <code>tinyCache</code>, meaning that atop of their particular config,<br>
 programmatically created <code>Cache</code> instances will have their capacity constrained to 20 entries.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Nested within the <code>jsr107:defaults</code>, add specific <code>cache-templates</code> to use for given named <code>Cache</code>, e.g. when<br />
-creating the <code>Cache</code> named <code>foos</code> at runtime, Ehcache will enhance its config, giving it a capacity of 2000 entries,<br />
+<td>Nested within the <code>jsr107:defaults</code>, add specific <code>cache-templates</code> to use for given named <code>Cache</code>, e.g. when<br>
+creating the <code>Cache</code> named <code>foos</code> at runtime, Ehcache will enhance its config, giving it a capacity of 2000 entries,<br>
 as well as insuring both key and value types are <code>String</code>.</td>
 </tr>
 </table>
@@ -493,7 +495,7 @@ See <a href="xsds.html#jsr-107-extension">this xsd</a> for complete definition
 </table>
 </div>
 <div class="paragraph">
-<p>Using the above configuration, you can not only supplement but also override the configuration of JSR-107 created caches<br />
+<p>Using the above configuration, you can not only supplement but also override the configuration of JSR-107 created caches<br>
 without modifying the application code.</p>
 </div>
 <div class="listingblock">
@@ -551,7 +553,7 @@ try {
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>The cache template will override the JSR-107 cache’s store-by-value config to store-by-ref since the <code>byRefTemplate</code><br />
+<td>The cache template will override the JSR-107 cache&#8217;s store-by-value config to store-by-ref since the <code>byRefTemplate</code><br>
 template that is used to create the cache is configured explicitly using <code>IdentityCopier</code>.</td>
 </tr>
 <tr>
@@ -579,10 +581,10 @@ template that is used to create the cache is configured explicitly using <code>I
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As mentioned in step 5, in order to override store-by-value configuration of a JSR-107 cache using templates you<br />
-can explicitly configure the template using <code>IdentityCopier</code>. But the usage of <code>IdentityCopier</code> is not mandatory to get<br />
-a store-by-ref cache. You can use any custom copier implementation that does not perform any "copying" but returns<br />
-the exact same reference that gets passed into the copy methods. <code>IdentityCopier</code> is just one that we have provided to<br />
+As mentioned in step 5, in order to override store-by-value configuration of a JSR-107 cache using templates you<br>
+can explicitly configure the template using <code>IdentityCopier</code>. But the usage of <code>IdentityCopier</code> is not mandatory to get<br>
+a store-by-ref cache. You can use any custom copier implementation that does not perform any "copying" but returns<br>
+the exact same reference that gets passed into the copy methods. <code>IdentityCopier</code> is just one that we have provided to<br>
 make your life easier.
 </td>
 </tr>
@@ -687,7 +689,7 @@ make your life easier.
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

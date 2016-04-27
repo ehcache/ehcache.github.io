@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.7 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.7 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="using-spring-and-bigmemory-go">Using Spring and BigMemory Go</h1><div id="toc-container">
@@ -162,21 +165,16 @@
                      </a>
                      <ul>
                         <li class="toc_level-2 toc_section-2">
-                           <a href="#introduction">
-                              <span class="toctext">Introduction</span>
-                           </a>
-                        </li>
-                        <li class="toc_level-2 toc_section-3">
                            <a href="#spring-3.1">
                               <span class="toctext">Spring 3.1</span>
                            </a>
                         </li>
-                        <li class="toc_level-2 toc_section-4">
+                        <li class="toc_level-2 toc_section-3">
                            <a href="#spring-2.5---3.1:-annotations-for-spring">
                               <span class="toctext">Spring 2.5 - 3.1: Annotations For Spring</span>
                            </a>
                         </li>
-                        <li class="toc_level-2 toc_section-5">
+                        <li class="toc_level-2 toc_section-4">
                            <a href="#the-annotations-for-spring-project">
                               <span class="toctext">The Annotations for Spring Project</span>
                            </a>
@@ -190,8 +188,8 @@
    </table>
 </div>
 
-<h2 id="introduction">Introduction</h2>
-<p>BigMemory Go’s Ehcache has had excellent Spring integration for years. Spring 3.1 includes an Ehcache implementation. See the <a href="http://static.springsource.org/spring/docs/3.1.0.M1/javadoc-api/org/springframework/cache/ehcache/package-summary.html"> Spring 3.1 JavaDoc</a>.</p>
+<p>##Introduction
+BigMemory Go’s Ehcache has had excellent Spring integration for years. Spring 3.1 includes an Ehcache implementation. See the <a href="http://static.springsource.org/spring/docs/3.1.0.M1/javadoc-api/org/springframework/cache/ehcache/package-summary.html"> Spring 3.1 JavaDoc</a>.</p>
 
 <h2 id="spring-3.1">Spring 3.1</h2>
 <p>Spring Framework 3.1 has a generic cache abstraction for transparently applying caching to Spring applications.
@@ -222,7 +220,7 @@ can use it with 3.1.</p>
 
 <h3 id="cacheable-1">@Cacheable</h3>
 <p>As with Spring 3.1 it uses an @Cacheable annotation to cache a method. In this example calls to findMessage are stored in a cache
-named “messageCache”. The values are of type <code>Message</code>. The id for each entry is the <code>id</code> argument given.</p>
+named “messageCache”. The values are of type <code class="highlighter-rouge">Message</code>. The id for each entry is the <code class="highlighter-rouge">id</code> argument given.</p>
 
 <pre>
 @Cacheable(cacheName = "messageCache")
@@ -231,7 +229,7 @@ public Message findMessage(long id)
 
 <h3 id="triggersremove">@TriggersRemove</h3>
 <p>And for cache invalidation, there is the @TriggersRemove annotation.
-In this example, <code>cache.removeAll()</code> is called after the method is invoked.</p>
+In this example, <code class="highlighter-rouge">cache.removeAll()</code> is called after the method is invoked.</p>
 
 <pre>
 @TriggersRemove(cacheName = "messagesCache",
@@ -246,7 +244,7 @@ and providing further links.</p>
 
 <p>To dynamically configure caching of method return values, use the <a href="http://code.google.com/p/ehcache-spring-annotations/">Ehcache Annotations for Spring project at code.google.com</a>. This project will allow you to configure caching of method calls dynamically using just configuration. The way it works is that the parameter values of the method will be used as a composite key into the cache, caching the return value of the method.</p>
 
-<p>For example, suppose you have a method: <code>Dog getDog(String name)</code>.</p>
+<p>For example, suppose you have a method: <code class="highlighter-rouge">Dog getDog(String name)</code>.</p>
 
 <p>Once caching is added to this method, all calls to the method will be cached using the “name” parameter as a key.</p>
 
@@ -270,21 +268,19 @@ and providing further links.</p>
 
 <p>Add the Annotation to methods you would like to cache. Lets assume you are using the Dog getDog(String name) method from above:</p>
 
-<pre>
-   <code>@Cacheable(name="getDog")
+<div class="highlighter-rouge"><pre class="highlight"><code>@Cacheable(name="getDog")
 Dog getDog(String name)
 {
     ....
 "/&gt; **Step 3:**
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Configure Spring. You must add the following to your Spring configuration file in the beans declaration section:</p>
 
-<pre>
-   <code>&lt;ehcache:annotation-driven cache-manager="ehCacheManager" /&gt;
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;ehcache:annotation-driven cache-manager="ehCacheManager" /&gt;
+</code></pre>
+</div>
 
 <p>More details can be found at:</p>
 
@@ -390,7 +386,7 @@ Dog getDog(String name)
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

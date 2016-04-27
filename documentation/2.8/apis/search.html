@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="ehcache-search-api">Ehcache Search API</h1><div id="toc-container">
@@ -201,11 +204,6 @@
                               <span class="toctext">Implementation and Performance</span>
                            </a>
                         </li>
-                        <li class="toc_level-2 toc_section-10">
-                           <a href="#best-practices-for-optimizing-searches">
-                              <span class="toctext">Best Practices for Optimizing Searches</span>
-                           </a>
-                        </li>
                      </ul>
                   </li>
                </ul>
@@ -225,11 +223,10 @@
 or summary values (Aggregators) can all be returned.
  Here is a simple example: Search for 32-year-old males and return the element values.</p>
 
-<pre>
-   <code>Results results = cache.createQuery().includeValues()
+<div class="highlighter-rouge"><pre class="highlight"><code>Results results = cache.createQuery().includeValues()
   .addCriteria(age.eq(32).and(gender.eq("male"))).execute();
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h4 id="what-is-searchable">What is Searchable?</h4>
 
@@ -240,63 +237,58 @@ or summary values (Aggregators) can all be returned.
 
 <h4 id="by-configuration">By Configuration</h4>
 
-<p>Caches are made searchable by adding a <code>&lt;searchable/&gt;</code> tag to the ehcache.xml.</p>
+<p>Caches are made searchable by adding a <code class="highlighter-rouge">&lt;searchable/&gt;</code> tag to the ehcache.xml.</p>
 
-<pre>
-   <code>&lt;cache name="cache2" maxBytesLocalHeap="16M" eternal="true" maxBytesLocalOffHeap="256M"&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="cache2" maxBytesLocalHeap="16M" eternal="true" maxBytesLocalOffHeap="256M"&gt;
 	&lt;persistence strategy="localRestartable"/&gt;
 	&lt;searchable/&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>This configuration will scan keys and values and, if they are of supported search types, add them as
 attributes called “key” and “value” respectively. If you do not want automatic indexing of keys and values,
 you can disable it with:</p>
 
-<pre>
-   <code>&lt;cache name="cacheName" ...&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="cacheName" ...&gt;
 	&lt;searchable keys="false" values="false"/&gt;
 	   ...
 	&lt;/searchable&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>You might want to do this if you have a mix of types for your keys or values. The automatic indexing will throw
 an exception if types are mixed.</p>
 
-<p>If you think that you will want to add search attributes after the cache is initialized, you can explicitly indicate the dynamic search configuration. Set the <code>allowDynamicIndexing</code> attribute to “true” to enable use of the dynamic attributes extractor (described in the <a href="/documentation/2.8/apis/search.html#defining-attributes">Defining Attributes</a> section below):</p>
+<p>If you think that you will want to add search attributes after the cache is initialized, you can explicitly indicate the dynamic search configuration. Set the <code class="highlighter-rouge">allowDynamicIndexing</code> attribute to “true” to enable use of the dynamic attributes extractor (described in the <a href="/documentation/2.8/apis/search.html#defining-attributes">Defining Attributes</a> section below):</p>
 
-<pre>
-   <code>&lt;cache name="cacheName" ...&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="cacheName" ...&gt;
 	&lt;searchable allowDynamicIndexing="true"&gt;
 	   ...
 	&lt;/searchable&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Often keys or values will not be directly searchable and instead you will need to extract searchable attributes out of them.
 The following example shows this more typical case.  Attribute Extractors are explained in more detail in the following section.</p>
 
-<pre>
-   <code>&lt;cache name="cache3" maxEntriesLocalHeap="10000" eternal="true" maxBytesLocalOffHeap="10G"&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="cache3" maxEntriesLocalHeap="10000" eternal="true" maxBytesLocalOffHeap="10G"&gt;
 	&lt;persistence strategy="localRestartable"/&gt;
 	&lt;searchable&gt;
    		&lt;searchAttribute name="age" class="net.sf.ehcache.search.TestAttributeExtractor"/&gt;
    		&lt;searchAttribute name="gender" expression="value.getGender()"/&gt;
 	&lt;/searchable&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h4 id="programmatically">Programmatically</h4>
 
 <p>The following example shows how to programmatically create the cache configuration, with search attributes.</p>
 
-<pre>
-   <code>Configuration cacheManagerConfig = new Configuration();
+<div class="highlighter-rouge"><pre class="highlight"><code>Configuration cacheManagerConfig = new Configuration();
 CacheConfiguration cacheConfig = new CacheConfiguration("myCache", 0).eternal(true);
 Searchable searchable = new Searchable();
 cacheConfig.addSearchable(searchable);
@@ -313,14 +305,14 @@ cacheManager.addCache(new Cache(cacheConfig));
 Ehcache myCache = cacheManager.getEhcache("myCache");
 // Now create the attributes and queries, then execute.
 ...
-</code>
-</pre>
+</code></pre>
+</div>
 
-<p>To learn more about the Ehcache Search API, see the <code>net.sf.ehcache.search*</code> packages in this <a href="/apidocs/2.8.5/index.html">Javadoc</a>.</p>
+<p>To learn more about the Ehcache Search API, see the <code class="highlighter-rouge">net.sf.ehcache.search*</code> packages in this <a href="/apidocs/2.8.5/index.html">Javadoc</a>.</p>
 
 <h2 id="defining-attributes">Defining Attributes</h2>
 
-<p>In addition to configuring a cache to be searchable, you must define the attributes to be used in searches. Attributes are extracted from keys or values using <code>AttributeExtractor</code>s. The following types are supported for extracted attributes:</p>
+<p>In addition to configuring a cache to be searchable, you must define the attributes to be used in searches. Attributes are extracted from keys or values using <code class="highlighter-rouge">AttributeExtractor</code>s. The following types are supported for extracted attributes:</p>
 
 <ul>
   <li>Boolean</li>
@@ -337,16 +329,16 @@ Ehcache myCache = cacheManager.getEhcache("myCache");
   <li>Enum</li>
 </ul>
 
-<p>If an attribute cannot be extracted, due to not being found or being the wrong type, an AttributeExtractorException is thrown on search execution or, if using Distributed Ehcache, on <code>put()</code>.</p>
+<p>If an attribute cannot be extracted, due to not being found or being the wrong type, an AttributeExtractorException is thrown on search execution or, if using Distributed Ehcache, on <code class="highlighter-rouge">put()</code>.</p>
 
 <h4 id="well-known-attributes">Well-known Attributes</h4>
 
 <p>The parts of an Element that are well-known attributes can be referenced by some predefined, well-known names.
 If a key and/or value is of a supported search type, it is added automatically as an attribute with the name
 “key” or “value”.
-These well-known attributes have the convenience of being constant attributes made available on the <code>Query</code> class.
-So, for example, the attribute for “key” may be referenced in a query by <code>Query.KEY</code>. For even greater readability, it is
-recommended to statically import so that, in this example, you would just use <code>KEY</code>.</p>
+These well-known attributes have the convenience of being constant attributes made available on the <code class="highlighter-rouge">Query</code> class.
+So, for example, the attribute for “key” may be referenced in a query by <code class="highlighter-rouge">Query.KEY</code>. For even greater readability, it is
+recommended to statically import so that, in this example, you would just use <code class="highlighter-rouge">KEY</code>.</p>
 
 <table>
   <thead>
@@ -371,19 +363,17 @@ recommended to statically import so that, in this example, you would just use <c
 
 <p>The ReflectionAttributeExtractor is a built-in search attribute extractor which uses JavaBean conventions and also understands a simple form of expression. Where a JavaBean property is available and it is of a searchable type, it can be simply declared:</p>
 
-<pre>
-   <code>&lt;cache&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache&gt;
   &lt;searchable&gt;
     &lt;searchAttribute name="age"/&gt;
   &lt;/searchable&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>The expression language of the ReflectionAttributeExtractor also uses method/value dotted expression chains. The expression chain must start with one of either “key”, “value”, or “element”. From the starting object a chain of either method calls or field names follows. Method calls and field names can be freely mixed in the chain. Some more examples:</p>
 
-<pre>
-   <code>&lt;cache&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache&gt;
   &lt;searchable&gt;
     &lt;searchAttribute name="age" expression="value.person.getAge()"/&gt;
   &lt;/searchable&gt;
@@ -393,8 +383,8 @@ recommended to statically import so that, in this example, you would just use <c
      &lt;searchAttribute name="name" expression="element.toString()"/&gt;
   &lt;/searchable&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p><em>Note</em>: The method and field name portions of the expression are case sensitive.</p>
 
@@ -402,39 +392,36 @@ recommended to statically import so that, in this example, you would just use <c
 
 <p>In more complex situations, you can create your own attribute extractor by implementing the AttributeExtractor interface. Provide your extractor class, as shown in the following example:</p>
 
-<pre>
-   <code>&lt;cache name="cache2" maxEntriesLocalHeap="0" eternal="true"&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="cache2" maxEntriesLocalHeap="0" eternal="true"&gt;
   &lt;persistence strategy="none"/&gt;
   &lt;searchable&gt;
      &lt;searchAttribute name="age" class="net.sf.ehcache.search.TestAttributeExtractor"/&gt;
   &lt;/searchable&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>If you need to pass state to your custom extractor, you may do so with properties, as shown in the following example:</p>
 
-<pre>
-   <code>&lt;cache&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache&gt;
   &lt;searchable&gt;
     &lt;searchAttribute name="age"
     class="net.sf.ehcache.search.TestAttributeExtractor"
     properties="foo=this,bar=that,etc=12" /&gt;
   &lt;/searchable&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
-<p>If properties are provided, then the attribute extractor implementation must have a public constructor that accepts a single <code>java.util.Properties</code> instance.</p>
+<p>If properties are provided, then the attribute extractor implementation must have a public constructor that accepts a single <code class="highlighter-rouge">java.util.Properties</code> instance.</p>
 
 <h4 id="dynamic-attributes-extractor">Dynamic Attributes Extractor</h4>
 
-<p>The <code>DynamicAttributesExtractor</code> provides flexibility by allowing the search configuration to be changed after the cache is initialized. This is done with one method call, at the point of element insertion into the cache. The <code>DynamicAttributesExtractor</code> method returns a map of attribute names to index and their respective values. This method is called for every Ehcache.put() and replace() invocation.</p>
+<p>The <code class="highlighter-rouge">DynamicAttributesExtractor</code> provides flexibility by allowing the search configuration to be changed after the cache is initialized. This is done with one method call, at the point of element insertion into the cache. The <code class="highlighter-rouge">DynamicAttributesExtractor</code> method returns a map of attribute names to index and their respective values. This method is called for every Ehcache.put() and replace() invocation.</p>
 
-<p>Assuming that we have previously created Person objects containing attributes such as name, age, and gender, the following example shows how to create a dynamically searchable cache and register the <code>DynamicAttributesExtractor</code>:</p>
+<p>Assuming that we have previously created Person objects containing attributes such as name, age, and gender, the following example shows how to create a dynamically searchable cache and register the <code class="highlighter-rouge">DynamicAttributesExtractor</code>:</p>
 
-<pre>
-   <code>Configuration config = new Configuration();
+<div class="highlighter-rouge"><pre class="highlight"><code>Configuration config = new Configuration();
 config.setName("default");
   	CacheConfiguration cacheCfg = new CacheConfiguration(“PersonCache”);
   	cacheCfg.setEternal(true);
@@ -460,22 +447,22 @@ cache.registerDynamicAttributesExtractor(new DynamicAttributesExtractor() {
 });
 // Now add some data to the cache
 cache.put(new Element(10, new Person(“John Doe”, 34, Person.Gender.MALE)));
-</code>
-</pre>
+</code></pre>
+</div>
 
-<p>Given the code above, the newly put element would be indexed on values of name and age fields, but not gender. If, at a later time, you would like to start indexing the element data on gender, you would need to create a new <code>DynamicAttributesExtractor</code> instance that extracts that field for indexing.</p>
+<p>Given the code above, the newly put element would be indexed on values of name and age fields, but not gender. If, at a later time, you would like to start indexing the element data on gender, you would need to create a new <code class="highlighter-rouge">DynamicAttributesExtractor</code> instance that extracts that field for indexing.</p>
 
-<h5 id="dynamic-search-rules">Dynamic Search Rules</h5>
+<p>#####Dynamic Search Rules</p>
 
 <ul>
   <li>
-    <p>In order to use the <code>DynamicAttributesExtractor</code>, the cache must be configured to be searchable and dynamically indexable (refer to <a href="/documentation/2.8/apis/search.html#making-a-cache-searchable">Making a Cache Searchable</a> above).</p>
+    <p>In order to use the <code class="highlighter-rouge">DynamicAttributesExtractor</code>, the cache must be configured to be searchable and dynamically indexable (refer to <a href="/documentation/2.8/apis/search.html#making-a-cache-searchable">Making a Cache Searchable</a> above).</p>
   </li>
   <li>
     <p>A dynamically searchable cache must have a dynamic extractor registered before data is added to it. (This is to prevent potential races between extractor registration and cache loading which might result in an incomplete set of indexed data, leading to erroneous search results.)</p>
   </li>
   <li>
-    <p>Each call on the <code>DynamicAttributesExtractor</code> method replaces the previously registered extractor, as there can be at most one extractor instance configured for each such cache.</p>
+    <p>Each call on the <code class="highlighter-rouge">DynamicAttributesExtractor</code> method replaces the previously registered extractor, as there can be at most one extractor instance configured for each such cache.</p>
   </li>
   <li>
     <p>If a dynamically searchable cache is initially configured with a predefined set of search attributes, then this set of attributes will always be queried for extracted values, regardless of whether or not there is a dynamic search attribute extractor configured.</p>
@@ -492,56 +479,51 @@ cache.put(new Element(10, new Person(“John Doe”, 34, Person.Gender.MALE)));
 <p>Ehcache Search uses a fluent, object-oriented Query API, following DSL principles, which should feel familiar and natural to Java programmers.
 Here is a simple example:</p>
 
-<pre>
-   <code>Query query = cache.createQuery().addCriteria(age.eq(35)).includeKeys().end();
+<div class="highlighter-rouge"><pre class="highlight"><code>Query query = cache.createQuery().addCriteria(age.eq(35)).includeKeys().end();
 Results results = query.execute();
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h3 id="using-attributes-in-queries">Using Attributes in Queries</h3>
 <p>If declared and available, the well-known attributes are referenced by their names or the convenience attributes are used
   directly, as shown in this example:</p>
 
-<pre>
-   <code>Results results = cache.createQuery().addCriteria(Query.KEY.eq(35)).execute();
+<div class="highlighter-rouge"><pre class="highlight"><code>Results results = cache.createQuery().addCriteria(Query.KEY.eq(35)).execute();
 Results results = cache.createQuery().addCriteria(Query.VALUE.lt(10)).execute();
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Other attributes are referenced by the names given them in the configuration. For example:</p>
 
-<pre>
-   <code>Attribute&lt;Integer&gt; age = cache.getSearchAttribute("age");
+<div class="highlighter-rouge"><pre class="highlight"><code>Attribute&lt;Integer&gt; age = cache.getSearchAttribute("age");
 Attribute&lt;String&gt; gender = cache.getSearchAttribute("gender");
 Attribute&lt;String&gt; name = cache.getSearchAttribute("name");
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h3 id="expressions">Expressions</h3>
 
 <p>A Query is built up using Expressions. Expressions may include logical operators such as &lt;and&gt; and &lt;or&gt;, and comparison operators such as &lt;ge&gt; (&gt;=), &lt;between&gt;, and &lt;like&gt;.
-The configuration <code>addCriteria(...)</code> is used to add a clause to a query. Adding a further clause automatically “&lt;and&gt;s” the clauses.</p>
+The configuration <code class="highlighter-rouge">addCriteria(...)</code> is used to add a clause to a query. Adding a further clause automatically “&lt;and&gt;s” the clauses.</p>
 
-<pre>
-   <code>query = cache.createQuery().includeKeys().addCriteria(age.le(65)).add(gender.eq("male")).end();
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>query = cache.createQuery().includeKeys().addCriteria(age.le(65)).add(gender.eq("male")).end();
+</code></pre>
+</div>
 
-<p>Both logical and comparison operators implement the <code>Criteria</code> interface.
+<p>Both logical and comparison operators implement the <code class="highlighter-rouge">Criteria</code> interface.
 To add a criteria with a different logical operator, explicitly nest it within a new logical operator Criteria Object. For example, to check for age = 35 or gender = female, do the following:</p>
 
-<pre>
-   <code>query.addCriteria(new Or(age.eq(35),
+<div class="highlighter-rouge"><pre class="highlight"><code>query.addCriteria(new Or(age.eq(35),
              gender.eq(Gender.FEMALE))
             );
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>More complex compound expressions can be further created with extra nesting.
 See the <a href="/apidocs/2.8.5/net/sf/ehcache/search/expression/package-frame.html">Expression JavaDoc</a> for a complete list of expressions.</p>
 
 <h3 id="list-of-operators">List of Operators</h3>
-<p>Operators are available as methods on attributes, so they are used by adding a “.”. For example, “lt” means “less than” and is used as <code>age.lt(10)</code>, which is a shorthand way of saying <code>age LessThan(10)</code>.
+<p>Operators are available as methods on attributes, so they are used by adding a “.”. For example, “lt” means “less than” and is used as <code class="highlighter-rouge">age.lt(10)</code>, which is a shorthand way of saying <code class="highlighter-rouge">age LessThan(10)</code>.
 The full listing of operator shorthand is shown below.</p>
 
 <table>
@@ -630,49 +612,46 @@ The full listing of operator shorthand is shown below.</p>
 
 <h3 id="making-queries-immutable">Making Queries Immutable</h3>
 
-<p>By default, a query can be executed and then modified and re-executed. If <code>end</code> is called,
+<p>By default, a query can be executed and then modified and re-executed. If <code class="highlighter-rouge">end</code> is called,
  the query is made immutable.</p>
 
 <h2 id="obtaining-and-organizing-query-results">Obtaining and Organizing Query Results</h2>
 
-<p>Queries return a <code>Results</code> object which contains a list of objects of class <code>Result</code>. Each <code>Element</code> in the cache found with a query will be represented as a <code>Result</code> object. So if a query finds
-350 elements, there will be 350 <code>Result</code> objects. An exception to this would be if no keys or attributes are included but
-aggregators are – in this case, there will be exactly one <code>Result</code> present.</p>
+<p>Queries return a <code class="highlighter-rouge">Results</code> object which contains a list of objects of class <code class="highlighter-rouge">Result</code>. Each <code class="highlighter-rouge">Element</code> in the cache found with a query will be represented as a <code class="highlighter-rouge">Result</code> object. So if a query finds
+350 elements, there will be 350 <code class="highlighter-rouge">Result</code> objects. An exception to this would be if no keys or attributes are included but
+aggregators are – in this case, there will be exactly one <code class="highlighter-rouge">Result</code> present.</p>
 
 <p>A Result object can contain:</p>
 
 <ul>
-  <li>the Element key - when <code>includeKeys()</code> is added to the query,</li>
-  <li>the Element value - when <code>includeValues()</code> is added to the query,</li>
-  <li>predefined attribute(s) extracted from an Element value - when <code>includeAttribute(...)</code> is added to the query. To access an attribute from a Result, use <code>getAttribute(Attribute&lt;T&gt; attribute)</code>.</li>
-  <li>aggregator results - Aggregator results are summaries computed for the search. They are available through <code>Result.getAggregatorResults</code> which returns a list of <code>Aggregator</code>s in the same order in which they were used in the <code>Query</code>.</li>
+  <li>the Element key - when <code class="highlighter-rouge">includeKeys()</code> is added to the query,</li>
+  <li>the Element value - when <code class="highlighter-rouge">includeValues()</code> is added to the query,</li>
+  <li>predefined attribute(s) extracted from an Element value - when <code class="highlighter-rouge">includeAttribute(...)</code> is added to the query. To access an attribute from a Result, use <code class="highlighter-rouge">getAttribute(Attribute&lt;T&gt; attribute)</code>.</li>
+  <li>aggregator results - Aggregator results are summaries computed for the search. They are available through <code class="highlighter-rouge">Result.getAggregatorResults</code> which returns a list of <code class="highlighter-rouge">Aggregator</code>s in the same order in which they were used in the <code class="highlighter-rouge">Query</code>.</li>
 </ul>
 
 <h3 id="aggregators">Aggregators</h3>
-<p>Aggregators are added with <code>query.includeAggregator(\&lt;attribute\&gt;.\&lt;aggregator\&gt;)</code>.
+<p>Aggregators are added with <code class="highlighter-rouge">query.includeAggregator(\&lt;attribute\&gt;.\&lt;aggregator\&gt;)</code>.
 For example, to find the sum of the age attribute:</p>
 
-<pre>
-   <code>query.includeAggregator(age.sum());
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>query.includeAggregator(age.sum());
+</code></pre>
+</div>
 
 <p>For a complete list of aggregators, refer to the <a href="/apidocs/2.8.5/net/sf/ehcache/search/aggregator/package-frame.html">Aggregators JavaDoc</a>.</p>
 
 <h3 id="ordering-results">Ordering Results</h3>
-<p>Query results may be ordered in ascending or descending order by adding an <code>addOrderBy</code> clause to the query, which takes
+<p>Query results may be ordered in ascending or descending order by adding an <code class="highlighter-rouge">addOrderBy</code> clause to the query, which takes
 as parameters the attribute to order by and the ordering direction. For example, to order the results by ages in ascending order:</p>
 
-<pre>
-   <code>query.addOrderBy(age, Direction.ASCENDING);
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>query.addOrderBy(age, Direction.ASCENDING);
+</code></pre>
+</div>
 
 <h3 id="grouping-results">Grouping Results</h3>
-<p>With Ehcache 2.6 and higher, query results may be grouped similarly to using an SQL GROUP BY statement. The Ehcache GroupBy feature provides the option to group results according to specified attributes by adding an <code>addGroupBy</code> clause to the query, which takes as parameters the attributes to group by. For example, you can group results by department and location like this:</p>
+<p>With Ehcache 2.6 and higher, query results may be grouped similarly to using an SQL GROUP BY statement. The Ehcache GroupBy feature provides the option to group results according to specified attributes by adding an <code class="highlighter-rouge">addGroupBy</code> clause to the query, which takes as parameters the attributes to group by. For example, you can group results by department and location like this:</p>
 
-<pre>
-   <code>Query q = cache.createQuery();
+<div class="highlighter-rouge"><pre class="highlight"><code>Query q = cache.createQuery();
 Attribute&lt;String&gt; dept = cache.getSearchAttribute(“dept”);
 Attribute&lt;String&gt; loc = cache.getSearchAttribute(“location”);
 q.includeAttribute(dept);
@@ -680,26 +659,25 @@ q.includeAttribute(loc);
 q.addCriteria(cache.getSearchAttribute(“salary”).gt(100000));
 q.includeAggregator(Aggregators.count());
 q.addGroupBy(dept, loc);
-</code>
-</pre>
+</code></pre>
+</div>
 
-<p>The GroupBy clause groups the results from <code>includeAttribute()</code> and allows aggregate functions to be performed on the grouped attributes. To retrieve the attributes that are associated with the aggregator results, you can use:</p>
+<p>The GroupBy clause groups the results from <code class="highlighter-rouge">includeAttribute()</code> and allows aggregate functions to be performed on the grouped attributes. To retrieve the attributes that are associated with the aggregator results, you can use:</p>
 
-<pre>
-   <code>	String dept = singleResult.getAttribute(dept);
+<div class="highlighter-rouge"><pre class="highlight"><code>	String dept = singleResult.getAttribute(dept);
 	String loc = singleResult.getAttribute(loc);
-</code>
-</pre>
+</code></pre>
+</div>
 
-<h4 id="groupby-rules">GroupBy Rules</h4>
-<p>Grouping query results adds another step to the query–first results are returned, and second the results are grouped. This necessitates the following rules and considerations when using GroupBy:</p>
+<p>####GroupBy Rules
+Grouping query results adds another step to the query–first results are returned, and second the results are grouped. This necessitates the following rules and considerations when using GroupBy:</p>
 
 <ul>
-  <li>In a query with a GroupBy clause, any attribute specified using <code>includeAttribute()</code> should also be included in the GroupBy clause.</li>
-  <li>Special KEY or VALUE attributes may not be used in a GroupBy clause. This means that <code>includeKeys()</code> and <code>includeValues()</code> may not be used in a query that has a GroupBy clause.</li>
+  <li>In a query with a GroupBy clause, any attribute specified using <code class="highlighter-rouge">includeAttribute()</code> should also be included in the GroupBy clause.</li>
+  <li>Special KEY or VALUE attributes may not be used in a GroupBy clause. This means that <code class="highlighter-rouge">includeKeys()</code> and <code class="highlighter-rouge">includeValues()</code> may not be used in a query that has a GroupBy clause.</li>
   <li>Adding a GroupBy clause to a query changes the semantics of any aggregators passed in, so that they apply only within each group.</li>
   <li>As long as there is at least one aggregation function specified in a query, the grouped attributes are not required to be included in the result set, but they are typically requested anyway to make result processing easier.</li>
-  <li>An <code>addCriteria()</code> clause applies to all results prior to grouping.</li>
+  <li>An <code class="highlighter-rouge">addCriteria()</code> clause applies to all results prior to grouping.</li>
   <li>If OrderBy is used with GroupBy, the ordering attributes are limited to those listed in the GroupBy clause.</li>
 </ul>
 
@@ -708,47 +686,44 @@ q.addGroupBy(dept, loc);
 <p>By default a query will return an unlimited number of results. For example the following
 query will return all keys in the cache.</p>
 
-<pre>
-   <code>Query query = cache.createQuery();
+<div class="highlighter-rouge"><pre class="highlight"><code>Query query = cache.createQuery();
 query.includeKeys();
 query.execute();
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>If too many results are returned, it could cause an OutOfMemoryError
-The <code>maxResults</code> clause is used to limit the size of the results.
+The <code class="highlighter-rouge">maxResults</code> clause is used to limit the size of the results.
 For example, to limit the above query to the first 100 elements found:</p>
 
-<pre>
-   <code>Query query = cache.createQuery();
+<div class="highlighter-rouge"><pre class="highlight"><code>Query query = cache.createQuery();
 query.includeKeys();
 query.maxResults(100);
 query.execute();
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p><strong>Note</strong>: When maxResults is used with GroupBy, it limits the number of groups.</p>
 
-<p>When you are done with the results, call <code>discard()</code> to free up resources.
+<p>When you are done with the results, call <code class="highlighter-rouge">discard()</code> to free up resources.
 In the distributed implementation with Terracotta, resources may be used to hold results for paging or return.</p>
 
 <h3 id="interrogating-results">Interrogating Results</h3>
-<p>To determine what was returned by a query, use one of the interrogation methods on <code>Results</code>:</p>
+<p>To determine what was returned by a query, use one of the interrogation methods on <code class="highlighter-rouge">Results</code>:</p>
 
 <ul>
-  <li><code>hasKeys()</code></li>
-  <li><code>hasValues()</code></li>
-  <li><code>hasAttributes()</code></li>
-  <li><code>hasAggregators()</code></li>
+  <li><code class="highlighter-rouge">hasKeys()</code></li>
+  <li><code class="highlighter-rouge">hasValues()</code></li>
+  <li><code class="highlighter-rouge">hasAttributes()</code></li>
+  <li><code class="highlighter-rouge">hasAggregators()</code></li>
 </ul>
 
 <h2 id="sample-application">Sample Application</h2>
 <p>We have created <a href="http://github.com/sharrissf/Ehcache-Search-Sample/downloads/">a simple standalone sample application</a> with few dependencies for you to easily get started with Ehcache Search. You can also check out the source:</p>
 
-<pre>
-   <code>git clone git://github.com/sharrissf/Ehcache-Search-Sample.git
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>git clone git://github.com/sharrissf/Ehcache-Search-Sample.git
+</code></pre>
+</div>
 
 <p>The <a href="https://fisheye.terracotta.org/browse/Ehcache/branches/ehcache-2.8.x/ehcache-core/src/test/java/net/sf/ehcache/search">Ehcache Test Sources</a> page has further examples
 on how to use each Ehcache Search feature.</p>
@@ -756,8 +731,7 @@ on how to use each Ehcache Search feature.</p>
 <h2 id="scripting-environments">Scripting Environments</h2>
 <p>Ehcache Search is readily amenable to scripting. The following example shows how to use it with BeanShell:</p>
 
-<pre>
-   <code>Interpreter i = new Interpreter();
+<div class="highlighter-rouge"><pre class="highlight"><code>Interpreter i = new Interpreter();
 //Auto discover the search attributes and add them to the interpreter's context
 Map&lt;String, SearchAttribute&gt; attributes = cache.getCacheConfiguration().getSearchAttributes();
 for (Map.Entry&lt;String, SearchAttribute&gt; entry : attributes.entrySet()) {
@@ -780,8 +754,8 @@ assertTrue(2 == results.size());
 for (Result result : results.all()) {
 LOG.info("" + result.getKey());
 "/&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h2 id="implementation-and-performance">Implementation and Performance</h2>
 
@@ -805,7 +779,7 @@ Performance is excellent but can be improved simply by adding more servers to th
 
 <p>Search operations perform in O(n) time. Check out this <a href="http://svn.terracotta.org/svn/forge/offHeap-test/">Maven-based performance test</a> showing performance of standalone Ehcache without BigMemory. The test shows search performance of an average of representative queries at 4.6 ms for a 10,000 entry cache, and 427 ms for a 1,000,000 entry cache. Accordingly, standalone implementation is suitable for development and testing.</p>
 
-<p>When using standalone Ehcache without BigMemory for production, it is recommended to search only caches that are less than 1 million elements. Performance of different <code>Criteria</code> vary. For example, here are some queries and their execute times on a 200,000 element cache. (Note that these results are all faster than the times given above because they execute a single Criteria).</p>
+<p>When using standalone Ehcache without BigMemory for production, it is recommended to search only caches that are less than 1 million elements. Performance of different <code class="highlighter-rouge">Criteria</code> vary. For example, here are some queries and their execute times on a 200,000 element cache. (Note that these results are all faster than the times given above because they execute a single Criteria).</p>
 
 <pre>
    <code>final Query intQuery = cache.createQuery();
@@ -826,38 +800,34 @@ Execute Time: 180ms
 </code>
 </pre>
 
-<h2 id="best-practices-for-optimizing-searches">Best Practices for Optimizing Searches</h2>
-<ol>
-  <li>Construct searches wisely by including only the data that is actually required.
-    <ul>
-      <li>Only use <code>includeKeys()</code> and/or <code>includeAttribute()</code> if those values are actually required for your application logic.</li>
-      <li>If you don’t need values or attributes, be careful not to burden your queries with unnecessary work. For example, if <code>result.getValue()</code> is not called in the search results, then don’t use <code>includeValues()</code> in the original query.</li>
-      <li>Consider if it would be sufficient to get attributes or keys on demand. For example, instead of running a search query with <code>includeValues()</code> and then <code>result.getValue()</code>, run the query for keys and include <code>cache.get()</code> for each individual key.</li>
-    </ul>
-  </li>
-</ol>
+<p>##Best Practices for Optimizing Searches
+1. Construct searches wisely by including only the data that is actually required.
+  *  Only use <code class="highlighter-rouge">includeKeys()</code> and/or <code class="highlighter-rouge">includeAttribute()</code> if those values are actually required for your application logic.
+  *  If you don’t need values or attributes, be careful not to burden your queries with unnecessary work. For example, if <code class="highlighter-rouge">result.getValue()</code> is not called in the search results, then don’t use <code class="highlighter-rouge">includeValues()</code> in the original query.
+  *  Consider if it would be sufficient to get attributes or keys on demand. For example, instead of running a search query with <code class="highlighter-rouge">includeValues()</code> and then <code class="highlighter-rouge">result.getValue()</code>, run the query for keys and include <code class="highlighter-rouge">cache.get()</code> for each individual key.</p>
 
-<p><strong>Note</strong>: As of Ehcache 2.6, <code>includeKeys()</code> and <code>includeValues()</code> have lazy deserialization, which means that keys and values are de-serialized only when <code>result.getKey()</code> or <code>result.getValue()</code> is called. This provides better latency overall, with a time cost only when the key is needed. However, there is still some time cost with <code>includeKeys()</code> and <code>includeValues()</code>, so consider carefully when constructing your queries.</p>
+<p><strong>Note</strong>: As of Ehcache 2.6, <code class="highlighter-rouge">includeKeys()</code> and <code class="highlighter-rouge">includeValues()</code> have lazy deserialization, which means that keys and values are de-serialized only when <code class="highlighter-rouge">result.getKey()</code> or <code class="highlighter-rouge">result.getValue()</code> is called. This provides better latency overall, with a time cost only when the key is needed. However, there is still some time cost with <code class="highlighter-rouge">includeKeys()</code> and <code class="highlighter-rouge">includeValues()</code>, so consider carefully when constructing your queries.</p>
 
 <ol>
   <li>
     <p>Searchable keys and values are automatically indexed by default. If you will not be including them in your query, turn off automatic indexing with the following:</p>
 
-    <pre><code> &lt;cache name="cacheName" ...&gt;
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;cache name="cacheName" ...&gt;
    &lt;searchable keys="false" values="false"/&gt;
    ...
    &lt;/searchable&gt;
  &lt;/cache&gt;
 </code></pre>
+    </div>
   </li>
   <li>
-    <p>Limit the size of the results set with <code>query.maxResults(int number_of_results)</code>. Another recommendation for managing the size of the result set is to use a built-in Aggregator function to return a summary statistic (see the <code>net.sf.ehcache.search.aggregator</code> package in this <a href="/apidocs/2.8.5/index.html">Javadoc</a>).</p>
+    <p>Limit the size of the results set with <code class="highlighter-rouge">query.maxResults(int number_of_results)</code>. Another recommendation for managing the size of the result set is to use a built-in Aggregator function to return a summary statistic (see the <code class="highlighter-rouge">net.sf.ehcache.search.aggregator</code> package in this <a href="/apidocs/2.8.5/index.html">Javadoc</a>).</p>
   </li>
   <li>
-    <p>Make your search as specific as possible. Queries with “ILike” criteria and fuzzy (wildcard) searches may take longer than more specific queries. Also, if you are using a wildcard, try making it the trailing part of the string instead of the leading part (<code>"321*"</code> instead of <code>"*123"</code>). If you want leading wildcard searches, then you should create a <code>&lt;searchAttribute&gt;</code> with the string value reversed in it, so that your query can use the trailing wildcard instead.</p>
+    <p>Make your search as specific as possible. Queries with “ILike” criteria and fuzzy (wildcard) searches may take longer than more specific queries. Also, if you are using a wildcard, try making it the trailing part of the string instead of the leading part (<code class="highlighter-rouge">"321*"</code> instead of <code class="highlighter-rouge">"*123"</code>). If you want leading wildcard searches, then you should create a <code class="highlighter-rouge">&lt;searchAttribute&gt;</code> with the string value reversed in it, so that your query can use the trailing wildcard instead.</p>
   </li>
   <li>
-    <p>When possible, use the query criteria “Between” instead of “LessThan” and “GreaterThan”, or “LessThanOrEqual” and “GreaterThanOrEqual”. For example, instead of using <code>le(startDate)</code> and <code>ge(endDate)</code>, try <code>not(between(startDate,endDate))</code>.</p>
+    <p>When possible, use the query criteria “Between” instead of “LessThan” and “GreaterThan”, or “LessThanOrEqual” and “GreaterThanOrEqual”. For example, instead of using <code class="highlighter-rouge">le(startDate)</code> and <code class="highlighter-rouge">ge(endDate)</code>, try <code class="highlighter-rouge">not(between(startDate,endDate))</code>.</p>
   </li>
   <li>
     <p>Index dates as integers. This can save time and may even be faster if you have to do a conversion later on.</p>
@@ -877,7 +847,7 @@ Execute Time: 180ms
 
 <ul>
   <li>The change has been applied to the cluster.</li>
-  <li>For a cache with transactions, when <code>commit</code> has been called.</li>
+  <li>For a cache with transactions, when <code class="highlighter-rouge">commit</code> has been called.</li>
 </ul>
 
 <h4 id="query-results">Query Results</h4>
@@ -886,7 +856,7 @@ Execute Time: 180ms
 <ul>
   <li>A search returns an Element reference which no longer exists.</li>
   <li>Search criteria select an Element, but the Element has been updated and a new Search would no longer match the Element.</li>
-  <li>Aggregators, such as <code>sum()</code>, might disagree with the same calculation done by redoing the calculation yourself by re-accessing the cache for each key and repeating the calculation.</li>
+  <li>Aggregators, such as <code class="highlighter-rouge">sum()</code>, might disagree with the same calculation done by redoing the calculation yourself by re-accessing the cache for each key and repeating the calculation.</li>
   <li>Because the cache is always updated before the search index, it is possible that a value reference may refer to a value that has been removed from the cache. If this happens, the value will be null but the key and attributes which were supplied by the now stale cache index will be non-null. Because values in Ehcache are also allowed to be null, you cannot tell whether your value is null because it has been removed from the cache since the index was last updated or because it is a null value.</li>
 </ul>
 
@@ -994,7 +964,7 @@ Execute Time: 180ms
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

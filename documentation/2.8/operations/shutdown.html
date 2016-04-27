@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="shutting-down-ehcache-">Shutting Down Ehcache <a name="Shutting-Down-Ehcache" id="Shutting-Down-Ehcache"></a></h1><div id="toc-container">
@@ -192,12 +195,12 @@
 
 <h2 id="introduction">Introduction</h2>
 <p>If you are using persistent disk stores (Open Source), or distributed caching, care should be taken to shutdown Ehcache.
-Note that Hibernate automatically shuts down its Ehcache <code>CacheManager</code>.
+Note that Hibernate automatically shuts down its Ehcache <code class="highlighter-rouge">CacheManager</code>.
 The recommended way to shutdown the Ehcache is:</p>
 
 <ul>
-  <li>to call <code>CacheManager.shutdown()</code></li>
-  <li>in a web app, register the Ehcache <code>ShutdownListener</code></li>
+  <li>to call <code class="highlighter-rouge">CacheManager.shutdown()</code></li>
+  <li>in a web app, register the Ehcache <code class="highlighter-rouge">ShutdownListener</code></li>
 </ul>
 
 <p>Though not recommended, Ehcache also lets you register a JVM shutdown hook.</p>
@@ -209,16 +212,15 @@ To receive notification events, this class must be configured in the deployment
 descriptor for the web application.
 To do so, add the following to web.xml in your web application:</p>
 
-<pre>
-   <code>&lt;listener&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;listener&gt;
   &lt;listener-class&gt;net.sf.ehcache.constructs.web.ShutdownListener&lt;/listener-class&gt;
 &lt;/listener&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h2 id="the-shutdown-hook">The Shutdown Hook</h2>
 <p>Ehcache CacheManager can optionally register a shutdown hook.
-To do so, set the system property <code>net.sf.ehcache.enableShutdownHook=true</code>.
+To do so, set the system property <code class="highlighter-rouge">net.sf.ehcache.enableShutdownHook=true</code>.
 This will shutdown the CacheManager when it detects the Virtual Machine shutting down and
 it is not already shut down.</p>
 
@@ -252,8 +254,8 @@ The sequence of events is:</p>
 <p>The shutdown hook runs when:</p>
 
 <ul>
-  <li>A program exists normally. For example,  <code>System.exit()</code> is called, or the last non-daemon thread exits.</li>
-  <li>the Virtual Machine is terminated. e.g. CTRL-C. This corresponds to <code>kill -SIGTERM pid</code> or <code>kill -15 pid</code> on Unix systems.</li>
+  <li>A program exists normally. For example,  <code class="highlighter-rouge">System.exit()</code> is called, or the last non-daemon thread exits.</li>
+  <li>the Virtual Machine is terminated. e.g. CTRL-C. This corresponds to <code class="highlighter-rouge">kill -SIGTERM pid</code> or <code class="highlighter-rouge">kill -15 pid</code> on Unix systems.</li>
 </ul>
 
 <p>The shutdown hook will not run when:</p>
@@ -261,8 +263,8 @@ The sequence of events is:</p>
 <ul>
   <li>the Virtual Machine aborts</li>
   <li>A SIGKILL signal is sent to the Virtual Machine process on Unix
-systems. e.g. <code>kill -SIGKILL pid</code> or <code>kill -9 pid</code></li>
-  <li>A <code>TerminateProcess</code> call is sent to the process on Windows systems.</li>
+systems. e.g. <code class="highlighter-rouge">kill -SIGKILL pid</code> or <code class="highlighter-rouge">kill -9 pid</code></li>
+  <li>A <code class="highlighter-rouge">TerminateProcess</code> call is sent to the process on Windows systems.</li>
 </ul>
 
 <h2 id="dirty-shutdown">Dirty Shutdown</h2>
@@ -367,7 +369,7 @@ Replications waiting to happen to other nodes in a distributed cache will also n
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="web-caching-">Web Caching <a name="Web-Caching" id="Web-Caching"></a></h1><div id="toc-container">
@@ -231,11 +234,11 @@
 </div>
 
 <h2 id="introduction">Introduction</h2>
-<p>Ehcache provides a set of general purpose web caching filters in the <code>ehcache-web</code> module.
+<p>Ehcache provides a set of general purpose web caching filters in the <code class="highlighter-rouge">ehcache-web</code> module.
  Using these can make an amazing difference to web application performance. A typical server can deliver
  5000+ pages per second from the page cache. With built-in gzipping, storage and network transmission is
- highly efficient. Cache pages and fragments make excellent candidates for <code>DiskStore</code> storage, because the
- object graphs are simple and the largest part is already a <code>byte[]</code>.</p>
+ highly efficient. Cache pages and fragments make excellent candidates for <code class="highlighter-rouge">DiskStore</code> storage, because the
+ object graphs are simple and the largest part is already a <code class="highlighter-rouge">byte[]</code>.</p>
 
 <h2 id="simplepagecachingfilter-">SimplePageCachingFilter <a name="SimplePageCachingFilter" id="SimplePageCachingFilter"></a></h2>
 <p>This is a simple caching filter suitable for caching compressible HTTP responses such as HTML, XML or JSON.
@@ -251,23 +254,23 @@ It is suitable for:</p>
 
 <h2 id="keys">Keys</h2>
 <p>Pages are cached based on their key. The key for this cache is the URI followed by the query string. An example
-is <code>/admin/SomePage.jsp?id=1234&amp;name=Beagle</code>.
+is <code class="highlighter-rouge">/admin/SomePage.jsp?id=1234&amp;name=Beagle</code>.
 This key technique is suitable for a wide range of uses. It is independent of hostname and port number, so will
 work well in situations where there are multiple domains which get the same content, or where users access
 based on different port numbers.
 A problem can occur with tracking software, where unique ids are inserted into request query strings. Because
 each request generates a unique key, there will never be a cache hit. For these situations it is better to
-parse the request parameters and override <code>calculateKey(javax.servlet.http.HttpServletRequest)</code> with
+parse the request parameters and override <code class="highlighter-rouge">calculateKey(javax.servlet.http.HttpServletRequest)</code> with
 an implementation that takes account of only the significant ones.</p>
 
 <h2 id="configuring-the-cachename">Configuring the cacheName</h2>
 <p>A cache entry in ehcache.xml should be configured with the name of the filter.
-Names can be set using the init-param <code>cacheName</code>, or by sub-classing this class and overriding the name.</p>
+Names can be set using the init-param <code class="highlighter-rouge">cacheName</code>, or by sub-classing this class and overriding the name.</p>
 
 <h2 id="concurrent-cache-misses">Concurrent Cache Misses</h2>
 <p>A cache miss will cause the filter chain, upstream of the caching filter to be processed. To avoid threads requesting
   the same key to do useless duplicate work, these threads block behind the first thread.
-The thead timeout can be set to fail after a certain wait by setting the init-param <code>blockingTimeoutMillis</code>.
+The thead timeout can be set to fail after a certain wait by setting the init-param <code class="highlighter-rouge">blockingTimeoutMillis</code>.
   By default threads wait indefinitely. In the event upstream processing never returns, eventually the web server
   may get overwhelmed with connections it has not responded to. By setting a timeout, the waiting threads will only block
   for the set time, and then throw a {@link net.sf.ehcache.constructs.blocking.LockTimeoutException}. Under either
@@ -288,15 +291,16 @@ robots do not accept gzip encoding.</p>
   <li>
     <p>Whether the user agent has advertised its acceptance of gzip encoding. This is on a per request basis. If they will accept a gzip response to their request they must include the following in the HTTP request header:</p>
 
-    <pre><code>  Accept-Encoding: gzip
+    <div class="highlighter-rouge"><pre class="highlight"><code>  Accept-Encoding: gzip
 </code></pre>
+    </div>
   </li>
 </ul>
 
 <p>Responses are automatically gzipped and stored that way in the cache. For requests which do not accept gzip encoding the page is retrieved from the cache, ungzipped and returned to the user agent. The ungzipping is high performance.</p>
 
 <h2 id="caching-headers">Caching Headers</h2>
-<p>The <code>SimpleCachingHeadersPageCachingFilter</code> extends <code>SimplePageCachingFilter</code> to provide
+<p>The <code class="highlighter-rouge">SimpleCachingHeadersPageCachingFilter</code> extends <code class="highlighter-rouge">SimplePageCachingFilter</code> to provide
   the HTTP cache headers: ETag, Last-Modified and Expires. It supports conditional GET.
 Because browsers and other HTTP clients have the expiry information returned in the response headers,
   they do not even need to request the page again. Even once the local browser copy has expired, the browser
@@ -313,22 +317,23 @@ So why would you ever want to use SimplePageCachingFilter, which does not set th
 <p>The following init-params are supported:</p>
 
 <ul>
-  <li><code>cacheName</code> - the name in ehcache.xml used by the filter.</li>
-  <li><code>blockingTimeoutMillis</code> - the time, in milliseconds, to wait for the filter chain to return with a response on a cache miss. This is useful to fail fast in the event of an infrastructure failure.</li>
+  <li><code class="highlighter-rouge">cacheName</code> - the name in ehcache.xml used by the filter.</li>
+  <li><code class="highlighter-rouge">blockingTimeoutMillis</code> - the time, in milliseconds, to wait for the filter chain to return with a response on a cache miss. This is useful to fail fast in the event of an infrastructure failure.</li>
   <li>
-    <p><code>varyHeader</code>  - set to true to set Vary:Accept-Encoding in the response when doing Gzip. This header is needed to support HTTP proxies however it is off by default.</p>
+    <p><code class="highlighter-rouge">varyHeader</code>  - set to true to set Vary:Accept-Encoding in the response when doing Gzip. This header is needed to support HTTP proxies however it is off by default.</p>
 
-    <pre><code>  &lt;init-param&gt;
+    <div class="highlighter-rouge"><pre class="highlight"><code>  &lt;init-param&gt;
     &lt;param-name&gt;varyHeader&lt;/param-name&gt;
     &lt;param-value&gt;true&lt;/param-value&gt;
   &lt;/init-param&gt;
 </code></pre>
+    </div>
   </li>
 </ul>
 
 <h2 id="re-entrance">Re-entrance</h2>
-<p>Care should be taken not to define a filter chain such that the same <code>CachingFilter</code> class is reentered.
-  The <code>CachingFilter</code> uses the <code>BlockingCache</code>. It blocks until the thread which
+<p>Care should be taken not to define a filter chain such that the same <code class="highlighter-rouge">CachingFilter</code> class is reentered.
+  The <code class="highlighter-rouge">CachingFilter</code> uses the <code class="highlighter-rouge">BlockingCache</code>. It blocks until the thread which
   did a get which results in a null does a put. If reentry happens a second get happens before the first put. The second
   get could wait indefinitely. This situation is monitored and if it happens, an IllegalStateException will be thrown.</p>
 
@@ -339,8 +344,7 @@ that is only applicable to the entire page.</p>
 
 <h2 id="example-web.xml-configuration">Example web.xml configuration</h2>
 
-<pre>
-   <code>&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 version="2.5"&gt;
@@ -410,13 +414,12 @@ version="2.5"&gt;
 &lt;filter-name&gt;SimpleCachingHeadersPageCachingFilter&lt;/filter-name&gt;
 &lt;url-pattern&gt;/CachedPage2.jsp&lt;/url-pattern&gt;
  &lt;/filter-mapping&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>An ehcache.xml configuration file, matching the above would then be:</p>
 
-<pre>
-   <code>&lt;Ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;Ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd"&gt;
 &lt;diskStore path="auto/default/path"/&gt;
  &lt;defaultCache
@@ -455,8 +458,8 @@ xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd"&gt;
   &lt;persistence strategy="localTempSwap"/&gt;
 &lt;/cache&gt;
 &lt;/ehcache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h2 id="cachingfilter-exceptions">CachingFilter Exceptions</h2>
 <p>Additional exception types have been added to the Caching Filter.</p>
@@ -476,13 +479,13 @@ xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd"&gt;
   is getting content that is double or triple gzipped. They will either get unreadable content or a blank page.</p>
 
 <h3 id="responseheadersnotmodifiableexception-a-nameresponseheadersnotmodifiableexception">ResponseHeadersNotModifiableException <a name="ResponseHeadersNotModifiableException" id="ResponseHeadersNotModifiableException"></a></h3>
-<p>A gzip encoding header needs to be added for gzipped content. The <code>HttpServletResponse#setHeader()</code> method
+<p>A gzip encoding header needs to be added for gzipped content. The <code class="highlighter-rouge">HttpServletResponse#setHeader()</code> method
   is used for that purpose. If the header had already been set, the new value normally overwrites the previous one.
   In some cases according to the servlet specification, setHeader silently fails. Two scenarios where this happens are:</p>
 
 <ul>
   <li>The response is committed.</li>
-  <li><code>RequestDispatcher#include</code> method caused the request.</li>
+  <li><code class="highlighter-rouge">RequestDispatcher#include</code> method caused the request.</li>
 </ul>
 
       </article>
@@ -581,7 +584,7 @@ xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd"&gt;
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

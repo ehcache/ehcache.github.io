@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.7 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.7 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,57 +147,22 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
-        <h1 id="thundering-herd">Thundering Herd</h1><div id="toc-container">
-   <table class="toc" id="toc">
-      <tbody>
-         <tr>
-            <td>
-               <ul>
-                  <li class="toc_level-1 toc_section-1">
-                     <a href="#thundering-herd">
-                        <span class="toctext">Thundering Herd</span>
-                     </a>
-                     <ul>
-                        <li class="toc_level-2 toc_section-2">
-                           <a href="#introduction">
-                              <span class="toctext">Introduction</span>
-                           </a>
-                        </li>
-                        <li class="toc_level-2 toc_section-3">
-                           <a href="#problem">
-                              <span class="toctext">Problem</span>
-                           </a>
-                        </li>
-                        <li class="toc_level-2 toc_section-4">
-                           <a href="#solution">
-                              <span class="toctext">Solution</span>
-                           </a>
-                        </li>
-                        <li class="toc_level-2 toc_section-5">
-                           <a href="#discussion">
-                              <span class="toctext">Discussion</span>
-                           </a>
-                        </li>
-                     </ul>
-                  </li>
-               </ul>
-            </td>
-         </tr>
-      </tbody>
-   </table>
-</div>
+        <p>#Thundering Herd</p>
 
-<h2 id="introduction">Introduction</h2>
-<p>When many readers simultaneously request the same data element, there can be a database read overload, sometimes called the “Thundering Herd” problem. This page addresses how to prevent it in a single JVM or a clustered configuration.</p>
+<p>##Introduction
+When many readers simultaneously request the same data element, there can be a database read overload, sometimes called the “Thundering Herd” problem. This page addresses how to prevent it in a single JVM or a clustered configuration.</p>
 
-<h2 id="problem">Problem</h2>
+<p>##Problem</p>
 
 <p>Many readers read an empty value from the cache and subseqeuntly try to load it from the database. The result is unnecessary database load as all readers simultaneously execute the same query against the database.</p>
 
-<h2 id="solution">Solution</h2>
+<p>##Solution</p>
 
 <p>Implement the <a href="/documentation/2.7/get-started/concepts#cache-as-sor">cache-as-sor</a> pattern by using a <a href="/documentation/2.7/apis/constructs">BlockingCache or SelfPopulatingCache</a> included with Ehcache.</p>
 
@@ -205,7 +170,7 @@
 
 <p>Even better, when used in a cluster with Terracotta, Ehcache will automatically coordinate access to the cache across the cluster, and no matter how many application servers are deployed, still only one user request will be serviced by the database on cache misses.</p>
 
-<h2 id="discussion">Discussion</h2>
+<p>##Discussion</p>
 
 <p>The “thundering herd” problem occurs in a highly concurrent environment (typically, many users). When many users make a request to the same piece of data at the same time, and there is a cache miss (the data for the cached element is not present in the cache) the thundering herd problem is triggered.</p>
 
@@ -213,8 +178,7 @@
 
 <p>The application is using a cache using a read-through pattern with code that looks approximately like:</p>
 
-<pre>
-   <code>/* read some data, check cache first, otherwise read from sor */
+<div class="highlighter-rouge"><pre class="highlight"><code>/* read some data, check cache first, otherwise read from sor */
 public V readSomeData(K key)
 {
     Element element;
@@ -230,8 +194,8 @@ public V readSomeData(K key)
 
     return value;
 "/&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Upon publication to the front page of a website, a news story will then likely be clicked on by many users all at approximately the same time.</p>
 
@@ -337,7 +301,7 @@ public V readSomeData(K key)
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

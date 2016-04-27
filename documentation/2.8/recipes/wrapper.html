@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,68 +147,32 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
-        <h1 id="echache-wrapper">Echache Wrapper</h1><div id="toc-container">
-   <table class="toc" id="toc">
-      <tbody>
-         <tr>
-            <td>
-               <ul>
-                  <li class="toc_level-1 toc_section-1">
-                     <a href="#echache-wrapper">
-                        <span class="toctext">Echache Wrapper</span>
-                     </a>
-                     <ul>
-                        <li class="toc_level-2 toc_section-2">
-                           <a href="#introduction">
-                              <span class="toctext">Introduction</span>
-                           </a>
-                        </li>
-                        <li class="toc_level-2 toc_section-3">
-                           <a href="#problem">
-                              <span class="toctext">Problem</span>
-                           </a>
-                        </li>
-                        <li class="toc_level-2 toc_section-4">
-                           <a href="#solution">
-                              <span class="toctext">Solution</span>
-                           </a>
-                        </li>
-                        <li class="toc_level-2 toc_section-5">
-                           <a href="#discussion">
-                              <span class="toctext">Discussion</span>
-                           </a>
-                        </li>
-                     </ul>
-                  </li>
-               </ul>
-            </td>
-         </tr>
-      </tbody>
-   </table>
-</div>
+        <p>#Echache Wrapper</p>
 
-<h2 id="introduction">Introduction</h2>
-<p>This page provides an example of a simple class to make accessing Ehcache easier for simple use cases.</p>
+<p>##Introduction
+This page provides an example of a simple class to make accessing Ehcache easier for simple use cases.</p>
 
-<h2 id="problem">Problem</h2>
+<p>##Problem</p>
 
 <p>Using the full Ehcache API can be more tedious than using just a simple, value-based cache (like a HashMap) because of the Element class that holds values.</p>
 
-<h2 id="solution">Solution</h2>
+<p>##Solution</p>
 
 <p>Implement a simple cache wrapper to hide the use of the Element class.</p>
 
-<h2 id="discussion">Discussion</h2>
+<p>##Discussion</p>
 
 <p>Here’s a simple class you can use to simplify using Ehcache in certain simple use cases.</p>
 
 <p>You can still get the Ehcache cache in case you want access to the full API.</p>
 
-<pre>
-   <code>public interface CacheWrapper&lt;K, V&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>public interface CacheWrapper&lt;K, V&gt;
 {
   void put(K key, V value);
 
@@ -249,8 +213,8 @@ public class EhcacheWrapper&lt;K, V&gt; implements CacheWrapper&lt;K, V&gt;
         return cacheManager.getEhcache(cacheName);
     "/&gt;
 "/&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
       </article>
     </div>
@@ -348,7 +312,7 @@ public class EhcacheWrapper&lt;K, V&gt; implements CacheWrapper&lt;K, V&gt;
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

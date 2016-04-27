@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.7 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.7 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="building-and-testing-ehcache">Building and Testing Ehcache</h1><div id="toc-container">
@@ -195,7 +198,7 @@
 
 <h2 id="building-from-source-&lt;a-name=”building-from-source}">Building from Source &lt;a name=”building-from-source}</h2>
 
-<p>These instructions work for each of the <a href="http://ehcache.org/modules">modules</a>, except for <code>ehcache-jmsreplication</code>, which requires installation of a message queue. See <a href="/documentation/2.7/replication/jms-replicated-caching">Replicated Caching using JMS</a> for details.</p>
+<p>These instructions work for each of the <a href="http://ehcache.org/modules">modules</a>, except for <code class="highlighter-rouge">ehcache-jmsreplication</code>, which requires installation of a message queue. See <a href="/documentation/2.7/replication/jms-replicated-caching">Replicated Caching using JMS</a> for details.</p>
 
 <h3 id="building-an-ehcache-distribution-from-source-a-namebuilding-an-ehcache-distribution-from-source">Building an Ehcache distribution from source &lt;a name=”building-an-ehcache-distribution-from-source}</h3>
 
@@ -204,7 +207,7 @@
 <ol>
   <li>Check the source out from the <a href="http://svn.terracotta.org/svn/ehcache/">subversion repository</a>.</li>
   <li>Ensure you have a valid JDK and Maven 2 installation.</li>
-  <li>From within the ehcache/core directory, type <code>mvn -Dmaven.test.skip=true install</code></li>
+  <li>From within the ehcache/core directory, type <code class="highlighter-rouge">mvn -Dmaven.test.skip=true install</code></li>
 </ol>
 
 <h3 id="running-tests-for-ehcache-a-namerunning-tests-for-ehcache">Running Tests for Ehcache &lt;a name=”running-tests-for-ehcache}</h3>
@@ -214,8 +217,8 @@
 <ol>
   <li>Check the source out from the subversion repository.</li>
   <li>Ensure you have a valid JDK and Maven 2 installation.</li>
-  <li>From within the ehcache/core directory, type <code>mvn test</code></li>
-  <li>If some performance tests fail, add a <code>-D net.sf.ehcache.speedAdjustmentFactor=x</code> System property to your command line, where x is how many times your machine is slower than the reference machine. Try setting it to 5 for a start.</li>
+  <li>From within the ehcache/core directory, type <code class="highlighter-rouge">mvn test</code></li>
+  <li>If some performance tests fail, add a <code class="highlighter-rouge">-D net.sf.ehcache.speedAdjustmentFactor=x</code> System property to your command line, where x is how many times your machine is slower than the reference machine. Try setting it to 5 for a start.</li>
 </ol>
 
 <h2 id="java-requirements-and-dependencies">Java Requirements and Dependencies</h2>
@@ -240,22 +243,20 @@ which provides a choice of concrete logging implementation. See the page on <a h
 
 <p>To include Ehcache in your project, use:</p>
 
-<pre>
-   <code>&lt;dependency&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
   &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
   &lt;artifactId&gt;ehcache&lt;/artifactId&gt;
   &lt;version&gt;2.3.1&lt;/version&gt;
   &lt;type&gt;pom&lt;/type&gt;
 &lt;/dependency&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Note: Be sure to substitute the version number above with the version number of Ehcache that you want to use.</p>
 
 <p>If using Terracotta Distributed Ehcache, also add:</p>
 
-<pre>
-   <code>&lt;dependency&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
   &lt;groupId&gt;org.terracotta&lt;/groupId&gt;
   &lt;artifactId&gt;terracotta-toolkit-1.4-runtime&lt;/artifactId&gt;
   &lt;version&gt;4.0.0&lt;/version&gt;
@@ -270,8 +271,8 @@ which provides a choice of concrete logging implementation. See the page on <a h
     &lt;/releases&gt;
   &lt;/repository&gt;
 &lt;/repositories&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Be sure to check the dependency versions for compatibility. Versions released in a single kit are guaranteed compatible.</p>
 
@@ -284,8 +285,7 @@ There are plugins for Maven and Ant to simplify and automate this process.</p>
 
 <h4 id="setting-up-for-integration-testing">Setting up for Integration Testing</h4>
 
-<pre>
-   <code>&lt;pluginRepositories&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;pluginRepositories&gt;
    &lt;pluginRepository&gt;
        &lt;id&gt;terracotta-snapshots&lt;/id&gt;
        &lt;url&gt;http://www.terracotta.org/download/reflector/maven2&lt;/url&gt;
@@ -318,25 +318,23 @@ There are plugins for Maven and Ant to simplify and automate this process.</p>
        &lt;/execution&gt;
    &lt;/executions&gt;
 &lt;/plugin&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Note: Be sure to substitute the version number above with the current version number.</p>
 
 <h4 id="interactive-testing">Interactive Testing</h4>
 <p>To start Terracotta:</p>
 
-<pre>
-   <code>mvn tc:start
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>mvn tc:start
+</code></pre>
+</div>
 
 <p>To stop Terracotta:</p>
 
-<pre>
-   <code>mvn tc:stop
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>mvn tc:stop
+</code></pre>
+</div>
 
 <p>See the <a href="http://forge.terracotta.org/releases/projects/tc-maven-plugin/">Terracotta Forge</a> for a complete reference.</p>
 
@@ -436,7 +434,7 @@ There are plugins for Maven and Ant to simplify and automate this process.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

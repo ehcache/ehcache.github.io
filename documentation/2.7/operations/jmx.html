@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.7 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.7 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="management-and-monitoring-using-jmx-">Management and Monitoring using JMX <a name="JMX-Management-and-Monitoring" id="JMX-Management-and-Monitoring"></a></h1><div id="toc-container">
@@ -239,13 +242,13 @@ shows statistics for Ehcache.</p>
 <h2 id="jmx-overview-">JMX Overview <a name="jmx" id="jmx"></a></h2>
 <p>JMX creates a standard way of instrumenting classes and making them
 available to a management and monitoring infrastructure.
-The <code>net.sf.ehcache.management</code> package contains MBeans and a <code>ManagementService</code> for JMX management of ehcache. It
+The <code class="highlighter-rouge">net.sf.ehcache.management</code> package contains MBeans and a <code class="highlighter-rouge">ManagementService</code> for JMX management of ehcache. It
 is in a separate package so that JMX libraries are only required if you wish to use it - there is no leakage of JMX dependencies
 into the core Ehcache package.</p>
 
-<p>Use <code>net.sf.ehcache.management.ManagementService.registerMBeans(...)</code> static method
+<p>Use <code class="highlighter-rouge">net.sf.ehcache.management.ManagementService.registerMBeans(...)</code> static method
 to register a selection of MBeans to the MBeanServer provided to the method.
-If you wish to monitor Ehcache but not use JMX, just use the existing public methods on <code>Cache</code> and <code>CacheStatistics</code>.</p>
+If you wish to monitor Ehcache but not use JMX, just use the existing public methods on <code class="highlighter-rouge">Cache</code> and <code class="highlighter-rouge">CacheStatistics</code>.</p>
 
 <p>The Management package is illustrated in the follwing image.</p>
 
@@ -268,8 +271,8 @@ traversal to its collection of Cache MBeans. Each Cache MBean likewise allows tr
 its CacheConfiguration MBean and its CacheStatistics MBean.</p>
 
 <h2 id="jmx-remoting-">JMX Remoting <a name="JMXr-Remoting" id="JMXr-Remoting"></a></h2>
-<p>The Remote API allows connection from a remote JMX Agent to an MBeanServer via an <a id="MBeanServerConnection"></a><code>MBeanServerConnection</code>.
-Only <code>Serializable</code> attributes are available remotely. The following Ehcache MBean attributes are available remotely:</p>
+<p>The Remote API allows connection from a remote JMX Agent to an MBeanServer via an <a id="MBeanServerConnection"></a><code class="highlighter-rouge">MBeanServerConnection</code>.
+Only <code class="highlighter-rouge">Serializable</code> attributes are available remotely. The following Ehcache MBean attributes are available remotely:</p>
 
 <ul>
   <li>limited CacheManager attributes</li>
@@ -279,9 +282,9 @@ Only <code>Serializable</code> attributes are available remotely. The following 
 </ul>
 
 <p>Most attributes use built-in types. To access all attributes, you need to add ehcache.jar to the remote JMX client’s
-classpath e.g. <code>jconsole -J-Djava.class.path=ehcache.jar</code>.</p>
+classpath e.g. <code class="highlighter-rouge">jconsole -J-Djava.class.path=ehcache.jar</code>.</p>
 
-<h2 id="objectname-naming-scheme"><code>ObjectName</code> naming scheme</h2>
+<h2 id="objectname-naming-scheme"><code class="highlighter-rouge">ObjectName</code> naming scheme</h2>
 <ul>
   <li>CacheManager - “net.sf.ehcache:type=CacheManager,name=&lt;CacheManager&gt;”</li>
   <li>Cache - “net.sf.ehcache:type=Cache,CacheManager=&lt;cacheManagerName&gt;,name=&lt;cacheName&gt;”</li>
@@ -291,11 +294,11 @@ classpath e.g. <code>jconsole -J-Djava.class.path=ehcache.jar</code>.</p>
 </ul>
 
 <h2 id="the-management-service-">The Management Service <a name="Management-Service" id="Management-Service"></a></h2>
-<p>The <code>ManagementService</code> class is the API entry point.
+<p>The <code class="highlighter-rouge">ManagementService</code> class is the API entry point.
 <img src="/images/documentation/ManagementService.png" alt="Ehcache Image" /> 
-There is only one method, <code>ManagementService.registerMBeans</code> which is used to initiate JMX registration
+There is only one method, <code class="highlighter-rouge">ManagementService.registerMBeans</code> which is used to initiate JMX registration
 of an Ehcache CacheManager’s instrumented MBeans.
-The <code>ManagementService</code> is a <code>CacheManagerEventListener</code> and
+The <code class="highlighter-rouge">ManagementService</code> is a <code class="highlighter-rouge">CacheManagerEventListener</code> and
 is therefore notified of any new Caches added or disposed and updates the MBeanServer appropriately.
 Once initiated the MBeans remain registered in the MBeanServer until the CacheManager shuts down, at which time
 the MBeans are deregistered. This behaviour ensures correct behaviour in application servers where applications are
@@ -354,9 +357,9 @@ ManagementService.registerMBeans(manager, mBeanServer, false, false, false, true
 <h2 id="hibernate-statistics-">Hibernate statistics <a name="Hibernate-statistics" id="Hibernate-statistics"></a></h2>
 <p>If you are running Terracotta clustered caches as hibernate second-level cache provider, it is possible to access 
 the hibernate statistics + ehcache stats etc via jmx.
-<code>EhcacheHibernateMBean</code> is the main interface that exposes all the API’s via jmx. It basically extends
-two interfaces – <code>EhcacheStats</code> and <code>HibernateStats</code>. And as the name implies <code>EhcacheStats</code> contains
-methods related with Ehcache and <code>HibernateStats</code> related with Hibernate.
+<code class="highlighter-rouge">EhcacheHibernateMBean</code> is the main interface that exposes all the API’s via jmx. It basically extends
+two interfaces – <code class="highlighter-rouge">EhcacheStats</code> and <code class="highlighter-rouge">HibernateStats</code>. And as the name implies <code class="highlighter-rouge">EhcacheStats</code> contains
+methods related with Ehcache and <code class="highlighter-rouge">HibernateStats</code> related with Hibernate.
 You can see cache hit/miss/put rates, change config element values dynamically – like maxElementInMemory, TTI, TTL,
 enable/disable statistics collection etc and various other things. Please look into the specific interface for more
 details.</p>
@@ -367,7 +370,7 @@ details.</p>
 <h2 id="performance">Performance</h2>
 <p>Collection of cache statistics is not entirely free of overhead.  In production systems where monitoring
 is not required statistics can be disabled.  This can be done either programatically by calling
-<code>setStatisticsEnabled(false)</code> on the cache instance, or in configuration by setting the <code>statistics="false"</code>
+<code class="highlighter-rouge">setStatisticsEnabled(false)</code> on the cache instance, or in configuration by setting the <code class="highlighter-rouge">statistics="false"</code>
 attribute of the relevant cache configuration element.
 From Ehcache 2.1.0 statistics are off by default.</p>
 
@@ -467,7 +470,7 @@ From Ehcache 2.1.0 statistics are off by default.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 
