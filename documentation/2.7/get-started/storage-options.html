@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="storage-options-">Storage Options <a name="Storage-Options" id="Storage-Options"></a></h1><div id="toc-container">
@@ -217,7 +214,7 @@
 <p>For information about sizing the tiers, refer to <a href="/documentation/2.7/configuration/cache-size#cache-configuration-sizing-attributes">Cache Configuration Sizing Attributes</a>.</p>
 
 <h2 id="memorystore">MemoryStore</h2>
-<p>The <code class="highlighter-rouge">MemoryStore</code> is always enabled. It is not directly manipulated, but is a component of every cache.</p>
+<p>The <code>MemoryStore</code> is always enabled. It is not directly manipulated, but is a component of every cache.</p>
 
 <h3 id="suitable-element-types">Suitable Element Types</h3>
 <p>All Elements are suitable for placement in the MemoryStore. It has the following characteristics:</p>
@@ -249,7 +246,7 @@ memory size, an existing element is either:</p>
 <p>If overflow is enabled, a check for expiry is carried out. Expired elements
 are deleted; unexpired elements are spooled. The eviction of an item from
 the memory store is based on the ‘MemoryStoreEvictionPolicy’ setting
-specified in the configuration file. <code class="highlighter-rouge">memoryStoreEvictionPolicy</code> is an optional attribute in <code class="highlighter-rouge">ehcache.xml</code>, first introduced in Ehcache 1.2. Legal values are LRU (default, consistent with all earlier releases of Ehcache), LFU and FIFO:</p>
+specified in the configuration file. <code>memoryStoreEvictionPolicy</code> is an optional attribute in <code>ehcache.xml</code>, first introduced in Ehcache 1.2. Legal values are LRU (default, consistent with all earlier releases of Ehcache), LFU and FIFO:</p>
 
 <ul>
   <li><strong>Least Recently Used (LRU)</strong> *Default**—The eldest element, is the Least Recently Used (LRU). The last used timestamp is updated when an element is put into the cache or an element is retrieved from the cache with a get call.</li>
@@ -257,16 +254,16 @@ specified in the configuration file. <code class="highlighter-rouge">memoryStore
   <li><strong>First In First Out (FIFO)</strong>—Elements are evicted in the same order as they come in. When a put call is made for a new element (and assuming that the max limit is reached for the MemoryStore) the element that was placed first (First-In) in the store is the candidate for eviction (First-Out).</li>
 </ul>
 
-<p>For all the eviction policies there are also <code class="highlighter-rouge">putQuiet</code> and <code class="highlighter-rouge">getQuiet</code> methods which do not update the last used timestamp.</p>
+<p>For all the eviction policies there are also <code>putQuiet</code> and <code>getQuiet</code> methods which do not update the last used timestamp.</p>
 
-<p>When there is a <code class="highlighter-rouge">get</code> or a <code class="highlighter-rouge">getQuiet</code> on an element, it is checked for expiry. If expired, it is removed and null is returned.</p>
+<p>When there is a <code>get</code> or a <code>getQuiet</code> on an element, it is checked for expiry. If expired, it is removed and null is returned.</p>
 
 <p>Note that at any point in time there will usually be some expired
 elements in the cache. Memory sizing of an application must always take into
 account the maximum size of each cache.</p>
 
 <p>There is a convenient method
-which can provide an estimate of the size in bytes of the <code class="highlighter-rouge">MemoryStore</code>, <a href="http://ehcache.org/apidocs/2.7.6/net/sf/ehcache/Cache.html#calculateInMemorySize%28%29">calculateInMemorySize()</a>.
+which can provide an estimate of the size in bytes of the <code>MemoryStore</code>, <a href="http://ehcache.org/apidocs/2.7.6/net/sf/ehcache/Cache.html#calculateInMemorySize%28%29">calculateInMemorySize()</a>.
 It returns the serialized size of the cache. However, do not use this method in production, as it is very slow. It is only meant to provide a rough estimate.</p>
 
 <p>An alternative would be to have an expiry thread. This is a trade-off between lower memory use and short locking periods and CPU utilization. The design is in favour of the latter. For those concerned with memory use, simply reduce the cache’s size in memory (see <a href="/documentation/2.7/configuration/cache-size">How to Size Caches</a> for more information).</p>
@@ -293,7 +290,7 @@ type of memory store outside the object heap.  This off-heap store, which is not
 
 <h4 id="diskstores-are-optional">DiskStores are Optional</h4>
 
-<p>The <code class="highlighter-rouge">diskStore</code> element in ehcache.xml is optional. If all caches use only MemoryStores,
+<p>The <code>diskStore</code> element in ehcache.xml is optional. If all caches use only MemoryStores,
 then there is no need to configure a DiskStore. This simplifies configuration, and uses less threads. It is also good when multiple CacheManagers are being used, and multiple disk store paths would need to be configured.</p>
 
 <p>DiskStores are configured on a per CacheManager basis. If one or more caches requires a DiskStore but none is configured, a default directory will be used and
@@ -301,21 +298,21 @@ a warning message will be logged to encourage explicit configuration of the Disk
 
 <h4 id="turning-off-diskstores">Turning off DiskStores</h4>
 
-<p>To turn off disk store path creation, comment out the <code class="highlighter-rouge">diskStore</code> element in ehcache.xml.</p>
+<p>To turn off disk store path creation, comment out the <code>diskStore</code> element in ehcache.xml.</p>
 
 <p>The ehcache-failsafe.xml configuration uses a DiskStore. This will remain the case so as to not affect
 existing Ehcache deployments. So if you do not wish to use a DiskStore, make
-sure you specify your own ehcache.xml and comment out the <code class="highlighter-rouge">diskStore</code> element.</p>
+sure you specify your own ehcache.xml and comment out the <code>diskStore</code> element.</p>
 
 <h3 id="suitable-element-types-1">Suitable Element Types</h3>
 
-<p>Only Elements which are <code class="highlighter-rouge">Serializable</code> can be placed in the DiskStore. Any non-serializable
+<p>Only Elements which are <code>Serializable</code> can be placed in the DiskStore. Any non-serializable
 Elements which attempt to overflow to the DiskStore will be removed instead, and a NotSerializableException will be thrown.</p>
 
 <p>DiskStores are thread safe.</p>
 
 <h4 id="serialization">Serialization</h4>
-<p>Writes to and from the disk use <code class="highlighter-rouge">ObjectInputStream</code> and the Java serialization mechanism.</p>
+<p>Writes to and from the disk use <code>ObjectInputStream</code> and the Java serialization mechanism.</p>
 
 <p>Serialization speed is affected by the size of the objects being
 serialized and their type. It has been found in the ElementTest that:</p>
@@ -336,28 +333,29 @@ serialized and their type. It has been found in the ElementTest that:</p>
   <li>“localRestartable” for disk persistence (<a href="http://www.terracotta.org/products/bigmemorygo">BigMemory Go</a> only)</li>
 </ul>
 
-<p>####localTempSwap</p>
+<h4 id="localtempswap">localTempSwap</h4>
 
 <p>The “localTempSwap” strategy allows the cache to overflow to disk during cache operation, providing an extra tier for cache storage. This disk storage is temporary and is cleared after a restart.</p>
 
 <p>If the disk store path is not specified, a default path is used, and the default will be auto-resolved in the case of a conflict with another CacheManager.</p>
 
-<p>The TempSwap DiskStore creates a data file for each cache on startup called “<code class="highlighter-rouge">&lt;cache_name&gt;</code>.data”.</p>
+<p>The TempSwap DiskStore creates a data file for each cache on startup called “<code>&lt;cache_name&gt;</code>.data”.</p>
 
-<p>####localRestartable</p>
+<h4 id="localrestartable">localRestartable</h4>
 
 <p>The “localRestartable” persistence strategy implements a restartable store that is a mirror of the in-memory cache. After any restart, data that was last in the cache will automatically load into the restartable store, and from there the data will be available to the cache.</p>
 
-<p>The path to the directory where any required disk files will be created is configured with the <code class="highlighter-rouge">&lt;diskStore&gt;</code> sub-element of the Ehcache configuration. In order to use the restartable store, a unique and explicitly specified path is required.</p>
+<p>The path to the directory where any required disk files will be created is configured with the <code>&lt;diskStore&gt;</code> sub-element of the Ehcache configuration. In order to use the restartable store, a unique and explicitly specified path is required.</p>
 
 <h3 id="diskstore-configuration-element">DiskStore Configuration Element</h3>
 
-<p>Files are created in the directory specified by the <code class="highlighter-rouge">&lt;diskStore&gt;</code>
-configuration element. The <code class="highlighter-rouge">&lt;diskStore&gt;</code> element has one attribute called <code class="highlighter-rouge">path</code>.</p>
+<p>Files are created in the directory specified by the <code>&lt;diskStore&gt;</code>
+configuration element. The <code>&lt;diskStore&gt;</code> element has one attribute called <code>path</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;diskStore path="/path/to/store/data"/&gt;
-</code></pre>
-</div>
+<pre>
+   <code>&lt;diskStore path="/path/to/store/data"/&gt;
+</code>
+</pre>
 
 <p>Legal values for the path attibute are legal file-system paths. For example, for Unix:</p>
 
@@ -372,7 +370,7 @@ configuration element. The <code class="highlighter-rouge">&lt;diskStore&gt;</co
   <li>user.dir - User’s current working directory</li>
   <li>java.io.tmpdir - Default temp file path</li>
   <li>ehcache.disk.store.dir - A system property you would normally specify on the command line—for example,
-<code class="highlighter-rouge">java -Dehcache.disk.store.dir=/u01/myapp/diskdir</code></li>
+<code>java -Dehcache.disk.store.dir=/u01/myapp/diskdir</code></li>
 </ul>
 
 <p>Subdirectories can be specified below the system property, for example:</p>
@@ -383,7 +381,8 @@ user.dir/one
 
 <p>To programmatically set a DiskStore path:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>DiskStoreConfiguration diskStoreConfiguration = new DiskStoreConfiguration();
+<pre>
+   <code>DiskStoreConfiguration diskStoreConfiguration = new DiskStoreConfiguration();
 
 diskStoreConfiguration.setPath("/my/path/dir");
 
@@ -391,24 +390,24 @@ diskStoreConfiguration.setPath("/my/path/dir");
 configuration.addDiskStore(diskStoreConfiguration);
 
 CacheManager mgr = new CacheManager(configuration);
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p><strong>Note</strong>: A CacheManager’s DiskStore path cannot be changed once it is set in configuration. If the DiskStore path is changed, the CacheManager must be recycled for the new path to take effect.</p>
 
 <h3 id="expiry-and-eviction">Expiry and Eviction</h3>
 <p>Expired elements are eventually evicted to free up disk space. The element is also removed from the in-memory index of elements.</p>
 
-<p>One thread per cache is used to remove expired elements. The optional attribute <code class="highlighter-rouge">diskExpiryThreadIntervalSeconds</code>
+<p>One thread per cache is used to remove expired elements. The optional attribute <code>diskExpiryThreadIntervalSeconds</code>
 sets the interval between runs of the expiry thread.</p>
 
-<p><strong>Warning</strong>: Setting <code class="highlighter-rouge">diskExpiryThreadIntervalSeconds</code> to a low value
+<p><strong>Warning</strong>: Setting <code>diskExpiryThreadIntervalSeconds</code> to a low value
 is not recommended. It can cause excessive DiskStore locking and high CPU utilization. The default value is 120 seconds.</p>
 
 <p>If a cache’s DiskStore has a limited size, Elements will be evicted from the DiskStore when it exceeds this limit.
 The LFU algorithm is used for these evictions. It is not configurable or changeable.</p>
 
-<p><strong>Note</strong>: With the “localTempSwap” strategy, you can use <code class="highlighter-rouge">maxEntriesLocalDisk</code> or <code class="highlighter-rouge">maxBytesLocalDisk</code> at either the Cache or CacheManager level to control the size of the swap-to-disk area.</p>
+<p><strong>Note</strong>: With the “localTempSwap” strategy, you can use <code>maxEntriesLocalDisk</code> or <code>maxBytesLocalDisk</code> at either the Cache or CacheManager level to control the size of the swap-to-disk area.</p>
 
 <h2 id="some-configuration-examples">Some Configuration Examples</h2>
 
@@ -468,7 +467,7 @@ java -Xms2G -Xmx2G -XX:maxDirectMemorySize=6G
   ...&gt;
 </pre>
 
-<p>Where Ehcache is being used without off-heap, do not use any of the off-heap sizing attributes. Use heap and disk (<code class="highlighter-rouge">maxEntrtiesLocalDisk</code>) sizing attributes to control overflow and conform to overall capacity.</p>
+<p>Where Ehcache is being used without off-heap, do not use any of the off-heap sizing attributes. Use heap and disk (<code>maxEntrtiesLocalDisk</code>) sizing attributes to control overflow and conform to overall capacity.</p>
 
 <h2 id="performance-considerations">Performance Considerations</h2>
 
@@ -584,7 +583,7 @@ java -Xms2G -Xmx2G -XX:maxDirectMemorySize=6G
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

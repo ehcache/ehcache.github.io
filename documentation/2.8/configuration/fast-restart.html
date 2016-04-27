@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.8 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.8 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="persistence-and-restartability-">Persistence and Restartability <a name="Fast-Restart" id="Fast-Restart"></a></h1><div id="toc-container">
@@ -214,23 +211,24 @@
 <h2 id="cache-persistence-implementation">Cache Persistence Implementation</h2>
 <p>Ehcache has a RestartStore which provides fast restartability and options for cache persistence. The RestartStore implements an on-disk mirror of the in-memory cache. After any restart, data that was last in the cache will automatically load from disk into the RestartStore, and from there the data will be available to the cache.</p>
 
-<p>Cache persistence on disk is configured by adding the <code class="highlighter-rouge">&lt;persistence&gt;</code> sub-element to a cache configuration. The <code class="highlighter-rouge">&lt;persistence&gt;</code> sub-element includes two attributes: <code class="highlighter-rouge">strategy</code> and <code class="highlighter-rouge">synchronousWrites</code>.</p>
+<p>Cache persistence on disk is configured by adding the <code>&lt;persistence&gt;</code> sub-element to a cache configuration. The <code>&lt;persistence&gt;</code> sub-element includes two attributes: <code>strategy</code> and <code>synchronousWrites</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache&gt;
+<pre>
+   <code>&lt;cache&gt;
    &lt;persistence strategy=”localRestartable|localTempSwap|none|distributed” synchronousWrites=”false|true”/&gt;
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
-<p>###Strategy Options
-The options for the <code class="highlighter-rouge">strategy</code> attribute are:</p>
+<h3 id="strategy-options">Strategy Options</h3>
+<p>The options for the <code>strategy</code> attribute are:</p>
 
 <ul>
   <li>
     <p><strong>“localRestartable”</strong> — Enables the RestartStore and copies all cache entries (on-heap and/or off-heap) to disk. This option provides fast restartability with fault tolerant cache persistence on disk. This option is available for <a href="http://terracotta.org/products/bigmemorygo">BigMemory Go</a> only.</p>
   </li>
   <li>
-    <p><strong>“distributed”</strong> — Defers to the <code class="highlighter-rouge">&lt;terracotta&gt;</code> configuration for persistence settings. This option is for <a href="http://terracotta.org/products/bigmemorymax">BigMemory Max</a> only.</p>
+    <p><strong>“distributed”</strong> — Defers to the <code>&lt;terracotta&gt;</code> configuration for persistence settings. This option is for <a href="http://terracotta.org/products/bigmemorymax">BigMemory Max</a> only.</p>
   </li>
   <li>
     <p><strong>“localTempSwap”</strong> — Enables temporary local disk usage. This option provides an extra tier for storage during cache operation, but this disk storage is not persisted. After a restart, the disk tier is cleared of any cache data.</p>
@@ -240,60 +238,63 @@ The options for the <code class="highlighter-rouge">strategy</code> attribute ar
   </li>
 </ul>
 
-<p>###Synchronous Writes Options
-If the <code class="highlighter-rouge">strategy</code> attribute is set to “localRestartable”, then the <code class="highlighter-rouge">synchronousWrites</code> attribute may be configured. The options for <code class="highlighter-rouge">synchronousWrites</code> are:</p>
+<h3 id="synchronous-writes-options">Synchronous Writes Options</h3>
+<p>If the <code>strategy</code> attribute is set to “localRestartable”, then the <code>synchronousWrites</code> attribute may be configured. The options for <code>synchronousWrites</code> are:</p>
 
 <ul>
   <li>
-    <p><strong>synchronousWrites=”false”</strong> — This option provides an eventually consistent copy of the cache on disk at all times. Writes to disk happen when efficient, and cache operations proceed without waiting for acknowledgement of writing to disk. After a restart, the cache is recovered as it was when last synced. This option is faster than <code class="highlighter-rouge">synchronousWrites="true"</code>, but after a crash, the last 2-3 seconds of written data may be lost.</p>
+    <p><strong>synchronousWrites=”false”</strong> — This option provides an eventually consistent copy of the cache on disk at all times. Writes to disk happen when efficient, and cache operations proceed without waiting for acknowledgement of writing to disk. After a restart, the cache is recovered as it was when last synced. This option is faster than <code>synchronousWrites="true"</code>, but after a crash, the last 2-3 seconds of written data may be lost.</p>
 
-    <p>If not specified, the default for <code class="highlighter-rouge">synchronousWrites</code> is “false”.</p>
+    <p>If not specified, the default for <code>synchronousWrites</code> is “false”.</p>
   </li>
   <li>
-    <p><strong>synchronousWrites=”true”</strong> — This option provides a fully consistent copy of the cache on disk at all times. As elements are put into the cache, they are synchronously written to disk. The write to disk happens before a put returns to the caller. After a restart, the cache is recovered exactly as it was before shutdown. This option is slower than <code class="highlighter-rouge">synchronousWrites="false"</code>, but after a crash, it provides full cache consistency.</p>
+    <p><strong>synchronousWrites=”true”</strong> — This option provides a fully consistent copy of the cache on disk at all times. As elements are put into the cache, they are synchronously written to disk. The write to disk happens before a put returns to the caller. After a restart, the cache is recovered exactly as it was before shutdown. This option is slower than <code>synchronousWrites="false"</code>, but after a crash, it provides full cache consistency.</p>
   </li>
 </ul>
 
-<p>For transaction caching with <code class="highlighter-rouge">synchronousWrites</code>, soft locks are used to protect access. If there is a crash in the middle of a transaction, then upon recovery the soft locks are cleared on next access.</p>
+<p>For transaction caching with <code>synchronousWrites</code>, soft locks are used to protect access. If there is a crash in the middle of a transaction, then upon recovery the soft locks are cleared on next access.</p>
 
-<p><strong>Note</strong>: The <code class="highlighter-rouge">synchronousWrites</code> attribute is also available in the <code class="highlighter-rouge">&lt;terracotta&gt;</code> sub-element. If configured in both places, it must have the same value.</p>
+<p><strong>Note</strong>: The <code>synchronousWrites</code> attribute is also available in the <code>&lt;terracotta&gt;</code> sub-element. If configured in both places, it must have the same value.</p>
 
-<p>###DiskStore Path
-The path to the directory where any required disk files will be created is configured with the <code class="highlighter-rouge">&lt;diskStore&gt;</code> sub-element of the Ehcache configuration.</p>
+<h3 id="diskstore-path">DiskStore Path</h3>
+<p>The path to the directory where any required disk files will be created is configured with the <code>&lt;diskStore&gt;</code> sub-element of the Ehcache configuration.</p>
 
 <p>For “localTempSwap”, if the DiskStore path is not specified, a default path is used for the disk storage tier, and the default path will be auto-resolved in the case of a conflict with another CacheManager.</p>
 
 <h2 id="configuration-examples">Configuration Examples</h2>
 <p>This section presents possible disk usage configurations for open-source Ehcache 2.6 and higher.</p>
 
-<p>###Temporary Disk Storage</p>
+<h3 id="temporary-disk-storage">Temporary Disk Storage</h3>
 
 <p>The “localTempSwap” persistence strategy allows the cache to use the local disk during cache operation. The disk storage is temporary and is cleared after a restart.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;ehcache&gt;
+<pre>
+   <code>&lt;ehcache&gt;
   &lt;diskStore path="/auto/default/path"/&gt;
   &lt;cache&gt;
     &lt;persistence strategy=”localTempSwap”/&gt;
   &lt;/cache&gt;
 &lt;/ehcache&gt;  
-</code></pre>
-</div>
+</code>
+</pre>
 
-<p><strong>Note</strong>: With the “localTempSwap” strategy, you can use <code class="highlighter-rouge">maxEntriesLocalDisk</code> or <code class="highlighter-rouge">maxBytesLocalDisk</code> at either the Cache or CacheManager level to control the size of the disk tier.</p>
+<p><strong>Note</strong>: With the “localTempSwap” strategy, you can use <code>maxEntriesLocalDisk</code> or <code>maxBytesLocalDisk</code> at either the Cache or CacheManager level to control the size of the disk tier.</p>
 
-<p>###In-memory Only Cache
-When the persistence strategy is “none”, all cache stays in memory (with no overflow to disk nor persistence on disk).</p>
+<h3 id="in-memory-only-cache">In-memory Only Cache</h3>
+<p>When the persistence strategy is “none”, all cache stays in memory (with no overflow to disk nor persistence on disk).</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache&gt;
+<pre>
+   <code>&lt;cache&gt;
   &lt;persistence strategy=”none”/&gt;
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
-<p>###Programmatic Configuration Example
-The following is an example of how to programmatically configure cache persistence on disk:</p>
+<h3 id="programmatic-configuration-example">Programmatic Configuration Example</h3>
+<p>The following is an example of how to programmatically configure cache persistence on disk:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Configuration cacheManagerConfig = new Configuration()
+<pre>
+   <code>Configuration cacheManagerConfig = new Configuration()
     .diskStore(new DiskStoreConfiguration()
     .path("/path/to/store/data"));
 CacheConfiguration cacheConfig = new CacheConfiguration()
@@ -306,8 +307,8 @@ cacheManagerConfig.addCache(cacheConfig);
 
 CacheManager cacheManager = new CacheManager(cacheManagerConfig);
 Ehcache myCache = cacheManager.getEhcache("my-cache");
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h2 id="compatibility-with-previous-versions">Compatibility with Previous Versions</h2>
 <p>###Comparison of Disk Usage Options
@@ -324,56 +325,56 @@ The following table summarizes the configuration options for disk usage in Ehcac
   <tbody>
     <tr>
       <td style="text-align: left">Fast Restartability with Strong Consistency</td>
-      <td style="text-align: left"><code class="highlighter-rouge">persistence strategy=”localRestartable” synchronousWrites=”true”</code> (Enterprise only)</td>
+      <td style="text-align: left"><code>persistence strategy=”localRestartable” synchronousWrites=”true”</code> (Enterprise only)</td>
       <td style="text-align: left">Not available</td>
     </tr>
     <tr>
       <td style="text-align: left">Fast Restartability with Eventual Consistency</td>
-      <td style="text-align: left"><code class="highlighter-rouge">persistence strategy=”localRestartable” synchronousWrites=”false”</code> (Enterprise only)</td>
+      <td style="text-align: left"><code>persistence strategy=”localRestartable” synchronousWrites=”false”</code> (Enterprise only)</td>
       <td style="text-align: left">Not available</td>
     </tr>
     <tr>
       <td style="text-align: left">Persistence for Clustered Caches</td>
-      <td style="text-align: left"><code class="highlighter-rouge">persistence strategy=”distributed”</code></td>
+      <td style="text-align: left"><code>persistence strategy=”distributed”</code></td>
       <td style="text-align: left">Remove or edit out any disk persistence configuration elements</td>
     </tr>
     <tr>
       <td style="text-align: left">Non-Fault-Tolerant Persistence</td>
       <td style="text-align: left">Use one of the fault-tolerant options above*</td>
-      <td style="text-align: left"><code class="highlighter-rouge">overflowToDisk="true" diskPersistent="true"</code>**</td>
+      <td style="text-align: left"><code>overflowToDisk="true" diskPersistent="true"</code>**</td>
     </tr>
     <tr>
       <td style="text-align: left">Temporary Storage Tier</td>
-      <td style="text-align: left"><code class="highlighter-rouge">persistence strategy=”localTempSwap”</code></td>
-      <td style="text-align: left"><code class="highlighter-rouge">overflowToDisk="true" diskPersistent="false"</code></td>
+      <td style="text-align: left"><code>persistence strategy=”localTempSwap”</code></td>
+      <td style="text-align: left"><code>overflowToDisk="true" diskPersistent="false"</code></td>
     </tr>
     <tr>
       <td style="text-align: left">In-memory Only (no disk usage)</td>
-      <td style="text-align: left"><code class="highlighter-rouge">persistence strategy=”none”</code></td>
-      <td style="text-align: left"><code class="highlighter-rouge">overflowToDisk="false"</code></td>
+      <td style="text-align: left"><code>persistence strategy=”none”</code></td>
+      <td style="text-align: left"><code>overflowToDisk="false"</code></td>
     </tr>
   </tbody>
 </table>
 
-<p>*It is recommended to use one of the fault-tolerant options, however non-fault-tolerant persistence is still available. If <code class="highlighter-rouge">&lt;persistence&gt;</code> has not been specified, you can still use <code class="highlighter-rouge">overflowToDisk="true" diskPersistent="true"</code>.</p>
+<p>*It is recommended to use one of the fault-tolerant options, however non-fault-tolerant persistence is still available. If <code>&lt;persistence&gt;</code> has not been specified, you can still use <code>overflowToDisk="true" diskPersistent="true"</code>.</p>
 
-<p>**In Ehcache 2.5 and earlier, cache persistence on disk for standalone Ehcache is configured with the <code class="highlighter-rouge">overflowToDisk</code> and <code class="highlighter-rouge">diskPersistent</code> attributes. If both are set to “true”, cached data is saved to disk asynchronously and can be recovered after a clean shutdown or planned flush. To prevent corrupt or inconsistent data from being returned, checking measures are performed upon a restart, and if any discrepancy is found, the cache that was stored on disk is emptied and must be reloaded from the data source.</p>
+<p>**In Ehcache 2.5 and earlier, cache persistence on disk for standalone Ehcache is configured with the <code>overflowToDisk</code> and <code>diskPersistent</code> attributes. If both are set to “true”, cached data is saved to disk asynchronously and can be recovered after a clean shutdown or planned flush. To prevent corrupt or inconsistent data from being returned, checking measures are performed upon a restart, and if any discrepancy is found, the cache that was stored on disk is emptied and must be reloaded from the data source.</p>
 
-<p>###Upgrading from Ehcache 2.5 and Earlier</p>
+<h3 id="upgrading-from-ehcache-25-and-earlier">Upgrading from Ehcache 2.5 and Earlier</h3>
 
-<p>After upgrading from a version of Ehcache previous to 2.6, it is strongly recommended to add the <code class="highlighter-rouge">&lt;persistence&gt;</code> sub-element to your cache configuration, and to delete, disable, or edit out disk persistence configuration elements from previous versions. The previous elements include:</p>
+<p>After upgrading from a version of Ehcache previous to 2.6, it is strongly recommended to add the <code>&lt;persistence&gt;</code> sub-element to your cache configuration, and to delete, disable, or edit out disk persistence configuration elements from previous versions. The previous elements include:</p>
 
 <ul>
-  <li><code class="highlighter-rouge">overflowToDisk</code></li>
-  <li><code class="highlighter-rouge">diskPersistence</code></li>
-  <li><code class="highlighter-rouge">DiskStoreBootstrapCacheLoaderFactory</code></li>
+  <li><code>overflowToDisk</code></li>
+  <li><code>diskPersistence</code></li>
+  <li><code>DiskStoreBootstrapCacheLoaderFactory</code></li>
 </ul>
 
-<p><strong>Note</strong>: If any of the elements above are specified in the same configuration with either the <code class="highlighter-rouge">&lt;persistence&gt;</code> sub-element or the <code class="highlighter-rouge">&lt;terracotta&gt;</code> sub-element, it will cause an Invalid Configuration Exception.</p>
+<p><strong>Note</strong>: If any of the elements above are specified in the same configuration with either the <code>&lt;persistence&gt;</code> sub-element or the <code>&lt;terracotta&gt;</code> sub-element, it will cause an Invalid Configuration Exception.</p>
 
-<p>After upgrading, however, it is not mandatory to add the <code class="highlighter-rouge">&lt;persistence&gt;</code> sub-element. In Ehcache 2.6 or higher, disk persistence configuration elements from previous Ehcache versions will continue to be available with the same functionality, as long as the <code class="highlighter-rouge">&lt;persistence&gt;</code> sub-element has not been specified.</p>
+<p>After upgrading, however, it is not mandatory to add the <code>&lt;persistence&gt;</code> sub-element. In Ehcache 2.6 or higher, disk persistence configuration elements from previous Ehcache versions will continue to be available with the same functionality, as long as the <code>&lt;persistence&gt;</code> sub-element has not been specified.</p>
 
-<p>For cache persistence on disk, you should continue to use the <code class="highlighter-rouge">overflowToDisk</code> and <code class="highlighter-rouge">diskPersistent</code> attributes. For more information, refer to <a href="http://ehcache.org/documentation/2.8/get-started/storage-options.html#Persistence">Persistence</a> in the Ehcache documentation.</p>
+<p>For cache persistence on disk, you should continue to use the <code>overflowToDisk</code> and <code>diskPersistent</code> attributes. For more information, refer to <a href="http://ehcache.org/documentation/2.8/get-started/storage-options.html#Persistence">Persistence</a> in the Ehcache documentation.</p>
 
       </article>
     </div>
@@ -471,7 +472,7 @@ The following table summarizes the configuration options for disk usage in Ehcac
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

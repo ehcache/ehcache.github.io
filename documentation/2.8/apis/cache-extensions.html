@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.8 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.8 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="cache-extensions-">Cache Extensions <a name="Cache-Extensions" id="Cache-Extensions"></a></h1><div id="toc-container">
@@ -202,7 +199,7 @@ Cache and properties. It can thus call back into any public method on Cache, inc
 course, the load methods.
 CacheExtensions are suitable for timing services, where you want to create a timer to perform
 cache operations. The other way of adding Cache behaviour is to decorate a cache.
-See <code class="highlighter-rouge">link net.sf.ehcache.constructs.blocking.BlockingCache</code> for an example of how to do this.
+See <code>link net.sf.ehcache.constructs.blocking.BlockingCache</code> for an example of how to do this.
 Because a CacheExtension holds a reference to a Cache, the CacheExtension can do things such as registering a CacheEventListener
 or even a CacheManagerEventListener, all from within a CacheExtension, creating more opportunities for customisation.</p>
 
@@ -210,13 +207,14 @@ or even a CacheManagerEventListener, all from within a CacheExtension, creating 
 <p>Cache extension are configured per cache. Each cache can have zero or more.
 A CacheExtension is configured by adding a cacheExceptionHandlerFactory element as shown in the following example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache ...&gt;
+<pre>
+   <code>&lt;cache ...&gt;
     &lt;cacheExtensionFactory class="com.example.FileWatchingCacheRefresherExtensionFactory"
     properties="refreshIntervalMillis=18000, loaderTimeout=3000,
         flushPeriod=whatever, someOtherProperty=someValue ..."/&gt;
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h2 id="implementing-a-cacheextensionfactory-and-cacheextension-">Implementing a CacheExtensionFactory and CacheExtension <a name="CacheExtensionFactory" id="CacheExtensionFactory"></a></h2>
 <p>CacheExtensionFactory is an abstract factory for creating
@@ -424,7 +422,7 @@ cache.registerCacheExtension(testCacheExtension);
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

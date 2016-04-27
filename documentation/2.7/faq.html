@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="ehcache-technical-faq">Ehcache Technical FAQ</h1><div id="toc-container">
@@ -240,7 +237,7 @@ they are mandatory. See the <a href="/documentation/2.7/configuration/configurat
 <h4 id="how-is-auto-versioning-of-elements-handled">How is auto-versioning of elements handled?</h4>
 <p>Automatic element versioning works only with unclustered MemoryStore caches. Distributed caches or caches that use off-heap or disk stores cannot use auto-versioning.</p>
 
-<p>To enable auto-versioning, set the system property <code class="highlighter-rouge">net.sf.ehcache.element.version.auto</code> to true (it is false by default). Manual (user provided) versioning of cache elements is ignored when auto-versioning is in effect. Note that if this property is turned on for one of the ineligible caches, auto-versioning will silently fail.</p>
+<p>To enable auto-versioning, set the system property <code>net.sf.ehcache.element.version.auto</code> to true (it is false by default). Manual (user provided) versioning of cache elements is ignored when auto-versioning is in effect. Note that if this property is turned on for one of the ineligible caches, auto-versioning will silently fail.</p>
 
 <h4 id="how-do-i-get-a-memory-only-cache-to-persist-to-disk-between-vm-restarts">How do I get a memory-only cache to persist to disk between VM restarts?</h4>
 <p>The Ehcache Fast Restart feature provides the option to store a fully consistent copy of the in-memory data on the local disk at all times. After any kind of shutdown — planned or unplanned — the next time your application starts up, all of the data that was in memory is still available and very quickly accessible. To configure your cache for disk persistence, use the “localRestartable” persistence strategy. For more information, refer to <a href="/documentation/2.7/configuration/fast-restart">Persistence and Restartability</a>.</p>
@@ -250,26 +247,29 @@ they are mandatory. See the <a href="/documentation/2.7/configuration/configurat
 <h4 id="what-is-the-minimum-configuration-to-get-replicated-caching-going">What is the minimum configuration to get replicated caching going?</h4>
 <p>The minimum configuration you need to get replicated caching going is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
+<pre>
+   <code>&lt;cacheManagerPeerProviderFactory
    class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
    properties="peerDiscovery=automatic,
                multicastGroupAddress=230.0.0.1,
                multicastGroupPort=4446"/&gt;
 &lt;cacheManagerPeerListenerFactory
    class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>and then at least one cache declaration with</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheEventListenerFactory
+<pre>
+   <code>&lt;cacheEventListenerFactory
    class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/`&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>in it. An example cache is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="sampleDistributedCache1"
+<pre>
+   <code>&lt;cache name="sampleDistributedCache1"
       maxEntriesLocalHeap="10"
       eternal="false"
       timeToIdleSeconds="100"
@@ -277,8 +277,8 @@ they are mandatory. See the <a href="/documentation/2.7/configuration/configurat
    &lt;cacheEventListenerFactory
       class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/&gt;
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>Each peer server can have the same configuration.</p>
 
@@ -287,20 +287,21 @@ they are mandatory. See the <a href="/documentation/2.7/configuration/configurat
 <p>The cache event listening works but it does not get plumbed into the peering mechanism. The current API does not have a CacheManager event for cache configuration change. You can however make it work
 by calling the notifyCacheAdded event.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>getCache().getCacheManager().getCacheManagerEventListenerRegistry().notifyCacheAdded("cacheName");
-</code></pre>
-</div>
+<pre>
+   <code>getCache().getCacheManager().getCacheManagerEventListenerRegistry().notifyCacheAdded("cacheName");
+</code>
+</pre>
 
 <h3 id="distributed-caching">Distributed Caching</h3>
 
 <h4 id="what-stores-are-available-and-how-are-they-configured">What stores are available and how are they configured?</h4>
 <p>The Terracotta server provides an additional store, generally referred to as the Level 2 or L2 store.
 The JVM MemoryStore and OffHeapStore in the local node is referred to as the L1 store.
-<code class="highlighter-rouge">maxBytesLocalHeap</code> and <code class="highlighter-rouge">maxBytesLocalOffHeap</code> comprise the maximum size of the local L1 store.
-<code class="highlighter-rouge">maxBytesLocalDisk</code> is overridden when using Terracotta to provide the L2 size. The L2 size is effectively the maximum cache size.
+<code>maxBytesLocalHeap</code> and <code>maxBytesLocalOffHeap</code> comprise the maximum size of the local L1 store.
+<code>maxBytesLocalDisk</code> is overridden when using Terracotta to provide the L2 size. The L2 size is effectively the maximum cache size.
 ‘localTempSwap’ configures overflow to the local DiskStore. When using Terracotta, the local DiskStore
 is not used, and the cache should be configured for ‘distributed’ persistence strategy. When the a cache configured for ‘distributed’ persistence strategy gets full, it overflows to the Terracotta L2 store running on the server. The L2
-can be further configured with the <code class="highlighter-rouge">tc-config.xml</code>.</p>
+can be further configured with the <code>tc-config.xml</code>.</p>
 
 <h4 id="what-is-the-recommended-way-to-write-to-a-database">What is the recommended way to write to a database?</h4>
 <p>There are two patterns available: write-through and write-behind caching. In write-through caching, writes to the cache cause writes to an underlying resource. The cache acts as a facade to the underlying resource. With this pattern, it often makes sense to read through the cache too. Write-behind caching uses the same client API; however, the write happens asynchronously.</p>
@@ -309,11 +310,12 @@ can be further configured with the <code class="highlighter-rouge">tc-config.xml
 
 <h4 id="how-do-i-make-the-terracotta-url-available-in-different-environments-using-different-terracotta-servers">How do I make the Terracotta URL available in different environments using different Terracotta servers?</h4>
 
-<p>You can externalize the value of the <code class="highlighter-rouge">terracottaConfig url</code> from the ehcache.xml file by using a system property for the <code class="highlighter-rouge">url</code> attribute. Add this in your ehcache.xml config file:</p>
+<p>You can externalize the value of the <code>terracottaConfig url</code> from the ehcache.xml file by using a system property for the <code>url</code> attribute. Add this in your ehcache.xml config file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;terracottaConfig url="${my.terracotta.server.url}"/&gt;
-</code></pre>
-</div>
+<pre>
+   <code>&lt;terracottaConfig url="${my.terracotta.server.url}"/&gt;
+</code>
+</pre>
 
 <p>and define my.terracotta.server.url as a system property.</p>
 
@@ -332,9 +334,10 @@ will be mapped to consistency=eventual.</p>
 
 <h4 id="should-i-use-the-following-directive-when-doing-distributed-caching">Should I use the following directive when doing distributed caching?</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  &lt;cacheManagerEventListenerFactory class="" properties=""/&gt;
-</code></pre>
-</div>
+<pre>
+   <code>  &lt;cacheManagerEventListenerFactory class="" properties=""/&gt;
+</code>
+</pre>
 
 <p>No, it is unrelated. It is for listening to changes in your local CacheManager.</p>
 
@@ -364,7 +367,7 @@ high performance CacheEntryFactories for SelfPopulatingCaches.</p>
  If an attempt is made to replicate or overflow a non-serializable element to disk, the element is removed and a warning is logged.</p>
 
 <h4 id="what-is-the-difference-between-ttl-tti-and-eternal">What is the difference between TTL, TTI, and eternal?</h4>
-<p>These are three cache attributes that can be used to build an effective eviction configuration. It is advised to test and tune these values to help optimize cache performance. TTI <code class="highlighter-rouge">timeToIdleSeconds</code> is the maximum number of seconds that an element can exist in the cache without being accessed, while TTL <code class="highlighter-rouge">timeToLiveSeconds</code> is the maximum number of seconds that an element can exist in the cache whether or not is has been accessed. If the <code class="highlighter-rouge">eternal</code> flag is set, elements are allowed to exist in the cache eternally and none are evicted. The eternal setting overrides any TTI or TTL settings.
+<p>These are three cache attributes that can be used to build an effective eviction configuration. It is advised to test and tune these values to help optimize cache performance. TTI <code>timeToIdleSeconds</code> is the maximum number of seconds that an element can exist in the cache without being accessed, while TTL <code>timeToLiveSeconds</code> is the maximum number of seconds that an element can exist in the cache whether or not is has been accessed. If the <code>eternal</code> flag is set, elements are allowed to exist in the cache eternally and none are evicted. The eternal setting overrides any TTI or TTL settings.
  These attributes are set for the entire cache in the configuration file. If you want to set them per element, you must do it programmatically.
  For more information, see <a href="/documentation/2.7/configuration/data-life#24283">Setting Expiration</a>.</p>
 
@@ -375,7 +378,7 @@ high performance CacheEntryFactories for SelfPopulatingCaches.</p>
 <h4 id="what-happens-when-maxentrieslocalheap-is-reached-are-the-oldest-items-expired-when-new-ones-come-in">What happens when maxEntriesLocalHeap is reached? Are the oldest items expired when new ones come in?</h4>
 <p>When the maximum number of elements in memory is reached, the Least
 Recently Used (LRU) element is removed. “Used” in this case means
-inserted with a <code class="highlighter-rouge">put</code> or accessed with a <code class="highlighter-rouge">get</code>.
+inserted with a <code>put</code> or accessed with a <code>get</code>.
  If the cache is not configured with a persistence strategy, the LRU element is
 evicted. If the cache is configured for “localTempSwap”, the LRU element is flushed asynchronously to the DiskStore.</p>
 
@@ -411,14 +414,14 @@ If you are not doing any of the above, no extra threads are created.</p>
 
 <h4 id="why-cant-i-run-multiple-applications-using-ehcache-on-one-machine">Why can’t I run multiple applications using Ehcache on one machine?</h4>
 <p>With JDK versions prior to JDK1.5, the number of RMI registries is limited to one per virtual machine, and therefore Ehcache is limited to one CacheManager per virtual machine operating in a replicated cache topology. Because this is the expected deployment configuration, however,
-there should be no practical effect. The telltale error is <code class="highlighter-rouge">java.rmi.server.ExportException: internal error: ObjID already in use</code>
+there should be no practical effect. The telltale error is <code>java.rmi.server.ExportException: internal error: ObjID already in use</code>
 On JDK1.5 and higher, it is possible to have multiple CacheManagers per VM, each participating in the same or different replicated cache topologies.
 Indeed the replication tests do this with 5 CacheManagers on the same VM, all run from JUnit.</p>
 
 <h3 id="distributed-caching-1">Distributed Caching</h3>
 
 <h4 id="is-expiry-the-same-in-distributed-ehcache">Is expiry the same in distributed Ehcache?</h4>
-<p><code class="highlighter-rouge">timeToIdle</code> and <code class="highlighter-rouge">timeToLive</code> work as usual. Note however that the <code class="highlighter-rouge">eternal</code> attribute, when set to “true”, overrides <code class="highlighter-rouge">timeToLive</code> and <code class="highlighter-rouge">timeToIdle</code> so that no expiration can take place.
+<p><code>timeToIdle</code> and <code>timeToLive</code> work as usual. Note however that the <code>eternal</code> attribute, when set to “true”, overrides <code>timeToLive</code> and <code>timeToIdle</code> so that no expiration can take place.
 Note also that expired elements are <em>not</em> necessarily evicted elements, and that evicted elements are <em>not</em> necessarily expired elements.
 See the <a href="http://www.terracotta.org/documentation/2.7/enterprise-ehcache/reference-guide">Terracotta documentation</a> for more information on expiration and eviction in a distributed cache.
 Ehcache 1.7 introduced a less fine-grained age recording in Element
@@ -452,13 +455,13 @@ It then works through the sample and:</p>
 </ul>
 
 <h4 id="how-does-element-equality-work-in-serialization-mode">How does element equality work in serialization mode?</h4>
-<p>An element, key and value in Ehcache is guaranteed to <code class="highlighter-rouge">.equals()</code> another as it moves between stores.
+<p>An element, key and value in Ehcache is guaranteed to <code>.equals()</code> another as it moves between stores.
 In the express install or serialization mode of Terracotta, which is the default, Terracotta is the same. Elements will
-not <code class="highlighter-rouge">==</code> each other as they move between stores.</p>
+not <code>==</code> each other as they move between stores.</p>
 
 <h4 id="how-does-element-equality-work-in-identity-mode">How does element equality work in identity mode?</h4>
-<p>An element in Ehcache is guaranteed to <code class="highlighter-rouge">.equals()</code> another as it moves between stores.
-However in identity mode, Terracotta makes a further guarantee that the key and the value <code class="highlighter-rouge">==</code>. This is achieved
+<p>An element in Ehcache is guaranteed to <code>.equals()</code> another as it moves between stores.
+However in identity mode, Terracotta makes a further guarantee that the key and the value <code>==</code>. This is achieved
 using extensions to the Java Memory Model.</p>
 
 <h2 id="environment-and-interoperability">ENVIRONMENT AND INTEROPERABILITY</h2>
@@ -489,7 +492,7 @@ CacheManagerTest, CacheTest and SelfPopulatingCacheTest.</p>
 released in July 2008.</p>
 
 <h4 id="how-do-i-create-an-osgi-bundle-with-ehcache">How do I create an OSGi bundle with Ehcache?</h4>
-<p>See the <a href="http://terracotta.org/documentation/2.7/enterprise-ehcache/reference-guide">OSGi section</a> for Enterprise Ehcache. If you are not using distributed cache, leave out the <code class="highlighter-rouge">&lt;terracotta&gt;</code> element shown in the configuration example.</p>
+<p>See the <a href="http://terracotta.org/documentation/2.7/enterprise-ehcache/reference-guide">OSGi section</a> for Enterprise Ehcache. If you are not using distributed cache, leave out the <code>&lt;terracotta&gt;</code> element shown in the configuration example.</p>
 
 <h4 id="is-ehcache-compatible-with-google-app-engine">Is Ehcache compatible with Google App Engine?</h4>
 <p>Version 1.6 is compatible. See <a href="/documentation/2.7/integrations/googleappengine">Google App Engine Caching</a>.</p>
@@ -524,8 +527,8 @@ java.net.ConnectException: Connection refused
 </pre>
 
 <p>This is caused by a 2008 change to the Ubuntu/Debian Linux default network configuration.
-Essentially, the Java call <code class="highlighter-rouge">InetAddress.getLocalHost();</code> always returns the loopback address, which
-is 127.0.0.1. Why? Because in these recent distros, a system call of <code class="highlighter-rouge">$ hostname</code> always returns an address
+Essentially, the Java call <code>InetAddress.getLocalHost();</code> always returns the loopback address, which
+is 127.0.0.1. Why? Because in these recent distros, a system call of <code>$ hostname</code> always returns an address
 mapped onto the loopback device, and this causes Ehcache’s RMI peer creation logic to always assign the loopback address, which causes the error you are seeing.
 All you need to do is crack open the network config and make sure that the hostname of the machine returns a valid network address accessible by other peers on the network.</p>
 
@@ -555,7 +558,7 @@ TerracottaCacheEventReplicationFactory event listener is registered for the cach
 <p>Use the <a href="/apidocs/2.7.6/net/sf/ehcache/Cache.html#getQuiet%28java.io.Serializable%29">Cache.getQuiet()</a> method. It returns an element without updating statistics.</p>
 
 <h4 id="is-there-a-simple-way-to-disable-ehcache-when-testing">Is there a simple way to disable Ehcache when testing?</h4>
-<p>Set the system property <code class="highlighter-rouge">net.sf.ehcache.disabled=true</code> to disable Ehcache. This can easily be done using <code class="highlighter-rouge">-Dnet.sf.ehcache.disabled=true</code> in the command line. If Ehcache is disabled, no elements will be added to a cache.</p>
+<p>Set the system property <code>net.sf.ehcache.disabled=true</code> to disable Ehcache. This can easily be done using <code>-Dnet.sf.ehcache.disabled=true</code> in the command line. If Ehcache is disabled, no elements will be added to a cache.</p>
 
 <h4 id="how-do-i-dynamically-change-cache-attributes-at-runtime">How do I dynamically change cache attributes at runtime?</h4>
 <p>This is not possible. However, you can achieve the same result as follows:</p>
@@ -564,20 +567,19 @@ TerracottaCacheEventReplicationFactory event listener is registered for the cach
   <li>
     <p>Create a new cache:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> Cache cache = new Cache("test2", 1, true, true, 0, 0, true, 120, ...);
+    <pre><code> Cache cache = new Cache("test2", 1, true, true, 0, 0, true, 120, ...);
  cacheManager.addCache(cache);
 </code></pre>
-    </div>
 
     <p>See the JavaDoc for the full parameters.</p>
   </li>
   <li>
-    <p>Get a list of keys using <code class="highlighter-rouge">cache.getKeys</code>, then get each element and put it in the new cache.</p>
+    <p>Get a list of keys using <code>cache.getKeys</code>, then get each element and put it in the new cache.</p>
 
     <p>None of this will use much memory because the new cache elements have values that reference the same data as the original cache.</p>
   </li>
   <li>
-    <p>Use <code class="highlighter-rouge">cacheManager.removeCache("oldcachename")</code> to remove the original cache.</p>
+    <p>Use <code>cacheManager.removeCache("oldcachename")</code> to remove the original cache.</p>
   </li>
 </ol>
 
@@ -602,7 +604,7 @@ CacheManagerTest#testCreateShutdownCreate().</p>
 <p>Statistics gathering is disabled by default in order to optimize performance. You can enable statistics gathering in caches in one of the following ways:</p>
 
 <ul>
-  <li>In cache configuration by adding <code class="highlighter-rouge">statistics="true"</code> to the <code class="highlighter-rouge">&lt;cache&gt;</code> element.</li>
+  <li>In cache configuration by adding <code>statistics="true"</code> to the <code>&lt;cache&gt;</code> element.</li>
   <li>Programmatically when setting a cache’s configuration.</li>
   <li>
     <p>In the <a href="http://terracotta.org/documentation/2.7/terracotta-tools/dev-console">Terracotta Developers Console</a>.</p>
@@ -639,7 +641,7 @@ caches. You can also use the Terracotta Dev Console to apply persistent changes 
 <h4 id="what-are-the-jmx-statistics-available-in-the-terracotta-developer-console">What are the JMX statistics available in the Terracotta Developer Console?</h4>
 <p>SampledCache and SampledCacheManager MBeans are made available in the Terracotta Developer Console.
 These are time-based gauges, based on once-per-second measurements. These are different than the JMX MBeans available through the
-<code class="highlighter-rouge">ManagementService</code>.</p>
+<code>ManagementService</code>.</p>
 
 <h4 id="what-happens-when-an-l1-ie-an-ehcache-node-disconnects-from-the-l2-ie-the-terracotta-server-array">What happens when an L1 (i.e. an Ehcache node) disconnects from the L2 (i.e. the Terracotta Server Array)?</h4>
 
@@ -663,11 +665,12 @@ Note that existing threads doing I/O against the TC server (whether for data or 
 <h4 id="i-have-created-a-new-cache-and-its-status-is-statusuninitialised-how-do-i-initialise-it">I have created a new cache and its status is STATUS_UNINITIALISED. How do I initialise it?</h4>
 <p>You need to add a newly created cache to a CacheManager before it gets initialised. Use code like the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CacheManager manager = CacheManager.create();
+<pre>
+   <code>CacheManager manager = CacheManager.create();
 Cache myCache = new Cache("testDiskOnly", 0, true, false, 5, 2);
 manager.addCache(myCache);
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h4 id="why-does-ehcache-16-use-more-memory-than-15">Why does Ehcache 1.6 use more memory than 1.5?</h4>
 <p>ConcurrentHashMap does not provide an eviction mechanism. We add that ourselves. For caches larger than 5000
@@ -720,15 +723,15 @@ message in the receiving CachePeer.
 <p>Because the TSA itself provides both disk persistence (if required) and scale out, the local DiskStore
 is not available with Terracotta clustered caches.</p>
 
-<h4 id="cacheremoveall-seems-to-take-a-long-time-why"><code class="highlighter-rouge">Cache.removeAll()</code> seems to take a long time. Why?</h4>
+<h4 id="cacheremoveall-seems-to-take-a-long-time-why"><code>Cache.removeAll()</code> seems to take a long time. Why?</h4>
 
-<p>When <code class="highlighter-rouge">removeAll()</code> is used with distributed caches, the operation has to clear entries in the Terracotta Server Array as well as in the client. Additional time is required for this operation to complete.</p>
+<p>When <code>removeAll()</code> is used with distributed caches, the operation has to clear entries in the Terracotta Server Array as well as in the client. Additional time is required for this operation to complete.</p>
 
 <h4 id="i-have-ttltti-not-configured-or-set-to-0-eternal-and-have-created-elements-with-a-specific-ttl-which-is-being-ignored-why">I have TTL/TTI not configured or set to 0 (eternal) and have created Elements with a specific TTL which is being ignored. Why?</h4>
 <p>TTL/TTI are meant to control the relevancy of data for business reasons, not as an operational constraint for managing resources. Without the occurrence of so-called “inline” eviction, which happens whenever an expired element is accessed, it is possible for expired elements
 to continue existing in the Terracotta Server Array. This is to minimize the high cost of checking
 individual elements for expiration. To force Terracotta servers to inspect element TTL/TTIs (which <em>lowers</em> performance), set
-<code class="highlighter-rouge">ehcache.storageStrategy.dcv2.perElementTTITTL.enabled</code> = true” in system properties.</p>
+<code>ehcache.storageStrategy.dcv2.perElementTTITTL.enabled</code> = true” in system properties.</p>
 
 <h4 id="after-my-application-interrupted-a-thread-or-threw-interruptedexception-why-did-the-terracotta-client-die">After my application interrupted a thread (or threw InterruptedException), why did the Terracotta client die?</h4>
 <p>The Terracotta client library runs with your application and is often involved in operations which your application is not necessarily aware of. These operations may get interrupted, too, which is not something the Terracotta client can anticipate. Ensure that your application does not interrupt clustered threads. This is a common error that can cause the Terracotta client to shut down or go into an error state, after which it will have to be restarted.</p>
@@ -776,32 +779,33 @@ To eliminate the warning:</p>
 
 <ul>
   <li>Use a separate configuration per instance.</li>
-  <li>If you only want one instance, use the singleton creation methods, i.e., <code class="highlighter-rouge">CacheManager.getInstance()</code>. In Hibernate, there is a special provider for this called
- <code class="highlighter-rouge">net.sf.ehcache.hibernate.SingletonEhCacheProvider</code>.
+  <li>If you only want one instance, use the singleton creation methods, i.e., <code>CacheManager.getInstance()</code>. In Hibernate, there is a special provider for this called
+ <code>net.sf.ehcache.hibernate.SingletonEhCacheProvider</code>.
  See <a href="/documentation/2.7/integrations/hibernate">Hibernate</a>.</li>
 </ul>
 
 <h4 id="what-does-the-following-error-mean-caches-cannot-be-added-by-name-when-default-cache-config-is-not-specified-in-the-config-please-add-a-default-cache-config-in-the-configuration">What does the following error mean? “Caches cannot be added by name when default cache config is not specified in the config. Please add a default cache config in the configuration.”</h4>
-<p>From Ehcache 2.4, the <code class="highlighter-rouge">defaultCache</code> is optional. When you try to programmatically add a cache by name, <code class="highlighter-rouge">CacheManager.add(String name)</code>, a default cache is expected to exist in the CacheManager configuration. To fix this error, add a defaultCache to the CacheManager’s configuration.</p>
+<p>From Ehcache 2.4, the <code>defaultCache</code> is optional. When you try to programmatically add a cache by name, <code>CacheManager.add(String name)</code>, a default cache is expected to exist in the CacheManager configuration. To fix this error, add a defaultCache to the CacheManager’s configuration.</p>
 
 <h3 id="replicated-caching-5">Replicated Caching</h3>
 
 <h4 id="why-do-i-get-a-remotecacheexception-in-a-replicated-cache-topology">Why do I get a RemoteCacheException in a replicated cache topology?</h4>
 
-<p>The error is <code class="highlighter-rouge">net.sf.ehcache.distribution.RemoteCacheException: Error doing put to remote peer. Message was: Error unmarshaling return header; nested exception is: java.net.SocketTimeoutException: Read timed out.</code>
-This is typically solved by increasing <code class="highlighter-rouge">socketTimeoutMillis</code>. This setting is the amount of time a sender
+<p>The error is <code>net.sf.ehcache.distribution.RemoteCacheException: Error doing put to remote peer. Message was: Error unmarshaling return header; nested exception is: java.net.SocketTimeoutException: Read timed out.</code>
+This is typically solved by increasing <code>socketTimeoutMillis</code>. This setting is the amount of time a sender
 should wait for the call to the remote peer to complete. How long it takes depends on the network and
 the size of the elements being replicated.
-The configuration that controls this is the <code class="highlighter-rouge">socketTimeoutMillis</code> setting in <code class="highlighter-rouge">cacheManagerPeerListenerFactory</code>.
+The configuration that controls this is the <code>socketTimeoutMillis</code> setting in <code>cacheManagerPeerListenerFactory</code>.
 120000 seems to work well for most scenarios.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerListenerFactory
+<pre>
+   <code>&lt;cacheManagerPeerListenerFactory
        class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
        properties="hostName=fully_qualified_hostname_or_ip,
                    port=40001,
                    socketTimeoutMillis=120000"/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h3 id="distributed-caching-5">Distributed Caching</h3>
 
@@ -907,7 +911,7 @@ The configuration that controls this is the <code class="highlighter-rouge">sock
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

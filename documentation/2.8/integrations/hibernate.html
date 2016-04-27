@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.8 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.8 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="using-hibernate-and-bigmemory-go">Using Hibernate and BigMemory Go</h1><div id="toc-container">
@@ -248,7 +245,7 @@ configuration.</li>
   <li>Configure second-level caching in your project’s Hibernate configuration.</li>
   <li>Configure Hibernate caching for each entity, collection, or query
 you wish to cache.</li>
-  <li>Configure the <code class="highlighter-rouge">ehcache.xml</code> file as necessary for each entity, collection, or
+  <li>Configure the <code>ehcache.xml</code> file as necessary for each entity, collection, or
 query configured for caching.</li>
 </ul>
 
@@ -266,45 +263,49 @@ documentation.</p>
 to contain compatible artifacts, find the artifact versions you need by downloading a kit.
 Configure or add the following repository to your build (pom.xml):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;repository&gt;
+<pre>
+   <code>&lt;repository&gt;
    &lt;id&gt;terracotta-releases&lt;/id&gt;
    &lt;url&gt;http://www.terracotta.org/download/reflector/releases&lt;/url&gt;
    &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
    &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
 &lt;/repository&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>Configure or add the the Ehcache core module defined
 by the following dependency to your build (pom.xml):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+<pre>
+   <code>&lt;dependency&gt;
    &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
    &lt;artifactId&gt;ehcache-core&lt;/artifactId&gt;
    &lt;version&gt;${ehcacheVersion}&lt;/version&gt;
 &lt;/dependency&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>For the Hibernate-Ehcache integration, add the following dependency:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+<pre>
+   <code>&lt;dependency&gt;
   &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
   &lt;artifactId&gt;hibernate-ehcache&lt;/artifactId&gt;
   &lt;version&gt;${hibernateVersion}&lt;/version&gt;
 &lt;/dependency&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>For example, the Hibernate-Ehcache integration dependency for Hibernate 4.0.0 is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+<pre>
+   <code>&lt;dependency&gt;
   &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
   &lt;artifactId&gt;hibernate-ehcache&lt;/artifactId&gt;
   &lt;version&gt;4.0.0&lt;/version&gt;
 &lt;/dependency&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p><strong>NOTE:</strong> Some versions of hibernate-ehcache may have a dependency on a specific version of Ehcache. Check the hibernate-ehcache POM for more information.</p>
 
@@ -320,20 +321,22 @@ hibernate.properties or Spring. The format given is for hibernate.cfg.xml.</p>
 
 <p>For instance creation:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.region.factory_class"&gt;
+<pre>
+   <code>&lt;property name="hibernate.cache.region.factory_class"&gt;
          net.sf.ehcache.hibernate.EhCacheRegionFactory&lt;/property&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>To force Hibernate to use a singleton of Ehcache CacheManager:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.region.factory_class"&gt;
+<pre>
+   <code>&lt;property name="hibernate.cache.region.factory_class"&gt;
          net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory&lt;/property&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h3 id="hibernate-4x">Hibernate 4.x</h3>
-<p>For Hibernate 4, use <code class="highlighter-rouge">org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code class="highlighter-rouge">net.sf.ehcache.hibernate.EhCacheRegionFactory</code> and <code class="highlighter-rouge">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</code> instead of <code class="highlighter-rouge">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</code>.</p>
+<p>For Hibernate 4, use <code>org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code>net.sf.ehcache.hibernate.EhCacheRegionFactory</code> and <code>org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</code> instead of <code>net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</code>.</p>
 
 <h2 id="enable-second-level-cache-and-query-cache-settings">Enable Second-Level Cache and Query Cache Settings</h2>
 
@@ -342,22 +345,24 @@ you will need to turn on the second-level cache (by default it is
 configured to off - ‘false’ - by Hibernate). This is done by
 setting the following property in your hibernate config:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
-</code></pre>
-</div>
+<pre>
+   <code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
+</code>
+</pre>
 
 <p>You may also want to turn on the Hibernate query cache.  This is done
 by setting the following property in your hibernate config:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.use_query_cache"&gt;true&lt;/property&gt;
-</code></pre>
-</div>
+<pre>
+   <code>&lt;property name="hibernate.cache.use_query_cache"&gt;true&lt;/property&gt;
+</code>
+</pre>
 
 <h2 id="optional">Optional</h2>
 <p>The following settings or actions are optional.</p>
 
 <h3 id="configuration-resource-name">Configuration Resource Name</h3>
-<p>The <code class="highlighter-rouge">configurationResourceName</code> property is used to specify the
+<p>The <code>configurationResourceName</code> property is used to specify the
 location of the Ehcache configuration file to be used with the given
 Hibernate instance and cache provider/region-factory.
 The resource is searched for in the root of the classpath. It is used
@@ -367,42 +372,46 @@ When using multiple Hibernate instances it is therefore recommended
 to use multiple non-singleton providers or region factories, each
 with a dedicated Ehcache configuration resource.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>net.sf.ehcache.configurationResourceName=/name_of_ehcache.xml
-</code></pre>
-</div>
+<pre>
+   <code>net.sf.ehcache.configurationResourceName=/name_of_ehcache.xml
+</code>
+</pre>
 
 <h3 id="set-the-hibernate-cache-provider-programmatically-a-nameset-the-hibernate-cache-provider-programmatically">Set the Hibernate cache provider programmatically <a name="Set-the-Hibernate-cache-provider-programmatically" id="Set-the-Hibernate-cache-provider-programmatically"></a></h3>
 <p>The provider can also be set programmatically in Hibernate by adding
 necessary Hibernate property settings to the configuration before creating
 the SessionFactory:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Configuration.setProperty("hibernate.cache.region.factory_class",
+<pre>
+   <code>Configuration.setProperty("hibernate.cache.region.factory_class",
                      "net.sf.ehcache.hibernate.EhCacheRegionFactory")
-</code></pre>
-</div>
+</code>
+</pre>
 
-<p>For Hibernate 4, use <code class="highlighter-rouge">org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code class="highlighter-rouge">net.sf.ehcache.hibernate.EhCacheRegionFactory</code>.</p>
+<p>For Hibernate 4, use <code>org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code>net.sf.ehcache.hibernate.EhCacheRegionFactory</code>.</p>
 
 <h2 id="putting-it-all-together">Putting it all together</h2>
 <p>If you are enabling both second-level caching
 and query caching, then your hibernate config file should contain the
 following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
+<pre>
+   <code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
 &lt;property name="hibernate.cache.use_query_cache"&gt;true&lt;/property&gt;
 &lt;property name="hibernate.cache.region.factory_class"&gt;net.sf.ehcache.hibernate.EhCacheRegionFactory&lt;/property&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>An equivalent Spring configuration file would contain:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;prop key="hibernate.cache.use_second_level_cache"&gt;true&lt;/prop&gt;
+<pre>
+   <code>&lt;prop key="hibernate.cache.use_second_level_cache"&gt;true&lt;/prop&gt;
 &lt;prop key="hibernate.cache.use_query_cache"&gt;true&lt;/prop&gt;
 &lt;prop key="hibernate.cache.region.factory_class"&gt;net.sf.ehcache.hibernate.EhCacheRegionFactory&lt;/prop&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
-<p>For Hibernate 4, use <code class="highlighter-rouge">org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code class="highlighter-rouge">net.sf.ehcache.hibernate.EhCacheRegionFactory</code>.</p>
+<p>For Hibernate 4, use <code>org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code>net.sf.ehcache.hibernate.EhCacheRegionFactory</code>.</p>
 
 <h2 id="configure-hibernate-entities-to-use-second-level-caching-">Configure Hibernate Entities to use Second-Level Caching <a name="Configure-Hibernate-Entities-to-use-Second-Level-Caching" id="Configure-Hibernate-Entities-to-use-Second-Level-Caching"></a></h2>
 <p>In addition to configuring the Hibernate second-level cache provider, Hibernate must also be told to enable caching for entities, collections, and queries.
@@ -410,7 +419,8 @@ For example, to enable cache entries for the domain object
 com.somecompany.someproject.domain.Country there would be a mapping file
 something like the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;hibernate-mapping&gt;
+<pre>
+   <code>&lt;hibernate-mapping&gt;
 &lt;class
 name="com.somecompany.someproject.domain.Country"
 table="ut_Countries"
@@ -420,18 +430,20 @@ dynamic-insert="false"
 ...
 &lt;/class&gt;
 &lt;/hibernate-mapping&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>To enable caching, add the following element.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache usage="read-write|nonstrict-read-write|read-only" /&gt;
-</code></pre>
-</div>
+<pre>
+   <code>&lt;cache usage="read-write|nonstrict-read-write|read-only" /&gt;
+</code>
+</pre>
 
 <p>For example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;hibernate-mapping&gt;
+<pre>
+   <code>&lt;hibernate-mapping&gt;
 &lt;class
 name="com.somecompany.someproject.domain.Country"
 table="ut_Countries"
@@ -442,18 +454,19 @@ dynamic-insert="false"
 ...
 &lt;/class&gt;
 &lt;/hibernate-mapping&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>This can also be achieved using the @Cache annotation, e.g.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>@Entity
+<pre>
+   <code>@Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Country {
 ...
 "/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h3 id="definition-of-the-different-cache-strategies">Definition of the different cache strategies</h3>
 
@@ -475,7 +488,7 @@ semantics. Repeatable read isolation is compromised in the case
 of concurrent writes.</p>
 
 <h2 id="configure-">Configure <a name="ehcache-xml" id="ehcache-xml"></a></h2>
-<p>Because the <code class="highlighter-rouge">ehcache.xml</code> file has a defaultCache, caches will always be created
+<p>Because the <code>ehcache.xml</code> file has a defaultCache, caches will always be created
 when required by Hibernate. However more control can be exerted by
 specifying a configuration per cache, based on its name.
 In particular, because Hibernate caches are populated from databases,
@@ -490,7 +503,8 @@ Objects.
 So, for example to create a cache for com.somecompany.someproject.domain.Country create a cache configuration
 entry similar to the following in ehcache.xml.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre>
+   <code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;ehcache&gt;
  &lt;cache
 	name="com.somecompany.someproject.domain.Country"
@@ -501,8 +515,8 @@ entry similar to the following in ehcache.xml.</p>
     &lt;persistence strategy="localTempSwap"/&gt;
  /&gt;
 &lt;/ehcache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h4 id="hibernate-cacheconcurrencystrategy">Hibernate CacheConcurrencyStrategy</h4>
 <p>read-write, nonstrict-read-write and read-only policies apply to Domain
@@ -516,7 +530,8 @@ For example, a Country domain object has a set of
 advancedSearchFacilities. The Hibernate doclet for the accessor
 looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
+<pre>
+   <code>/**
 * Returns the advanced search facilities that should appear for this country.
 * @hibernate.set cascade="all" inverse="true"
 * @hibernate.collection-key column="COUNTRY_ID"
@@ -526,12 +541,13 @@ looks like:</p>
 public Set getAdvancedSearchFacilities() {
 return advancedSearchFacilities;
 "/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>You need an additional cache configured for the set. The ehcache.xml configuration looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre>
+   <code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;ehcache&gt;
  &lt;cache name="com.somecompany.someproject.domain.Country"
 	maxEntriesLocalHeap="50"
@@ -547,8 +563,8 @@ name="com.somecompany.someproject.domain.Country.advancedSearchFacilities"
     &lt;persistence strategy="localTempSwap"/&gt;
 /&gt;
 &lt;/ehcache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h4 id="hibernate-cacheconcurrencystrategy-1">Hibernate CacheConcurrencyStrategy</h4>
 <p>read-write, nonstrict-read-write and read-only policies apply to Domain
@@ -561,15 +577,16 @@ Object collections.</p>
 <p>This cache is used if you use a query cache without setting a
 name. A typical ehcache.xml configuration is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache
+<pre>
+   <code>&lt;cache
 name="org.hibernate.cache.StandardQueryCache"
 maxEntriesLocalHeap="5"
 eternal="false"
 timeToLiveSeconds="120"
 &lt;persistence strategy="localTempSwap"/&gt;
 /&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h4 id="updatetimestampscache">UpdateTimestampsCache</h4>
 <p>Tracks the timestamps of the most recent updates to particular tables.
@@ -579,14 +596,15 @@ query caches. In fact, it is recommend that the the underlying cache
 not be configured for expiry at all.
 A typical ehcache.xml configuration is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache
+<pre>
+   <code>&lt;cache
 name="org.hibernate.cache.UpdateTimestampsCache"
 maxEntriesLocalHeap="5000"
 eternal="true"
 &lt;persistence strategy="localTempSwap"/&gt;
 /&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h4 id="named-query-caches">Named Query Caches</h4>
 <p>In addition, a QueryCache can be given a specific name in Hibernate
@@ -596,21 +614,23 @@ whatever you want, but by convention you should use “query.” followed
 by a descriptive name.
 E.g.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="query.AdministrativeAreasPerCountry"
+<pre>
+   <code>&lt;cache name="query.AdministrativeAreasPerCountry"
 maxEntriesLocalHeap="5"
 eternal="false"
 timeToLiveSeconds="86400"
 &lt;persistence strategy="localTempSwap"/&gt;
 /&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h4 id="using-query-caches">Using Query Caches</h4>
 <p>For example, let’s say we have a common query running against the
 Country Domain.
 Code to use a query cache follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public List getStreetTypes(final Country country) throws HibernateException {
+<pre>
+   <code>public List getStreetTypes(final Country country) throws HibernateException {
 final Session session = createSession();
 try {
    final Query query = session.createQuery(
@@ -626,11 +646,11 @@ try {
    session.close();
 "/&gt;
 "/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
-<p>The <code class="highlighter-rouge">query.setCacheable(true)</code> line caches the query.
-The <code class="highlighter-rouge">query.setCacheRegion("query.StreetTypes")</code> line sets the name of the Query Cache.
+<p>The <code>query.setCacheable(true)</code> line caches the query.
+The <code>query.setCacheRegion("query.StreetTypes")</code> line sets the name of the Query Cache.
 Alex Miller has a good article on the query cache
 <a href="http://tech.puredanger.com/2009/07/10/hibernate-query-cache/">here</a>.</p>
 
@@ -648,19 +668,19 @@ They act like a non-locking read only cache.</p>
 <h2 id="performance-tips-">Performance Tips <a name="Performance-Tips" id="Performance-Tips"></a></h2>
 
 <h3 id="sessionload">Session.load</h3>
-<p><code class="highlighter-rouge">Session.load</code> will always try to use the cache.</p>
+<p><code>Session.load</code> will always try to use the cache.</p>
 
 <h3 id="sessionfind-and-queryfind">Session.find and Query.find</h3>
-<p><code class="highlighter-rouge">Session.find</code> does not use the cache for the primary object. Hibernate
-will try to use the cache for any associated objects. <code class="highlighter-rouge">Session.find</code> does
+<p><code>Session.find</code> does not use the cache for the primary object. Hibernate
+will try to use the cache for any associated objects. <code>Session.find</code> does
 however cause the cache to be populated.
-<code class="highlighter-rouge">Query.find</code> works in exactly the same way.
+<code>Query.find</code> works in exactly the same way.
 Use these where the chance of getting a cache hit is low.</p>
 
 <h3 id="sessioniterate-and-queryiterate">Session.iterate and Query.iterate</h3>
-<p><code class="highlighter-rouge">Session.iterate</code> always uses the cache for the primary object and any
+<p><code>Session.iterate</code> always uses the cache for the primary object and any
 associated objects.
-<code class="highlighter-rouge">Query.iterate</code> works in exactly the same way.
+<code>Query.iterate</code> works in exactly the same way.
 Use these where the chance of getting a cache hit is high.</p>
 
 <h2 id="faq">FAQ</h2>
@@ -670,7 +690,7 @@ Use these where the chance of getting a cache hit is high.</p>
 <p>While you could share the resource file between the two CacheManagers, a clear separation between the two is recommended. Your app may have a different lifecycle than Hibernate, and in each case your CacheManager <a href="/documentation/2.8/bigmemorygo/get-started.html#configuring-bigmemory-go">Automatic Resource Control (ARC)</a> settings may need to be different.</p>
 
 <h3 id="should-i-use-the-provider-in-the-hibernate-distribution-or-in-bigmemory-gos-ehcache">Should I use the provider in the Hibernate distribution or in BigMemory Go’s Ehcache?</h3>
-<p>Since Hibernate 2.1, Hibernate has included an Ehcache <code class="highlighter-rouge">CacheProvider</code>. That provider
+<p>Since Hibernate 2.1, Hibernate has included an Ehcache <code>CacheProvider</code>. That provider
 is periodically synced up with the provider in the Ehcache Core distribution. New
 features are generally added in to the Ehcache Core provider and then the Hibernate one.</p>
 
@@ -683,7 +703,7 @@ remains a first-class 2nd level cache for Hibernate.</p>
 <p>Yes. It was introduced in Ehcache 2.1.</p>
 
 <h3 id="why-do-certain-caches-sometimes-get-automatically-cleared-by-hibernate">Why do certain caches sometimes get automatically cleared by Hibernate?</h3>
-<p>Whenever a <code class="highlighter-rouge">Query.executeUpdate()</code> is run, for example, Hibernate invalidates affected cache regions (those corresponding to affected database tables) to ensure that no data stale data is cached. This should also happen whenever stored procedures are executed.</p>
+<p>Whenever a <code>Query.executeUpdate()</code> is run, for example, Hibernate invalidates affected cache regions (those corresponding to affected database tables) to ensure that no data stale data is cached. This should also happen whenever stored procedures are executed.</p>
 
 <p>For more information, see this <a href="https://hibernate.onjira.com/browse/HHH-2224">Hibernate bug report</a>.</p>
 
@@ -704,7 +724,7 @@ cache will fail to update (since the soft-locked Element was evicted) and the ca
 on the next read of that object.  This is obviously non-fatal, but could cause a small rise in database load.</p>
 
 <p>So, in summary the Hibernate messages are not problematic.
-The underlying cause is the probabilistic evictor can theoretically evict recently loaded items. You can also use the deterministic evictor to avoid this problem. Specify the <code class="highlighter-rouge">java -Dnet.sf.ehcache.use.classic.lru=true</code>
+The underlying cause is the probabilistic evictor can theoretically evict recently loaded items. You can also use the deterministic evictor to avoid this problem. Specify the <code>java -Dnet.sf.ehcache.use.classic.lru=true</code>
 system property to turn on classic LRU which contains a deterministic evictor.</p>
 
       </article>
@@ -803,7 +823,7 @@ system property to turn on classic LRU which contains a deterministic evictor.</
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

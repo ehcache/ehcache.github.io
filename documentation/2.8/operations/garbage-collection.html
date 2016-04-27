@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.8 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.8 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="tuning-garbage-collection">Tuning Garbage Collection</h1><div id="toc-container">
@@ -204,12 +201,13 @@ of the heap.</p>
 <p>A full garbage collection event pauses all threads in the JVM. Nothing happens during the pause.  If this pause takes more than a few seconds, it will
 become noticeable.</p>
 
-<p>The clearest way to see if this is happening is to run <code class="highlighter-rouge">jstat</code>. The following command will produce a log of garbage collection statistics, updated
+<p>The clearest way to see if this is happening is to run <code>jstat</code>. The following command will produce a log of garbage collection statistics, updated
 every ten seconds.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>jstat -gcutil &lt;pid&gt; 10 1000000
-</code></pre>
-</div>
+<pre>
+   <code>jstat -gcutil &lt;pid&gt; 10 1000000
+</code>
+</pre>
 
 <p>The thing to watch for is the Full Garbage Collection Time. The difference between the total time for each reading is the amount of time the system was
 paused. A jump of more than a few seconds will not be acceptable in most application contexts.</p>
@@ -218,23 +216,25 @@ paused. A jump of more than a few seconds will not be acceptable in most applica
 
 <p>Tuning suggestion for virtual machines with large heaps using caching:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>java ... -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC
+<pre>
+   <code>java ... -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC
 -XX:NewSize=&lt;1/4 of total heap size&gt; -XX:SurvivorRatio=16
-</code></pre>
-</div>
+</code>
+</pre>
 
-<p>Note that it is better to use <code class="highlighter-rouge">-XX:+DisableExplicitGC</code>, instead of calling <code class="highlighter-rouge">System.gc()</code>. It also helps to use the low pause collector <code class="highlighter-rouge">-XX:+UseConcMarkSweepGC</code>.</p>
+<p>Note that it is better to use <code>-XX:+DisableExplicitGC</code>, instead of calling <code>System.gc()</code>. It also helps to use the low pause collector <code>-XX:+UseConcMarkSweepGC</code>.</p>
 
 <h2 id="distributed-caching-garbage-collection-tuning">Distributed Caching Garbage Collection Tuning</h2>
 
-<p>Some users have reported that enabling distributed caching causes a full garbage collection each minute. This is an issue with remote method invocation (RMI) generally, which can be worked around by increasing the interval for garbage collection. The effect RMI has is similar to a user application calling <code class="highlighter-rouge">System.gc()</code>
+<p>Some users have reported that enabling distributed caching causes a full garbage collection each minute. This is an issue with remote method invocation (RMI) generally, which can be worked around by increasing the interval for garbage collection. The effect RMI has is similar to a user application calling <code>System.gc()</code>
 each minute. The setting above disables explicit GC calls, but it does not disable the full GC initiated by RMI.
 The default in JDK 6 was increased to 1 hour. The following system properties control the interval.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>-Dsun.rmi.dgc.client.gcInterval=60000
+<pre>
+   <code>-Dsun.rmi.dgc.client.gcInterval=60000
 -Dsun.rmi.dgc.server.gcInterval=60000
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>Increase the interval as required in your application.</p>
 
@@ -334,7 +334,7 @@ The default in JDK 6 was increased to 1 hour. The following system properties co
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

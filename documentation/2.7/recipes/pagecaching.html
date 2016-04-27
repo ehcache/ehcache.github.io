@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="web-page-and-web-page-fragment-caching">Web Page and Web Page Fragment Caching</h1><div id="toc-container">
@@ -232,7 +229,8 @@
 
 <p>The following web.xml settings will enable a servlet filter for page caching:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+<pre>
+   <code>&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
      http://xmlns.jcp.org/xml/ns/javaee/web-app_2_5.xsd "
@@ -251,8 +249,8 @@
     &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
   &lt;/filter-mapping&gt;
 &lt;/web-app&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h3 id="step-2---configure-an-ehcachexml">Step 2 - Configure an ehcache.xml</h3>
 
@@ -260,7 +258,8 @@
 
 <p>The following ehcache.xml file should configure a reasonable default ehcache:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<pre>
+   <code>&lt;ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd"&gt;
     &lt;cache name="SimplePageCachingFilter"
            maxEntriesLocalHeap="10000"
@@ -272,8 +271,8 @@
            memoryStoreEvictionPolicy="LFU"
             /&gt;
 &lt;/ehcache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h3 id="step-3---start-your-application-server">Step 3 - Start your application server</h3>
 
@@ -379,7 +378,7 @@
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

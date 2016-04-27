@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Concepts Related to Caching</title>
+  <title>Ehcache 3.0 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Concepts Related to Caching</h1>
+        <h1>Ehcache 3.0 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -162,41 +162,39 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title">Concepts Related to Caching</h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
-        <div class="sect1">
+        <h1 id="concepts-related-to-caching">Concepts Related to Caching</h1>
+<div class="sect1">
 <h2 id="data-freshness-and-expiration"><a class="anchor" href="#data-freshness-and-expiration"></a>Data Freshness and Expiration</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="data-freshness"><a class="anchor" href="#data-freshness"></a>Data Freshness</h3>
 <div class="paragraph">
-<p>Data <em>freshness</em> refers to aspect of a copy of data (e.g. in a cache) being up-to-date with the source version of the<br>
-data (e.g. in the syste-of-record (SoR)).  A <em>stale</em> copy is considered to be out of sync (or likely to be out of<br>
+<p>Data <em>freshness</em> refers to aspect of a copy of data (e.g. in a cache) being up-to-date with the source version of the<br />
+data (e.g. in the syste-of-record (SoR)).  A <em>stale</em> copy is considered to be out of sync (or likely to be out of<br />
 sync) with the SoR.</p>
 </div>
 <div class="paragraph">
-<p>Databases (and other SORs) weren&#8217;t built with caching outside of the database in mind, and therefore don&#8217;t normally<br>
-come with any default mechanism for notifying external processes when data has been updated or modified.  Thus external<br>
+<p>Databases (and other SORs) weren’t built with caching outside of the database in mind, and therefore don’t normally<br />
+come with any default mechanism for notifying external processes when data has been updated or modified.  Thus external<br />
 components that have loaded data from the SoR have no direct way of ensuring that data is not stale.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="cache-entry-expiration"><a class="anchor" href="#cache-entry-expiration"></a>Cache Entry Expiration</h3>
 <div class="paragraph">
-<p>Ehcache can assist you with reducing the likelihood that stale data is used by your application by <em>expiring</em> cache<br>
+<p>Ehcache can assist you with reducing the likelihood that stale data is used by your application by <em>expiring</em> cache<br />
 entries after some amount of configured time. Once expired, the entry is automatically removed from the cache.</p>
 </div>
 <div class="paragraph">
-<p>For instance the cache could be configured to expire entries five seconds after they are put in - which is a<br>
-time-to-live <em>TTL</em> setting.  Or to expire entries 17 seconds after the last time the entry was retrieved from the<br>
+<p>For instance the cache could be configured to expire entries five seconds after they are put in - which is a<br />
+time-to-live <em>TTL</em> setting.  Or to expire entries 17 seconds after the last time the entry was retrieved from the<br />
 cache - which is a time-to-idle <em>TTI</em> setting.</p>
 </div>
 <div class="paragraph">
-<p>The expiration configuration that would be most appropriate for your cache (if any) would be a mixture of a business<br>
+<p>The expiration configuration that would be most appropriate for your cache (if any) would be a mixture of a business<br />
 and technical decision based upon the requirements and assumptions of your application.</p>
 </div>
 </div>
@@ -206,7 +204,7 @@ and technical decision based upon the requirements and assumptions of your appli
 <h2 id="storage-tiers"><a class="anchor" href="#storage-tiers"></a>Storage Tiers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can configure Ehcache to use various data storage areas.  When a cache is configured to use more than one data<br>
+<p>You can configure Ehcache to use various data storage areas.  When a cache is configured to use more than one data<br />
 store, they are referred to as tiers.</p>
 </div>
 <div class="paragraph">
@@ -215,25 +213,25 @@ store, they are referred to as tiers.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>On-Heap Store – Utilizes Java&#8217;s on-heap RAM memory to store cache entries. This tier utilizes the same heap memory as<br>
-your Java application, all of which must be scanned by the JVM&#8217;s garbage collector.  The more heap space your JVM<br>
-utilizes the more your application&#8217;s performance will be impacted by garbage collection pauses.  This store is<br>
+<p>On-Heap Store – Utilizes Java’s on-heap RAM memory to store cache entries. This tier utilizes the same heap memory as<br />
+your Java application, all of which must be scanned by the JVM’s garbage collector.  The more heap space your JVM<br />
+utilizes the more your application’s performance will be impacted by garbage collection pauses.  This store is<br />
 extremely fast, but is typically your most limited storage resource.</p>
 </li>
 <li>
-<p>Off-Heap Store – Limited in size only by available RAM (tested to as much as 6TB on a single machine!). Not subject<br>
-to Java garbage collection (GC). Is quite fast, yet slower than the On-Heap Store because data must be moved off and<br>
-on the JVM&#8217;s heap as it is stored and re-accessed.</p>
+<p>Off-Heap Store – Limited in size only by available RAM (tested to as much as 6TB on a single machine!). Not subject<br />
+to Java garbage collection (GC). Is quite fast, yet slower than the On-Heap Store because data must be moved off and<br />
+on the JVM’s heap as it is stored and re-accessed.</p>
 </li>
 <li>
-<p>Disk Store – Utilizes a disk (filesystem) to store cache entries.  This type of storage resource is typically very<br>
+<p>Disk Store – Utilizes a disk (filesystem) to store cache entries.  This type of storage resource is typically very<br />
 abundant but much slower than the RAM-based stores.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>When a cache is configured to use more than one storage area, those areas are arranged and managed as tiers - where<br>
-the <em>hottest</em> (most recently accessed) data is kept in the faster (and typically less abundant) tiers, and data that<br>
+<p>When a cache is configured to use more than one storage area, those areas are arranged and managed as tiers - where<br />
+the <em>hottest</em> (most recently accessed) data is kept in the faster (and typically less abundant) tiers, and data that<br />
 is less hot is moved to the slower (and more abundant) tiers.</p>
 </div>
 </div>
@@ -244,17 +242,17 @@ is less hot is moved to the slower (and more abundant) tiers.</p>
 <div class="sect2">
 <h3 id="standalone"><a class="anchor" href="#standalone"></a>Standalone</h3>
 <div class="paragraph">
-<p>The data set is held in the application node. Any other application nodes are independent with no<br>
-communication between them. If a standalone topology is used where there are multiple application nodes running the<br>
+<p>The data set is held in the application node. Any other application nodes are independent with no<br />
+communication between them. If a standalone topology is used where there are multiple application nodes running the<br />
 same application, then their caches are completely independent.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="distributed-clustered"><a class="anchor" href="#distributed-clustered"></a>Distributed / Clustered</h3>
 <div class="paragraph">
-<p>The data is held in a remote server (or array of servers) with a subset of hot data held in each application node.<br>
-This topology offers offers a selection of consistency options.<br>
-A distributed topology is the recommended approach in a clustered or scaled-out application environment.<br>
+<p>The data is held in a remote server (or array of servers) with a subset of hot data held in each application node.<br />
+This topology offers offers a selection of consistency options.<br />
+A distributed topology is the recommended approach in a clustered or scaled-out application environment.<br />
 It provides the highest level of performance, availability, and scalability.</p>
 </div>
 <div class="admonitionblock note">
@@ -270,21 +268,21 @@ Support of this topology type will come soon to Ehcache 3
 </table>
 </div>
 <div class="paragraph">
-<p>Many production applications are deployed in clusters of multiple instances for availability and scalability.<br>
+<p>Many production applications are deployed in clusters of multiple instances for availability and scalability.<br />
 However, without a distributed cache, application clusters exhibit a number of undesirable behaviors, such as:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Cache Drift - If each application instance maintains its own cache, updates made to one cache will not appear in the<br>
-other instances. A distributed or replicated cache ensures that all of the cache instances are kept in sync with each<br>
+<p>Cache Drift - If each application instance maintains its own cache, updates made to one cache will not appear in the<br />
+other instances. A distributed or replicated cache ensures that all of the cache instances are kept in sync with each<br />
 other.</p>
 </li>
 <li>
-<p>Database Bottlenecks - In a single-instance application, a cache effectively shields a database from the overhead of<br>
-redundant queries. However, in a distributed application environment, each instance must load and keep its own cache<br>
-fresh. The overhead of loading and refreshing multiple caches leads to database bottlenecks as more application<br>
-instances are added. A distributed or replicated cache eliminates the per-instance overhead of loading and refreshing<br>
+<p>Database Bottlenecks - In a single-instance application, a cache effectively shields a database from the overhead of<br />
+redundant queries. However, in a distributed application environment, each instance must load and keep its own cache<br />
+fresh. The overhead of loading and refreshing multiple caches leads to database bottlenecks as more application<br />
+instances are added. A distributed or replicated cache eliminates the per-instance overhead of loading and refreshing<br />
 multiple caches from a database.</p>
 </li>
 </ul>
@@ -388,7 +386,7 @@ multiple caches from a database.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

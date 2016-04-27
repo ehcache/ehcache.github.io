@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="cache-consistency-options">Cache Consistency Options</h1><div id="toc-container">
@@ -214,7 +211,7 @@
 <h2 id="propagation-of-modified-data">Propagation of Modified Data</h2>
 <p>In general, any data cached in the heap is always consistent in that heap. For example, if one thread gets and modifies a cached element, another thread that then gets that element sees the change as long as all activity takes place in that heap.</p>
 
-<p>If, however, other data tiers are involved, it is possible for the second thread to get the original element, not the changed element. If a <code class="highlighter-rouge">cache.get("key").getValue().modify()</code> happens, after which the element is flushed to a lower tier (to BigMemory or disk, for example), then a subsequent get obtains the original element (not the changed element). To ensure that subsequent <code class="highlighter-rouge">get()</code> operations obtain the changed element, the changed element should be put back into the cache. To guarantee this behavior without having to perform a <code class="highlighter-rouge">put()</code>, set the cache’s <code class="highlighter-rouge">copyOnRead</code> attribute to false.</p>
+<p>If, however, other data tiers are involved, it is possible for the second thread to get the original element, not the changed element. If a <code>cache.get("key").getValue().modify()</code> happens, after which the element is flushed to a lower tier (to BigMemory or disk, for example), then a subsequent get obtains the original element (not the changed element). To ensure that subsequent <code>get()</code> operations obtain the changed element, the changed element should be put back into the cache. To guarantee this behavior without having to perform a <code>put()</code>, set the cache’s <code>copyOnRead</code> attribute to false.</p>
 
 <h2 id="server-side-consistency">Server-Side Consistency</h2>
 <p>Leaving aside the issue of data also held in the Ehcache nodes, let us look at the server side consistency of the Terracotta Server Array (TSA).</p>
@@ -294,13 +291,14 @@ Substituting the terms of R + W &gt; N, we get 1 + 2 &gt; 2, which is clearly tr
 <h3 id="strong-consistency">Strong Consistency</h3>
 <p>In the distributed cache, strong consistency is configured as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="sampleCache1"
+<pre>
+   <code>&lt;cache name="sampleCache1"
 ...
  /&gt;
    &lt;terracotta consistency="strong" /&gt;
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>We will walk through how a write is done and show that it is strongly consistent.</p>
 
@@ -321,21 +319,21 @@ Substituting the terms of R + W &gt; N, we get 1 + 2 &gt; 2, which is clearly tr
     in potentially each node, if any of Ehcache A, B or C have a copy they are also updated before Step 5 completes.</li>
 </ol>
 
-<p>Note: This analysis assumes that if the <code class="highlighter-rouge">nonstop</code> is being used, it is configured with the default of Exception, so that on a <code class="highlighter-rouge">clusterOffline</code> event no cache operations happen locally. Nonstop allows fine-grained tradeoffs to be made in the event of a network partition, including dropping consistency.</p>
+<p>Note: This analysis assumes that if the <code>nonstop</code> is being used, it is configured with the default of Exception, so that on a <code>clusterOffline</code> event no cache operations happen locally. Nonstop allows fine-grained tradeoffs to be made in the event of a network partition, including dropping consistency.</p>
 
 <h3 id="eventual-consistency">Eventual Consistency</h3>
 <p>Distributed Ehcache can have eventual consistency in the following ways:</p>
 
 <ul>
-  <li>Configured with <code class="highlighter-rouge">consistency="eventual"</code>.</li>
-  <li>Set programmatically with a bulk-loading mode, using <code class="highlighter-rouge">setNodeBulkLoadEnabled(boolean)</code>.</li>
-  <li>Configured with &lt;UnlockedReadsView&gt;, a <code class="highlighter-rouge">CacheDecorator</code> that can be created like a view on a cache to show the latest writes visible to the local Ehcache node without respect for any locks.</li>
-  <li>Using bulk-loading Cache methods <code class="highlighter-rouge">putAll()</code>, <code class="highlighter-rouge">getAll()</code>, and <code class="highlighter-rouge">removeAll()</code>. (Note that <code class="highlighter-rouge">putAll(Collection&lt;Element&gt;)</code> does not discriminate between new and existing elements, thus resulting in put notifications, not update notifications.) These can also be used with strong consistency. If you can use them, it’s unnecessary to use bulk-load mode. See the <a href="http://ehcache.org/apidocs">API documentation</a> for details.</li>
+  <li>Configured with <code>consistency="eventual"</code>.</li>
+  <li>Set programmatically with a bulk-loading mode, using <code>setNodeBulkLoadEnabled(boolean)</code>.</li>
+  <li>Configured with &lt;UnlockedReadsView&gt;, a <code>CacheDecorator</code> that can be created like a view on a cache to show the latest writes visible to the local Ehcache node without respect for any locks.</li>
+  <li>Using bulk-loading Cache methods <code>putAll()</code>, <code>getAll()</code>, and <code>removeAll()</code>. (Note that <code>putAll(Collection&lt;Element&gt;)</code> does not discriminate between new and existing elements, thus resulting in put notifications, not update notifications.) These can also be used with strong consistency. If you can use them, it’s unnecessary to use bulk-load mode. See the <a href="http://ehcache.org/apidocs">API documentation</a> for details.</li>
 </ul>
 
 <p>Regardless, Ehcache B and C will eventually see the change made by Ehcache A, generally with consistency window of 5ms (with no partitions or interruptions). If a GC happens on a TSA node, or Ehcache A or B, the inconsistency window is increased by the length of the GC.</p>
 
-<p>If <code class="highlighter-rouge">setNodeBulkLoadEnabled(true)</code> is used, it causes the TSA to not update Ehcache B and C. Instead, they are set to a 5 minute fixed TTL. The inconsistency window thus increases to 5 minutes plus the above.</p>
+<p>If <code>setNodeBulkLoadEnabled(true)</code> is used, it causes the TSA to not update Ehcache B and C. Instead, they are set to a 5 minute fixed TTL. The inconsistency window thus increases to 5 minutes plus the above.</p>
 
 <p>If a network partition occurs that is long enough to cause an Ehcache A to be ejected from the cluster, the only configurable option is to discard on <a href="http://terracotta.org/documentation/2.7/4.0/bigmemorymax/configuration/reference-guide#71266">rejoin</a>. Once this happens Ehcache A or B gets the write. From the perspective of other threads in Ehcache A, all writes are thread-safe.</p>
 
@@ -359,21 +357,21 @@ Substituting the terms of R + W &gt; N, we get 1 + 2 &gt; 2, which is clearly tr
 
 <h2 id="other-safety-features">Other Safety Features</h2>
 <p>Ehcache offers a rich set of data safety features. In this section we look at some of the others and how they interact with the
-<code class="highlighter-rouge">strong</code> and <code class="highlighter-rouge">eventual</code> consistency.</p>
+<code>strong</code> and <code>eventual</code> consistency.</p>
 
 <h3 id="compare-and-swap-cache-operations">Compare and Swap Cache Operations</h3>
 <p>We support three Compare and Swap (CAS) operations:</p>
 
 <ul>
-  <li><code class="highlighter-rouge">cache.replace(Element old, Element new)</code></li>
-  <li><code class="highlighter-rouge">cache.putIfAbsent(Element)</code></li>
-  <li><code class="highlighter-rouge">cache.removeElement(Element)</code></li>
+  <li><code>cache.replace(Element old, Element new)</code></li>
+  <li><code>cache.putIfAbsent(Element)</code></li>
+  <li><code>cache.removeElement(Element)</code></li>
 </ul>
 
 <p>In each case the TSA will only perform the write if the old value is the same as that presented. This is guaranteed to be done atomically as required by the CAS pattern.
-CAS achieves strong consistency between A, B, and C with <strong>optimistic locking</strong> rather than pessimistic locking. Optimistic locking approaches are not guaranteed to succeed. If someone else got in and changed the Element ahead of you, the methods will return <code class="highlighter-rouge">false</code>. You should read the new value, take that into account in your business logic, and then retry your mutation.</p>
+CAS achieves strong consistency between A, B, and C with <strong>optimistic locking</strong> rather than pessimistic locking. Optimistic locking approaches are not guaranteed to succeed. If someone else got in and changed the Element ahead of you, the methods will return <code>false</code>. You should read the new value, take that into account in your business logic, and then retry your mutation.</p>
 
-<p>CAS will work with both <code class="highlighter-rouge">strong</code> and <code class="highlighter-rouge">eventual</code> consistency modes, but because it does not use the locks, it does not need <code class="highlighter-rouge">strong</code>. However, with eventual consistency two simultaneous <code class="highlighter-rouge">replace()</code> operations in different nodes (or threads) can both return true. But at the TSA, only one of the operations is allowed to succeed and all competing values are invalidated, eventually making the caches consistent in all nodes.</p>
+<p>CAS will work with both <code>strong</code> and <code>eventual</code> consistency modes, but because it does not use the locks, it does not need <code>strong</code>. However, with eventual consistency two simultaneous <code>replace()</code> operations in different nodes (or threads) can both return true. But at the TSA, only one of the operations is allowed to succeed and all competing values are invalidated, eventually making the caches consistent in all nodes.</p>
 
 <h2 id="use-cases-and-recommended-practices">Use Cases And Recommended Practices</h2>
 <p>In this section we look at some common use cases and give advice on what consistency and safety options should be used. These
@@ -471,7 +469,7 @@ steps recorded in the cache. For these key milestones use the “Financial Order
 <p>Here a user makes reads and writes to a web application cluster. There are n servers where n &gt; 1. The load balancer is non-sticky,
 so any of the n servers can be hit on the next HTTP operation.
 When a user submits using a HTML form, either a GET or POST is done based on the form action. And if it is an AJAx app, then
-requests are being done with <code class="highlighter-rouge">XMLHttpRequest</code> and any HTTP request method can be sent. If POST (form and AJAX) or PUT (AJAX) is used,
+requests are being done with <code>XMLHttpRequest</code> and any HTTP request method can be sent. If POST (form and AJAX) or PUT (AJAX) is used,
 no content is returned and a separate GET is required to refresh the view or AJAX app.</p>
 
 <p>The key point is that sending a change and getting
@@ -617,7 +615,7 @@ eventual consistency, it is very unlikely they will see inconsistency. The gener
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

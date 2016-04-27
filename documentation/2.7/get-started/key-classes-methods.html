@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="key-classes-and-methods">Key Classes and Methods</h1><div id="toc-container">
@@ -180,39 +177,39 @@
 
 <h2 id="introduction">Introduction</h2>
 
-<p>Ehcache consists of a <code class="highlighter-rouge">CacheManager</code>, which manages caches. Caches contain Elements,
+<p>Ehcache consists of a <code>CacheManager</code>, which manages caches. Caches contain Elements,
 which are essentially name value pairs. Caches are physically implemented, either in-memory or on disk. The logical representations of these components are actualized mostly through the classes discussed below. The methods provided by these classes are largely responsible for providing programmatic access to working with Ehcache.</p>
 
 <h3 id="cachemanager">CacheManager</h3>
 
-<p>Creation of, access to, and removal of caches is controlled by the <code class="highlighter-rouge">CacheManager</code>.</p>
+<p>Creation of, access to, and removal of caches is controlled by the <code>CacheManager</code>.</p>
 
 <h4 id="cachemanager-creation-modes-a-namecm-creation">CacheManager Creation Modes <a name="cm-creation" id="cm-creation"></a></h4>
 
-<p><code class="highlighter-rouge">CacheManager</code> supports two creation modes: singleton and instance.</p>
+<p><code>CacheManager</code> supports two creation modes: singleton and instance.</p>
 
-<p>Versions of Ehcache before version 2.5 allowed any number of CacheManagers with the same name (same configuration resource) to exist in a JVM. Therefore, each time <code class="highlighter-rouge">new CacheManager(...)</code> was called, a new CacheManager was created without regard to existing CacheManagers. Calling <code class="highlighter-rouge">CacheManager.create(...)</code> returned the existing singleton CacheManager with the configured name (if it existed) or created the singleton based on the passed-in configuration.</p>
+<p>Versions of Ehcache before version 2.5 allowed any number of CacheManagers with the same name (same configuration resource) to exist in a JVM. Therefore, each time <code>new CacheManager(...)</code> was called, a new CacheManager was created without regard to existing CacheManagers. Calling <code>CacheManager.create(...)</code> returned the existing singleton CacheManager with the configured name (if it existed) or created the singleton based on the passed-in configuration.</p>
 
-<p>Ehcache 2.5 and higher does not allow multiple CacheManagers with the same name to exist in the same JVM. <code class="highlighter-rouge">CacheManager()</code> constructors creating non-Singleton CacheManagers can violate this rule, causing a NullPointerException. If your code may create multiple CacheManagers of the same name in the same JVM, avoid this error by using the <a href="http://ehcache.org/apidocs/2.7.6/net/sf/ehcache/CacheManager">static <code class="highlighter-rouge">CacheManager.create()</code> methods</a>, which always return the named (or default unnamed) CacheManager if it already exists in that JVM. If the named (or default unnamed) CacheManager does not exist, the <code class="highlighter-rouge">CacheManager.create()</code> methods create it.</p>
+<p>Ehcache 2.5 and higher does not allow multiple CacheManagers with the same name to exist in the same JVM. <code>CacheManager()</code> constructors creating non-Singleton CacheManagers can violate this rule, causing a NullPointerException. If your code may create multiple CacheManagers of the same name in the same JVM, avoid this error by using the <a href="http://ehcache.org/apidocs/2.7.6/net/sf/ehcache/CacheManager">static <code>CacheManager.create()</code> methods</a>, which always return the named (or default unnamed) CacheManager if it already exists in that JVM. If the named (or default unnamed) CacheManager does not exist, the <code>CacheManager.create()</code> methods create it.</p>
 
-<p>NOTE: In Ehcache 2.5.0/2.5.1 <code class="highlighter-rouge">Cachemanager.create(...)</code> gets or creates the CacheManager regardless of whether it is a singleton or not. In Ehcache 2.5.2, calling <code class="highlighter-rouge">CacheManager.create(...)</code> returns the existing singleton CacheManager with the configured name (if it exists) or creates the singleton based on the passed-in configuration.</p>
+<p>NOTE: In Ehcache 2.5.0/2.5.1 <code>Cachemanager.create(...)</code> gets or creates the CacheManager regardless of whether it is a singleton or not. In Ehcache 2.5.2, calling <code>CacheManager.create(...)</code> returns the existing singleton CacheManager with the configured name (if it exists) or creates the singleton based on the passed-in configuration.</p>
 
-<p>Ehcache 2.5.2 introduced the <code class="highlighter-rouge">CacheManager.newInstance(...)</code> method, which parses the passed-in configuration to either get the existing named CacheManager or create that CacheManager if it doesn’t exist.</p>
+<p>Ehcache 2.5.2 introduced the <code>CacheManager.newInstance(...)</code> method, which parses the passed-in configuration to either get the existing named CacheManager or create that CacheManager if it doesn’t exist.</p>
 
 <p>With Ehcache 2.5.2 and higher, the behavior of the CacheManager creation methods is as follows:</p>
 
 <ul>
-  <li><code class="highlighter-rouge">CacheManager.newInstance(Configuration configuration)</code> – Create a new CacheManager or return the existing one named in the configuration.</li>
-  <li><code class="highlighter-rouge">CacheManager.create()</code> – Create a new singleton CacheManager with default configuration, or return the existing singleton. This is the same as <code class="highlighter-rouge">CacheManager.getInstance()</code>.</li>
-  <li><code class="highlighter-rouge">CacheManager.create(Configuration configuration)</code> – Create a singleton CacheManager with the passed-in configuration, or return the existing singleton.</li>
-  <li><code class="highlighter-rouge">new CacheManager(Configuration configuration)</code> – Create a new CacheManager, or throw an exception if the CacheManager named in the configuration already exists or if the parameter (configuration) is null.</li>
+  <li><code>CacheManager.newInstance(Configuration configuration)</code> – Create a new CacheManager or return the existing one named in the configuration.</li>
+  <li><code>CacheManager.create()</code> – Create a new singleton CacheManager with default configuration, or return the existing singleton. This is the same as <code>CacheManager.getInstance()</code>.</li>
+  <li><code>CacheManager.create(Configuration configuration)</code> – Create a singleton CacheManager with the passed-in configuration, or return the existing singleton.</li>
+  <li><code>new CacheManager(Configuration configuration)</code> – Create a new CacheManager, or throw an exception if the CacheManager named in the configuration already exists or if the parameter (configuration) is null.</li>
 </ul>
 
 <p>See the <a href="http://ehcache.org/apidocs/2.7.6/net/sf/ehcache/CacheManager">Ehcache API documentation</a> for more information on these methods, including options for passing in configuration. For examples, see <a href="/documentation/2.7/code-samples#Using-the-CacheManager">Code Samples</a>.</p>
 
 <h5 id="singleton-mode">Singleton Mode</h5>
 
-<p>Ehcache-1.1 supported only one <code class="highlighter-rouge">CacheManager</code> instance which was a singleton. CacheManager can still be used in this way using the static factory methods.</p>
+<p>Ehcache-1.1 supported only one <code>CacheManager</code> instance which was a singleton. CacheManager can still be used in this way using the static factory methods.</p>
 
 <h5 id="instance-mode">Instance Mode</h5>
 
@@ -239,11 +236,11 @@ constructor. The two types will coexist peacefully.</p>
 
 <h3 id="ehcache">Ehcache</h3>
 
-<p>All caches implement the <code class="highlighter-rouge">Ehcache</code> interface. A cache has a name and attributes. Each cache contains Elements.</p>
+<p>All caches implement the <code>Ehcache</code> interface. A cache has a name and attributes. Each cache contains Elements.</p>
 
 <p>A Cache in Ehcache is analogous to a cache region in other caching systems.</p>
 
-<p>Cache elements are stored in the <code class="highlighter-rouge">MemoryStore</code>. Optionally they also overflow to a <code class="highlighter-rouge">DiskStore</code>.</p>
+<p>Cache elements are stored in the <code>MemoryStore</code>. Optionally they also overflow to a <code>DiskStore</code>.</p>
 
 <h3 id="element">Element</h3>
 
@@ -357,7 +354,7 @@ the extra features when needed. Also a large number of Java classes are simply n
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

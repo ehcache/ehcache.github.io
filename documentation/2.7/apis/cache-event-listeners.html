@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="cache-event-listeners">Cache Event Listeners</h1><div id="toc-container">
@@ -225,12 +222,13 @@ multiple listeners.
 Each listener is configured by adding a
 cacheEventListenerFactory element as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache ...&gt;
+<pre>
+   <code>&lt;cache ...&gt;
   &lt;cacheEventListenerFactory class="" properties="" listenFor=""/&gt;
   ...
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>The entry specifies a CacheEventListenerFactory which is used to
 create a CacheEventListener, which then receives notifications.
@@ -260,10 +258,11 @@ is doing.</p>
 <h2 id="implementing-a-cacheeventlistenerfactory-and-cacheeventlistener-&lt;a-name=”implementing-a-cacheeventlistenerfactory}">Implementing a CacheEventListenerFactory and CacheEventListener &lt;a name=”Implementing-a-CacheEventListenerFactory}</h2>
 <p>A CacheEventListenerFactory is an abstract factory for creating
 cache event listeners. Implementers should provide their own concrete
-factory, extending this abstract factory. It can then be configured in <code class="highlighter-rouge">ehcache.xml</code>.
+factory, extending this abstract factory. It can then be configured in <code>ehcache.xml</code>.
 The following example demonstrates how to create an abstract CacheEventListenerFactory:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
+<pre>
+   <code>/**
 * An abstract factory for creating listeners. Implementers should provide their own
 * concrete factory extending this factory. It can then be configured in ehcache.xml
 *
@@ -280,13 +279,14 @@ public abstract class CacheEventListenerFactory {
 */
 public abstract CacheEventListener createCacheEventListener(Properties properties);
 "/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>The following example demonstrates how to create a concrete implementation of the CacheEventListener
 interface:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
+<pre>
+   <code>/**
 * Allows implementers to register callback methods that will be executed when a cache event
 *  occurs.
 * The events include:
@@ -395,21 +395,21 @@ void dispose();
 */
 public Object clone() throws CloneNotSupportedException;
 "/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>Two other methods are also available:</p>
 
 <ul>
   <li>
-    <p><code class="highlighter-rouge">void notifyElementEvicted(Ehcache cache, Element element)</code></p>
+    <p><code>void notifyElementEvicted(Ehcache cache, Element element)</code></p>
 
-    <p>Called immediately after an element is evicted from the cache. Eviction, which happens when a cache entry is deleted from a store, should not be confused with removal, which is a result of calling <code class="highlighter-rouge">Cache.removeElement(Element)</code>.</p>
+    <p>Called immediately after an element is evicted from the cache. Eviction, which happens when a cache entry is deleted from a store, should not be confused with removal, which is a result of calling <code>Cache.removeElement(Element)</code>.</p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">void notifyRemoveAll(Ehcache cache)</code></p>
+    <p><code>void notifyRemoveAll(Ehcache cache)</code></p>
 
-    <p>Called during <code class="highlighter-rouge">Ehcache.removeAll()</code> to indicate that all elements have been removed from the cache in a bulk operation. The usual <code class="highlighter-rouge">notifyElementRemoved(net.sf.ehcache.Ehcache, net.sf.ehcache.Element)</code> is not called. Only one notification is emitted because performance considerations do not allow for serially processing notifications where potentially millions of elements have been bulk deleted.</p>
+    <p>Called during <code>Ehcache.removeAll()</code> to indicate that all elements have been removed from the cache in a bulk operation. The usual <code>notifyElementRemoved(net.sf.ehcache.Ehcache, net.sf.ehcache.Element)</code> is not called. Only one notification is emitted because performance considerations do not allow for serially processing notifications where potentially millions of elements have been bulk deleted.</p>
   </li>
 </ul>
 
@@ -420,9 +420,10 @@ of these classes will be done.</p>
 
 <p>To add a listener programmatically, follow this example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cache.getCacheEventNotificationService().registerListener(myListener);
-</code></pre>
-</div>
+<pre>
+   <code>cache.getCacheEventNotificationService().registerListener(myListener);
+</code>
+</pre>
 
       </article>
     </div>
@@ -520,7 +521,7 @@ of these classes will be done.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

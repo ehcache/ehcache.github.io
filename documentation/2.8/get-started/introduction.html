@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.8 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.8 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="hello-ehcache">Hello, Ehcache</h1><div id="toc-container">
@@ -320,9 +317,9 @@ we assume:</p>
 
 <h4 id="persistent-object-relational-caching">Persistent Object Relational Caching</h4>
 
-<p>A Hibernate <code class="highlighter-rouge">Session.load()</code> for a single object is about 1000 times faster from cache than from a database.</p>
+<p>A Hibernate <code>Session.load()</code> for a single object is about 1000 times faster from cache than from a database.</p>
 
-<p>A typical Hibernate query will return a list of IDs from the database, and then attempt to load each. If <code class="highlighter-rouge">Session.iterate()</code>
+<p>A typical Hibernate query will return a list of IDs from the database, and then attempt to load each. If <code>Session.iterate()</code>
 is used, Hibernate goes back to the database to load each object.</p>
 
 <p>Imagine a scenario where we execute a query against the database tha returns a hundred IDs and then load each one.
@@ -339,7 +336,7 @@ the time that the operation takes. The proportion being sped up is thus 60% (75%
 
 <h4 id="web-page-caching">Web Page Caching</h4>
 
-<p>An observed speed up from caching a web page is 1000 times. Ehcache can retrieve a page from its <code class="highlighter-rouge">SimplePageCachingFilter</code>
+<p>An observed speed up from caching a web page is 1000 times. Ehcache can retrieve a page from its <code>SimplePageCachingFilter</code>
 in a few milliseconds.</p>
 
 <p>Because the web page is the result of a computation, it has a proportion of 100%.</p>
@@ -355,7 +352,7 @@ in a few milliseconds.</p>
 <h4 id="web-page-fragment-caching">Web Page Fragment Caching</h4>
 
 <p>Caching the entire page is a big win. Sometimes the liveness requirements vary in different parts of the page.
-Here the <code class="highlighter-rouge">SimplePageFragmentCachingFilter</code> can be used.</p>
+Here the <code>SimplePageFragmentCachingFilter</code> can be used.</p>
 
 <p>Let’s say we have a 1000 fold improvement on a page fragment that taking 40% of the page render time.</p>
 
@@ -577,7 +574,7 @@ effective cache efficiency = (cache efficiency) * (cluster efficiency)
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

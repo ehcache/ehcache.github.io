@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="cache-configuration">Cache Configuration</h1><div id="toc-container">
@@ -266,26 +263,28 @@
   <li>CacheEventListeners can be added and removed dynamically</li>
 </ul>
 
-<p>Note that the <code class="highlighter-rouge">eternal</code> attribute, when set to “true”, overrides <code class="highlighter-rouge">timeToLive</code> and <code class="highlighter-rouge">timeToIdle</code> so that no expiration can take place.
+<p>Note that the <code>eternal</code> attribute, when set to “true”, overrides <code>timeToLive</code> and <code>timeToIdle</code> so that no expiration can take place.
 This example shows how to dynamically modify the cache configuration of running cache:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Cache cache = manager.getCache("sampleCache");
+<pre>
+   <code>Cache cache = manager.getCache("sampleCache");
 CacheConfiguration config = cache.getCacheConfiguration();
 config.setTimeToIdleSeconds(60);
 config.setTimeToLiveSeconds(120);
 config.setmaxEntriesLocalHeap(10000);
 config.setmaxEntriesLocalDisk(1000000);
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>Dynamic cache configurations can also be frozen to prevent future changes:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Cache cache = manager.getCache("sampleCache");
+<pre>
+   <code>Cache cache = manager.getCache("sampleCache");
 cache.disableDynamicFeatures();
-</code></pre>
-</div>
+</code>
+</pre>
 
-<p>In <code class="highlighter-rouge">ehcache.xml</code>, you can disable dynamic configuration by setting the <code class="highlighter-rouge">&lt;ehcache&gt;</code> element’s <code class="highlighter-rouge">dynamicConfig</code> attribute to “false”.</p>
+<p>In <code>ehcache.xml</code>, you can disable dynamic configuration by setting the <code>&lt;ehcache&gt;</code> element’s <code>dynamicConfig</code> attribute to “false”.</p>
 
 <h2 id="memory-based-cache-sizing-(ehcache-2.5-and-higher)">Memory-Based Cache Sizing (Ehcache 2.5 and higher)</h2>
 
@@ -309,27 +308,30 @@ rather than waiting for elements to be requested, which is a lazy loading approa
 <p>Replicated caches provide a bootstrap mechanism which populates them. For example following is the JGroups bootstrap
 cache loader:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsBootstrapCacheLoaderFactory" properties="bootstrapAsynchronously=true"/&gt;
-</code></pre>
-</div>
+<pre>
+   <code>&lt;bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsBootstrapCacheLoaderFactory" properties="bootstrapAsynchronously=true"/&gt;
+</code>
+</pre>
 
 <h2 id="copyonread-and-copyonwrite-cache-configuration">copyOnRead and copyOnWrite cache configuration</h2>
 
 <p>A cache can be configured to copy the data, rather than return reference to it on get or put. This is configured using the
-<code class="highlighter-rouge">copyOnRead</code> and <code class="highlighter-rouge">copyOnWrite</code> attributes of cache and defaultCache elements in your configuration or programmatically as follows:</p>
+<code>copyOnRead</code> and <code>copyOnWrite</code> attributes of cache and defaultCache elements in your configuration or programmatically as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CacheConfiguration config = new CacheConfiguration("copyCache", 1000).copyOnRead(true).copyOnWrite(true);
+<pre>
+   <code>CacheConfiguration config = new CacheConfiguration("copyCache", 1000).copyOnRead(true).copyOnWrite(true);
 Cache copyCache = new Cache(config);
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>The default configuration will be false for both options.</p>
 
 <p>In order to copy elements on put()-like and/or get()-like operations, a CopyStrategy is being used. The default implementation
-uses serialization to copy elements. You can provide your own implementation of <code class="highlighter-rouge">net.sf.ehcache.store.compound.CopyStrategy</code> like
+uses serialization to copy elements. You can provide your own implementation of <code>net.sf.ehcache.store.compound.CopyStrategy</code> like
 this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="copyCache"
+<pre>
+   <code>&lt;cache name="copyCache"
     maxEntriesLocalHeap="10"
     eternal="false"
     timeToIdleSeconds="5"
@@ -339,51 +341,53 @@ this:</p>
   &lt;persistence strategy="none"/&gt;
   &lt;copyStrategy class="com.company.ehcache.MyCopyStrategy"/&gt;
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
-<p>Per cache, a single instance of your <code class="highlighter-rouge">CopyStrategy</code> is used. Therefore, in your implementation of <code class="highlighter-rouge">CopyStrategy.copy(T)</code>, T has to be thread-safe.</p>
+<p>Per cache, a single instance of your <code>CopyStrategy</code> is used. Therefore, in your implementation of <code>CopyStrategy.copy(T)</code>, T has to be thread-safe.</p>
 
 <p>A copy strategy can be added programmatically in the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CacheConfiguration cacheConfiguration = new CacheConfiguration("copyCache", 10);
+<pre>
+   <code>CacheConfiguration cacheConfiguration = new CacheConfiguration("copyCache", 10);
 
 CopyStrategyConfiguration copyStrategyConfiguration = new CopyStrategyConfiguration();
 copyStrategyConfiguration.setClass("com.company.ehcache.MyCopyStrategy");
 
 cacheConfiguration.addCopyStrategy(copyStrategyConfiguration);
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h2 id="special-system-properties">Special System Properties</h2>
 
 <p><a id="net.sf.ehcache.disabled"></a>
 ### net.sf.ehcache.disabled
-Setting this system property to <code class="highlighter-rouge">true</code> (using <code class="highlighter-rouge">java -Dnet.sf.ehcache.disabled=true</code> in the Java command line) disables caching in ehcache. If disabled, no elements can be added to a cache (puts are silently discarded).</p>
+Setting this system property to <code>true</code> (using <code>java -Dnet.sf.ehcache.disabled=true</code> in the Java command line) disables caching in ehcache. If disabled, no elements can be added to a cache (puts are silently discarded).</p>
 
 <p><a id="net.sf.ehcache.use.classic.lru"></a>
 ### net.sf.ehcache.use.classic.lru
-When LRU is selected as the eviction policy, set this system property to <code class="highlighter-rouge">true</code> (using <code class="highlighter-rouge">java -Dnet.sf.ehcache.use.classic.lru=true</code> in the Java command line) to use the older LruMemoryStore implementation. This is provided for ease of migration.</p>
+When LRU is selected as the eviction policy, set this system property to <code>true</code> (using <code>java -Dnet.sf.ehcache.use.classic.lru=true</code> in the Java command line) to use the older LruMemoryStore implementation. This is provided for ease of migration.</p>
 
 <h2 id="ehcache.xsd">ehcache.xsd</h2>
-<p>Ehcache configuration files must be comply with the Ehcache XML schema, <code class="highlighter-rouge">ehcache.xsd</code>.
+<p>Ehcache configuration files must be comply with the Ehcache XML schema, <code>ehcache.xsd</code>.
 It can be downloaded from <a href="http://ehcache.org/ehcache.xsd">http://ehcache.org/ehcache.xsd</a>.</p>
 
 <p>Note that some elements documented by the Ehcache XML schema pertain only to <a href="http://terracotta.org/products">BigMemory</a> and are not valid for the open-source version of Ehcache.</p>
 
 <h2 id="ehcache-failsafe.xml">ehcache-failsafe.xml</h2>
 <p>If the CacheManager default constructor or factory method is called, Ehcache looks for a
-  file called <code class="highlighter-rouge">ehcache.xml</code> in the top level of the classpath. Failing that it looks for
-  <code class="highlighter-rouge">ehcache-failsafe.xml</code> in the classpath. <code class="highlighter-rouge">ehcache-failsafe.xml</code> is packaged in the Ehcache JAR
+  file called <code>ehcache.xml</code> in the top level of the classpath. Failing that it looks for
+  <code>ehcache-failsafe.xml</code> in the classpath. <code>ehcache-failsafe.xml</code> is packaged in the Ehcache JAR
   and should always be found.</p>
 
-<p><code class="highlighter-rouge">ehcache-failsafe.xml</code> provides an extremely simple default configuration to enable users to
-get started before they create their own <code class="highlighter-rouge">ehcache.xml</code>.</p>
+<p><code>ehcache-failsafe.xml</code> provides an extremely simple default configuration to enable users to
+get started before they create their own <code>ehcache.xml</code>.</p>
 
 <p>If it used Ehcache will emit a warning, reminding the user to set up a proper configuration.
-The meaning of the elements and attributes are explained in the section on <code class="highlighter-rouge">ehcache.xml</code>.</p>
+The meaning of the elements and attributes are explained in the section on <code>ehcache.xml</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;ehcache&gt;
+<pre>
+   <code>&lt;ehcache&gt;
   &lt;diskStore path="java.io.tmpdir"/&gt;
   &lt;defaultCache
      maxEntriesLocalHeap="10000"
@@ -396,8 +400,8 @@ The meaning of the elements and attributes are explained in the section on <code
      &lt;persistence strategy="localTempSwap"/&gt;
   /&gt;
 &lt;/ehcache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h2 id="update-checker">Update Checker</h2>
 
@@ -407,21 +411,23 @@ To disable the check, do one of the following:</p>
 
 <h3 id="by-system-property">By System Property</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>-Dnet.sf.ehcache.skipUpdateCheck=true
-</code></pre>
-</div>
+<pre>
+   <code>-Dnet.sf.ehcache.skipUpdateCheck=true
+</code>
+</pre>
 
 <h3 id="by-configuration">By Configuration</h3>
 
-<p>The outer <code class="highlighter-rouge">ehcache</code> element takes an <code class="highlighter-rouge">updateCheck</code> attribute, which is set to false as in the
+<p>The outer <code>ehcache</code> element takes an <code>updateCheck</code> attribute, which is set to false as in the
 following example.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<pre>
+   <code>&lt;ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="ehcache.xsd"
     updateCheck="false" monitoring="autodetect"
     dynamicConfig="true"&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h2 id="ehcache.xml-and-other-configuration-files">ehcache.xml and Other Configuration Files</h2>
 
@@ -441,7 +447,7 @@ conflict. Ehcache will attempt to resolve conflicts and will emit a warning remi
 user to configure a separate configuration for multiple CacheManagers with conflicting
 settings.</p>
 
-<p>The sample <code class="highlighter-rouge">ehcache.xml</code> is included in the Ehcache distribution and can also be downloaded from <a href="http://ehcache.org/ehcache.xml">http://ehcache.org/ehcache.xml</a>. It contains full commentary required to configure each element.</p>
+<p>The sample <code>ehcache.xml</code> is included in the Ehcache distribution and can also be downloaded from <a href="http://ehcache.org/ehcache.xml">http://ehcache.org/ehcache.xml</a>. It contains full commentary required to configure each element.</p>
 
 <p>Note that some elements documented in the sample Ehcache XML file pertain only to <a href="http://terracotta.org/products">BigMemory</a> and are not valid for the open-source version of Ehcache.</p>
 
@@ -542,7 +548,7 @@ settings.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

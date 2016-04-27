@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="using-ehcache">Using Ehcache</h1><div id="toc-container">
@@ -232,7 +229,8 @@ system-of-record, store the data in the cache, and then return it.</p>
 <p>When data is written, the cache must be updated with the system-of-record.
 This results in code that often looks like the following pseudo-code:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public class MyDataAccessClass
+<pre>
+   <code>public class MyDataAccessClass
 {
   private final Ehcache cache;
   public MyDataAccessClass(Ehcache cache)
@@ -260,8 +258,8 @@ This results in code that often looks like the following pseudo-code:</p>
      writeDataToDataStore(key, value);
      cache.put(new Element(key, value);
   "/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h3 id="cache-as-sor">cache-as-sor</h3>
 
@@ -296,9 +294,9 @@ per-cache basis (use only configuration)</li>
 <h3 id="read-through">read-through</h3>
 <p>The read-through pattern mimics the structure of the cache-aside pattern
 when reading data.  The difference is that you must implement the
-<code class="highlighter-rouge">CacheEntryFactory</code> interface to instruct the cache how to read
+<code>CacheEntryFactory</code> interface to instruct the cache how to read
 objects on a cache miss, and you must wrap the Ehcache instance with
-an instance of <code class="highlighter-rouge">SelfPopulatingCache</code>.
+an instance of <code>SelfPopulatingCache</code>.
 Compare the appearance of the read-through pattern code to the
 code provided in the cache-aside pattern.  (The full example is
 provided at the end of this document that includes a read-through
@@ -307,7 +305,7 @@ and write-through implementation).</p>
 <h3 id="write-through">write-through</h3>
 <p>The write-through pattern mimics the structure of the cache-aside pattern
 when writing data.  The difference is that you must implement the
-<code class="highlighter-rouge">CacheWriter</code> interface and configure the cache for write-through
+<code>CacheWriter</code> interface and configure the cache for write-through
 or write-behind.
 A write-through cache writes data to the system-of-record in the same
 thread of execution, therefore in the common scenario of using a database
@@ -573,7 +571,7 @@ Usually, with these, you are using Ehcache without even realising it. The first 
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

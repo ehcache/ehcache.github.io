@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="blockingcache-and-selfpopulatingcache-">BlockingCache and SelfPopulatingCache <a name="blockingcache-and-selfpopulatingcache" id="blockingcache-and-selfpopulatingcache"></a></h1><div id="toc-container">
@@ -189,7 +186,7 @@
 </div>
 
 <h2 id="introduction">Introduction</h2>
-<p>The <code class="highlighter-rouge">net.sf.ehcache.constructs</code> package contains some applied caching classes which use the core classes to solve everyday caching problems. Two of these are BlockingCache and SelfPopulatingCache.</p>
+<p>The <code>net.sf.ehcache.constructs</code> package contains some applied caching classes which use the core classes to solve everyday caching problems. Two of these are BlockingCache and SelfPopulatingCache.</p>
 
 <h2 id="blocking-cache-">Blocking Cache <a name="blocking-cache" id="blocking-cache"></a></h2>
 <p>Imagine you have a very busy web site with thousands of concurrent users. Rather than being evenly distributed in
@@ -207,15 +204,15 @@ Enter the BlockingCache.
 It is blocking because all threads requesting the same key wait for the first thread to complete. Once the first
 thread has completed the other threads simply obtain the cache entry and return.
 The BlockingCache can scale up to very busy systems. Each thread can either wait indefinitely, or you can specify a timeout
-using the <code class="highlighter-rouge">timeoutMillis</code> constructor argument.</p>
+using the <code>timeoutMillis</code> constructor argument.</p>
 
 <h2 id="selfpopulatingcache-">SelfPopulatingCache <a name="selfpopulatingcache" id="selfpopulatingcache"></a></h2>
 <p>You want to use the BlockingCache, but the requirement to always release the lock creates gnarly code. You also
 want to think about what you are doing without thinking about the caching.
 Enter the SelfPopulatingCache. The name SelfPopulatingCache is synonymous with Pull-through cache, which is a
 common caching term. SelfPopulatingCache though always is in addition to a BlockingCache.
-SelfPopulatingCache uses a <code class="highlighter-rouge">CacheEntryFactory</code>, that given a key, knows how to populate the entry.
-Note: JCache inspired getWithLoader and getAllWithLoader directly in <code class="highlighter-rouge">Ehcache</code> which work with a <code class="highlighter-rouge">CacheLoader</code> may be used as an alternative
+SelfPopulatingCache uses a <code>CacheEntryFactory</code>, that given a key, knows how to populate the entry.
+Note: JCache inspired getWithLoader and getAllWithLoader directly in <code>Ehcache</code> which work with a <code>CacheLoader</code> may be used as an alternative
 to SelfPopulatingCache.</p>
 
       </article>
@@ -314,7 +311,7 @@ to SelfPopulatingCache.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

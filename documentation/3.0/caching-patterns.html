@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Cache Usage Patterns</title>
+  <title>Ehcache 3.0 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Cache Usage Patterns</h1>
+        <h1>Ehcache 3.0 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -162,13 +162,11 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title">Cache Usage Patterns</h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
-        <div id="preamble">
+        <h1 id="cache-usage-patterns">Cache Usage Patterns</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>There are several common access patterns when using a cache. Ehcache supports the following patterns:</p>
@@ -182,9 +180,9 @@
 <p>With the cache-aside pattern, application code uses the cache directly.</p>
 </div>
 <div class="paragraph">
-<p>This means that application code which accesses the system-of-record (SOR) should consult the cache first, and if the<br>
-cache contains the data, then return the data directly from the cache, bypassing the SOR.  Otherwise, the application<br>
-code must fetch the data from the system-of-record, store the data in the cache, and then return it. When data is<br>
+<p>This means that application code which accesses the system-of-record (SOR) should consult the cache first, and if the<br />
+cache contains the data, then return the data directly from the cache, bypassing the SOR.  Otherwise, the application<br />
+code must fetch the data from the system-of-record, store the data in the cache, and then return it. When data is<br />
 written, the cache must be updated along with the system-of-record.</p>
 </div>
 <div class="listingblock">
@@ -214,8 +212,8 @@ cache.put(k, v)</pre>
 <p>The cache-as-SoR pattern implies using the cache as though it were the primary system-of-record (SoR).</p>
 </div>
 <div class="paragraph">
-<p>The pattern delegates SOR reading and writing activities to the cache, so that application code is (at least directly)<br>
-absolved of this responsibility. To implement the cache-as-sor pattern, use a combination of the following read and<br>
+<p>The pattern delegates SOR reading and writing activities to the cache, so that application code is (at least directly)<br />
+absolved of this responsibility. To implement the cache-as-sor pattern, use a combination of the following read and<br />
 write patterns:</p>
 </div>
 <div class="ulist">
@@ -257,36 +255,36 @@ write patterns:</p>
 <div class="sect2">
 <h3 id="read-through"><a class="anchor" href="#read-through"></a>Read-Through</h3>
 <div class="paragraph">
-<p>Under the read-through pattern, the cache is configured with a <em>loader</em> component that knows how to load data from the<br>
+<p>Under the read-through pattern, the cache is configured with a <em>loader</em> component that knows how to load data from the<br />
 system-of-record (SoR).</p>
 </div>
 <div class="paragraph">
-<p>When the cache is asked for the value associated with a given key and such an entry does not<br>
-exist within the cache, the cache invokes the loader to retrieve the value from the SoR, then caches the value, then<br>
+<p>When the cache is asked for the value associated with a given key and such an entry does not<br />
+exist within the cache, the cache invokes the loader to retrieve the value from the SoR, then caches the value, then<br />
 returns it to the caller.</p>
 </div>
 <div class="paragraph">
-<p>The next time the cache is asked for the value for the same key it can be returned from the<br>
+<p>The next time the cache is asked for the value for the same key it can be returned from the<br />
 cache without using the loader (unless the entry has been evicted or expired).</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="write-through"><a class="anchor" href="#write-through"></a>Write-Through</h3>
 <div class="paragraph">
-<p>Under the write-through pattern, the cache is configured with a <em>writer</em> component that knows how to write data to the<br>
+<p>Under the write-through pattern, the cache is configured with a <em>writer</em> component that knows how to write data to the<br />
 system-of-record (SoR).</p>
 </div>
 <div class="paragraph">
-<p>When the cache is asked to store a value for a key, the cache invokes the writer to store<br>
+<p>When the cache is asked to store a value for a key, the cache invokes the writer to store<br />
 the value in the SoR, as well as updating the cache.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="write-behind"><a class="anchor" href="#write-behind"></a>Write-Behind</h3>
 <div class="paragraph">
-<p>The write-behind pattern changes the timing of the write to the system-of-record. Rather than writing to the<br>
-system-of-record while the thread making the update waits (as with write-through), write-behind queues the data for<br>
-writing at a later time.  This allows the user&#8217;s thread to move along more quickly, at the cost of introducing some<br>
+<p>The write-behind pattern changes the timing of the write to the system-of-record. Rather than writing to the<br />
+system-of-record while the thread making the update waits (as with write-through), write-behind queues the data for<br />
+writing at a later time.  This allows the user’s thread to move along more quickly, at the cost of introducing some<br />
 lag in time before the SoR is updated.</p>
 </div>
 </div>
@@ -388,7 +386,7 @@ lag in time before the SoR is updated.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

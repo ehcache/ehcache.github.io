@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.7 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.7 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="cachemanager-event-listeners">CacheManager Event Listeners</h1><div id="toc-container">
@@ -191,16 +188,16 @@
 <h2 id="introduction">Introduction</h2>
 
 <p>CacheManager event listeners allow implementers to register callback
-methods that will be executed when a <code class="highlighter-rouge">CacheManager</code> event occurs. Cache listeners
+methods that will be executed when a <code>CacheManager</code> event occurs. Cache listeners
 implement the CacheManagerEventListener interface.
 The events include:</p>
 
 <ul>
   <li>
-    <p>adding a <code class="highlighter-rouge">Cache</code></p>
+    <p>adding a <code>Cache</code></p>
   </li>
   <li>
-    <p>removing a <code class="highlighter-rouge">Cache</code></p>
+    <p>removing a <code>Cache</code></p>
   </li>
 </ul>
 
@@ -214,9 +211,10 @@ is doing.</p>
 <p>One CacheManagerEventListenerFactory and hence one CacheManagerEventListener can be specified per CacheManager instance.
 The factory is configured as below:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerEventListenerFactory class="" properties=""/&gt;
-</code></pre>
-</div>
+<pre>
+   <code>&lt;cacheManagerEventListenerFactory class="" properties=""/&gt;
+</code>
+</pre>
 
 <p>The entry specifies a CacheManagerEventListenerFactory which will be used to
 create a CacheManagerEventListener, which is notified when Caches are
@@ -225,10 +223,10 @@ The attributes of a CacheManagerEventListenerFactory are:</p>
 
 <ul>
   <li>
-    <p><code class="highlighter-rouge">class</code> - a fully qualified factory class name</p>
+    <p><code>class</code> - a fully qualified factory class name</p>
   </li>
   <li>
-    <p><code class="highlighter-rouge">properties</code> - comma separated properties having meaning only to the factory.</p>
+    <p><code>properties</code> - comma separated properties having meaning only to the factory.</p>
   </li>
 </ul>
 
@@ -239,7 +237,7 @@ is doing.
 If no class is specified, or there is no cacheManagerEventListenerFactory element, no listener is created. There
 is no default.</p>
 
-<h2 id="implementing-a-cachemanagereventlistenerfactory-and-cachemanagereventlistener">Implementing a <code class="highlighter-rouge">CacheManagerEventListenerFactory</code> and <code class="highlighter-rouge">CacheManagerEventListener</code></h2>
+<h2 id="implementing-a-cachemanagereventlistenerfactory-and-cachemanagereventlistener">Implementing a <code>CacheManagerEventListenerFactory</code> and <code>CacheManagerEventListener</code></h2>
 
 <p>CacheManagerEventListenerFactory is an abstract factory for creating
 cache manager listeners. Implementers should provide their own concrete
@@ -248,7 +246,8 @@ ehcache.xml.
 The factory class needs to be a concrete subclass of the abstract
 factory CacheManagerEventListenerFactory, which is reproduced below:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
+<pre>
+   <code>/**
 * An abstract factory for creating {@link CacheManagerEventListener}s. Implementers should
 * provide their own concrete factory extending this factory. It can then be configured in
 * ehcache.xml
@@ -268,12 +267,13 @@ public abstract class CacheManagerEventListenerFactory {
 public abstract CacheManagerEventListener
        createCacheManagerEventListener(Properties properties);
 "/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>The factory creates a concrete implementation of CacheManagerEventListener, which is reproduced below:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
+<pre>
+   <code>/**
 * Allows implementers to register callback methods that will be executed when a
 * &lt;code&gt;CacheManager&lt;/code&gt; event occurs.
 * The events include:
@@ -326,11 +326,11 @@ void notifyCacheAdded(String cacheName);
 */
 void notifyCacheRemoved(String cacheName);
 "/&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>The implementations need to be placed in the classpath accessible to
-ehcache. Ehcache uses the ClassLoader returned by <code class="highlighter-rouge">Thread.currentThread().getContextClassLoader()</code>
+ehcache. Ehcache uses the ClassLoader returned by <code>Thread.currentThread().getContextClassLoader()</code>
 to load classes.</p>
 
       </article>
@@ -429,7 +429,7 @@ to load classes.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

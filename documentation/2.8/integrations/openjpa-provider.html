@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 2.8 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 2.8 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -147,10 +147,7 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title"></h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
         <h1 id="openjpa-caching-provider-">OpenJPA Caching Provider <a name="openjpa-caching-provider" id="openjpa-caching-provider"></a></h1><div id="toc-container">
@@ -165,18 +162,33 @@
                      </a>
                      <ul>
                         <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
                            <a href="#installation">
                               <span class="toctext">Installation</span>
                            </a>
                         </li>
-                        <li class="toc_level-2 toc_section-3">
+                        <li class="toc_level-2 toc_section-4">
                            <a href="#configuration">
                               <span class="toctext">Configuration</span>
                            </a>
                         </li>
-                        <li class="toc_level-2 toc_section-4">
+                        <li class="toc_level-2 toc_section-5">
                            <a href="#default-cache">
                               <span class="toctext">Default Cache</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#troubleshooting">
+                              <span class="toctext">Troubleshooting</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#for-further-information">
+                              <span class="toctext">For Further Information</span>
                            </a>
                         </li>
                      </ul>
@@ -188,30 +200,32 @@
    </table>
 </div>
 
-<p>##Introduction
-Ehcache easily integrates with the <a href="http://openjpa.apache.org/">OpenJPA</a> persistence framework. This page provides installation and configuration information.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Ehcache easily integrates with the <a href="http://openjpa.apache.org/">OpenJPA</a> persistence framework. This page provides installation and configuration information.</p>
 
 <h2 id="installation">Installation</h2>
 <p>To use OpenJPA, add a Maven dependency for ehcache-openjpa.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
+<pre>
+   <code>&lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
 &lt;artifactId&gt;ehcache-openjpa&lt;/artifactId&gt;
 &lt;version&gt;0.1&lt;/version&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>Or, download from <a href="/downloads">Downloads</a>.</p>
 
 <h2 id="configuration">Configuration</h2>
 <p>For enabling Ehcache as second level cache, the persistence.xml file should include the following configurations:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="openjpa.Log" value="SQL=TRACE" /&gt;
+<pre>
+   <code>&lt;property name="openjpa.Log" value="SQL=TRACE" /&gt;
 &lt;property name="openjpa.QueryCache" value="ehcache" /&gt;
 &lt;property name="openjpa.DataCache" value="true"/&gt;
 &lt;property name="openjpa.RemoteCommitProvider" value="sjvm"/&gt;
 &lt;property name="openjpa.DataCacheManager" value="ehcache" /&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <p>The ehcache.xml file can be configured like this example:</p>
 
@@ -220,55 +234,60 @@ Ehcache easily integrates with the <a href="http://openjpa.apache.org/">OpenJPA<
 </ehcache>
  	&lt;defaultCache
  		maxEntriesLocalHeap=”10000”
-<div class="highlighter-rouge"><pre class="highlight"><code>	eternal="false"
+<pre>
+   <code>	eternal="false"
    		timeToIdleSeconds="120"
 	timeToLiveSeconds="120"
     memoryStoreEvictionPolicy="LRU"&gt;
     &lt;persistence strategy="localTempSwap"/&gt;
 &lt;/defaultCache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
  	&lt;cache name=”com.terracotta.domain.DataTest”
   		maxEntriesLocalHeap=”200”
-<div class="highlighter-rouge"><pre class="highlight"><code>	eternal="false"
+<pre>
+   <code>	eternal="false"
 	timeToIdleSeconds="2400"
    	timeToLiveSeconds="2400"
 	memoryStoreEvictionPolicy="LRU"&gt;
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
  	&lt;cache name=”openjpa”
   		maxEntriesLocalHeap=”20000”
-<div class="highlighter-rouge"><pre class="highlight"><code>	eternal="true"
+<pre>
+   <code>	eternal="true"
 	memoryStoreEvictionPolicy="LRU"&gt;
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
  	&lt;cache name=”openjpa-querycache”
   		maxEntriesLocalHeap=”20000”
-<div class="highlighter-rouge"><pre class="highlight"><code>	eternal="true"
+<pre>
+   <code>	eternal="true"
 	memoryStoreEvictionPolicy="LRU"&gt;
 &lt;/cache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
  	&lt;cacheManagerPeerListenerFactory
-<div class="highlighter-rouge"><pre class="highlight"><code>	class="org.terracotta.ehcachedx.monitor.probe.ProbePeerListenerFactory"
+<pre>
+   <code>	class="org.terracotta.ehcachedx.monitor.probe.ProbePeerListenerFactory"
 		properties="monitorAddress=localhost, monitorPort=9889, memoryMeasurement=true" /&gt;
  	&lt;/ehcache&gt;
-</code></pre>
-</div>
+</code>
+</pre>
 
 <h2 id="default-cache">Default Cache</h2>
-<p>As with Hibernate, Ehcache’s OpenJPA module (from 0.2) uses the <code class="highlighter-rouge">defaultCache</code> configured in ehcache.xml
+<p>As with Hibernate, Ehcache’s OpenJPA module (from 0.2) uses the <code>defaultCache</code> configured in ehcache.xml
 to create caches.
 For production, we recommend configuring a cache configuration in ehcache.xml for each cache, so that
 it may be correctly tuned.</p>
 
-<p>##Troubleshooting</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
 
 <p>To verify that that OpenJPA is using Ehcache:</p>
 
@@ -279,8 +298,8 @@ it may be correctly tuned.</p>
 
 <p>If there are still problems, verify in the logs and that your ehcache.xml file is being used. (It could be that if the ehcache.xml file is not found, ehcache-failsafe.xml is used by default.)</p>
 
-<p>##For Further Information
-For more on caching in OpenJPA, refer to the <a href="http://openjpa.apache.org/builds/1.0.2/apache-openjpa-1.0.2/docs/manual/ref_guide_caching.html">Apache OpenJPA project</a>.</p>
+<h2 id="for-further-information">For Further Information</h2>
+<p>For more on caching in OpenJPA, refer to the <a href="http://openjpa.apache.org/builds/1.0.2/apache-openjpa-1.0.2/docs/manual/ref_guide_caching.html">Apache OpenJPA project</a>.</p>
 
       </article>
     </div>
@@ -378,7 +397,7 @@ For more on caching in OpenJPA, refer to the <a href="http://openjpa.apache.org/
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 

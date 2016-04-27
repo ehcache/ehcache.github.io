@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Eviction Advisor</title>
+  <title>Ehcache 3.0 Documentation</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Eviction Advisor</h1>
+        <h1>Ehcache 3.0 Documentation</h1>
       </div>
       <div>
         <BR/>
@@ -162,13 +162,11 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-        
-        <h1 class="post-title">Eviction Advisor</h1>
-        <hr/>
-        
+         
       </header>
       <article class="post-content">
-        <div class="admonitionblock note">
+        <h1 id="eviction-advisor">Eviction Advisor</h1>
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
@@ -181,13 +179,13 @@ This is an advanced topic/feature that will not be of interest to most users.
 </table>
 </div>
 <div class="paragraph">
-<p>You can affect which elements are selected for eviction from the cache by providing a class that implements the<br>
+<p>You can affect which elements are selected for eviction from the cache by providing a class that implements the<br />
 <code>org.ehcache.config.EvictionAdvisor</code> interface.</p>
 </div>
 <div class="paragraph">
-<p><code>EvictionAdvisor</code> implementations are invoked when Ehcache is attempting to evict entries from the cache<br>
-(in order to make room for new entries) in order to determine whether the given entry should not be considered<br>
-a good candidate for eviction.  If the eviction is advised against, Ehcache will try to honor the preference of<br>
+<p><code>EvictionAdvisor</code> implementations are invoked when Ehcache is attempting to evict entries from the cache<br />
+(in order to make room for new entries) in order to determine whether the given entry should not be considered<br />
+a good candidate for eviction.  If the eviction is advised against, Ehcache will try to honor the preference of<br />
 preserving that entry in the cache, though there is no full guarantee of such.</p>
 </div>
 <div class="listingblock">
@@ -219,16 +217,16 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>If you want to hint the eviction algorithm to advisor against the eviction of some mappings, you have to<br>
+<td>If you want to hint the eviction algorithm to advisor against the eviction of some mappings, you have to<br />
 configure an instance of <code>EvictionAdvisor</code>.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>In this particular example, the <code>OddKeysEvictionAdvisor</code> class will advise against eviction of any key that is an odd number.<br>
-The cache is constrained to only be allowed to contain two entries, however the code has put three entries<br>
-into the cache - which will trigger capacity eviction.<br>
-By the time the cache manager gets closed, only mappings with odd keys should be left in the cache as their<br>
+<p>In this particular example, the <code>OddKeysEvictionAdvisor</code> class will advise against eviction of any key that is an odd number.<br />
+The cache is constrained to only be allowed to contain two entries, however the code has put three entries<br />
+into the cache - which will trigger capacity eviction.<br />
+By the time the cache manager gets closed, only mappings with odd keys should be left in the cache as their<br />
 prime candidacy for eviction would have been advised against.</p>
 </div>
 <div class="admonitionblock note">
@@ -238,7 +236,7 @@ prime candidacy for eviction would have been advised against.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Eviction advise status is computed when a mapping is written to the cache.<br>
+Eviction advise status is computed when a mapping is written to the cache.<br />
 This means that proper eviction advisor implementations are expected to be constant for a key-value pair.
 </td>
 </tr>
@@ -251,9 +249,9 @@ This means that proper eviction advisor implementations are expected to be const
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Please keep in mind that configuring an eviction advisor can slow down eviction: the more often you advise against<br>
-eviction, the harder the cache has to work to evict an element when room is required. After a certain time, if a cache<br>
-determines that the configured eviction advisor rejected too many eviction candidates, the cache can decide to completely<br>
+Please keep in mind that configuring an eviction advisor can slow down eviction: the more often you advise against<br />
+eviction, the harder the cache has to work to evict an element when room is required. After a certain time, if a cache<br />
+determines that the configured eviction advisor rejected too many eviction candidates, the cache can decide to completely<br />
 bypass the eviction advisor and evict anything it sees fit.
 </td>
 </tr>
@@ -355,7 +353,7 @@ bypass the eviction advisor and evict anything it sees fit.
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#').addClass("active");
+        $('#ehc_mnu_docs').addClass("active");
         $('#').addClass("active");
 </script>
 
