@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="using-coldfusion-and-bigmemory-go">Using Coldfusion and BigMemory Go</h1><div id="toc-container">
@@ -192,8 +195,7 @@ For more in-depth analysis, see <a href="http://www.brooks-bilson.com/blogs/rob/
 <p>The following code demonstrates how to call Ehcache from ColdFusion.
 It will cache a CF object in Ehcache and the set expiration time to 30 seconds. If you refresh the page many times within 30 seconds, you will see the data from cache. After 30 seconds, you will see a cache miss, then the code will generate a new object and put in cache again.</p>
 
-<pre>
-   <code>&lt;CFOBJECT type="JAVA" class="net.sf.ehcache.CacheManager" name="cacheManager"&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;CFOBJECT type="JAVA" class="net.sf.ehcache.CacheManager" name="cacheManager"&gt;
 &lt;cfset cache=cacheManager.getInstance().getCache("MyBookCache")&gt;
 &lt;cfset myBookElement=#cache.get("myBook")#&gt;
 &lt;cfif IsDefined("myBookElement")&gt;
@@ -225,8 +227,8 @@ Title: #myBook["title"]#&lt;br /&gt;
 Author: #myBook["author"]#&lt;br /&gt;
 ISBN: #myBook["ISBN"]#
 &lt;/cfoutput&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
       </article>
     </div>
@@ -324,7 +326,7 @@ ISBN: #myBook["ISBN"]#
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

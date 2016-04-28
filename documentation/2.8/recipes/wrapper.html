@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="echache-wrapper">Echache Wrapper</h1><div id="toc-container">
@@ -207,50 +210,45 @@
 
 <p>You can still get the Ehcache cache in case you want access to the full API.</p>
 
-<pre>
-   <code>public interface CacheWrapper&lt;K, V&gt;
-{
-  void put(K key, V value);
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="kt">void</span> <span class="n">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">);</span>
 
-  V get(K key);
-"/&gt;
+  <span class="n">V</span> <span class="n">get</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">net.sf.ehcache.CacheManager</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">net.sf.ehcache.Ehcache</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">net.sf.ehcache.Element</span><span class="o">;</span>
 
-public class EhcacheWrapper&lt;K, V&gt; implements CacheWrapper&lt;K, V&gt;
-{
-    private final String cacheName;
-    private final CacheManager cacheManager;
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EhcacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">;</span>
 
-    public EhcacheWrapper(final String cacheName, final CacheManager cacheManager)
-    {
-        this.cacheName = cacheName;
-        this.cacheManager = cacheManager;
-    "/&gt;
+  <span class="kd">public</span> <span class="n">EhcacheWrapper</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">cacheName</span> <span class="o">=</span> <span class="n">cacheName</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">cacheManager</span> <span class="o">=</span> <span class="n">cacheManager</span><span class="o">;</span>
+  <span class="o">}</span>
 
-    public void put(final K key, final V value)
-    {
-        getCache().put(new Element(key, value));
-    "/&gt;
+  <span class="kd">public</span> <span class="kt">void</span> <span class="n">put</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="kd">final</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">getCache</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
+  <span class="o">}</span>
 
-    public V get(final K key)
-    {
-        Element element = getCache().get(key);
-        if (element != null) {
-            return (V) element.getValue();
-        "/&gt;
-        return null;
-    "/&gt;
+  <span class="kd">public</span> <span class="n">V</span> <span class="n">get</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Element</span> <span class="n">element</span> <span class="o">=</span> <span class="n">getCache</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">element</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="o">(</span><span class="n">V</span><span class="o">)</span> <span class="n">element</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
 
-    public Ehcache getCache()
-    {
-        return cacheManager.getEhcache(cacheName);
-    "/&gt;
-"/&gt;
-</code>
-</pre>
+  <span class="kd">public</span> <span class="n">Ehcache</span> <span class="n">getCache</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">cacheManager</span><span class="o">.</span><span class="na">getEhcache</span><span class="o">(</span><span class="n">cacheName</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
       </article>
     </div>
@@ -348,7 +346,7 @@ public class EhcacheWrapper&lt;K, V&gt; implements CacheWrapper&lt;K, V&gt;
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

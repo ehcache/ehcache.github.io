@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 3.0 Documentation</title>
+  <title>Cache Writers</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 3.0 Documentation</h1>
+        <h1>Cache Writers</h1>
       </div>
       <div>
         <BR/>
@@ -162,11 +162,13 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title">Cache Writers</h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
-        <h1 id="cache-writers">Cache Writers</h1>
-<div class="sect1">
+        <div class="sect1">
 <h2 id="write-through-cache"><a class="anchor" href="#write-through-cache"></a>Write-Through Cache</h2>
 <div class="sectionbody">
 <div class="listingblock">
@@ -189,7 +191,7 @@ cacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you wish to use a cache in read-through/write-through caching pattern, you’ll have to implement<br />
+<td>If you wish to use a cache in read-through/write-through caching pattern, you&#8217;ll have to implement<br>
 a <code>CacheLoaderWriter</code> and configure it.</td>
 </tr>
 </table>
@@ -242,12 +244,12 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Define the concurrency level of writebehind queue, at a time these many writer threads will update<br />
+<td>Define the concurrency level of writebehind queue, at a time these many writer threads will update<br>
 the  underlying resource asynchronously.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Enable the write coalescing behavior, which ensures that only one update per key per batch hits the<br />
+<td>Enable the write coalescing behavior, which ensures that only one update per key per batch hits the<br>
 underlying resource.</td>
 </tr>
 </table>
@@ -350,7 +352,7 @@ underlying resource.</td>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.7 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.7 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="tomcat-issues-and-best-practices-">Tomcat Issues and Best Practices <a name="tomcat-issues-and-best-practices" id="tomcat-issues-and-best-practices"></a></h1><div id="toc-container">
@@ -203,26 +206,24 @@ continue to be tested against Ehcache. Accordingly, Tomcat is tier one for Ehcac
 
 <h2 id="problem-rejoining-a-cluster-after-a-reload">Problem rejoining a cluster after a reload</h2>
 <p>If I restart/reload a web application in Tomcat that has a CacheManager that is part of a cluster, the CacheManager is unable to rejoin the cluster.
-If I set logging for <code>net.sf.ehcache.distribution</code> to FINE I see the following exception:</p>
+If I set logging for <code class="highlighter-rouge">net.sf.ehcache.distribution</code> to FINE I see the following exception:</p>
 
-<pre>
-   <code>FINE: Unable to lookup remote cache peer for .... Removing from peer list. Cause was: error unmarshalling return; nested exception is: java.io.EOFException.
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>FINE: Unable to lookup remote cache peer for .... Removing from peer list. Cause was: error unmarshalling return; nested exception is: java.io.EOFException.
+</code></pre>
+</div>
 
-<p>The Tomcat and RMI class loaders do not get along that well. Move ehcache.jar to <code>$TOMCAT_HOME/common/lib</code>. This fixes the problem. This issue happens with anything that uses RMI, not just Ehcache.</p>
+<p>The Tomcat and RMI class loaders do not get along that well. Move ehcache.jar to <code class="highlighter-rouge">$TOMCAT_HOME/common/lib</code>. This fixes the problem. This issue happens with anything that uses RMI, not just Ehcache.</p>
 
 <h2 id="class-loader-memory-leak">Class-loader memory leak</h2>
 <p>In development, there appears to be class loader memory leak as I continually redeploy my web application.
-There are lots of causes of memory leaks on redeploy. Moving Ehcache out of the WAR and into <code>$TOMCAT/common/lib fixes this leak</code>.</p>
+There are lots of causes of memory leaks on redeploy. Moving Ehcache out of the WAR and into <code class="highlighter-rouge">$TOMCAT/common/lib fixes this leak</code>.</p>
 
 <h2 id="rmi-cacheexception---problem-starting-listener-for-rmicachepeer">RMI CacheException - problem starting listener for RMICachePeer</h2>
 <p>I get the following error:</p>
 
-<pre>
-   <code>net.sf.ehcache.CacheException: Problem starting listener for RMICachePeer ... java.rmi.UnmarshalException: error unmarshalling arguments; nested exception is: java.net.MalformedURLException: no protocol: Files/Apache. 
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>net.sf.ehcache.CacheException: Problem starting listener for RMICachePeer ... java.rmi.UnmarshalException: error unmarshalling arguments; nested exception is: java.net.MalformedURLException: no protocol: Files/Apache. 
+</code></pre>
+</div>
 
 <p>What is going on?
 This issue occurs to any RMI listener started on Tomcat whenever Tomcat has spaces in its installation path.
@@ -332,7 +333,7 @@ Why this issue occurs is presently unknown, but it is Tomcat-specific.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

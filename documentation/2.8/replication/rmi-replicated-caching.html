@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="replicated-caching-using-rmi">Replicated Caching using RMI</h1><div id="toc-container">
@@ -260,8 +263,8 @@ Ehcache provides two mechanisms for peer discovery:
 manual and automatic.</p>
 
 <p>To use one of the built-in peer discovery mechanisms, specify the class
-attribute of <code>cacheManagerPeerProviderFactory</code> as
-<code>net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory</code>
+attribute of <code class="highlighter-rouge">cacheManagerPeerProviderFactory</code> as
+<code class="highlighter-rouge">net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory</code>
 in the ehcache.xml configuration file.</p>
 
 <h3 id="automatic-peer-discovery">Automatic Peer Discovery</h3>
@@ -278,7 +281,7 @@ peer starts sending heartbeats it is admitted to the group.</p>
 <p>Any cache within the configuration set up as replicated will be made
 available for discovery by other peers.</p>
 
-<p>To set automatic peer discovery, specify the properties attribute of <code>cacheManagerPeerProviderFactory</code>
+<p>To set automatic peer discovery, specify the properties attribute of <code class="highlighter-rouge">cacheManagerPeerProviderFactory</code>
 as follows:</p>
 
 <p>peerDiscovery=automatic<br />
@@ -293,13 +296,12 @@ hostName=<em>the hostname or IP of the interface to be used for sending and rece
 sampleCache11 and sampleCache12. The configuration
 required for each server is identical, so the configuration for both server1 and server2 is the following:</p>
 
-<pre>
-   <code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
 class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
 properties="peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,
 multicastGroupPort=4446, timeToLive=32"/&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h3 id="manual-peer-discovery-a-namemanual-peer-discovery">Manual Peer Discovery <a name="Manual Peer Discovery" id="Manual Peer Discovery"></a></h3>
 
@@ -312,7 +314,7 @@ it to set up one way replications of data, by having server2 know about
 server1 but not vice versa.</p>
 
 <p>To set manual peer discovery, specify the properties attribute
-of <code>cacheManagerPeerProviderFactory</code> as follows:</p>
+of <code class="highlighter-rouge">cacheManagerPeerProviderFactory</code> as follows:</p>
 
 <p>peerDiscovery=manual<br />
 rmiUrls=//server:port/cacheName, …</p>
@@ -326,23 +328,21 @@ configured. Do not include the server being configured in the list.</p>
 sampleCache11 and sampleCache12. The following is the configuration
 required for server1:</p>
 
-<pre>
-   <code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
 class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
 properties="peerDiscovery=manual,
 rmiUrls=//server2:40001/sampleCache11|//server2:40001/sampleCache12"/&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>The following is the configuration required for server2:</p>
 
-<pre>
-   <code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
 class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
 properties="peerDiscovery=manual,
 rmiUrls=//server1:40001/sampleCache11|//server1:40001/sampleCache12"/&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h2 id="configuring-the-cachemanagerpeerlistener">Configuring the CacheManagerPeerListener</h2>
 
@@ -365,13 +365,12 @@ listener component is RMICacheManagerPeerListener which is configured
 using RMICacheManagerPeerListenerFactory. It is configured as per the
 following example:</p>
 
-<pre>
-   <code>&lt;cacheManagerPeerListenerFactory
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerListenerFactory
 class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
 properties="hostName=localhost, port=40001,
 socketTimeoutMillis=2000"/&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Valid properties are:</p>
 
@@ -382,7 +381,7 @@ control the interface over which cluster messages are received.
 The hostname is checked for reachability during CacheManager initialisation.
 If the hostName is unreachable, the CacheManager will refuse to start and an
 CacheException will be thrown indicating connection was refused.
-If unspecified, the hostname will use <code>InetAddress.getLocalHost().getHostAddress()</code>, which corresponds to the default
+If unspecified, the hostname will use <code class="highlighter-rouge">InetAddress.getLocalHost().getHostAddress()</code>, which corresponds to the default
 host network interface.
 Warning: Explicitly setting this to localhost refers to the local loopback of 127.0.0.1, which is not network visible
 and will cause no replications to be received from remote hosts. You should only use this setting when multiple
@@ -400,8 +399,7 @@ which then replicates messages to the other CacheManager peers. This is
 done by adding a cacheEventListenerFactory element to each cache’s
 configuration.</p>
 
-<pre>
-   <code>&lt;!-- Sample cache named sampleCache2. --&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;!-- Sample cache named sampleCache2. --&gt;
 &lt;cache name="sampleCache2"
   maxEntriesLocalHeap="10"
   eternal="false"
@@ -413,8 +411,8 @@ class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
 properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,
 replicateUpdatesViaCopy=false, replicateRemovals=true "/&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>class - use net.sf.ehcache.distribution.RMICacheReplicatorFactory</p>
 
@@ -433,10 +431,9 @@ replicateUpdatesViaCopy=false, replicateRemovals=true "/&gt;
 </ul>
 
 <p>To reduce typing if you want default behaviour, which is replicate everything in asynchronous mode, you can leave off
-the <code>RMICacheReplicatorFactory</code> properties as per the following example:</p>
+the <code class="highlighter-rouge">RMICacheReplicatorFactory</code> properties as per the following example:</p>
 
-<pre>
-   <code>&lt;!-- Sample cache named sampleCache4. All missing RMICacheReplicatorFactory properties
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;!-- Sample cache named sampleCache4. All missing RMICacheReplicatorFactory properties
     default to true --&gt;
 &lt;cache name="sampleCache4"
       maxEntriesLocalHeap="10"
@@ -446,8 +443,8 @@ the <code>RMICacheReplicatorFactory</code> properties as per the following examp
    &lt;cacheEventListenerFactory
        class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h2 id="configuring-bootstrap-from-a-cache-peer">Configuring Bootstrap from a Cache Peer</h2>
 
@@ -613,7 +610,7 @@ timeToLive property to restrict or expand propagation.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

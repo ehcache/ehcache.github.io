@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="pinning-expiration-and-eviction">Pinning, Expiration, and Eviction</h1><div id="toc-container">
@@ -212,13 +215,13 @@
 <h2 id="setting-expiration-">Setting Expiration <a name="24283" id="24283"></a></h2>
 <p>Cache entries expire based on parameters with configurable values. When eviction occurs, expired elements are the first to be removed. Having an effective expiration configuration is critical to optimizing use of resources such as heap and maintaining cache performance.</p>
 
-<p>To add expiration, edit the values of the following <code>&lt;cache&gt;</code> attributes and tune these values based on results of performance tests:</p>
+<p>To add expiration, edit the values of the following <code class="highlighter-rouge">&lt;cache&gt;</code> attributes and tune these values based on results of performance tests:</p>
 
 <ul>
-  <li><code>timeToIdleSeconds</code> – The maximum number of seconds an element can exist in the cache without being accessed. The element expires at this limit and will no longer be returned from the cache. The default value is 0, which means no TTI eviction takes place (infinite lifetime).</li>
-  <li><code>timeToLiveSeconds</code> – The maximum number of seconds an element can exist in the cache regardless of use. The element expires at this limit and will no longer be returned from the cache. The default value is 0, which means no TTL eviction takes place (infinite lifetime).</li>
-  <li><code>maxEntriesLocalDisk</code> – The maximum sum total number of elements (cache entries) allowed on the disk tier for the cache. If this target is exceeded, eviction occurs to bring the count within the allowed target. The default value is 0, which means no eviction takes place (infinite size is allowed). <strong>A setting of 0 means that no eviction of the cache’s entries takes place, and consequently can cause the node to run out of disk space.</strong></li>
-  <li><code>eternal</code> –  If the cache’s <code>eternal</code> flag is set, it overrides any finite TTI/TTL values that have been set.</li>
+  <li><code class="highlighter-rouge">timeToIdleSeconds</code> – The maximum number of seconds an element can exist in the cache without being accessed. The element expires at this limit and will no longer be returned from the cache. The default value is 0, which means no TTI eviction takes place (infinite lifetime).</li>
+  <li><code class="highlighter-rouge">timeToLiveSeconds</code> – The maximum number of seconds an element can exist in the cache regardless of use. The element expires at this limit and will no longer be returned from the cache. The default value is 0, which means no TTL eviction takes place (infinite lifetime).</li>
+  <li><code class="highlighter-rouge">maxEntriesLocalDisk</code> – The maximum sum total number of elements (cache entries) allowed on the disk tier for the cache. If this target is exceeded, eviction occurs to bring the count within the allowed target. The default value is 0, which means no eviction takes place (infinite size is allowed). <strong>A setting of 0 means that no eviction of the cache’s entries takes place, and consequently can cause the node to run out of disk space.</strong></li>
+  <li><code class="highlighter-rouge">eternal</code> –  If the cache’s <code class="highlighter-rouge">eternal</code> flag is set, it overrides any finite TTI/TTL values that have been set.</li>
 </ul>
 
 <p>See <a href="#30343">How Configuration Affects Element Eviction</a> for more information on how configuration can impact eviction. See this BigMemory Max document on <a href="http://terracotta.org/documentation/2.8/bigmemorymax/configuration/distributed-configuration">distributed cache configuration</a> for definitions of other available configuration properties.</p>
@@ -227,14 +230,13 @@
 
 <p>Data that should remain in the cache regardless of resource constraints can be pinned.</p>
 
-<p>Entire caches can be pinned using the <code>pinning</code> element in cache configuration. This element has a required attribute (<code>store</code>) to specify which data tiers the cache should be pinned to:</p>
+<p>Entire caches can be pinned using the <code class="highlighter-rouge">pinning</code> element in cache configuration. This element has a required attribute (<code class="highlighter-rouge">store</code>) to specify which data tiers the cache should be pinned to:</p>
 
-<pre>
-   <code>&lt;pinning store="localMemory" /&gt;
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;pinning store="localMemory" /&gt;
+</code></pre>
+</div>
 
-<p>The <code>store</code> attribute can have one of the following values:</p>
+<p>The <code class="highlighter-rouge">store</code> attribute can have one of the following values:</p>
 
 <ul>
   <li>localMemory – Cache data is pinned to the local heap (or off-heap for <a href="http://terracotta.org/products/bigmemorygo">BigMemory Go</a> and <a href="http://terracotta.org/products/bigmemorymax">BigMemory Max</a>). Unexpired entries can never be flushed to a lower tier or be evicted.</li>
@@ -243,61 +245,57 @@
 
 <p>For example, the following cache is configured to pin its entries:</p>
 
-<pre>
-   <code>&lt;cache name="Cache1" ... &gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="Cache1" ... &gt;
      &lt;pinning store="inCache" /&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>The following cache is configured to pin its entries to heap only:</p>
 
-<pre>
-   <code>&lt;cache name="Cache2" ... &gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="Cache2" ... &gt;
      &lt;pinning store="localMemory" /&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h3 id="scope-of-pinning">Scope of Pinning</h3>
 <p>Pinning as a setting exists in the local Ehcache client memory. It is never replicated or distributed in a cluster. Pinning achieved programmatically will not be persisted — after a restart the pinned entries are no longer pinned. Cache pinning in configuration is reinstated with the configuration file.</p>
 
 <h3 id="unpinning-caches">Unpinning Caches</h3>
-<p>To unpin all of a cache’s pinned entries, clear the cache. Specific entries can be removed from a cache using <code>Cache.remove()</code>. To empty the entire cache, use <code>Cache.removeAll()</code>. If the cache itself is removed (<code>Cache.dispose()</code> or <code>CacheManager.removeCache()</code>), then any data still remaining in the cache is also removed locally.</p>
+<p>To unpin all of a cache’s pinned entries, clear the cache. Specific entries can be removed from a cache using <code class="highlighter-rouge">Cache.remove()</code>. To empty the entire cache, use <code class="highlighter-rouge">Cache.removeAll()</code>. If the cache itself is removed (<code class="highlighter-rouge">Cache.dispose()</code> or <code class="highlighter-rouge">CacheManager.removeCache()</code>), then any data still remaining in the cache is also removed locally.</p>
 
 <p>Caches can also be cleared using the <a href="http://www.terracotta.org/documentation/2.8/tms/tms">Terracotta Management Console</a>.</p>
 
 <h2 id="how-configuration-affects-element-flushing-and-eviction-">How Configuration Affects Element Flushing and Eviction <a name="30343" id="30343"></a></h2>
 <p>The following example shows a cache with certain expiration settings:</p>
 
-<pre>
-   <code>&lt;cache name="myCache"
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="myCache"
       maxEntriesLocalDisk="10000" eternal="false" timeToIdleSeconds="3600"
       timeToLiveSeconds="0" memoryStoreEvictionPolicy="LFU"&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Note the following about the myCache configuration:</p>
 
 <ul>
-  <li>Accessing an entry in myCache that has been idle for more than an hour (<code>timeToIdleSeconds</code>) causes that element to be evicted.</li>
+  <li>Accessing an entry in myCache that has been idle for more than an hour (<code class="highlighter-rouge">timeToIdleSeconds</code>) causes that element to be evicted.</li>
   <li>If an entry expires but is not accessed, and no resource constraints force eviction, then the expired entry remains in place.</li>
-  <li>Entries in myCache can remain in the cache forever if accessed at least once per 60 minutes (<code>timeToLiveSeconds</code>). However, unexpired entries may still be flushed based on  other limitations (see <a href="/documentation/2.8/configuration/cache-size.html">How to Size Caches</a>).</li>
-  <li>In all, myCache can store a maximum of 10000 entries (<code>maxEntriesLocalDisk</code>). This is the effective maximum number of entries myCache is allowed. Note, however, that this value may be exceeded as it is overridden by settings such as pinning.</li>
+  <li>Entries in myCache can remain in the cache forever if accessed at least once per 60 minutes (<code class="highlighter-rouge">timeToLiveSeconds</code>). However, unexpired entries may still be flushed based on  other limitations (see <a href="/documentation/2.8/configuration/cache-size.html">How to Size Caches</a>).</li>
+  <li>In all, myCache can store a maximum of 10000 entries (<code class="highlighter-rouge">maxEntriesLocalDisk</code>). This is the effective maximum number of entries myCache is allowed. Note, however, that this value may be exceeded as it is overridden by settings such as pinning.</li>
 </ul>
 
 <h3 id="pinning-overrides-cache-sizing">Pinning Overrides Cache Sizing</h3>
-<p>Pinning takes priority over configured cache sizes. For example, in the following cache  pinning configuration overrides the <code>maxEntriesOnHeap</code> setting:</p>
+<p>Pinning takes priority over configured cache sizes. For example, in the following cache  pinning configuration overrides the <code class="highlighter-rouge">maxEntriesOnHeap</code> setting:</p>
 
-<pre>
-   <code>&lt;cache name="myCache"
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="myCache"
      maxEntriesLocalHeap="10000"
      ... &gt;
     &lt;pinning store="localHeap" /&gt;
 &lt;/cache&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>While expired cache entries (even ones that have been pinned) can always be flushed and eventually evicted from the cluster, most non-expired elements can as well if resource limitations are reached. However, elements resident in a pinned cache cannot be evicted if they haven’t expired.</p>
 
@@ -404,7 +402,7 @@ Potentially, pinned caches could grow to an unlimited size. Caches should never 
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

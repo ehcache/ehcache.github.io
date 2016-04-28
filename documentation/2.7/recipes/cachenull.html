@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.7 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.7 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="caching-empty-values">Caching Empty Values</h1><div id="toc-container">
@@ -211,49 +214,36 @@
 
 <p>In code, checking for intentional nulls versus non-existent cache entries may look like:</p>
 
-<pre>
-   <code>// cache an explicit null value:
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c1">// cache an explicit null value:</span>
+<span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span>
 
-cache.put(new Element("key", null));
+<span class="n">Element</span> <span class="n">element</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"key"</span><span class="o">);</span>
 
-Element element = cache.get("key");
-
-if (element == null) {
-
-    // nothing in the cache for "key" (or expired) ...
-
-} else {
-
-    // there is a valid element in the cache, however getObjectValue() may be null:
-
-    Object value = element.getObjectValue();
-
-    if (value == null) {
-
-        // a null value is in the cache ...
-
-    } else {
-
-        // a non-null value is in the cache ...
-
-    "/&gt;
-
-"/&gt;
-</code>
-</pre>
+<span class="k">if</span> <span class="o">(</span><span class="n">element</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// nothing in the cache for "key" (or expired) ...</span>
+<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+  <span class="c1">// there is a valid element in the cache, however getObjectValue() may be null:</span>
+  <span class="n">Object</span> <span class="n">value</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="na">getObjectValue</span><span class="o">();</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// a null value is in the cache ...</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="c1">// a non-null value is in the cache ...</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
 <p>And the ehcache.xml file may look like this (making sure to set the maximum time to live setting:</p>
 
-<pre>
-   <code>&lt;cache
-    name="some.cache.name"
-    maxEntriesLocalHeap="10000"
-    eternal="false"
-    timeToIdleSeconds="300"
-    timeToLiveSeconds="600"
-/&gt;
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span>
+    <span class="na">name=</span><span class="s">"some.cache.name"</span>
+    <span class="na">maxEntriesLocalHeap=</span><span class="s">"10000"</span>
+    <span class="na">eternal=</span><span class="s">"false"</span>
+    <span class="na">timeToIdleSeconds=</span><span class="s">"300"</span>
+    <span class="na">timeToLiveSeconds=</span><span class="s">"600"</span>
+<span class="nt">/&gt;</span>
+</code></pre>
+</div>
 
       </article>
     </div>
@@ -351,7 +341,7 @@ if (element == null) {
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

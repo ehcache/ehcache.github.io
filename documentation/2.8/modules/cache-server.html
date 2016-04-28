@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="cache-server-">Cache Server <a name="Cache-Server" id="Cache-Server"></a></h1><div id="toc-container">
@@ -327,12 +330,12 @@ Response codes and response headers strictly follow HTTP conventions.</p>
 <h4 id="put-cacheelement-1">PUT /{cache}/{element"/&gt;</h4>
 <p>Puts an element into the Cache.
 The time to live of new Elements defaults to that for the cache. This may be overridden by setting the
-HTTP request header <code>ehcacheTimeToLiveSeconds</code>. Values of 0 to 2147483647 are accepted. A value of 0
+HTTP request header <code class="highlighter-rouge">ehcacheTimeToLiveSeconds</code>. Values of 0 to 2147483647 are accepted. A value of 0
 means eternal.</p>
 
 <h4 id="delete--cacheelement">DELETE / {cache}/{element"/&gt;</h4>
 <p>Deletes the element from the cache.
-The resource representation for all elements is <code>*</code>. <code>DELETE/\{cache\}/\*</code> will call <code>cache.removeAll()</code>.</p>
+The resource representation for all elements is <code class="highlighter-rouge">*</code>. <code class="highlighter-rouge">DELETE/\{cache\}/\*</code> will call <code class="highlighter-rouge">cache.removeAll()</code>.</p>
 
 <h3 id="resource-representations">Resource Representations</h3>
 <p>We deal with resource representations rather than resources themselves.</p>
@@ -340,8 +343,8 @@ The resource representation for all elements is <code>*</code>. <code>DELETE/\{c
 <h4 id="element-resource-representations">Element Resource Representations</h4>
 <p>When Elements are PUT into the cache, a MIME Type should be set in the request header.
 The MIME Type is preserved for later use.
-The new <code>MimeTypeByteArray</code> is used to store the <code>byte[]</code> and the <code>MimeType</code>
-in the value field of <code>Element</code>.
+The new <code class="highlighter-rouge">MimeTypeByteArray</code> is used to store the <code class="highlighter-rouge">byte[]</code> and the <code class="highlighter-rouge">MimeType</code>
+in the value field of <code class="highlighter-rouge">Element</code>.
 Some common MIME Types which are expected to be used by clients are:</p>
 
 <table>
@@ -382,37 +385,33 @@ in a cache cluster i.e. it will be Serializable.</p>
 <h5 id="options">OPTIONS</h5>
 <p>This example shows how calling OPTIONS causes Ehcache server to respond with the WADL for that resource</p>
 
-<pre>
-   <code>curl --request OPTIONS http://localhost:8080/ehcache/rest/sampleCache2/2
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>curl --request OPTIONS http://localhost:8080/ehcache/rest/sampleCache2/2
+</code></pre>
+</div>
 
 <p>The server responds with:</p>
 
-<pre>
-   <code>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
-&lt;application xmlns="https://wadl.java.net/wadl200610-rddl.xhtml"&gt;
-  &lt;resources base="http://localhost:8080/ehcache/rest/"&gt;
-    &lt;resource path="sampleCache2/2"&gt;
-      &lt;method name="HEAD"&gt;&lt;response&gt;&lt;representation mediaType="
-      ...
-    &lt;/resource&gt;
-  &lt;/resources&gt;
-&lt;/application&gt;
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;</span>
+<span class="nt">&lt;application</span> <span class="na">xmlns=</span><span class="s">"https://wadl.java.net/wadl200610-rddl.xhtml"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;resources</span> <span class="na">base=</span><span class="s">"http://localhost:8080/ehcache/rest/"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;resource</span> <span class="na">path=</span><span class="s">"sampleCache2/2"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;method</span> <span class="na">name=</span><span class="s">"HEAD"</span><span class="nt">&gt;&lt;response&gt;&lt;representation</span> <span class="na">mediaType=</span><span class="s">"</span>
+      <span class="err">...</span>
+    <span class="err">&lt;/resource</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/resources&gt;</span>
+<span class="nt">&lt;/application&gt;</span>
+</code></pre>
+</div>
 
 <h5 id="head">HEAD</h5>
 
-<pre>
-   <code>curl --head  http://localhost:8080/ehcache/rest/sampleCache2/2
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>curl --head  http://localhost:8080/ehcache/rest/sampleCache2/2
+</code></pre>
+</div>
 
 <p>The server responds with:</p>
 
-<pre>
-   <code>HTTP/1.1 200 OK
+<div class="highlighter-rouge"><pre class="highlight"><code>HTTP/1.1 200 OK
 X-Powered-By: Servlet/2.5
 Server: GlassFish/v3
 Last-Modified: Sun, 27 Jul 2008 08:08:49 GMT
@@ -420,90 +419,83 @@ ETag: "1217146129490"
 Content-Type: text/plain; charset=iso-8859-1
 Content-Length: 157
 Date: Sun, 27 Jul 2008 08:17:09 GMT
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h5 id="put">PUT</h5>
 
-<pre>
-   <code>echo "Hello World" |  curl -S -T -  http://localhost:8080/ehcache/rest/sampleCache2/3
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>echo "Hello World" |  curl -S -T -  http://localhost:8080/ehcache/rest/sampleCache2/3
+</code></pre>
+</div>
 
-<p>The server will put <code>Hello World</code> into <code>sampleCache2</code> using key <code>3</code>.</p>
+<p>The server will put <code class="highlighter-rouge">Hello World</code> into <code class="highlighter-rouge">sampleCache2</code> using key <code class="highlighter-rouge">3</code>.</p>
 
 <h5 id="get">GET</h5>
 
-<pre>
-   <code>curl http://localhost:8080/ehcache/rest/sampleCache2/2
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>curl http://localhost:8080/ehcache/rest/sampleCache2/2
+</code></pre>
+</div>
 
 <p>The server responds with:</p>
 
-<pre>
-   <code>&lt;?xml version="1.0"?&gt;
-&lt;oldjoke&gt;
-&lt;burns&gt;Say &lt;quote&gt;goodnight&lt;/quote&gt;,
-Gracie.&lt;/burns&gt;
-&lt;allen&gt;&lt;quote&gt;Goodnight,
-Gracie.&lt;/quote&gt;&lt;/allen&gt;
-&lt;applause/&gt;
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;oldjoke&gt;</span>
+<span class="nt">&lt;burns&gt;</span>Say <span class="nt">&lt;quote&gt;</span>goodnight<span class="nt">&lt;/quote&gt;</span>,
+Gracie.<span class="nt">&lt;/burns&gt;</span>
+<span class="nt">&lt;allen&gt;&lt;quote&gt;</span>Goodnight,
+Gracie.<span class="nt">&lt;/quote&gt;&lt;/allen&gt;</span>
+<span class="nt">&lt;applause/&gt;</span>
+</code></pre>
+</div>
 
 <h4 id="ruby-code-samples">Ruby Code Samples</h4>
 
 <h5 id="get-1">GET</h5>
 
-<pre>
-   <code>require 'rubygems'
+<div class="highlighter-rouge"><pre class="highlight"><code>require 'rubygems'
 require 'open-uri'
 require 'rexml/document'
 response = open('http://localhost:8080/ehcache/rest/sampleCache2/2')
 xml = response.read
 puts xml
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>The server responds with:</p>
 
-<pre>
-   <code>&lt;?xml version="1.0"?&gt;
-&lt;oldjoke&gt;
-&lt;burns&gt;Say &lt;quote&gt;goodnight&lt;/quote&gt;,
-Gracie.&lt;/burns&gt;
-&lt;allen&gt;&lt;quote&gt;Goodnight,
-Gracie.&lt;/quote&gt;&lt;/allen&gt;
-&lt;applause/&gt;
-&lt;/oldjoke&gt;
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;oldjoke&gt;</span>
+<span class="nt">&lt;burns&gt;</span>Say <span class="nt">&lt;quote&gt;</span>goodnight<span class="nt">&lt;/quote&gt;</span>,
+Gracie.<span class="nt">&lt;/burns&gt;</span>
+<span class="nt">&lt;allen&gt;&lt;quote&gt;</span>Goodnight,
+Gracie.<span class="nt">&lt;/quote&gt;&lt;/allen&gt;</span>
+<span class="nt">&lt;applause/&gt;</span>
+<span class="nt">&lt;/oldjoke&gt;</span>
+</code></pre>
+</div>
 
 <h4 id="python-code-samples">Python Code Samples</h4>
 
 <h5 id="get-2">GET</h5>
 
-<pre>
-   <code>import urllib2
+<div class="highlighter-rouge"><pre class="highlight"><code>import urllib2
 f = urllib2.urlopen('http://localhost:8080/ehcache/rest/sampleCache2/2')
 print f.read()
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>The server responds with:</p>
 
-<pre>
-   <code>&lt;?xml version="1.0"?&gt;
-&lt;oldjoke&gt;
-&lt;burns&gt;Say &lt;quote&gt;goodnight&lt;/quote&gt;,
-Gracie.&lt;/burns&gt;
-&lt;allen&gt;&lt;quote&gt;Goodnight,
-Gracie.&lt;/quote&gt;&lt;/allen&gt;
-&lt;applause/&gt;
-&lt;/oldjoke&gt;
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;oldjoke&gt;</span>
+<span class="nt">&lt;burns&gt;</span>Say <span class="nt">&lt;quote&gt;</span>goodnight<span class="nt">&lt;/quote&gt;</span>,
+Gracie.<span class="nt">&lt;/burns&gt;</span>
+<span class="nt">&lt;allen&gt;&lt;quote&gt;</span>Goodnight,
+Gracie.<span class="nt">&lt;/quote&gt;&lt;/allen&gt;</span>
+<span class="nt">&lt;applause/&gt;</span>
+<span class="nt">&lt;/oldjoke&gt;</span>
+</code></pre>
+</div>
 
 <h4 id="java-code-samples">Java Code Samples</h4>
 
@@ -633,50 +625,45 @@ fromInputStream(url.openStream).getLines.foreach(print)
 
 <p>Run it with:</p>
 
-<pre>
-   <code>scala -e ExampleScalaGet
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>scala -e ExampleScalaGet
+</code></pre>
+</div>
 
 <p>The program outputs:</p>
 
-<pre>
-   <code>&lt;?xml version="1.0"?&gt;
-&lt;oldjoke&gt;
-&lt;burns&gt;Say &lt;quote&gt;goodnight&lt;/quote&gt;,
-Gracie.&lt;/burns&gt;
-&lt;allen&gt;&lt;quote&gt;Goodnight,
-Gracie.&lt;/quote&gt;&lt;/allen&gt;
-&lt;applause/&gt;
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;oldjoke&gt;</span>
+<span class="nt">&lt;burns&gt;</span>Say <span class="nt">&lt;quote&gt;</span>goodnight<span class="nt">&lt;/quote&gt;</span>,
+Gracie.<span class="nt">&lt;/burns&gt;</span>
+<span class="nt">&lt;allen&gt;&lt;quote&gt;</span>Goodnight,
+Gracie.<span class="nt">&lt;/quote&gt;&lt;/allen&gt;</span>
+<span class="nt">&lt;applause/&gt;</span>
+</code></pre>
+</div>
 
 <h4 id="php-code-samples">PHP Code Samples</h4>
 
 <h5 id="get-4">GET</h5>
 
-<pre>
-   <code>  &lt;?php
+<div class="highlighter-rouge"><pre class="highlight"><code>  &lt;?php
 $ch = curl_init();
 curl_setopt ($ch, CURLOPT_URL, "http://localhost:8080/ehcache/rest/sampleCache2/3");
   curl_setopt ($ch, CURLOPT_HEADER, 0);
 curl_exec ($ch);
 curl_close ($ch);
   ?&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>The server responds with:</p>
 
-<pre>
-   <code>Hello Ingo
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>Hello Ingo
+</code></pre>
+</div>
 
 <h5 id="put-1">PUT</h5>
 
-<pre>
-   <code>  &lt;?php
+<div class="highlighter-rouge"><pre class="highlight"><code>  &lt;?php
 $url = "http://localhost:8080/ehcache/rest/sampleCache2/3";
 $localfile = "localfile.txt";
 $fp = fopen ($localfile, "r");
@@ -698,13 +685,12 @@ if ($error) {
   print "&lt;br /&gt;&lt;br /&gt;$error";
 "/&gt;
 ?&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>The server responds with:</p>
 
-<pre>
-   <code>## About to connect() to localhost port 8080 (#0)
+<div class="highlighter-rouge"><pre class="highlight"><code>## About to connect() to localhost port 8080 (#0)
 
 ## Trying ::1... * connected
 
@@ -724,8 +710,8 @@ Expect: 100-continue
 ## Connection #0 to host localhost left intact
 
 ## Closing connection #0
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p><a id="Creating Massive Caches"></a>
 ## Creating Massive Caches with Load Balancers and Partitioning <a name="Load-Balancers" id="Load-Balancers"></a>
@@ -785,11 +771,10 @@ Put each Ehcache cluster behind VIPs on a load balancer.</p>
 So, you could optionally skip the client-side hashing to achieve partitioning in the load balancer itself.
 For example:</p>
 
-<pre>
-   <code>/ehcache/rest/sampleCache1/[a-h]* =&gt; cluster1
+<div class="highlighter-rouge"><pre class="highlight"><code>/ehcache/rest/sampleCache1/[a-h]* =&gt; cluster1
 /ehcache/rest/sampleCache1/[i-z]* =&gt; cluster2
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>Things get much more sophisticated with F5 load balancers, which let you create iRules in the TCL language.
   So rather than regular expression URI routing, you could implement key hashing-based URI routing.
@@ -845,23 +830,23 @@ usual ways by configuration in the web.xml.</p>
 are packaged in the war for XWSS 3.0.
 A sample, commented out server_security_config.xml is provided in the WEB-INF directory. XWSS automatically
 looks for this configuration file.
-A simple example, based on an XWSS example, <code>net.sf.ehcache.server.soap.SecurityEnvironmentHandler</code>, which looks for a
+A simple example, based on an XWSS example, <code class="highlighter-rouge">net.sf.ehcache.server.soap.SecurityEnvironmentHandler</code>, which looks for a
 password in a System property for a given username is included. This is not recommended for production use
 but is handy when you are getting started with XWSS.
 To use XWSS:</p>
 
 <ol>
   <li>
-    <p>Add configuration in accordance with XWSS to the <code>server_security_config.xml</code> file.</p>
+    <p>Add configuration in accordance with XWSS to the <code class="highlighter-rouge">server_security_config.xml</code> file.</p>
   </li>
   <li>
-    <p>Create a class which implements the <code>CallbackHandler</code> interface and provide its fully qualified path in the <code>SecurityEnvironmentHandler</code> element.</p>
+    <p>Create a class which implements the <code class="highlighter-rouge">CallbackHandler</code> interface and provide its fully qualified path in the <code class="highlighter-rouge">SecurityEnvironmentHandler</code> element.</p>
   </li>
   <li>
-    <p>Use the integration test <code>EhcacheWebServiceEndpoint</code> to see how to use the XWSS client side.</p>
+    <p>Use the integration test <code class="highlighter-rouge">EhcacheWebServiceEndpoint</code> to see how to use the XWSS client side.</p>
   </li>
   <li>
-    <p>On the client side, make sure configuration is provided in a file called <code>client_security_config.xml</code>, which must be in the root of the classpath.</p>
+    <p>On the client side, make sure configuration is provided in a file called <code class="highlighter-rouge">client_security_config.xml</code>, which must be in the root of the classpath.</p>
   </li>
   <li>
     <p>To add client credentials into the SOAP request do:</p>
@@ -910,29 +895,27 @@ There are two tarball archives in tar.gz format:</p>
 <h3 id="maven">Maven</h3>
 <p>The Ehcache Server is in the central Maven repository packaged as type <em>war</em>. Use the following Maven pom snippet:</p>
 
-<pre>
-   <code>  &lt;dependency&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>  &lt;dependency&gt;
    &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
    &lt;artifactId&gt;ehcache-server&lt;/artifactId&gt;
    &lt;version&gt;enter_version_here&lt;/version&gt;
    &lt;type&gt;war&lt;/type&gt;
   &lt;/dependency&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <p>It is also available as a jaronly version, which makes it easier to embed. This version excludes all META-INF
 and WEB-INF configuration files, and also excludes the ehcache.xml. You need to provide these in your maven project.</p>
 
-<pre>
-   <code>&lt;dependency&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
    &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
    &lt;artifactId&gt;ehcache-server&lt;/artifactId&gt;
    &lt;version&gt;enter_version_here&lt;/version&gt;
    &lt;type&gt;jar&lt;/type&gt;
    &lt;classifier&gt;jaronly&lt;/classifier&gt;
   &lt;/dependency&gt;
-</code>
-</pre>
+</code></pre>
+</div>
 
 <h2 id="installation">Installation</h2>
 
@@ -959,7 +942,7 @@ Edit the web.xml.</p>
 <p>Comment out the RESTful web service section.</p>
 
 <h4 id="configuring-caches">Configuring Caches</h4>
-<p>The ehcache.xml configuration file is located in <code>WEB-INF/classes/ehcache.xml</code>.
+<p>The ehcache.xml configuration file is located in <code class="highlighter-rouge">WEB-INF/classes/ehcache.xml</code>.
 Follow the instructions in this config file, or the core Ehcache instructions to configure.</p>
 
 <h4 id="soap-web-service-security">SOAP Web Service Security</h4>
@@ -970,12 +953,12 @@ The quick start is:</p>
 
 <ul>
   <li>Untar the download.</li>
-  <li><code>bin/start.sh</code> to start. By default it will listen on port 8080, with JMX listening on port 8081, will have both RESTful and SOAP web services enabled, and will use a sample Ehcache configuration from the WAR module.</li>
-  <li><code>bin/stop.sh</code> to stop.</li>
+  <li><code class="highlighter-rouge">bin/start.sh</code> to start. By default it will listen on port 8080, with JMX listening on port 8081, will have both RESTful and SOAP web services enabled, and will use a sample Ehcache configuration from the WAR module.</li>
+  <li><code class="highlighter-rouge">bin/stop.sh</code> to stop.</li>
 </ul>
 
 <h3 id="configuring-the-standalone-server">Configuring the Standalone Server</h3>
-<p>Configuration is by editing the <code>war/web.xml</code> file as per the instructions for the WAR packaging.</p>
+<p>Configuration is by editing the <code class="highlighter-rouge">war/web.xml</code> file as per the instructions for the WAR packaging.</p>
 
 <h3 id="starting-and-stopping-the-standalone-server">Starting and Stopping the Standalone Server</h3>
 
@@ -985,13 +968,13 @@ including Linux, Solaris and Mac OS X.
 It creates a pid file in the pid directory.
 This is a Unix shell script that starts the server as a daemon.
 To use jsvc you must install the native binary jsvc from the Apache Commons Daemon project.
-The source for this is distributed in the bin directory as <code>jsvc.tar.gz</code>.
+The source for this is distributed in the bin directory as <code class="highlighter-rouge">jsvc.tar.gz</code>.
 Untar it and follow the instructions for building it or download a binary from the Commons Daemon project.
 Convenience shell scripts are provided as follows:</p>
 
 <ul>
-  <li>start - <code>daemon_start.sh</code></li>
-  <li>stop  - <code>daemon_stop.sh</code></li>
+  <li>start - <code class="highlighter-rouge">daemon_start.sh</code></li>
+  <li>stop  - <code class="highlighter-rouge">daemon_stop.sh</code></li>
 </ul>
 
 <p>jsvc is designed to integrate with Unix System 5 initialization scripts (/etc/rc.d).
@@ -1028,10 +1011,10 @@ See your Web Container documentation for how to do this for your web container.<
 <h3 id="remotely-monitoring-the-standalone-server-with-jmx">Remotely Monitoring the Standalone Server with JMX</h3>
 <p>The standalone server automatically exposes the MBeanServer on a port 1 higher than the HTTP listening port.</p>
 
-<p>To connect with <code>JConsole</code> simply fire up JConsole, enter the host in the Remote field and port. In the above example that is <code>192.168.1.108:8686</code>.</p>
+<p>To connect with <code class="highlighter-rouge">JConsole</code> simply fire up JConsole, enter the host in the Remote field and port. In the above example that is <code class="highlighter-rouge">192.168.1.108:8686</code>.</p>
 
-<p>Then click <code>Connect</code>.
-To see the Ehcache MBeans, click on the <code>Mbeans</code> tab and expand the <code>net.sf.ehcache</code> tree node.
+<p>Then click <code class="highlighter-rouge">Connect</code>.
+To see the Ehcache MBeans, click on the <code class="highlighter-rouge">Mbeans</code> tab and expand the <code class="highlighter-rouge">net.sf.ehcache</code> tree node.
 You will see something like the following.</p>
 
 <p><img src="/images/documentation/JConsoleExample.png" alt="Ehcache Image" />
@@ -1048,9 +1031,9 @@ You will see something like the following.</p>
 <p>Yes (we have tested 10.3.2), but the SOAP libraries are not compatible. Either comment out the SOAP service from web.xml or do the following:</p>
 
 <ol>
-  <li>Unzip <code>ehcache-server.war</code> to a folder called <code>ehcache</code>.</li>
+  <li>Unzip <code class="highlighter-rouge">ehcache-server.war</code> to a folder called <code class="highlighter-rouge">ehcache</code>.</li>
   <li>
-    <p>Remove the following jars from <code>WEB-INF/lib</code>:</p>
+    <p>Remove the following jars from <code class="highlighter-rouge">WEB-INF/lib</code>:</p>
 
     <ul>
       <li>jaxws-rt-2.1.4.jar</li>
@@ -1159,7 +1142,7 @@ You will see something like the following.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

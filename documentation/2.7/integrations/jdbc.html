@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.7 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.7 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="jdbc-caching-">JDBC Caching <a name="JDBC-Caching" id="JDBC-Caching"></a></h1><div id="toc-container">
@@ -169,6 +172,11 @@
                         <li class="toc_level-2 toc_section-3">
                            <a href="#adding-jdbc-caching-to-a-dao/dal-layer">
                               <span class="toctext">Adding JDBC caching to a DAO/DAL layer</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#putting-it-all-together---an-example">
+                              <span class="toctext">Putting it all together - an example</span>
                            </a>
                         </li>
                      </ul>
@@ -212,193 +220,188 @@ to add caching.  To add caching, follow these steps:</p>
 
 <p>Example methods that are commonly cacheable:</p>
 
-<pre>
-public V getById(final K id);
-public Collection<v> findXXX(...);
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="n">V</span> <span class="nf">getById</span><span class="p">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">id</span><span class="o">);</span>
+<span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">findXXX</span><span class="o">(...);</span>
+</code></pre>
+</div>
 
+<h3 id="instantiate-a-cache-and-add-a-member-variable">Instantiate a cache and add a member variable</h3>
 
-### Instantiate a cache and add a member variable
-
-Your DAO is probably already being managed by Spring or Guice, so simply 
-add a setter method to your DAO layer such as `setCache(Cache cache)`.
+<p>Your DAO is probably already being managed by Spring or Guice, so simply 
+add a setter method to your DAO layer such as <code class="highlighter-rouge">setCache(Cache cache)</code>.
 Configure the cache as a bean in your Spring or Guice config, and then 
 use the the frameworks injection methodology to inject an instance of 
-the cache.
+the cache.</p>
 
-If you are not using a DI framework such as Spring or Guice, then you will
+<p>If you are not using a DI framework such as Spring or Guice, then you will
 need to instantiate the cache during the bootstrap of your application.  As
-your DAO layer is being instantiated, pass the cache instance to it.
+your DAO layer is being instantiated, pass the cache instance to it.</p>
 
-### Put and get values from the cache
+<h3 id="put-and-get-values-from-the-cache">Put and get values from the cache</h3>
 
-Now that your DAO layer has a cache reference, you can start to use it.
+<p>Now that your DAO layer has a cache reference, you can start to use it.
 You will want to consider using the cache using one of two standard cache
-access patterns:
+access patterns:</p>
 
-* cache-aside
-* cache-as-sor
+<ul>
+  <li>cache-aside</li>
+  <li>cache-as-sor</li>
+</ul>
 
-You can read more about these in these [cache-as-sor](/documentation/2.7/get-started/getting-started#cache-as-sor-example) and [Concepts cache-aside](/documentation/2.7/get-started/getting-started#cache-aside) sections.
+<p>You can read more about these in these <a href="/documentation/2.7/get-started/getting-started#cache-as-sor-example">cache-as-sor</a> and <a href="/documentation/2.7/get-started/getting-started#cache-aside">Concepts cache-aside</a> sections.</p>
 
-## Putting it all together - an example
+<h2 id="putting-it-all-together---an-example">Putting it all together - an example</h2>
 
-Here is some example code that demonstrates a DAO based cache using a 
-cache aside methodology wiring it together with Spring.
+<p>Here is some example code that demonstrates a DAO based cache using a 
+cache aside methodology wiring it together with Spring.</p>
 
-This code implements a PetDao modeled after the Spring Framework PetClinic
-sample application.
+<p>This code implements a PetDao modeled after the Spring Framework PetClinic
+sample application.</p>
 
-It implements a standard pattern of creating an abstract 
+<p>It implements a standard pattern of creating an abstract 
 GenericDao implementation which all Dao implementations will 
-extend.  
+extend.</p>
 
-It also uses Spring's SimpleJdbcTemplate to make the job of accessing 
-the database easier.
+<p>It also uses Spring’s SimpleJdbcTemplate to make the job of accessing 
+the database easier.</p>
 
-Finally, to make Ehcache easier to work with in Spring, it implements
-a wrapper that holds the cache name.
+<p>Finally, to make Ehcache easier to work with in Spring, it implements
+a wrapper that holds the cache name.</p>
 
-### The example files
-The following are relevant snippets from the example files.  A full project
-will be available shortly.
+<h3 id="the-example-files">The example files</h3>
+<p>The following are relevant snippets from the example files.  A full project
+will be available shortly.</p>
 
-#### CacheWrapper.java
-Simple get/put wrapper interface.
+<h4 id="cachewrapperjava">CacheWrapper.java</h4>
+<p>Simple get/put wrapper interface.</p>
 
-<pre>
-public interface CacheWrapper&lt;K, V&gt; 
-{
- void put(K key, V value);
- V get(K key);
-"/&gt;
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="kt">void</span> <span class="n">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">);</span>
+  <span class="n">V</span> <span class="n">get</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
-#### EhcacheWrapper.java
-The wrapper implementation.  Holds the name so caches can be named.
+<h4 id="ehcachewrapperjava">EhcacheWrapper.java</h4>
+<p>The wrapper implementation.  Holds the name so caches can be named.</p>
 
-<pre>
-public class EhCacheWrapper&lt;K, V&gt; implements CacheWrapper&lt;K, V&gt; 
-{
-    private final String cacheName;
-    private final CacheManager cacheManager;
-    public EhCacheWrapper(final String cacheName, final CacheManager cacheManager)
-    {
-	this.cacheName = cacheName;
-	this.cacheManager = cacheManager;
-    "/&gt;
-    public void put(final K key, final V value)
-    {
-	getCache().put(new Element(key, value));
-    "/&gt;
-    public V get(final K key, CacheEntryAdapter&lt;V&gt; adapter) 
-    {
-	Element element = getCache().get(key);
-	if (element != null) {
-	    return (V) element.getValue();
-	"/&gt;
-	return null;
-    "/&gt;
-    public Ehcache getCache() 
-    {
-	return cacheManager.getEhcache(cacheName);
-    "/&gt;
-"/&gt;
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EhCacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">EhCacheWrapper</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">cacheName</span> <span class="o">=</span> <span class="n">cacheName</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">cacheManager</span> <span class="o">=</span> <span class="n">cacheManager</span><span class="o">;</span>
+  <span class="o">}</span>
 
-#### GenericDao.java
-The Generic Dao.  It implements most of the work.
+  <span class="kd">public</span> <span class="kt">void</span> <span class="n">put</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="kd">final</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">getCache</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
+  <span class="o">}</span>
 
-<pre>
-public abstract class GenericDao&lt;K, V extends BaseEntity&gt; implements Dao&lt;K, V&gt;
-{
-    protected DataSource datasource;
-    protected SimpleJdbcTemplate jdbcTemplate;
-    /* Here is the cache reference */
-    protected CacheWrapper&lt;K, V&gt; cache;
-    public void setJdbcTemplate(final SimpleJdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    "/&gt;
-    public void setDatasource(final DataSource datasource) {
-        this.datasource = datasource;
-    "/&gt;
-    public void setCache(final CacheWrapper&lt;K, V&gt; cache) {
-        this.cache = cache;
-    "/&gt;
-    /* the cacheable method */
-    public V getById(final K id) {
-	V value;
-	if ((value = cache.get(id)) == null) {
-	    value = this.jdbcTemplate.queryForObject(findById, mapper, id);
-	    if (value != null) {
-		cache.put(id, value);
-	    "/&gt;
-	"/&gt;
-	return value;
-    "/&gt;
-    /** rest of GenericDao implementation here **/
-    /** ... **/
-    /** ... **/
-    /** ... **/
-"/&gt;
-</pre>
+  <span class="kd">public</span> <span class="n">V</span> <span class="n">get</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">CacheEntryAdapter</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">adapter</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Element</span> <span class="n">element</span> <span class="o">=</span> <span class="n">getCache</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">element</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="n">V</span><span class="o">)</span> <span class="n">element</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="n">Ehcache</span> <span class="n">getCache</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">cacheManager</span><span class="o">.</span><span class="na">getEhcache</span><span class="o">(</span><span class="n">cacheName</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
-#### PetDaoImpl.java
+<h4 id="genericdaojava">GenericDao.java</h4>
+<p>The Generic Dao.  It implements most of the work.</p>
 
-The Pet Dao implementation, really it doesn't need to do anything unless
-specific methods not available via GenericDao are cacheable.
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">GenericDao</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span> <span class="kd">extends</span> <span class="n">BaseEntity</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Dao</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="kd">protected</span> <span class="n">DataSource</span> <span class="n">datasource</span><span class="o">;</span>
+  <span class="kd">protected</span> <span class="n">SimpleJdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">;</span>
+  <span class="cm">/* Here is the cache reference */</span>
+  <span class="kd">protected</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">cache</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="n">setJdbcTemplate</span><span class="o">(</span><span class="kd">final</span> <span class="n">SimpleJdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">jdbcTemplate</span> <span class="o">=</span> <span class="n">jdbcTemplate</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="n">setDatasource</span><span class="o">(</span><span class="kd">final</span> <span class="n">DataSource</span> <span class="n">datasource</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">datasource</span> <span class="o">=</span> <span class="n">datasource</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="n">setCache</span><span class="o">(</span><span class="kd">final</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">cache</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">cache</span> <span class="o">=</span> <span class="n">cache</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="cm">/* the cacheable method */</span>
+  <span class="kd">public</span> <span class="n">V</span> <span class="n">getById</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">V</span> <span class="n">value</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">((</span><span class="n">value</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">id</span><span class="o">))</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">jdbcTemplate</span><span class="o">.</span><span class="na">queryForObject</span><span class="o">(</span><span class="n">findById</span><span class="o">,</span> <span class="n">mapper</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">value</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="cm">/** rest of GenericDao implementation here **/</span>
+  <span class="cm">/** ... **/</span>
+  <span class="cm">/** ... **/</span>
+  <span class="cm">/** ... **/</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
-<pre>
-public class PetDaoImpl extends GenericDao&lt;Integer, Pet&gt; implements PetDao 
-{
-/** ... **/
-"/&gt;
-</pre>
+<h4 id="petdaoimpljava">PetDaoImpl.java</h4>
 
-We need to configure the JdbcTemplate, Datasource, CacheManager, PetDao, 
-and the Pet cache using the spring configuration file.
+<p>The Pet Dao implementation, really it doesn’t need to do anything unless
+specific methods not available via GenericDao are cacheable.</p>
 
-#### application.xml
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PetDaoImpl</span> <span class="kd">extends</span> <span class="n">GenericDao</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Pet</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">PetDao</span> <span class="o">{</span>
+  <span class="cm">/** ... **/</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
-The Spring configuration file.
+<p>We need to configure the JdbcTemplate, Datasource, CacheManager, PetDao, 
+and the Pet cache using the spring configuration file.</p>
 
-<pre>
-&lt;!-- datasource and friends --&gt;
-&lt;bean id="dataSource" class="org.springframework.jdbc.datasource.FasterLazyConnectionDataSourceProxy"&gt;
-  &lt;property name="targetDataSource" ref="dataSourceTarget"/&gt;
-&lt;/bean&gt;
-&lt;bean id="dataSourceTarget" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-      destroy-method="close"&gt;
-  &lt;property name="user" value="${jdbc.username}"/&gt;
-  &lt;property name="password" value="${jdbc.password}"/&gt;
-  &lt;property name="driverClass" value="${jdbc.driverClassName}"/&gt;
-  &lt;property name="jdbcUrl" value="${jdbc.url}"/&gt;
-  &lt;property name="initialPoolSize" value="50"/&gt;
-  &lt;property name="maxPoolSize" value="300"/&gt;
-  &lt;property name="minPoolSize" value="30"/&gt;
-  &lt;property name="acquireIncrement" value="2"/&gt;
-  &lt;property name="acquireRetryAttempts" value="0"/&gt;
-&lt;/bean&gt;
-&lt;!-- jdbctemplate --&gt;
-&lt;bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate"&gt;
-  &lt;constructor-arg ref="dataSource"/&gt;
-&lt;/bean&gt;
-&lt;!-- the cache manager --&gt;
-&lt;bean id="cacheManager" class="EhCacheManagerFactoryBean"&gt;
-  &lt;property name="configLocation" value="classpath:${ehcache.config}"/&gt;
-&lt;/bean&gt;
-&lt;!-- the pet cache to be injected into the pet dao --&gt;
-&lt;bean name="petCache" class="EhCacheWrapper"&gt;
-  &lt;constructor-arg value="pets"/&gt;
-  &lt;constructor-arg ref="cacheManager"/&gt;
-&lt;/bean&gt;
-&lt;!-- the pet dao --&gt;
-&lt;bean id="petDao" class="PetDaoImpl"&gt;
-  &lt;property name="cache" ref="petCache"/&gt;
-  &lt;property name="jdbcTemplate" ref="jdbcTemplate"/&gt;
-  &lt;property name="datasource" ref="dataSource"/&gt;
-&lt;/bean&gt;
-</pre>
-</v></pre>
+<h4 id="applicationxml">application.xml</h4>
+
+<p>The Spring configuration file.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- datasource and friends --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"dataSource"</span> <span class="na">class=</span><span class="s">"org.springframework.jdbc.datasource.FasterLazyConnectionDataSourceProxy"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"targetDataSource"</span> <span class="na">ref=</span><span class="s">"dataSourceTarget"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"dataSourceTarget"</span> <span class="na">class=</span><span class="s">"com.mchange.v2.c3p0.ComboPooledDataSource"</span>
+      <span class="na">destroy-method=</span><span class="s">"close"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"user"</span> <span class="na">value=</span><span class="s">"${jdbc.username}"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"password"</span> <span class="na">value=</span><span class="s">"${jdbc.password}"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"driverClass"</span> <span class="na">value=</span><span class="s">"${jdbc.driverClassName}"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"jdbcUrl"</span> <span class="na">value=</span><span class="s">"${jdbc.url}"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"initialPoolSize"</span> <span class="na">value=</span><span class="s">"50"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"maxPoolSize"</span> <span class="na">value=</span><span class="s">"300"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"minPoolSize"</span> <span class="na">value=</span><span class="s">"30"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"acquireIncrement"</span> <span class="na">value=</span><span class="s">"2"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"acquireRetryAttempts"</span> <span class="na">value=</span><span class="s">"0"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="c">&lt;!-- jdbctemplate --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"jdbcTemplate"</span> <span class="na">class=</span><span class="s">"org.springframework.jdbc.core.simple.SimpleJdbcTemplate"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;constructor-arg</span> <span class="na">ref=</span><span class="s">"dataSource"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="c">&lt;!-- the cache manager --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"cacheManager"</span> <span class="na">class=</span><span class="s">"EhCacheManagerFactoryBean"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"configLocation"</span> <span class="na">value=</span><span class="s">"classpath:${ehcache.config}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="c">&lt;!-- the pet cache to be injected into the pet dao --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">name=</span><span class="s">"petCache"</span> <span class="na">class=</span><span class="s">"EhCacheWrapper"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;constructor-arg</span> <span class="na">value=</span><span class="s">"pets"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;constructor-arg</span> <span class="na">ref=</span><span class="s">"cacheManager"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="c">&lt;!-- the pet dao --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"petDao"</span> <span class="na">class=</span><span class="s">"PetDaoImpl"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"cache"</span> <span class="na">ref=</span><span class="s">"petCache"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"jdbcTemplate"</span> <span class="na">ref=</span><span class="s">"jdbcTemplate"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"datasource"</span> <span class="na">ref=</span><span class="s">"dataSource"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+</code></pre>
+</div>
 
       </article>
     </div>
@@ -496,7 +499,7 @@ The Spring configuration file.
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

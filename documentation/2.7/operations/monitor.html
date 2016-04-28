@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.7 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.7 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="ehcache-monitor">Ehcache Monitor</h1><div id="toc-container">
@@ -228,7 +231,7 @@ a scriptable API. In this way, it is easy to integrate with common third party s
 requires JDK 1.6.</p>
 
 <h2 id="installation-and-configuration-">Installation And Configuration <a name="Installation-And-Configuration" id="Installation-And-Configuration"></a></h2>
-<p>First <a href="http://ehcache.org/downloads/monitor">download</a> and extract the Ehcache Monitor package. The package consists of a lib directory with the probe and monitor server jars, a bin directory with startup and shutdown scripts for the monitor server and an <code>etc</code> directory with an example monitor server configuration file and a Jetty Server configuration file.</p>
+<p>First <a href="http://ehcache.org/downloads/monitor">download</a> and extract the Ehcache Monitor package. The package consists of a lib directory with the probe and monitor server jars, a bin directory with startup and shutdown scripts for the monitor server and an <code class="highlighter-rouge">etc</code> directory with an example monitor server configuration file and a Jetty Server configuration file.</p>
 
 <h2 id="recommended-deployment-topology-">Recommended Deployment Topology <a name="Recommended-Deployment-Topology" id="Recommended-Deployment-Topology"></a></h2>
 
@@ -246,7 +249,7 @@ for access by end users and for scripted connection from Operations tools for da
   <li>
     <p>Add the ehcache-probe-<version>.jar to your application classpath (or war file). Do this in the same way you added the core ehcache jar to your application. If you are Maven based, the probe module is in the Terracotta public repository for easy integration.</version></p>
 
-    <pre><code> &lt;repository&gt;
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;repository&gt;
    &lt;id&gt;terracotta-releases&lt;/id&gt;
    &lt;url&gt;http://www.terracotta.org/download/reflector/releases&lt;/url&gt;
  &lt;/repository&gt;
@@ -256,14 +259,16 @@ for access by end users and for scripted connection from Operations tools for da
    &lt;version&gt;[version]&lt;/version&gt;
  &lt;/dependency&gt;
 </code></pre>
+    </div>
   </li>
   <li>
     <p>Configure Ehcache to communicate with the probe by specifying the class name of the probe, the address (or hostname), the port that the monitor will be running on and whether to do memory measurement. This is done by adding the following to ehcache.xml:</p>
 
-    <pre><code> &lt;cacheManagerPeerListenerFactory
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;cacheManagerPeerListenerFactory
  class="org.terracotta.ehcachedx.monitor.probe.ProbePeerListenerFactory"
  properties="monitorAddress=localhost, monitorPort=9889, memoryMeasurement=true" /&gt;
 </code></pre>
+    </div>
   </li>
   <li>
     <p>Include required SLF4J logging jars.</p>
@@ -279,7 +284,7 @@ for access by end users and for scripted connection from Operations tools for da
     <p>Ensure that statistics capture in each cache is turned on for the probe to gather statistics.
 Statistics were turned off by default from Ehcache 2.1 onwards.</p>
 
-    <pre><code> &lt;cache name="sampleCache2"
+    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;cache name="sampleCache2"
    maxEntriesLocalHeap="1000"
    eternal="true"
    overflowToDisk="false"
@@ -287,6 +292,7 @@ Statistics were turned off by default from Ehcache 2.1 onwards.</p>
    statistics="true"
    /&gt;
 </code></pre>
+    </div>
   </li>
 </ol>
 
@@ -295,9 +301,9 @@ Statistics were turned off by default from Ehcache 2.1 onwards.</p>
 
 <p>To start the monitor, run the startup script provided in the bin directory: startup.sh on Unix and startup.bat on Microsoft Windows.</p>
 
-<p><em>NOTE:</em> If errors occur at startup, remove the line <code>-j "$PRGDIR/etc/jetty.xml" \</code> (or <code>-j %PRGDIR%\etc\jetty.xml ^</code>) from the startup script.</p>
+<p><em>NOTE:</em> If errors occur at startup, remove the line <code class="highlighter-rouge">-j "$PRGDIR/etc/jetty.xml" \</code> (or <code class="highlighter-rouge">-j %PRGDIR%\etc\jetty.xml ^</code>) from the startup script.</p>
 
-<p>The monitor port selected in this script should match the port specified in ehcache.xml. The monitor can be configured, including interface, port and simple security settings, in <code>etc/ehcache-monitor.conf</code>. Note that for the commercial version, the location of your license file must be specified in <code>ehcache-monitor.conf</code>.</p>
+<p>The monitor port selected in this script should match the port specified in ehcache.xml. The monitor can be configured, including interface, port and simple security settings, in <code class="highlighter-rouge">etc/ehcache-monitor.conf</code>. Note that for the commercial version, the location of your license file must be specified in <code class="highlighter-rouge">ehcache-monitor.conf</code>.</p>
 
 <p>For example:</p>
 
@@ -306,17 +312,16 @@ Statistics were turned off by default from Ehcache 2.1 onwards.</p>
 </code>
 </pre>
 
-<p>The monitor connection timeout can also be configured. If the monitor is frequently timing out while attempting to connect to a node (due to long GC cycles, for example), then the default timeout value may not be suitable for your environment. You can set the monitor timeout using the system property <code>ehcachedx.connection.timeout.seconds</code>. For example, <code>-Dehcachedx.connection.timeout.seconds=60</code> sets the timeout to 60 seconds.</p>
+<p>The monitor connection timeout can also be configured. If the monitor is frequently timing out while attempting to connect to a node (due to long GC cycles, for example), then the default timeout value may not be suitable for your environment. You can set the monitor timeout using the system property <code class="highlighter-rouge">ehcachedx.connection.timeout.seconds</code>. For example, <code class="highlighter-rouge">-Dehcachedx.connection.timeout.seconds=60</code> sets the timeout to 60 seconds.</p>
 
 <h2 id="securing-the-monitor-">Securing the Monitor <a name="Securing-the-Monitor" id="Securing-the-Monitor"></a></h2>
-<p>The Monitor can be secured in a variety of ways. The simplest method involves simply editing <code>ehcache-monitor.conf</code> to specify a single user name and password. This method has the obvious drawbacks that (1) it provides only a single login identity, and (2)
+<p>The Monitor can be secured in a variety of ways. The simplest method involves simply editing <code class="highlighter-rouge">ehcache-monitor.conf</code> to specify a single user name and password. This method has the obvious drawbacks that (1) it provides only a single login identity, and (2)
 the credentials are stored in clear-text.</p>
 
-<p>A more comprehensive security solution can be achieved by configuring the Jetty Server with one ore more <code>UserRealm</code>s as described by <a href="http://docs.codehaus.org/display/JETTY/JAAS">Jetty and JAAS</a>. Simply edit <code>etc/jetty.xml</code> to use the appropriate <code>UserRealm</code> implementation for your needs. To configure the Monitor to authenticate against an existing LDAP server, first ensure that you have
-defined and properly registered a <code>LoginConfig</code>, such as the following example:</p>
+<p>A more comprehensive security solution can be achieved by configuring the Jetty Server with one ore more <code class="highlighter-rouge">UserRealm</code>s as described by <a href="http://docs.codehaus.org/display/JETTY/JAAS">Jetty and JAAS</a>. Simply edit <code class="highlighter-rouge">etc/jetty.xml</code> to use the appropriate <code class="highlighter-rouge">UserRealm</code> implementation for your needs. To configure the Monitor to authenticate against an existing LDAP server, first ensure that you have
+defined and properly registered a <code class="highlighter-rouge">LoginConfig</code>, such as the following example:</p>
 
-<pre>
-   <code>MyExistingLDAPLoginConfig {
+<div class="highlighter-rouge"><pre class="highlight"><code>MyExistingLDAPLoginConfig {
   com.sun.security.auth.module.LdapLoginModule REQUIRED
   java.naming.security.authentication="simple"
   userProvider="ldap://ldap-host:389"
@@ -327,39 +332,38 @@ defined and properly registered a <code>LoginConfig</code>, such as the followin
   bindAuthenticationType="simple"
   debug=true;
 };
-</code>
-</pre>
+</code></pre>
+</div>
 
-<p>Note: the <code>LdapLoginModule</code> is new with JDK 1.6.</p>
+<p>Note: the <code class="highlighter-rouge">LdapLoginModule</code> is new with JDK 1.6.</p>
 
-<p>JAAS supports many different types of login modules and it is up to the user to provide a valid, working JAAS environment. For information on how to register your LoginConfig refer to <code>$JAVA_HOME/jre/lib/security/java.security</code>.</p>
+<p>JAAS supports many different types of login modules and it is up to the user to provide a valid, working JAAS environment. For information on how to register your LoginConfig refer to <code class="highlighter-rouge">$JAVA_HOME/jre/lib/security/java.security</code>.</p>
 
-<p>Next, edit <code>etc/jetty.xml</code>:</p>
+<p>Next, edit <code class="highlighter-rouge">etc/jetty.xml</code>:</p>
 
-<pre>
-   <code>&lt;?xml version="1.0"?&gt;
-&lt;!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN"
- "http://jetty.mortbay.org/configure.dtd"&gt;
-&lt;Configure id="Server" class="org.terracotta.ehcachedx.org.mortbay.jetty.Server"&gt;
-  &lt;Set name="UserRealms"&gt;
-    &lt;Array type="org.terracotta.ehcachedx.org.mortbay.jetty.security.UserRealm"&gt;
-      &lt;Item&gt;
-        &lt;New class="org.terracotta.ehcachedx.org.mortbay.jetty.plus.jaas.JAASUserRealm"&gt;
-          &lt;Set name="Name"&gt;MyArbitraryLDAPRealmName&lt;/Set&gt;
-          &lt;Set name="LoginModuleName"&gt;MyExistingLDAPLoginConfig&lt;/Set&gt;
-        &lt;/New&gt;
-      &lt;/Item&gt;
-    &lt;/Array&gt;
-  &lt;/Set&gt;
-&lt;/Configure&gt;
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="cp">&lt;!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN"
+ "http://jetty.mortbay.org/configure.dtd"&gt;</span>
+<span class="nt">&lt;Configure</span> <span class="na">id=</span><span class="s">"Server"</span> <span class="na">class=</span><span class="s">"org.terracotta.ehcachedx.org.mortbay.jetty.Server"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;Set</span> <span class="na">name=</span><span class="s">"UserRealms"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;Array</span> <span class="na">type=</span><span class="s">"org.terracotta.ehcachedx.org.mortbay.jetty.security.UserRealm"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;Item&gt;</span>
+        <span class="nt">&lt;New</span> <span class="na">class=</span><span class="s">"org.terracotta.ehcachedx.org.mortbay.jetty.plus.jaas.JAASUserRealm"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;Set</span> <span class="na">name=</span><span class="s">"Name"</span><span class="nt">&gt;</span>MyArbitraryLDAPRealmName<span class="nt">&lt;/Set&gt;</span>
+          <span class="nt">&lt;Set</span> <span class="na">name=</span><span class="s">"LoginModuleName"</span><span class="nt">&gt;</span>MyExistingLDAPLoginConfig<span class="nt">&lt;/Set&gt;</span>
+        <span class="nt">&lt;/New&gt;</span>
+      <span class="nt">&lt;/Item&gt;</span>
+    <span class="nt">&lt;/Array&gt;</span>
+  <span class="nt">&lt;/Set&gt;</span>
+<span class="nt">&lt;/Configure&gt;</span>
+</code></pre>
+</div>
 
-<p>The <code>LoginModuleName</code> you specify as the second constructor parameter to the <code>JAASUserRealm</code> class must exactly match the name of your <code>LoginModule</code>. The realm name specified as the first constructor parameter can be an arbitrary value.</p>
+<p>The <code class="highlighter-rouge">LoginModuleName</code> you specify as the second constructor parameter to the <code class="highlighter-rouge">JAASUserRealm</code> class must exactly match the name of your <code class="highlighter-rouge">LoginModule</code>. The realm name specified as the first constructor parameter can be an arbitrary value.</p>
 
-<p>Note: the version of Jetty used in the Monitor has been repackaged so be sure to prefix any standard Jetty class names with <code>org.terracotta.ehcachedx</code>.</p>
+<p>Note: the version of Jetty used in the Monitor has been repackaged so be sure to prefix any standard Jetty class names with <code class="highlighter-rouge">org.terracotta.ehcachedx</code>.</p>
 
-<p>If the Jetty Server is found to have been configured with any security realms, the simple user name and password from <code>ehcache-monitor.conf</code> is ignored.</p>
+<p>If the Jetty Server is found to have been configured with any security realms, the simple user name and password from <code class="highlighter-rouge">ehcache-monitor.conf</code> is ignored.</p>
 
 <h2 id="using-the-web-gui-">Using the Web GUI <a name="Using-the-Web-GUI" id="Using-the-Web-GUI"></a></h2>
 <p>The web-based GUI is available by pointing your browser at http://<monitor-host-name>:<monitor-port>/monitor. For a default installation on the local machine, this would be http://localhost:9889/monitor
@@ -409,14 +413,13 @@ or, to receive the results as XML:
 http://localhost:9889/monitor/getVersion?format=xml</monitor-port></monitor-host-name></p>
 
 <p>To query the data collected by the monitor server from scripts that can then be used to pass the data to enterprise system management
-frameworks, commands such as <code>curl</code> or <code>wget</code> can be used.
+frameworks, commands such as <code class="highlighter-rouge">curl</code> or <code class="highlighter-rouge">wget</code> can be used.
 For example, on a Linux system, to query the list of probes that a local monitor on the default port is currently aware of, and return
 the data in XML format, the following command could be used:</p>
 
-<pre>
-   <code>$ curl http://localhost:9889/monitor/listProbes?format=xml
-</code>
-</pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>$ curl http://localhost:9889/monitor/listProbes?format=xml
+</code></pre>
+</div>
 
 <h2 id="licensing-">Licensing <a name="Licensing" id="Licensing"></a></h2>
 <p>Unless otherwise indicated, this module is licensed for usage in development.
@@ -432,9 +435,9 @@ it will be implemented in the next release. In the meantime, the charts with the
 <h3 id="memory-measurement-limitations">Memory Measurement limitations</h3>
 <p>Unfortunately in Java, there is no JSR for memory measurement of objects. Implementations, such as the sizeof one we use
 are subject to fragilities.
-For example, Java 7 memory measurement is not supported at this time. You will get a <code>java.lang.NoSuchFieldException: header</code>
+For example, Java 7 memory measurement is not supported at this time. You will get a <code class="highlighter-rouge">java.lang.NoSuchFieldException: header</code>
 exception message if you use memory measurement with Java 7.
-Memory measurement can optionally be turned off by setting <code>memoryMeasurement=false</code> in the probe configuration.</p>
+Memory measurement can optionally be turned off by setting <code class="highlighter-rouge">memoryMeasurement=false</code> in the probe configuration.</p>
 
       </article>
     </div>
@@ -532,7 +535,7 @@ Memory measurement can optionally be turned off by setting <code>memoryMeasureme
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 3.0 Documentation</title>
+  <title>Terms Related to Caching</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 3.0 Documentation</h1>
+        <h1>Terms Related to Caching</h1>
       </div>
       <div>
         <BR/>
@@ -162,19 +162,21 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title">Terms Related to Caching</h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
-        <h1 id="terms-related-to-caching">Terms Related to Caching</h1>
-<div class="sect1">
+        <div class="sect1">
 <h2 id="basic-terms"><a class="anchor" href="#basic-terms"></a>Basic Terms</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="cache"><a class="anchor" href="#cache"></a>Cache</h3>
 <div class="paragraph">
-<p>Wiktionary defines a cache as <em>a store of things that will be required in the future, and can be retrieved rapidly</em>.<br />
-A cache is a collection of temporary data that either duplicates data located elsewhere or is the result of a<br />
-computation. Data that is already in the cache can be repeatedly accessed with minimal costs in terms of time and<br />
+<p>Wiktionary defines a cache as <em>a store of things that will be required in the future, and can be retrieved rapidly</em>.<br>
+A cache is a collection of temporary data that either duplicates data located elsewhere or is the result of a<br>
+computation. Data that is already in the cache can be repeatedly accessed with minimal costs in terms of time and<br>
 resources.</p>
 </div>
 </div>
@@ -187,44 +189,44 @@ resources.</p>
 <div class="sect2">
 <h3 id="cache-hit"><a class="anchor" href="#cache-hit"></a>Cache Hit</h3>
 <div class="paragraph">
-<p>When a data entry is requested from cache and the entry exists for the given key, it is referred to as a cache hit<br />
+<p>When a data entry is requested from cache and the entry exists for the given key, it is referred to as a cache hit<br>
 (or simply, a <em>hit</em>).</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="cache-miss"><a class="anchor" href="#cache-miss"></a>Cache Miss</h3>
 <div class="paragraph">
-<p>When a data entry is requested from cache and the entry does not exist for the given key, it is referred to as a cache<br />
+<p>When a data entry is requested from cache and the entry does not exist for the given key, it is referred to as a cache<br>
 miss (or simply, a <em>miss</em>).</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="system-of-record-sor"><a class="anchor" href="#system-of-record-sor"></a>System-of-Record (SoR)</h3>
 <div class="paragraph">
-<p>The authoritative source of truth for the data. The cache acts as a local copy of data retrieved from or stored to the<br />
-system-of-record (SOR). The SOR is often a traditional database, although it might be a specialized file system or some<br />
+<p>The authoritative source of truth for the data. The cache acts as a local copy of data retrieved from or stored to the<br>
+system-of-record (SOR). The SOR is often a traditional database, although it might be a specialized file system or some<br>
 other reliable long-term storage. It can also be a conceptual component such as an expensive computation.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="eviction"><a class="anchor" href="#eviction"></a>Eviction</h3>
 <div class="paragraph">
-<p>The removal of entries from the cache in order to make room for newer entries (typically when the cache has ran out of<br />
+<p>The removal of entries from the cache in order to make room for newer entries (typically when the cache has ran out of<br>
 data storage capacity).</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="expiration"><a class="anchor" href="#expiration"></a>Expiration</h3>
 <div class="paragraph">
-<p>The removal of entries from the cache after the passing of some amount of time, typically as a strategy to avoid stale<br />
+<p>The removal of entries from the cache after the passing of some amount of time, typically as a strategy to avoid stale<br>
 data in the cache.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="hot-data"><a class="anchor" href="#hot-data"></a>Hot Data</h3>
 <div class="paragraph">
-<p>Data that has recently been used by an application is very likely to be accessed again soon.  Such data is considered<br />
-<em>hot</em>.  A cache may attempt to keep the <em>most hot</em> data most quickly available, while attemping to choose the<br />
+<p>Data that has recently been used by an application is very likely to be accessed again soon.  Such data is considered<br>
+<em>hot</em>.  A cache may attempt to keep the <em>most hot</em> data most quickly available, while attemping to choose the<br>
 <em>least hot</em> data for eviction.</p>
 </div>
 </div>
@@ -326,7 +328,7 @@ data in the cache.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

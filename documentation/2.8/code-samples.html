@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="code-samples">Code Samples</h1><div id="toc-container">
@@ -393,7 +396,7 @@ Element element = new Element("key1", "value1");
 cache.put(element);
 </pre>
 
-<p>Update an element in a cache. Even though <code>cache.put()</code> is used, Ehcache knows there is an existing element, and considers
+<p>Update an element in a cache. Even though <code class="highlighter-rouge">cache.put()</code> is used, Ehcache knows there is an existing element, and considers
 the put an update for the purpose of notifying cache listeners.</p>
 
 <pre>
@@ -427,21 +430,21 @@ cache.remove("key1");
 </pre>
 
 <h3 id="obtaining-cache-sizes">Obtaining Cache Sizes</h3>
-<p>Get the number of elements currently in the <code>Cache</code>.</p>
+<p>Get the number of elements currently in the <code class="highlighter-rouge">Cache</code>.</p>
 
 <pre>
 Cache cache = manager.getCache("sampleCache1");
 int elementsInMemory = cache.getSize();
 </pre>
 
-<p>Get the number of elements currently in the <code>MemoryStore</code>.</p>
+<p>Get the number of elements currently in the <code class="highlighter-rouge">MemoryStore</code>.</p>
 
 <pre>
 Cache cache = manager.getCache("sampleCache1");
 long elementsInMemory = cache.getMemoryStoreSize();
 </pre>
 
-<p>Get the number of elements currently in the <code>DiskStore</code>.</p>
+<p>Get the number of elements currently in the <code class="highlighter-rouge">DiskStore</code>.</p>
 
 <pre>
 Cache cache = manager.getCache("sampleCache1");
@@ -457,14 +460,14 @@ Cache cache = manager.getCache("sampleCache1");
 int hits = cache.getHitCount();
 </pre>
 
-<p>Get the number of times requested items were found in the <code>MemoryStore</code> of the cache.</p>
+<p>Get the number of times requested items were found in the <code class="highlighter-rouge">MemoryStore</code> of the cache.</p>
 
 <pre>
 Cache cache = manager.getCache("sampleCache1");
 int hits = cache.getMemoryStoreHitCount();
 </pre>
 
-<p>Get the number of times requested items were found in the <code>DiskStore</code> of the cache.</p>
+<p>Get the number of times requested items were found in the <code class="highlighter-rouge">DiskStore</code> of the cache.</p>
 
 <pre>
 Cache cache = manager.getCache("sampleCache1");
@@ -633,7 +636,7 @@ A link to <a href="https://fisheye.terracotta.org/browse/Ehcache/branches/ehcach
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

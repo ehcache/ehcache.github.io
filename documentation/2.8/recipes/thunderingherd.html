@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -113,7 +113,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -147,7 +147,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="thundering-herd">Thundering Herd</h1><div id="toc-container">
@@ -213,25 +216,23 @@
 
 <p>The application is using a cache using a read-through pattern with code that looks approximately like:</p>
 
-<pre>
-   <code>/* read some data, check cache first, otherwise read from sor */
-public V readSomeData(K key)
-{
-    Element element;
-    if ((element = cache.get(key)) != null) {
-        return element.getValue();
-    "/&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cm">/* read some data, check cache first, otherwise read from SoR */</span>
+<span class="kd">public</span> <span class="n">V</span> <span class="nf">readSomeData</span><span class="p">(</span><span class="n">K</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">Element</span> <span class="n">element</span><span class="o">;</span>
+  <span class="k">if</span> <span class="o">((</span><span class="n">element</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">))</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+  <span class="o">}</span>
 
-    // note here you should decide whether your cache
-    // will cache 'nulls' or not
-    if (value = readDataFromDataStore(key)) != null) {
-        cache.put(new Element(key, value));
-    "/&gt;
+  <span class="c1">// note here you should decide whether your cache</span>
+  <span class="c1">// will cache 'nulls' or not</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">readDataFromDataStore</span><span class="o">(</span><span class="n">key</span><span class="o">))</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
+  <span class="o">}</span>
 
-    return value;
-"/&gt;
-</code>
-</pre>
+  <span class="k">return</span> <span class="n">value</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
 <p>Upon publication to the front page of a website, a news story will then likely be clicked on by many users all at approximately the same time.</p>
 
@@ -337,7 +338,7 @@ public V readSomeData(K key)
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 
