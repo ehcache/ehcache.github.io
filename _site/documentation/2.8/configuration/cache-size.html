@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/2.8/configuration/cache-size.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1></h1>
+      </div>
+      <div>
+        <BR/>
+        <br/>
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="/documentation/2.8/index.html">Docs Overview</a></li>
+          <li class="submenu"><a href="/documentation/2.8/get-started/index.html">Getting Started</a></li>
+          <li class="submenu"><a href="/documentation/2.8/configuration/index.html">Configuration</a></li>
+          <li class="submenu"><a href="/documentation/2.8/bigmemory/index.html">BigMemory</a></li>
+          <li class="submenu"><a href="/documentation/2.8/arc/index.html">Auto Resource Control (ARC)</a></li>
+          <li class="submenu"><a href="/documentation/2.8/apis/index.html">APIs</a></li>
+          <li class="submenu"><a href="/documentation/2.8/operations/index.html">Operations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/replication/index.html">Replication</a></li>
+          <li class="submenu"><a href="/documentation/2.8/modules/index.html">Modules</a></li>
+          <li class="submenu"><a href="/documentation/2.8/integrations/index.html">Integrations</a></li>
+          <li class="submenu"><a href="/documentation/2.8/recipes/index.html">Recipes</a></li>
+          <li class="submenu"><a href="/documentation/2.8/code-samples.html">Code Samples</a></li>
+          <li class="submenu"><a href="/documentation/2.8/faq.html">FAQ</a></li>
+          <li class="submenu"><a href="/apidocs/2.8.5/index.html" target="_blank">JavaDoc</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
+      </header>
+      <article class="post-content">
+        <h1 id="how-to-size-caches">How to Size Caches</h1><div id="toc-container">
+   <table class="toc" id="toc">
+      <tbody>
+         <tr>
+            <td>
+               <ul>
+                  <li class="toc_level-1 toc_section-1">
+                     <a href="#how-to-size-caches">
+                        <span class="toctext">How to Size Caches</span>
+                     </a>
+                     <ul>
+                        <li class="toc_level-2 toc_section-2">
+                           <a href="#introduction">
+                              <span class="toctext">Introduction</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-3">
+                           <a href="#cache-configuration-sizing-attributes">
+                              <span class="toctext">Cache Configuration Sizing Attributes</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#pooling-resources-versus-sizing-individual-caches">
+                              <span class="toctext">Pooling Resources Versus Sizing Individual Caches</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#cache-sizing-examples">
+                              <span class="toctext">Cache Sizing Examples</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#sizing-distributed-caches">
+                              <span class="toctext">Sizing Distributed Caches</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#overriding-size-limitations">
+                              <span class="toctext">Overriding Size Limitations</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#built-in-sizing-computation-and-enforcement">
+                              <span class="toctext">Built-In Sizing Computation and Enforcement</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+<p>Tuning Ehcache often involves sizing cached data appropriately. Ehcache provides a number of ways to size the different data tiers using simple cache-configuration sizing attributes. These sizing attributes affect local memory and disk resources, allowing them to be set differently on each node.</p>
+
+<h2 id="cache-configuration-sizing-attributes">Cache Configuration Sizing Attributes</h2>
+
+<p>The following table summarizes cache-sizing attributes for standalone Ehcache.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Tier</th>
+      <th style="text-align: left">Attribute</th>
+      <th style="text-align: left">Pooling available at CacheManager level?</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Heap</td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxEntriesLocalHeap</code> <code class="highlighter-rouge">maxBytesLocalHeap</code></td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxBytesLocalHeap</code> only</td>
+      <td style="text-align: left">The maximum number of cache entries or bytes a cache can use in local heap memory, or, when set at the CacheManager level (maxBytesLocalHeap only), a local pool available to all caches under that CacheManager. This setting is required for every cache or at the CacheManager level.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Off-heap</td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxBytesLocalOffHeap</code></td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">This tier is available with <a href="http://terracotta.org/products/bigmemorygo">BigMemory Go</a>.The maximum number of bytes a cache can use in off-heap memory, or, when set at the CacheManager level, as a pool available to all caches under that CacheManager. This setting requires BigMemory.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Local disk</td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxEntriesLocalDisk</code> <code class="highlighter-rouge">maxBytesLocalDisk</code></td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxBytesLocalDisk</code> only</td>
+      <td style="text-align: left">The maximum number of cache entries or bytes a standalone cache can use on the local disk, or, when set at the CacheManager level (maxBytesLocalDisk only), a local pool available to all caches under that CacheManager. Distributed caches cannot use the local disk. Note that these settings apply only to temporary swapping of data to disk (“localTempSwap”); these settings do not apply to disk persistence.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Attributes that set a number of entries take an integer. Attributes that set a memory size (bytes) use the Java -Xmx syntax (for example: “500k”, “200m”, “2g”) or percentage (for example: “20%”). Percentages, however, can be used only in the case where a CacheManager-level pool has been configured (see below).</p>
+
+<p>The following diagram illustrates the tiers and their effective sizing attributes.</p>
+
+<p>
+   <img src="/images/documentation/tier-size-standalone.png" alt="Ehcache Data Tiers and Sizing Attributes" />
+</p>
+
+<h2 id="pooling-resources-versus-sizing-individual-caches">Pooling Resources Versus Sizing Individual Caches</h2>
+<p>You can constrain the size of any cache on a specific tier in that cache’s configuration. You can also constrain the size of all of a CacheManager’s caches in a specific tier by configuring an overall size at the CacheManager level.</p>
+
+<p>If there is no CacheManager-level pool specified for a tier, an individual cache claims the amount of that tier specified in its configuration. If there is a CacheManager-level pool specified for a tier, an individual cache claims that amount <em>from the pool</em>. In this case, caches with no size configuration for that tier receive an equal share of the remainder of the pool (after caches with explicit sizing configuration have claimed their portion).</p>
+
+<p>For example, if CacheManager with eight caches pools one gigabyte of heap, and two caches each explicitly specify 200MB of heap while the remaining caches do not specify a size, the remaining caches will share 600MB of heap equally. Note that caches must use bytes-based attributes to claim a portion of a pool; entries-based attributes such as <code class="highlighter-rouge">maxEntriesLocal</code> cannot be used with a pool.</p>
+
+<p>On startup, the sizes specified by caches are checked to ensure that any CacheManager-level pools are not over-allocated. If over-allocation occurs for any pool, an InvalidConfigurationException is thrown. Note that percentages should not add up to more than 100% of a single pool.</p>
+
+<p>If the sizes specified by caches for any tier take exactly the entire CacheManager-level pool specified for that tier, a warning is logged. In this case, caches that do not specify a size for that tier cannot use the tier as nothing is left over.</p>
+
+<h3 id="local-heap">Local Heap</h3>
+<p>A size must be provided for local heap, either in the CacheManager (<code class="highlighter-rouge">maxBytesLocalHeap</code> only) or in each individual cache (<code class="highlighter-rouge">maxBytesLocalHeap</code> or <code class="highlighter-rouge">maxEntriesLocalHeap</code>). Not doing so causes an InvalidConfigurationException.</p>
+
+<p>If pool is configured, it can be combined with a local-heap setting in an individual cache. This allows the cache to claim a specified portion of the heap setting configured in the pool. However, in this case the cache setting must use <code class="highlighter-rouge">maxBytesLocalHeap</code> (same as the CacheManager).</p>
+
+<p>In any case, every cache <strong>must</strong> have a local-heap setting, either configured explicitly or taken from the pool configured in the CacheManager.</p>
+
+<h3 id="bigmemory-local-off-heap">BigMemory (Local Off-Heap)</h3>
+<p>If you are using <a href="http://terracotta.org/products/bigmemorygo">BigMemory Go</a>, off-heap sizing is available. Off-heap sizing can be configured in bytes only, never by entries.</p>
+
+<p>If a CacheManager has a pool configured for off-heap, your application cannot add caches dynamically that have off-heap configuration — doing so generates an error. In addition, if any caches that used the pool are removed programmatically or through the Developer Console, other caches in the pool cannot claim the unused portion. To allot the entire off-heap pool to the remaining caches, remove the unwanted cache from the Ehcache configuration and then reload the configuration.</p>
+
+<p>To use local off-heap as a data tier, a cache must have <code class="highlighter-rouge">overflowToOffHeap</code> set to “true”. If a CacheManager has a pool configured for using off-heap, the <code class="highlighter-rouge">overflowToOffHeap</code> attribute is automatically set to “true” for all caches. In this case, you can prevent a specific cache from overflowing to off-heap by explicitly setting its <code class="highlighter-rouge">overflowToOffHeap</code> attribute to “false”.</p>
+
+<h3 id="local-disk">Local Disk</h3>
+<p>The local disk can be used as a data tier. Note the following:</p>
+
+<ul>
+  <li>Distributed caches cannot use the local disk.</li>
+  <li>To use the local disk as a data tier, a cache must have <code class="highlighter-rouge">persistenceStrategy</code> set to “localTempSwap”.</li>
+  <li>The local disk is the slowest local tier.</li>
+</ul>
+
+<h2 id="cache-sizing-examples">Cache Sizing Examples</h2>
+<p>The following examples illustrate both pooled and individual cache-sizing configurations.</p>
+
+<h3 id="pooled-resources">Pooled Resources</h3>
+
+<p>The following configuration sets pools for all of this CacheManager’s caches:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+    <span class="na">name=</span><span class="s">"CM1"</span>
+    <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span>
+    <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
+    <span class="na">maxBytesLocalDisk=</span><span class="s">"50G"</span><span class="nt">&gt;</span>
+  ...
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache1"</span> <span class="err">...</span> <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache2"</span> <span class="err">...</span> <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span> <span class="err">...</span> <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
+
+<p>CacheManager CM1 automatically allocates these pools equally among its three caches. Each cache gets one third of the allocated heap, off-heap, and local disk. Note that at the CacheManager level, resources can be allocated in bytes only.</p>
+
+<h3 id="explicitly-sizing-caches">Explicitly Sizing Caches</h3>
+<p>You can explicitly allocate resources to specific caches:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+    <span class="na">name=</span><span class="s">"CM1"</span>
+    <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span>
+    <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
+    <span class="na">maxBytesLocalDisk=</span><span class="s">"60G"</span><span class="nt">&gt;</span>
+  ...
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache1"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
+    <span class="err">...</span>
+  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache2"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"5G"</span>
+    <span class="err">...</span>
+  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+  
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span> <span class="err">...</span> 
+  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
+
+<p>In the example above, Cache1 reserves 50Mb of the 100Mb local-heap pool; the other caches divide the remaining portion of the pool equally. Cache2 takes half of the local off-heap pool; the other caches divide the remaining portion of the pool equally. Cache3 receives 25Mb of local heap, 2.5Gb of off-heap, and 20Gb of the local disk.</p>
+
+<p>Caches that reserve a portion of a pool are not required to use that portion. Cache1, for example, has a fixed portion of the local heap but may have any amount of data in heap up to the configured value of 50Mb.</p>
+
+<p>Note that caches must use the same sizing attributes used to create the pool. Cache1, for example, cannot use <code class="highlighter-rouge">maxEntriesLocalHeap</code> to reserve a portion of the pool.</p>
+
+<h3 id="mixed-sizing-configurations">Mixed Sizing Configurations</h3>
+<p>If a CacheManager does not pool a particular resource, that resource can still be allocated in cache configuration, as shown in the following example.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+    <span class="na">name=</span><span class="s">"CM2"</span>
+    <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span><span class="nt">&gt;</span>
+  ...
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache4"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
+      <span class="na">maxEntriesLocalDisk=</span><span class="s">"100000"</span>
+    <span class="err">...</span>
+  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache5"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
+    <span class="err">...</span>
+  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache6"</span> <span class="err">...</span> <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
+
+<p>CacheManager CM2 creates one pool (local heap). Its caches all use the local heap and are constrained by the pool setting, as expected. However, cache configuration can allocate other resources as desired. In this example, Cache4 allocates disk space for its data, and Cache5 allocates off-heap space for its data. Cache6 gets 25Mb of local heap only.</p>
+
+<h3 id="using-percents">Using Percents</h3>
+<p>The following configuration sets pools for each tier:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+    <span class="na">name=</span><span class="s">"CM1"</span>
+    <span class="na">maxBytesLocalHeap=</span><span class="s">"1G"</span>
+    <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
+    <span class="na">maxBytesLocalDisk=</span><span class="s">"50G"</span><span class="nt">&gt;</span>
+  ...
+
+  <span class="c">&lt;!-- Cache1 gets 400Mb of heap, 2.5Gb of off-heap, and 5Gb of disk. --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache1"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"40%"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+
+  <span class="c">&lt;!-- Cache2 gets 300Mb of heap, 5Gb of off-heap, and 5Gb of disk. --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache2"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"50%"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+
+  <span class="c">&lt;!-- Cache2 gets 300Mb of heap, 2.5Gb of off-heap, and 40Gb of disk. --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalDisk=</span><span class="s">"80%"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
+
+<caption>NOTE: Configuring Cache Sizes with Percentages</caption>
+
+<table>
+  <tbody>
+    <tr>
+      <td>You can use a percentage of the total JVM heap for the CacheManager maxBytesLocalHeap. The CacheManager percentage, then, is a portion of the total JVM heap, and in turn, the Cache percentage is the portion of the CacheManager pool for that tier.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="sizing-caches-without-a-pool">Sizing Caches Without a Pool</h3>
+
+<p>The CacheManager in this example does not pool any resources.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+    <span class="na">name=</span><span class="s">"CM3"</span>
+    <span class="err">...</span> <span class="nt">&gt;</span>
+  ...
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache7"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
+      <span class="na">maxEntriesLocalDisk=</span><span class="s">"100000"</span>
+    <span class="err">...</span>
+  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache8"</span> <span class="err">...</span>
+      <span class="na">maxEntriesLocalHeap=</span><span class="s">"1000"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
+    <span class="err">...</span>
+  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache9"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
+    <span class="err">...</span>
+  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
+
+<p>Caches can be configured to use resources as necessary. Note that every cache in this example must declare a value for local heap. This is because no pool exists for the local heap; implicit (CacheManager configuration) or explicit (cache configuration) local-heap allocation is required.</p>
+
+<h3 id="overflows">Overflows</h3>
+<p>Caches that do not specify overflow will overflow if a pool is set for off-heap and disk.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">maxBytesLocalHeap=</span><span class="s">"1g"</span> <span class="na">maxBytesLocalOffHeap=</span><span class="s">"4g"</span>
+         <span class="na">maxBytesLocalDisk=</span><span class="s">"100g"</span> <span class="nt">&gt;</span>
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"explicitlyAllocatedCache1"</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50m"</span>
+     	<span class="na">maxBytesLocalOffHeap=</span><span class="s">"200m"</span>
+     	<span class="na">timeToLiveSeconds=</span><span class="s">"100"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+
+  <span class="c">&lt;!-- Does not use off-heap because overflow has been explicitly disabled. --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"automaticallyAllocatedCache2"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"100"</span>
+      <span class="na">overflowToOffHeap=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+
+  <span class="c">&lt;!-- Does not overflow to disk because the cache is configured for Fast Restart (a different use of the disk which supercedes overflow to disk). --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"explicitlyAllocatedCache2"</span>
+      <span class="na">maxLocalHeap=</span><span class="s">"10%"</span>
+     	<span class="na">maxBytesLocalOffHeap=</span><span class="s">"200m"</span>
+     	<span class="na">timeToLiveSeconds=</span><span class="s">"100"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"localRestartable"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+
+  <span class="c">&lt;!-- Overflows automatically to off-heap and disk because no specific override and resources are set at the CacheManager level --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"automaticallyAllocatedCache1"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"100"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
+
+<h2 id="sizing-distributed-caches">Sizing Distributed Caches</h2>
+<p>Distributed caches, available with <a href="http://terracotta.org/products/bigmemorymax">BigMemory Max</a>, can be sized as noted above, except that they do not use the local disk and therefore cannot be configured with *LocalDisk sizing attributes. Distributed caches use the storage resources (off-heap and disk) available on the Terracotta Server Array.</p>
+
+<p>Cache-configuration sizing attributes behave as local configuration, which means that every node can load its own sizing attributes for the same caches. That is, while some elements and attributes are fixed by the first Ehcache configuration loaded in the cluster, cache-configuration sizing attributes can vary across nodes for the same cache.</p>
+
+<p>For example, a cache may have the following configuration on one node:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
+      <span class="na">maxEntriesOnHeap=</span><span class="s">"10000"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"8g"</span>
+      <span class="na">eternal=</span><span class="s">"false"</span>
+      <span class="na">timeToIdleSeconds=</span><span class="s">"3600"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"1800"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"distributed"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;terracotta/&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+</code></pre>
+</div>
+
+<p>The same cache may have the following size configuration on another node:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
+      <span class="na">maxEntriesOnHeap=</span><span class="s">"10000"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10g"</span>
+      <span class="na">eternal=</span><span class="s">"false"</span>
+      <span class="na">timeToIdleSeconds=</span><span class="s">"3600"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"1800"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"distributed"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;terracotta/&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+</code></pre>
+</div>
+
+<p>If the cache exceeds its size constraints on a node, then with this configuration the Terracotta Server Array provides myCache with an unlimited amount of disk space for spillover and backup. To impose a limit, you must set <code class="highlighter-rouge">maxEntriesInCache</code> to a positive non-zero value:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
+      <span class="na">maxEntriesOnHeap=</span><span class="s">"10000"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10g"</span>
+      <span class="na">eternal=</span><span class="s">"false"</span>
+      <span class="na">timeToIdleSeconds=</span><span class="s">"3600"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"1800"</span>
+      <span class="na">maxEntriesInCache=</span><span class="s">"1000000"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"distributed"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;terracotta/&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+</code></pre>
+</div>
+
+<p>The Terracotta Server Array will now evict myCache entries to stay within the limit set by <code class="highlighter-rouge">maxEntriesInCache</code>. However, for any particular cache, eviction on the Terracotta Server Array is based on the largest size configured for that cache. In addition, the Terracotta Server Array will <em>not</em> evict any cache entries that exist on at least one client node, regardless of the limit imposed by <code class="highlighter-rouge">maxEntriesInCache</code>.</p>
+
+<h2 id="overriding-size-limitations">Overriding Size Limitations</h2>
+
+<p>Pinned caches can override the limits set by cache-configuration sizing attributes, potentially causing OutOfMemory errors. This is because pinning prevents flushing of cache entries to lower tiers. For more information on pinning, see <a href="/documentation/2.8/configuration/data-life.html">Pinning, Eviction, and Expiration</a>.</p>
+
+<h2 id="built-in-sizing-computation-and-enforcement">Built-In Sizing Computation and Enforcement</h2>
+
+<p>Internal Ehcache mechanisms track data-element sizes and enforce the limits set by CacheManager sizing pools.</p>
+
+<h3 id="sizing-of-cached-entries">Sizing of cached entries</h3>
+
+<p>Elements put in a memory-limited cache will have their memory sizes measured. The entire Element instance added
+ to the cache is measured, including key and value, as well as the memory footprint of adding that instance to
+ internal data structures. Key and value are measured as object graphs – each reference is followed and the object
+ reference also measured. This goes on recursively.</p>
+
+<p>Shared references will be measured by each class that references it. This will result in an overstatement. Shared references
+ should therefore be ignored.</p>
+
+<h4 id="ignoring-for-size-calculations">Ignoring for Size Calculations</h4>
+
+<p>For the purposes of measurement, references can be ignored using the <code class="highlighter-rouge">@IgnoreSizeOf</code> annotation. The annotation may be declared at the class level, on a field, or on a package. You can also specify a file containing the fully qualified names of classes, fields, and packages to be ignored.</p>
+
+<p>This annotation is not inherited, and must be added to any subclasses that should also be excluded from sizing.</p>
+
+<p>The following example shows how to ignore the <code class="highlighter-rouge">Dog</code> class.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nd">@IgnoreSizeOf</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Dog</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="n">Gender</span> <span class="n">gender</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>The following example shows how to ignore the <code class="highlighter-rouge">sharedInstance</code> field.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyCacheEntry</span> <span class="o">{</span>
+  <span class="nd">@IgnoreSizeOf</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">SharedClass</span> <span class="n">sharedInstance</span><span class="o">;</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Packages may also be ignored if you add the @IgnoreSizeOf annotation to appropriate package-info.java of the desired package. Here is a sample package-info.java for and in the com.pany.ignore package:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nd">@IgnoreSizeOf</span>
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">pany</span><span class="o">.</span><span class="na">ignore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">net.sf.ehcache.pool.sizeof.filter.IgnoreSizeOf</span><span class="o">;</span>
+</code></pre>
+</div>
+
+<p>Alternatively, you may declare ignored classes and fields in a file and specify a <code class="highlighter-rouge">net.sf.ehcache.sizeof.filter</code> system property to point to that file.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># That field references a common graph between all cached entries
+com.pany.domain.cache.MyCacheEntry.sharedInstance
+
+# This will ignore all instances of that type
+com.pany.domain.SharedState
+
+# This ignores a package
+com.pany.example
+</code></pre>
+</div>
+
+<p>Note that these measurements and configurations apply only to on-heap storage. If Elements are moved to off-heap memory, disk, or the Terracotta Server Array, they
+are serialized as byte arrays. The serialized size is then used as the basis for measurement.</p>
+
+<h4 id="configuration-for-limiting-the-traversed-object-graph">Configuration for Limiting the Traversed Object Graph</h4>
+<p>As noted above, sizing caches involves traversing object graphs, a process that can be limited with annotations. This process can also be controlled at both the CacheManager and cache levels.</p>
+
+<p>Note that the following configuration has no effect on distributed caches.</p>
+
+<h5 id="size-of-limitation-at-the-cachemanager-level">Size-Of Limitation at the CacheManager Level</h5>
+<p>Control how deep the size-of engine can go when sizing on-heap elements by adding the following element at the CacheManager level:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;sizeOfPolicy</span> <span class="na">maxDepth=</span><span class="s">"100"</span> <span class="na">maxDepthExceededBehavior=</span><span class="s">"abort"</span><span class="nt">/&gt;</span>
+</code></pre>
+</div>
+
+<p>This element has the following attributes</p>
+
+<ul>
+  <li><code class="highlighter-rouge">maxDepth</code> – Controls how many linked objects can be visited before the size-of engine takes any action. This attribute is required.</li>
+  <li><code class="highlighter-rouge">maxDepthExceededBehavior</code> – Specifies what happens when the max depth is exceeded while sizing an object graph:
+    <ul>
+      <li>“continue” – DEFAULT Forces the size-of engine to log a warning and continue the sizing operation. If this attribute is not specified, “continue” is the behavior used.</li>
+      <li>“abort” – Forces the SizeOf engine to abort the sizing, log a warning, and mark the cache as not correctly tracking memory usage. With this setting, <code class="highlighter-rouge">Ehcache.hasAbortedSizeOf()</code> returns true.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The SizeOf policy can be configured at the cache manager level (directly under <code class="highlighter-rouge">&lt;ehcache&gt;</code>) and at
+the cache level (under <code class="highlighter-rouge">&lt;cache&gt;</code> or <code class="highlighter-rouge">&lt;defaultCache&gt;</code>). The cache policy always overrides the cache manager
+one if both are set. This element has no effect on distributed caches.</p>
+
+<h5 id="size-of-limitation-at-the-cache-level">Size-Of Limitation at the Cache level</h5>
+<p>Use the <code class="highlighter-rouge">&lt;sizeOfPolicy&gt;</code> as a subelement in any <code class="highlighter-rouge">&lt;cache&gt;</code> block to control how deep the size-of engine can go when sizing on-heap elements belonging to the target cache. This cache-level setting overrides the CacheManager size-of setting.</p>
+
+<h4 id="debugging-of-size-of-related-errors">Debugging of Size-Of Related Errors</h4>
+
+<p>If warnings or errors appear that seem related to size-of measurement (usually caused by the size-of engine walking the graph), generate more log information on sizing activities:</p>
+
+<ul>
+  <li>Set the <code class="highlighter-rouge">net.sf.ehcache.sizeof.verboseDebugLogging</code> system property to true.</li>
+  <li>Enable debug logs on <code class="highlighter-rouge">net.sf.ehcache.pool.sizeof</code> in your chosen implementation of SLF4J.</li>
+</ul>
+
+<h3 id="eviction-when-using-cachemanager-level-storage">Eviction When Using CacheManager-Level Storage</h3>
+
+<p>When a CacheManager-level storage pool is exhausted, a cache is selected on which to perform eviction to recover pool space. The eviction from
+ the selected cache is performed using the cache’s configured eviction algorithm (LRU, LFU, etc…).
+ The cache from which eviction is performed is selected using the “minimal eviction cost” algorithm described below:</p>
+
+<pre>
+ eviction-cost = mean-entry-size * drop-in-hit-rate
+</pre>
+
+<p>Eviction cost is defined as the increase in bytes requested from the underlying SOR (the database for example) per unit time used
+ by evicting the requested number of bytes from the cache.</p>
+
+<p>If we model the hit distribution as a simple power-law then:</p>
+
+<pre>
+ P(hit n'th element) ~ 1/n^{alpha"/&gt;
+</pre>
+
+<p>In the continuous limit this means the total hit rate is proportional to the integral of this distribution function over the elements in
+ the cache. The change in hit rate due to an eviction is then the integral of this distribution function between the initial size and
+ the final size.  Assuming that the eviction size is small compared to the overall cache size we can model this as:</p>
+
+<pre>
+ drop ~ access * 1/x^{alpha} * Delta(x)
+</pre>
+
+<p>Where ‘access’ is the overall access rate (hits + misses) and x is a unit-less measure of the ‘fill level’ of the cache.  Approximating the fill level as the
+ ratio of hit rate to access rate, and substituting in to the eviction-cost expression we get:</p>
+
+<pre>
+ eviction-cost = mean-entry-size * access * 1/(hits/access)^{alpha} * (eviction / (byteSize / (hits/access)))
+</pre>
+
+<p>Simplifying:</p>
+
+<pre>
+ eviction-cost = (byteSize / countSize) * access * 1/(h/A)^{alpha} * (eviction * hits)/(access * byteSize)
+ eviction-cost = (eviction * hits) / (countSize * (hits/access)^{alpha})
+</pre>
+
+<p>Removing the common factor of ‘eviction’ which is the same in all caches lead us to evicting from the cache with the minimum value of:</p>
+
+<pre>
+ eviction-cost = (hits / countSize) / (hits/access)^{alpha"/&gt;
+</pre>
+
+<p>When a cache has a zero hit-rate (it is in a pure loading phase) we deviate from this algorithm and allow the cache to occupy 1/n’th of the pool space where ‘n’ is the number of caches using the pool.  Once the cache starts to be accessed we re-adjust to match the actual usage pattern of that cache.</p>
+
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

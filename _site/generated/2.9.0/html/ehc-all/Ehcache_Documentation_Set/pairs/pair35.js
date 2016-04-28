@@ -1,0 +1,22 @@
+var pairs =
+{
+"read-through":{"read-through":1,"pattern":1}
+,"pattern":{"mimics":1,"reading":1}
+,"mimics":{"structure":1}
+,"structure":{"cache-aside":1}
+,"cache-aside":{"pattern":1}
+,"reading":{"data":1}
+,"data":{"difference":1}
+,"difference":{"implement":1}
+,"implement":{"cacheentryfactory":1}
+,"cacheentryfactory":{"interface":1}
+,"interface":{"instruct":1}
+,"instruct":{"cache":1}
+,"cache":{"read":1,"miss":1,"instance":1}
+,"read":{"objects":1}
+,"objects":{"cache":1}
+,"miss":{"wrap":1}
+,"wrap":{"cache":1}
+,"instance":{"instance":1,"selfpopulatingcache":1}
+}
+;Search.control.loadWordPairs(pairs);

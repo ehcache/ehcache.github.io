@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>The Ehcache 3.x JSR-107 Provider</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="http://www.ehcache.org/documentation/3.0/107.html">
+  <link rel="alternate" type="application/rss+xml" title="Ehcache" href="http://www.ehcache.org/feed.xml" />
+
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/"><i class="fa fa-code"></i> Contributing</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="http://blog.terracotta.org"><i class="fa fa-rss-square"></i>  Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>The Ehcache 3.x JSR-107 Provider</h1>
+      </div>
+      <div>
+        <BR/>
+        <br/>
+
+<div class="container-fluid">
+
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+        
+        <h1 class="post-title">The Ehcache 3.x JSR-107 Provider</h1>
+        <hr/>
+        
+      </header>
+      <article class="post-content">
+        <div class="sect1">
+<h2 id="getting-started-with-ehcache-3-0-jsr-107"><a class="anchor" href="#getting-started-with-ehcache-3-0-jsr-107"></a>Getting started with Ehcache 3.0 &amp; JSR-107</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There is nothing special for you to do to use Ehcache 3.0 as the caching provider for your application: add the<br>
+<code>ehcache-3.0.0.jar</code> to your application&#8217;s classpath (possibly removing the previous provider&#8217;s jar) and you are ready to<br>
+go:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CachingProvider provider = Caching.getCachingProvider(); <i class="conum" data-value="1"></i><b>(1)</b>
+CacheManager cacheManager = provider.getCacheManager(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Retrieves the default <code>CachingProvider</code>, this should be <code>org.ehcache.jsr107.EhcacheCachingProvider</code>.<br>
+You can also force use of <code>org.ehcache.jsr107.EhcacheCachingProvider</code> by using the <code>Caching.getCachingProvider(String)</code> static method instead.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Retrieve the default <code>CacheManager</code> instance using the provider.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+See <a href="http://www.ehcache.org/#using_jsr107_api">the section on using Ehcache 3 and JSR-107</a> for details on required libraries.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="jsr-107-and-ehcache-configuration-integration"><a class="anchor" href="#jsr-107-and-ehcache-configuration-integration"></a>JSR-107 and Ehcache configuration integration</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="starting-from-jsr-107-created-caches"><a class="anchor" href="#starting-from-jsr-107-created-caches"></a>Starting from JSR-107 created caches</h3>
+<div class="paragraph">
+<p>When you create a <code>Cache</code> on a <code>CacheManager</code> using a <code>MutableConfiguration</code> - that is you only use JSR-107 types -<br>
+you can still get to the underlying Ehcache <code>RuntimeCacheConfiguration</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">MutableConfiguration&lt;Long, String&gt; configuration = new MutableConfiguration&lt;Long, String&gt;();
+configuration.setTypes(Long.class, String.class);
+Cache&lt;Long, String&gt; cache = cacheManager.createCache("someCache", configuration); <i class="conum" data-value="1"></i><b>(1)</b>
+
+CompleteConfiguration&lt;Long, String&gt; completeConfiguration = cache.getConfiguration(CompleteConfiguration.class); <i class="conum" data-value="2"></i><b>(2)</b>
+
+Eh107Configuration&lt;Long, String&gt; eh107Configuration = cache.getConfiguration(Eh107Configuration.class); <i class="conum" data-value="3"></i><b>(3)</b>
+
+CacheRuntimeConfiguration&lt;Long, String&gt; runtimeConfiguration = eh107Configuration.unwrap(CacheRuntimeConfiguration.class); <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create a JSR-107 cache using the <code>MutableConfiguration</code> from the specification</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Get to the JSR-107 <code>CompleteConfiguration</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Get to the Ehcache JSR-107 configuration bridge</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Unwrap to the Ehcache <code>RuntimeCacheConfiguration</code> type</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="building-the-configuration-using-ehcache-apis"><a class="anchor" href="#building-the-configuration-using-ehcache-apis"></a>Building the configuration using Ehcache APIs</h3>
+<div class="paragraph">
+<p>You can also create a JSR-107 <code>Cache</code> using an Ehcache <code>CacheConfiguration</code>.<br>
+When using this mechanism, no JSR-107 <code>CompleteConfiguration</code> is used and so you cannot get to one.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+    ResourcePoolsBuilder.heap(10)).build(); <i class="conum" data-value="1"></i><b>(1)</b>
+
+Cache&lt;Long, String&gt; cache = cacheManager.createCache("myCache",
+    Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration)); <i class="conum" data-value="2"></i><b>(2)</b>
+
+Eh107Configuration&lt;Long, String&gt; configuration = cache.getConfiguration(Eh107Configuration.class);
+configuration.unwrap(CacheConfiguration.class); <i class="conum" data-value="3"></i><b>(3)</b>
+
+configuration.unwrap(CacheRuntimeConfiguration.class); <i class="conum" data-value="4"></i><b>(4)</b>
+
+try {
+  cache.getConfiguration(CompleteConfiguration.class); <i class="conum" data-value="5"></i><b>(5)</b>
+  throw new AssertionError("IllegalArgumentException expected");
+} catch (IllegalArgumentException iaex) {
+  // Expected
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create an Ehcache <code>CacheConfiguration</code> - through a builder as shown here or even through XML</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Use the configuration with JSR-107 API by wrapping it</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Get back to the Ehcache <code>CacheConfiguration</code> &#8230;&#8203;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>or to the runtime configuration even.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>No JSR-107 <code>CompleteConfiguration</code> is available in this context</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="getting-jsr-107-caches-configured-through-ehcache-xml"><a class="anchor" href="#getting-jsr-107-caches-configured-through-ehcache-xml"></a>Getting JSR-107 caches configured through Ehcache XML</h3>
+<div class="paragraph">
+<p>Another way to have the full Ehcache configuration options on your caches while having no code dependency on the provider is<br>
+to use XML based configuration. See <a href="xml.html">the XML documentation</a> for more details on configuring `Cache`s in XML.</p>
+</div>
+<div class="paragraph">
+<p>Find below the XML configuration followed by the code to use it from JSR-107:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;config
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.ehcache.org/v3'
+    xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
+    xsi:schemaLocation="http://www.ehcache.org/v3 ../../../../../../../xml/src/main/resources/ehcache-core.xsd
+                        http://www.ehcache.org/v3/jsr107 ../../../../../main/resources/ehcache-107ext.xsd"&gt;
+
+  &lt;cache alias="ready-cache"&gt;
+    &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type&gt;com.pany.domain.Product&lt;/value-type&gt;
+    &lt;loader-writer&gt;
+      &lt;class&gt;com.pany.ehcache.integration.ProductCacheLoaderWriter&lt;/class&gt;
+    &lt;/loader-writer&gt;
+    &lt;heap unit="entries"&gt;100&lt;/heap&gt;
+  &lt;/cache&gt;
+
+&lt;/config&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CachingProvider cachingProvider = Caching.getCachingProvider();
+CacheManager manager = cachingProvider.getCacheManager( <i class="conum" data-value="1"></i><b>(1)</b>
+    getClass().getResource("/org/ehcache/docs/ehcache-jsr107-config.xml").toURI(), <i class="conum" data-value="2"></i><b>(2)</b>
+    getClass().getClassLoader()); <i class="conum" data-value="3"></i><b>(3)</b>
+Cache&lt;Long, Product&gt; readyCache = manager.getCache("ready-cache", Long.class, Product.class); <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Invoking <code>javax.cache.spi.CachingProvider.getCacheManager(java.net.URI, java.lang.ClassLoader)</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>and passing in a URI that resolves to an Ehcache XLM configuration file.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>the second argument being the <code>ClassLoader</code> to use to load user-types if needed; i.e. <code>Class</code> instances that are<br>
+stored in the <code>Cache</code> managed by our <code>CacheManager</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Get the configured <code>Cache</code> out of the <code>CacheManager</code></td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can also use the <code>CachingProvider.getCacheManager()</code> method that takes no arguments instead.<br>
+      The <code>URI</code> and <code>ClassLoader</code> used to configure the <code>CacheManager</code> will then use the<br>
+      vendor specific values returned by <code>CachingProvider.getDefaultURI</code> and <code>.getDefaultClassLoader</code> respectively.<br>
+      Be aware that these are not entirely specified for Ehcache 3.0 and may change in future releases!
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="supplement-jsr-107-configurations"><a class="anchor" href="#supplement-jsr-107-configurations"></a>Supplement JSR-107&#8217;s configurations</h3>
+<div class="paragraph">
+<p>As of Ehcache 3.0, you can also create <code>cache-templates</code>.  See the<br>
+<a href="xml.html#cache-template-elements">Cache Templates</a> section of the XML Documentation for more details. The Ehcache 3.0<br>
+JSR-107 Caching Provider comes with an extension to the regular XML configuration so you can:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configure a default template from which all programmatically created <code>Cache</code> instances inherit, and</p>
+</li>
+<li>
+<p>Configure a given named <code>Cache</code> to inherit from a specific template.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This feature is particularly useful to configure <code>Cache</code> beyond the JSR-107 specification, for example, giving <code>Cache</code> a capacity<br>
+constraint. All that&#8217;s needed is adding a <code>jsr107</code> service in your XML configuration file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;config
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.ehcache.org/v3'
+    xmlns:jsr107='http://www.ehcache.org/v3/jsr107'&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+
+  &lt;service&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;jsr107:defaults default-template="tinyCache"&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+      &lt;jsr107:cache name="foos" template="clientCache"/&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+      &lt;jsr107:cache name="byRefCache" template="byRefTemplate"/&gt;
+      &lt;jsr107:cache name="byValCache" template="byValueTemplate"/&gt;
+      &lt;jsr107:cache name="weirdCache1" template="mixedTemplate1"/&gt;
+      &lt;jsr107:cache name="weirdCache2" template="mixedTemplate2"/&gt;
+    &lt;/jsr107:defaults&gt;
+  &lt;/service&gt;
+
+  &lt;cache-template name="clientCache"&gt;
+    &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+    &lt;value-type&gt;com.pany.domain.Client&lt;/value-type&gt;
+    &lt;expiry&gt;
+      &lt;ttl unit="minutes"&gt;2&lt;/ttl&gt;
+    &lt;/expiry&gt;
+    &lt;heap unit="entries"&gt;2000&lt;/heap&gt;
+  &lt;/cache-template&gt;
+
+  &lt;cache-template name="tinyCache"&gt;
+    &lt;heap unit="entries"&gt;20&lt;/heap&gt;
+  &lt;/cache-template&gt;
+
+  &lt;cache-template name="byRefTemplate"&gt;
+    &lt;key-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;com.pany.domain.Client&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;10&lt;/heap&gt;
+  &lt;/cache-template&gt;
+
+  &lt;cache-template name="byValueTemplate"&gt;
+    &lt;key-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;com.pany.domain.Client&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;10&lt;/heap&gt;
+  &lt;/cache-template&gt;
+
+  &lt;cache-template name="mixedTemplate1"&gt;
+    &lt;key-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;com.pany.domain.Client&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;10&lt;/heap&gt;
+  &lt;/cache-template&gt;
+
+  &lt;cache-template name="mixedTemplate2"&gt;
+    &lt;key-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type copier="org.ehcache.impl.copy.IdentityCopier"&gt;com.pany.domain.Client&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;10&lt;/heap&gt;
+  &lt;/cache-template&gt;
+&lt;/config&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>First, declare a namespace for the 107 extension, e.g. <code>jsr107</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Within a <code>service</code> element at the top of you configuration, add a <code>jsr107:defaults</code> element</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The element takes an optional attribute <code>default-template</code>, which references the <code>cache-template</code> to use for all<br>
+<code>javax.cache.Cache</code> created by the application at runtime using <code>javax.cache.CacheManager.createCache</code>. In<br>
+this example, the default <code>cache-template</code> used will be <code>tinyCache</code>, meaning that atop of their particular config,<br>
+programmatically created <code>Cache</code> instances will have their capacity constrained to 20 entries.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Nested within the <code>jsr107:defaults</code>, add specific <code>cache-templates</code> to use for given named <code>Cache</code>, e.g. when<br>
+creating the <code>Cache</code> named <code>foos</code> at runtime, Ehcache will enhance its config, giving it a capacity of 2000 entries,<br>
+as well as insuring both key and value types are <code>String</code>.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+See <a href="xsds.html#jsr-107-extension">this xsd</a> for complete definition
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Using the above configuration, you can not only supplement but also override the configuration of JSR-107 created caches<br>
+without modifying the application code.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">MutableConfiguration&lt;Long, Client&gt; mutableConfiguration = new MutableConfiguration&lt;Long, Client&gt;();
+mutableConfiguration.setTypes(Long.class, Client.class); <i class="conum" data-value="1"></i><b>(1)</b>
+
+Cache&lt;Long, Client&gt; anyCache = manager.createCache("anyCache", mutableConfiguration); <i class="conum" data-value="2"></i><b>(2)</b>
+
+CacheRuntimeConfiguration&lt;Long, Client&gt; ehcacheConfig = (CacheRuntimeConfiguration&lt;Long, Client&gt;)anyCache.getConfiguration(
+    Eh107Configuration.class).unwrap(CacheRuntimeConfiguration.class); <i class="conum" data-value="3"></i><b>(3)</b>
+ehcacheConfig.getResourcePools().getPoolForResource(ResourceType.Core.HEAP).getSize(); <i class="conum" data-value="4"></i><b>(4)</b>
+
+Cache&lt;Long, Client&gt; anotherCache = manager.createCache("byRefCache", mutableConfiguration);
+assertFalse(anotherCache.getConfiguration(Configuration.class).isStoreByValue()); <i class="conum" data-value="5"></i><b>(5)</b>
+
+MutableConfiguration&lt;String, Client&gt; otherConfiguration = new MutableConfiguration&lt;String, Client&gt;();
+otherConfiguration.setTypes(String.class, Client.class);
+otherConfiguration.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE)); <i class="conum" data-value="6"></i><b>(6)</b>
+
+Cache&lt;String, Client&gt; foosCache = manager.createCache("foos", otherConfiguration);<i class="conum" data-value="7"></i><b>(7)</b>
+CacheRuntimeConfiguration&lt;Long, Client&gt; foosEhcacheConfig = (CacheRuntimeConfiguration&lt;Long, Client&gt;)foosCache.getConfiguration(
+    Eh107Configuration.class).unwrap(CacheRuntimeConfiguration.class);
+Client client1 = new Client("client1", 1);
+foosEhcacheConfig.getExpiry().getExpiryForCreation(42L, client1).getLength(); <i class="conum" data-value="8"></i><b>(8)</b>
+
+CompleteConfiguration&lt;String, String&gt; foosConfig = foosCache.getConfiguration(CompleteConfiguration.class);
+
+try {
+  final Factory&lt;ExpiryPolicy&gt; expiryPolicyFactory = foosConfig.getExpiryPolicyFactory();
+  ExpiryPolicy expiryPolicy = expiryPolicyFactory.create(); <i class="conum" data-value="9"></i><b>(9)</b>
+  throw new AssertionError("Expected UnsupportedOperationException");
+} catch (UnsupportedOperationException e) {
+  // Expected
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Assume existing JSR-107 configuration code, which is store-by-value by default</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>that creates JSR-107 <code>Cache</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>If you were to get to the Ehcache <code>RuntimeConfiguration</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>you could verify that the template configured capacity is applied to the cache and returns <em>20</em> here.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The cache template will override the JSR-107 cache&#8217;s store-by-value config to store-by-ref since the <code>byRefTemplate</code><br>
+template that is used to create the cache is configured explicitly using <code>IdentityCopier</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Templates will also override JSR-107 config, see here a configuration with TTL 1 minute</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>used to create a cache where the template says TTL 2 minutes.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>And we can indeed verify that the template provided configuration has been applied, duration will be <em>2 minutes</em> and not <em>1</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>One drawback of this is that when getting at the <code>CompleteConfiguration</code>, you no longer have access to the factories from JSR-107.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As mentioned in step 5, in order to override store-by-value configuration of a JSR-107 cache using templates you<br>
+can explicitly configure the template using <code>IdentityCopier</code>. But the usage of <code>IdentityCopier</code> is not mandatory to get<br>
+a store-by-ref cache. You can use any custom copier implementation that does not perform any "copying" but returns<br>
+the exact same reference that gets passed into the copy methods. <code>IdentityCopier</code> is just one that we have provided to<br>
+make your life easier.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

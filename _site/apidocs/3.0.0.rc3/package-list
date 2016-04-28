@@ -1,0 +1,12 @@
+org.ehcache
+org.ehcache.config
+org.ehcache.config.builders
+org.ehcache.config.units
+org.ehcache.event
+org.ehcache.exceptions
+org.ehcache.expiry
+org.ehcache.spi
+org.ehcache.spi.copy
+org.ehcache.spi.loaderwriter
+org.ehcache.spi.serialization
+org.ehcache.spi.service

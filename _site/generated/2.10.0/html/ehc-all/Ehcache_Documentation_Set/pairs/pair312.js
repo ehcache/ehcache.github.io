@@ -1,0 +1,24 @@
+var pairs =
+{
+"troubleshooting":{"verify":1}
+,"verify":{"openjpa":1,"logs":1}
+,"openjpa":{"using":1}
+,"using":{"ehcache":1}
+,"ehcache":{"view":1}
+,"view":{"sql":1}
+,"sql":{"trace":1}
+,"trace":{"find":1}
+,"find":{"whether":1}
+,"whether":{"queries":1}
+,"queries":{"database":1}
+,"database":{"problems":1}
+,"problems":{"verify":1}
+,"logs":{"ehcache.xml":1}
+,"ehcache.xml":{"file":1}
+,"file":{"used":1,"found":1}
+,"used":{"(it":1,"default.)":1}
+,"(it":{"ehcache.xml":1}
+,"found":{"ehcache-failsafe.xml":1}
+,"ehcache-failsafe.xml":{"used":1}
+}
+;Search.control.loadWordPairs(pairs);
