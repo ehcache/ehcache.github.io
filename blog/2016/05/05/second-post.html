@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Second blog post</title>
+
+  <meta name="description" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et purus at quam ullamcorper volutpat. Nullam ut nunc at sem tincidunt elementum vel et sem...">
+
+  <link rel="canonical" href="http://www.ehcache.org/blog/2016/05/05/second-post.html">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/contribute.html"><i class="fa fa-code"></i> Contributing</a></li>
+                <li><a href="/resources/"><i class="fa fa-external-link-square"></i> External Resources</a></li>
+                <li><a href="http://blog.terracotta.org" target="_blank"><i class="fa fa-rss-square"></i> Terracotta Blog</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3" target="_blank"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk" target="_blank"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues" target="_blank"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC" target="_blank"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="/blog"><i class="fa fa-rss-square"></i> Ehcache Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Second blog post</h1>
+      </div>
+      <div>
+        <BR/>
+        <br/>
+
+
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+      
+      <div>
+        <img src="https://www.gravatar.com/avatar/9db6fc82f800e193111dd725dd3a7b52" class="bio-photo" alt="Mathieu Carbou bio photo"></a>
+      </div>
+      
+
+      
+      <div class="section">By <span class="fn"><a target="_blank" href="https://www.linkedin.com/in/mathieucarbou">Mathieu Carbou</a></span></div>
+      
+
+      <div class="section">
+        Software Engineer at Terracotta
+      </div>
+
+      <div class="section entry-date date published"><time datetime="2016-05-05T00:00:00+02:00"><i class="fa fa-calendar-o"></i> May 05, 2016</time></div>
+
+      
+
+      <div class="section entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Leave a comment</a></div>
+
+      
+      <div class="section">Follow <span class="fn"><a target="_blank" href="mathieucarbou">@mathieucarbou</a></span></div>
+      
+
+      <div class="section"><div class="social-share twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=ehcache,website&amp;text=Second%20blog%20post&amp;url=http://www.ehcache.org/blog/2016/05/05/second-post.html&amp;via=mathieucarbou" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</div>
+<div class="social-share facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.ehcache.org/blog/2016/05/05/second-post.html" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</div>
+<div class="social-share googleplus">
+  <a href="https://plus.google.com/share?url=http://www.ehcache.org/blog/2016/05/05/second-post.html" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</div>
+</div>
+
+      <div class="section">Tags: <a href="/tags/#ehcache" title="Pages tagged ehcache">ehcache</a>&nbsp;&bull;&nbsp;<a href="/tags/#website" title="Pages tagged website">website</a></div>
+
+    </div>
+
+    <!-- main area -->
+    <div class="col-xs-12 col-sm-9">
+
+      <header class="post-header">
+        <h1 class="post-title">Second blog post</h1>
+      </header>
+
+      <article class="post-content">
+
+        <div class="entry-wrapper">
+          <header class="entry-header">
+            <h2 class="entry-title">Checkout this super blog post also...</h2>
+          </header>
+
+          <div class="entry-content">
+            <div class="paragraph">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et purus at quam ullamcorper volutpat. Nullam ut nunc at sem tincidunt elementum vel et sem. Nam a nisl nec nisi tincidunt interdum in vel nulla. Maecenas ac elit vel felis pellentesque feugiat ut in quam. Quisque in dapibus enim, dapibus ultricies erat. Vivamus tristique varius magna at tincidunt. Ut venenatis dolor neque. Morbi pretium diam sed nulla consectetur maximus. Etiam sem turpis, ullamcorper sed arcu et, consectetur euismod est. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris pharetra lorem ante, at suscipit urna bibendum ut. In a condimentum turpis. Pellentesque fermentum ex eget venenatis imperdiet. Donec vehicula vel purus et malesuada. Proin nunc quam, dictum ut elit ac, porttitor pretium elit.</p>
+</div>
+<div class="paragraph">
+<p>Donec sit amet ultricies risus, eget molestie enim. Sed sodales purus at enim imperdiet porta. Aliquam efficitur nunc ut elit auctor tincidunt in quis urna. Nullam pretium eget quam et mollis. Integer posuere est non nulla tempor, in tristique nisi tempus. Duis sagittis metus quis nibh posuere convallis. Nunc eu dolor quis tortor pulvinar volutpat ac in felis. Nulla interdum est dolor, et imperdiet massa viverra ac. Nam eu luctus augue. Proin facilisis ornare mi vitae pulvinar. Ut rhoncus vitae sapien sed consectetur.</p>
+</div>
+<div class="paragraph">
+<p>Curabitur eget purus molestie est fringilla imperdiet. Etiam id velit vel leo porttitor rhoncus. Nullam tempus placerat metus quis rutrum. Mauris efficitur nisi eleifend elit mollis tristique. Curabitur condimentum turpis id fermentum semper. Mauris vitae neque at erat dictum ultricies. Nam posuere ante sed nisi suscipit, vel euismod est dictum. Nullam ornare felis vitae arcu porta, ut egestas ipsum suscipit. Donec maximus urna auctor, vehicula lacus id, faucibus neque. Proin rhoncus vel mauris eget commodo. Mauris suscipit, magna at porttitor efficitur, leo justo porttitor neque, sed venenatis lacus urna sed felis.</p>
+</div>
+<div class="paragraph">
+<p>Cras feugiat odio elit, et mollis lorem dignissim at. Nulla pretium sollicitudin blandit. Nullam ut dolor id tellus aliquet tincidunt a ac ante. Praesent ornare consectetur ipsum, quis imperdiet nisl fringilla facilisis. Nullam vel laoreet urna. Maecenas laoreet interdum leo, sed placerat nisl ornare id. Morbi pharetra urna pretium, dapibus metus at, auctor felis. Phasellus quis lacinia tortor.</p>
+</div>
+
+            
+            <div id="disqus_thread"></div>
+            
+          </div>
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ehcache'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+
+          <li>
+            <a href="/feed.xml" title="Atom/RSS Feed">
+              <i class="fa fa-rss-square"></i> Atom/RSS Feed
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/resources/"><i class="fa fa-external-link-square"></i> Resources</a>
+      <br/>
+      <a href="/blog/"><i class="fa fa-rss-square"></i> Ehcache Blog</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>
