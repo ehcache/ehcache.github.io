@@ -150,6 +150,7 @@
 
         Advanced topics:
         <ul class="nav">
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
@@ -379,6 +380,81 @@ You can also use the <code>CachingProvider.getCacheManager()</code> method that 
 </td>
 </tr>
 </table>
+</div>
+<div class="sect3">
+<h4 id="control-jsr-107-mbeans-from-xml"><a class="anchor" href="#control-jsr-107-mbeans-from-xml"></a>Control JSR-107 MBeans from XML</h4>
+<div class="paragraph">
+<p>When using Ehcache XML, you may want to enable management and / or statistics MBeans for JSR-107 caches.<br>
+This is giving you control over the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>javax.cache.configuration.CompleteConfiguration.isStatisticsEnabled</code></p>
+</li>
+<li>
+<p><code>javax.cache.configuration.CompleteConfiguration.isManagementEnabled</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can do this at two different levels:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;config
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.ehcache.org/v3'
+    xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
+    xsi:schemaLocation="http://www.ehcache.org/v3 ../../../../../../../xml/src/main/resources/ehcache-core.xsd
+                        http://www.ehcache.org/v3/jsr107 ../../../../../main/resources/ehcache-107ext.xsd"&gt;
+
+  &lt;service&gt;
+    &lt;jsr107:defaults enable-management="true" enable-statistics="true"/&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;/service&gt;
+
+  &lt;cache alias="stringCache"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+    &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;2000&lt;/heap&gt;
+  &lt;/cache&gt;
+
+  &lt;cache alias="overrideCache"&gt;
+    &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+    &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;2000&lt;/heap&gt;
+    &lt;jsr107:mbeans enable-management="false" enable-statistics="false"/&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+  &lt;/cache&gt;
+
+  &lt;cache alias="overrideOneCache"&gt;
+    &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+    &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;2000&lt;/heap&gt;
+    &lt;jsr107:mbeans enable-statistics="false"/&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+  &lt;/cache&gt;
+&lt;/config&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Using the JSR-107 service extension, you can enable MBeans by default</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The cache <em>stringCache</em> will have both MBeans enabled, according to the service configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The cache <em>overrideCache</em> will have both MBeans disabled, overriding the service configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The cache <em>overrideOneCache</em> will have the statistics MBean disabled, while the management one remains enabled according to the service configuration</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect2">
