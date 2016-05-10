@@ -320,9 +320,8 @@ to use XML based configuration. See <a href="xml.html">the XML documentation</a>
 <pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;config
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.ehcache.org/v3'
-    xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
-    xsi:schemaLocation="http://www.ehcache.org/v3 ../../../../../../../xml/src/main/resources/ehcache-core.xsd
-                        http://www.ehcache.org/v3/jsr107 ../../../../../main/resources/ehcache-107ext.xsd"&gt;
+    xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd"&gt;
 
   &lt;cache alias="ready-cache"&gt;
     &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
@@ -406,8 +405,10 @@ This is giving you control over the following:</p>
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.ehcache.org/v3'
     xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
-    xsi:schemaLocation="http://www.ehcache.org/v3 ../../../../../../../xml/src/main/resources/ehcache-core.xsd
-                        http://www.ehcache.org/v3/jsr107 ../../../../../main/resources/ehcache-107ext.xsd"&gt;
+    xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd
+        http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd"&gt;
+
 
   &lt;service&gt;
     &lt;jsr107:defaults enable-management="true" enable-statistics="true"/&gt; <i class="conum" data-value="1"></i><b>(1)</b>
@@ -483,7 +484,10 @@ constraint. All that&#8217;s needed is adding a <code>jsr107</code> service in y
 <pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;config
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.ehcache.org/v3'
-    xmlns:jsr107='http://www.ehcache.org/v3/jsr107'&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
+    xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd
+        http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd"&gt; <i class="conum" data-value="1"></i><b>(1)</b>
 
   &lt;service&gt; <i class="conum" data-value="2"></i><b>(2)</b>
     &lt;jsr107:defaults default-template="tinyCache"&gt; <i class="conum" data-value="3"></i><b>(3)</b>
