@@ -174,19 +174,19 @@
 <h2 id="peeper-a-simple-message-board"><a class="anchor" href="#peeper-a-simple-message-board"></a>Peeper - a simple message board</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>demo</code> directory in the Ehcache 3.0 sources includes a sample applications with two (2)<br>
-implementations demonstrating Ehcache use.  Implemented as a simple<br>
-browser-based web service, the sample application, Peeper, displays any messages (<em>peeps</em>)<br>
-previously entered and accepts new peeps recording the peeps in a database.  The peeps<br>
-database, shared among implementations of the Peeper application, is located at<br>
-$HOME/ehcache-demo-peeper.mv.db.  This file may be safely erased while the application<br>
-is not running.  While running, information about the operation of Peeper application<br>
+<p>The <code>demo</code> directory in the Ehcache 3.0 sources includes a sample applications with two (2)
+implementations demonstrating Ehcache use.  Implemented as a simple
+browser-based web service, the sample application, Peeper, displays any messages (<em>peeps</em>)
+previously entered and accepts new peeps recording the peeps in a database.  The peeps
+database, shared among implementations of the Peeper application, is located at
+$HOME/ehcache-demo-peeper.mv.db.  This file may be safely erased while the application
+is not running.  While running, information about the operation of Peeper application
 (database access, cache access, etc.) is written to the console.</p>
 </div>
 <div class="paragraph">
-<p>While the sample application may be run, the application is <em>very</em> simplistic&#8201;&#8212;&#8201;the code<br>
-implementing the sample is the interesting bit. Running the sample application requires the<br>
-use of <a href="https://gradle.org/">Gradle</a>.  This sample may be accessed from GitHub by <em>cloning</em><br>
+<p>While the sample application may be run, the application is <em>very</em> simplistic&#8201;&#8212;&#8201;the code
+implementing the sample is the interesting bit. Running the sample application requires the
+use of <a href="https://gradle.org/">Gradle</a>.  This sample may be accessed from GitHub by <em>cloning</em>
 the Ehcache 3.0 git repository:</p>
 </div>
 <div class="listingblock">
@@ -198,8 +198,8 @@ git clone https://github.com/ehcache/ehcache3.git</code></pre>
 <div class="sect2">
 <h3 id="peeper-without-caching-00-nocache"><a class="anchor" href="#peeper-without-caching-00-nocache"></a>Peeper without Caching&#8201;&#8212;&#8201;00-NoCache</h3>
 <div class="paragraph">
-<p>The first sample, located in demos/00-NoCache, is a base Peeper application that<br>
-does <strong>not</strong> use caching.  Each peep is stored in the database and all peeps are read<br>
+<p>The first sample, located in demos/00-NoCache, is a base Peeper application that
+does <strong>not</strong> use caching.  Each peep is stored in the database and all peeps are read
 from the database to display the Peeper web page.  To run this implementation:</p>
 </div>
 <div class="listingblock">
@@ -209,8 +209,8 @@ from the database to display the Peeper web page.  To run this implementation:</
 </div>
 </div>
 <div class="paragraph">
-<p>This builds the necessary components, starts a <a href="http://eclipse.org/jetty/">Jetty</a> web service,<br>
-and displays the URL of the web server on the console.  The URL will be something like<br>
+<p>This builds the necessary components, starts a <a href="http://eclipse.org/jetty/">Jetty</a> web service,
+and displays the URL of the web server on the console.  The URL will be something like
 http://localhost:8080/ehcache-demos/00-NoCache/.</p>
 </div>
 <div class="paragraph">
@@ -237,11 +237,11 @@ http://localhost:8080/ehcache-demos/00-NoCache/.</p>
 <div class="sect2">
 <h3 id="peeper-with-cache-aside-caching-01-cacheaside"><a class="anchor" href="#peeper-with-cache-aside-caching-01-cacheaside"></a>Peeper with Cache-aside Caching&#8201;&#8212;&#8201;01-CacheAside</h3>
 <div class="paragraph">
-<p>The second sample, located in demos/01-CacheAside, is a version of the Peeper application<br>
-that makes use of Ehcache.  As each peep is being read from the database (for display in the web<br>
-page), it is written to an Ehcache instance.  If the Peeper web page is refreshed<br>
-(without adding a new peep) or a new Peeper client connects, the peeps are read from<br>
-the cache (instead of the database) to form the web page.  If a new peep is posted,<br>
+<p>The second sample, located in demos/01-CacheAside, is a version of the Peeper application
+that makes use of Ehcache.  As each peep is being read from the database (for display in the web
+page), it is written to an Ehcache instance.  If the Peeper web page is refreshed
+(without adding a new peep) or a new Peeper client connects, the peeps are read from
+the cache (instead of the database) to form the web page.  If a new peep is posted,
 the cache is cleared.  To run this implementation:</p>
 </div>
 <div class="listingblock">
@@ -251,8 +251,8 @@ the cache is cleared.  To run this implementation:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This builds the necessary components, starts a <a href="http://eclipse.org/jetty/">Jetty</a> web service,<br>
-and displays the URL of the web server on the console.  The URL will be something like<br>
+<p>This builds the necessary components, starts a <a href="http://eclipse.org/jetty/">Jetty</a> web service,
+and displays the URL of the web server on the console.  The URL will be something like
 http://localhost:8080/ehcache-demos/01-CacheAside/.</p>
 </div>
 <div class="paragraph">

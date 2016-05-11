@@ -174,18 +174,18 @@
 <h2 id="intro"><a class="anchor" href="#intro"></a>Intro</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Managed objects like caches, cache managers and stores are registered into a <code>org.ehcache.management.ManagementRegistryService</code><br>
+<p>Managed objects like caches, cache managers and stores are registered into a <code>org.ehcache.management.ManagementRegistryService</code>
 instance.</p>
 </div>
 <div class="paragraph">
-<p>A <code>ManagementRegistry</code> implementation has to understand the registered object and provide management and monitoring<br>
+<p>A <code>ManagementRegistry</code> implementation has to understand the registered object and provide management and monitoring
 capabilities for them, including the capabilities' context.</p>
 </div>
 <div class="paragraph">
 <p>Given a capability and a context, statistics can be collected or calls can be made.</p>
 </div>
 <div class="paragraph">
-<p>The current <code>ManagementRegistry</code> implementation provides minimal support for <code>Ehcache</code> instances, providing<br>
+<p>The current <code>ManagementRegistry</code> implementation provides minimal support for <code>Ehcache</code> instances, providing
 a minimal set of statistics and actions via a couple of capabilities.</p>
 </div>
 </div>
@@ -194,8 +194,8 @@ a minimal set of statistics and actions via a couple of capabilities.</p>
 <h2 id="making-use-of-the-code-managementregistry-code"><a class="anchor" href="#making-use-of-the-code-managementregistry-code"></a>Making use of the <code>ManagementRegistry</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>By default, a <code>ManagementRegistry</code> is automatically discovered and enabled, but can only be accessed by ehcache<br>
-internal services. If you wish to make use of it, you should create your own instance and pass it to the<br>
+<p>By default, a <code>ManagementRegistry</code> is automatically discovered and enabled, but can only be accessed by ehcache
+internal services. If you wish to make use of it, you should create your own instance and pass it to the
 cache manager builder as a service:</p>
 </div>
 <div class="listingblock">
@@ -274,9 +274,9 @@ cacheManager.close();</code></pre>
 <h2 id="capabilities-and-contexts"><a class="anchor" href="#capabilities-and-contexts"></a>Capabilities and contexts</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Capabilities are metadata of what the managed objects are capable of: a collection of statistic that can be queried<br>
-and/or remote actions that can be called.<br>
-Each capability requires a context to run within. For instance, cache-specific statistics require a cache manager name<br>
+<p>Capabilities are metadata of what the managed objects are capable of: a collection of statistic that can be queried
+and/or remote actions that can be called.
+Each capability requires a context to run within. For instance, cache-specific statistics require a cache manager name
 and a cache name to uniquely identify the cache on which you want to query stats or call an action.</p>
 </div>
 <div class="listingblock">
@@ -345,7 +345,7 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>The second attribute of this context is the cache name. With both attributes, the capability can uniquely refer to<br>
+<td>The second attribute of this context is the cache name. With both attributes, the capability can uniquely refer to
 a unique managed object.</td>
 </tr>
 <tr>
@@ -363,7 +363,7 @@ a unique managed object.</td>
 </table>
 </div>
 <div class="paragraph">
-<p>The context containers give you all the attributes of all existing contexts. You can match the values returned by a<br>
+<p>The context containers give you all the attributes of all existing contexts. You can match the values returned by a
 context container to a capability&#8217;s context by matching their respective names.</p>
 </div>
 </div>
@@ -372,8 +372,8 @@ context container to a capability&#8217;s context by matching their respective n
 <h2 id="actions"><a class="anchor" href="#actions"></a>Actions</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There are two forms of capabilities: statistics and action ones. The statistic ones offer a set of predefined<br>
-statistics that can be queried at will, while the action ones offer a set of actions that can be taken upon<br>
+<p>There are two forms of capabilities: statistics and action ones. The statistic ones offer a set of predefined
+statistics that can be queried at will, while the action ones offer a set of actions that can be taken upon
 a managed object. Examples of actions could be: clear caches, get their config or modify a config setting.</p>
 </div>
 <div class="listingblock">
@@ -411,7 +411,7 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Call the 'clear' action on the managed cache. Refer to the descriptors of the provider to get the exact list of<br>
+<td>Call the 'clear' action on the managed cache. Refer to the descriptors of the provider to get the exact list of
 action names and their required parameters.</td>
 </tr>
 <tr>
@@ -430,7 +430,7 @@ action names and their required parameters.</td>
 <h2 id="managing-multiple-cache-managers"><a class="anchor" href="#managing-multiple-cache-managers"></a>Managing multiple cache managers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The default <code>ManagementRegistry</code> instance that is created when none are manually registered only manages a single cache<br>
+<p>The default <code>ManagementRegistry</code> instance that is created when none are manually registered only manages a single cache
 manager by default, but sometimes you may want one <code>ManagementRegistry</code> to manage multiple cache managers.</p>
 </div>
 <div class="paragraph">

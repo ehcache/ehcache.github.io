@@ -174,18 +174,18 @@
 <h2 id="what-are-user-managed-caches-and-what-do-they-offer"><a class="anchor" href="#what-are-user-managed-caches-and-what-do-they-offer"></a>What are user managed caches and what do they offer?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>User managed caches is a new concept introduced in Ehcache 3.<br>
-It offers the ability to create caches that are not managed by a <code>CacheManager</code>.<br>
+<p>User managed caches is a new concept introduced in Ehcache 3.
+It offers the ability to create caches that are not managed by a <code>CacheManager</code>.
 Hence the name of <em>user managed</em> caches.</p>
 </div>
 <div class="paragraph">
-<p>The objective of this feature is to satisfy cache use cases where the added complexity of a cache manager is of no added value.<br>
+<p>The objective of this feature is to satisfy cache use cases where the added complexity of a cache manager is of no added value.
 Ideas are: method local caches, thread local caches or any other place where the lifecycle of the cache is shorter than the application lifecycle.</p>
 </div>
 <div class="sect2">
 <h3 id="limitations"><a class="anchor" href="#limitations"></a>Limitations</h3>
 <div class="paragraph">
-<p>As there is no longer a cache manager offering up services, the main limitation of user managed caches is that the user has to configure all required services by hand.<br>
+<p>As there is no longer a cache manager offering up services, the main limitation of user managed caches is that the user has to configure all required services by hand.
 Of course, if you find yourself requiring plenty of services, maybe the cache manager is a better option!</p>
 </div>
 </div>
@@ -309,7 +309,7 @@ userManagedCache.close(); <i class="conum" data-value="4"></i><b>(4)</b></code><
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>In the same vein, a <code>UserManagedCache</code> requires you to <code>UserManagedCache.close()</code> it explicitly. If you would also use<br>
+<td>In the same vein, a <code>UserManagedCache</code> requires you to <code>UserManagedCache.close()</code> it explicitly. If you would also use
 managed caches simultaneously, the <code>CacheManager.close()</code> operation would not impact the user managed cache(s).</td>
 </tr>
 </table>
@@ -469,7 +469,7 @@ cache.close();</code></pre>
 </table>
 </div>
 <div class="paragraph">
-<p>By default, the heap tier stores by reference, unless a copier is configured. The other tiers must use a serializer<br>
+<p>By default, the heap tier stores by reference, unless a copier is configured. The other tiers must use a serializer
 to copy the keys and values.</p>
 </div>
 </div>
@@ -518,9 +518,9 @@ cache.close();</code></pre>
 </table>
 </div>
 <div class="paragraph">
-<p>In this case, the heap tier is storing keys by reference since no key copier has been configured, and it is storing<br>
-values by value since a serializing copier has been configured. Such copier is going to use the configured<br>
-serializer to perform the necessary copies.<br>
+<p>In this case, the heap tier is storing keys by reference since no key copier has been configured, and it is storing
+values by value since a serializing copier has been configured. Such copier is going to use the configured
+serializer to perform the necessary copies.
 The off-heap tier will use both the key serializer as well as the value one to make its copies.</p>
 </div>
 </div>
@@ -543,7 +543,7 @@ cache.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you wish to use a cache in read-through/write-through caching pattern, you&#8217;ll have to implement<br>
+<td>If you wish to use a cache in read-through/write-through caching pattern, you&#8217;ll have to implement
 <code>CacheLoaderWriter</code> and register it.</td>
 </tr>
 </table>
@@ -571,7 +571,7 @@ cache.close(); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If you want to hint the eviction algorithm to advise against the eviction of some mappings, you have to<br>
+<td>If you want to hint the eviction algorithm to advise against the eviction of some mappings, you have to
 configure an instance of <code>EvictionAdvisor</code>.</td>
 </tr>
 </table>
@@ -601,7 +601,7 @@ cache.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Provide ExecutorService for ordered and unordered event delivery. Note, it is required to provide either a<br>
+<td>Provide ExecutorService for ordered and unordered event delivery. Note, it is required to provide either a
 CacheEventDispatcher or ordered/unOrdered ExecutorService for proper event delivery.</td>
 </tr>
 <tr>
@@ -634,8 +634,8 @@ cache.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The sizing mechanism can be configured along two axis: The first one specifies the maximum number<br>
-of objects to traverse while walking the object graph, the second defines the maximum size of a<br>
+<td>The sizing mechanism can be configured along two axis: The first one specifies the maximum number
+of objects to traverse while walking the object graph, the second defines the maximum size of a
 single object.</td>
 </tr>
 <tr>

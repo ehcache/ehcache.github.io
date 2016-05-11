@@ -176,8 +176,8 @@
 <p>While Ehcache is a Java cache, it cannot always store its mapping as Java objects.</p>
 </div>
 <div class="paragraph">
-<p>The <a href="caching-concepts.html#storage-tiers">on-heap store</a> is capable of storing cached objects either by reference (where the given key and value references<br>
-are stored) or by value (where a copy of the given key and value are made and those copies are then stored).<br>
+<p>The <a href="caching-concepts.html#storage-tiers">on-heap store</a> is capable of storing cached objects either by reference (where the given key and value references
+are stored) or by value (where a copy of the given key and value are made and those copies are then stored).
 All other stores are only capable of storing a byte representation of the key/value pair.</p>
 </div>
 <div class="paragraph">
@@ -189,11 +189,11 @@ All other stores are only capable of storing a byte representation of the key/va
 <h2 id="serializers"><a class="anchor" href="#serializers"></a>Serializers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>All stores but the on-heap one need some form of serialization/deserialization of objects to be able to store and retrieve mappings.<br>
+<p>All stores but the on-heap one need some form of serialization/deserialization of objects to be able to store and retrieve mappings.
 This is because they cannot internally store plain java objects but only binary representations of them.</p>
 </div>
 <div class="paragraph">
-<p><code>Serializer</code> is the Ehcache abstraction solving this: every cache that has at least one store that<br>
+<p><code>Serializer</code> is the Ehcache abstraction solving this: every cache that has at least one store that
 cannot store by reference is going to use a pair of <code>Serializer</code> instances, one for the key and another one for the value.</p>
 </div>
 <div class="paragraph">
@@ -244,8 +244,8 @@ cannot store by reference is going to use a pair of <code>Serializer</code> inst
 <p>If a serializer is configured directly at the cache level, it will be used, ignoring any cache manager level configuration.</p>
 </div>
 <div class="paragraph">
-<p>If a serializer is configured at the cache manager level, upon initialization, a cache with no specifically configured serializer will<br>
-search through its cache manager&#8217;s registered list of serializers and try to find one that directly matches the cache&#8217;s key or value type.<br>
+<p>If a serializer is configured at the cache manager level, upon initialization, a cache with no specifically configured serializer will
+search through its cache manager&#8217;s registered list of serializers and try to find one that directly matches the cache&#8217;s key or value type.
 If such search fails, all the registered serializers will be tried in the added order to find one that handles compatible types.</p>
 </div>
 <div class="paragraph">
@@ -315,19 +315,19 @@ Given the above, it is recommended to limit <code>Serializer</code> registration
 <div class="sect2">
 <h3 id="lifecycle-instances-vs-class-names"><a class="anchor" href="#lifecycle-instances-vs-class-names"></a>Lifecycle: instances vs. class names</h3>
 <div class="paragraph">
-<p>When a <code>Serializer</code> is configured by providing an <em>instance</em>, it is up to the provider of that instance to manage its lifecycle.<br>
+<p>When a <code>Serializer</code> is configured by providing an <em>instance</em>, it is up to the provider of that instance to manage its lifecycle.
 It will need to dispose of any resource the serializer might hold upon and/or persisting and reloading the serializer&#8217;s state.</p>
 </div>
 <div class="paragraph">
-<p>When a <code>Serializer</code> is configured by providing a <em>class name</em> either at the cache or cache manager level, since Ehcache is responsible for creating the<br>
-instance, it also is responsible for disposing of it.<br>
+<p>When a <code>Serializer</code> is configured by providing a <em>class name</em> either at the cache or cache manager level, since Ehcache is responsible for creating the
+instance, it also is responsible for disposing of it.
 If the <code>Serializer</code> implements <code>java.io.Closeable</code> then <code>close()</code> will be called when the cache is closed and the <code>Serializer</code> no longer needed.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="writing-your-own-serializer"><a class="anchor" href="#writing-your-own-serializer"></a>Writing your own serializer</h3>
 <div class="paragraph">
-<p><code>Serializer</code> defines a very strict contract.<br>
+<p><code>Serializer</code> defines a very strict contract.
 So if you&#8217;re planning to write your own implementation you have to keep in mind that the class of the serialized object MUST be retained after deserialization, that is:</p>
 </div>
 <div class="listingblock">
@@ -336,7 +336,7 @@ So if you&#8217;re planning to write your own implementation you have to keep in
 </div>
 </div>
 <div class="paragraph">
-<p>This is especially important when you are planning to write a serializer for an abstract type,<br>
+<p>This is especially important when you are planning to write a serializer for an abstract type,
 e.g. a serializer of type <code>com.pany.MyInterface</code> should</p>
 </div>
 <div class="ulist">
@@ -427,20 +427,20 @@ public interface Serializer&lt;T&gt; {
 <p>As the javadoc states, there are some constructor rules, see the <a href="#persistent-vs-transient-caches">section on persistent and transient caches</a> for that.</p>
 </div>
 <div class="paragraph">
-<p>You can optionally implement <code>java.io.Closeable</code>. If you do, Ehcache will call <code>close()</code> when a cache using such serializer gets disposed of, but <strong>only if</strong><br>
+<p>You can optionally implement <code>java.io.Closeable</code>. If you do, Ehcache will call <code>close()</code> when a cache using such serializer gets disposed of, but <strong>only if</strong>
 Ehcache instantiated the serializer itself.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="classloaders"><a class="anchor" href="#classloaders"></a>ClassLoaders</h3>
 <div class="paragraph">
-<p>When Ehcache instantiates a serializer itself, it will pass it a <code>ClassLoader</code> via the constructor. Such class loader must be used to access the classes<br>
+<p>When Ehcache instantiates a serializer itself, it will pass it a <code>ClassLoader</code> via the constructor. Such class loader must be used to access the classes
 of the serialized types as they might not be available in the current class loader</p>
 </div>
 <div class="sect3">
 <h4 id="persistent-vs-transient-caches"><a class="anchor" href="#persistent-vs-transient-caches"></a>Persistent vs. transient caches</h4>
 <div class="paragraph">
-<p>When configured on a persistent cache, serializers may need to persist and restore their state across restarts, so you have to implement a<br>
+<p>When configured on a persistent cache, serializers may need to persist and restore their state across restarts, so you have to implement a
 constructor with the following signature:</p>
 </div>
 <div class="listingblock">
@@ -453,14 +453,14 @@ constructor with the following signature:</p>
 <p>otherwise persistent caches won&#8217;t be able to use your serializer.</p>
 </div>
 <div class="paragraph">
-<p>Attempting to configure a serializer that lacks such constructor on a persistent cache using either of<br>
-<code>CacheConfigurationBuilder.withKeySerializer(Class&lt;? extends Serializer&lt;K&gt;&gt; keySerializerClass)</code> or<br>
-<code>CacheConfigurationBuilder.withValueSerializer(Class&lt;? extends Serializer&lt;V&gt;&gt; valueSerializerClass)</code><br>
+<p>Attempting to configure a serializer that lacks such constructor on a persistent cache using either of
+<code>CacheConfigurationBuilder.withKeySerializer(Class&lt;? extends Serializer&lt;K&gt;&gt; keySerializerClass)</code> or
+<code>CacheConfigurationBuilder.withValueSerializer(Class&lt;? extends Serializer&lt;V&gt;&gt; valueSerializerClass)</code>
 will be sanctioned with an exception upon cache initialization.</p>
 </div>
 <div class="paragraph">
-<p>Configuring a serializer that lacks such constructor by instance on a persistent cache using either of<br>
-<code>CacheConfigurationBuilder.withKeySerializer(Serializer keySerializer)</code> or <code>CacheConfigurationBuilder.withValueSerializer(Serializer valueSerializer)</code><br>
+<p>Configuring a serializer that lacks such constructor by instance on a persistent cache using either of
+<code>CacheConfigurationBuilder.withKeySerializer(Serializer keySerializer)</code> or <code>CacheConfigurationBuilder.withValueSerializer(Serializer valueSerializer)</code>
 will work, but the responsibility of persisting and restoring the serializer&#8217;s state across restarts lies on you.</p>
 </div>
 <div class="paragraph">
@@ -473,9 +473,9 @@ will work, but the responsibility of persisting and restoring the serializer&#82
 </div>
 </div>
 <div class="paragraph">
-<p>Attempting to configure a serializer that lacks such constructor on a transient cache using either of<br>
-<code>CacheConfigurationBuilder.withKeySerializer(Class&lt;? extends Serializer&lt;K&gt;&gt; keySerializerClass)</code> or<br>
-<code>CacheConfigurationBuilder.withValueSerializer(Class&lt;? extends Serializer&lt;V&gt;&gt; valueSerializerClass)</code><br>
+<p>Attempting to configure a serializer that lacks such constructor on a transient cache using either of
+<code>CacheConfigurationBuilder.withKeySerializer(Class&lt;? extends Serializer&lt;K&gt;&gt; keySerializerClass)</code> or
+<code>CacheConfigurationBuilder.withValueSerializer(Class&lt;? extends Serializer&lt;V&gt;&gt; valueSerializerClass)</code>
 will be sanctioned with an exception upon cache initialization.</p>
 </div>
 <div class="paragraph">
@@ -489,15 +489,15 @@ will be sanctioned with an exception upon cache initialization.</p>
 <h2 id="copiers"><a class="anchor" href="#copiers"></a>Copiers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As the <a href="caching-concepts.html#storage-tiers">on-heap store</a> is capable of storing plain java objects as such,<br>
-it is not necessary to rely on a serialization mechanism to copy keys and values in order to provide <em>by value</em> semantics.<br>
+<p>As the <a href="caching-concepts.html#storage-tiers">on-heap store</a> is capable of storing plain java objects as such,
+it is not necessary to rely on a serialization mechanism to copy keys and values in order to provide <em>by value</em> semantics.
 Other forms of <em>copy</em> mechanism can be a lot more performant, such as using a <em>copy constructor</em> but it requires custom code to be able to copy user classes.</p>
 </div>
 <div class="paragraph">
 <p><code>Copier</code> is the Ehcache abstraction solving this: it is specific to the on-heap store.</p>
 </div>
 <div class="paragraph">
-<p>By default, the on-heap mappings are stored <em>by reference</em>. The way to store them <em>by value</em> is to configure copier(s)<br>
+<p>By default, the on-heap mappings are stored <em>by reference</em>. The way to store them <em>by value</em> is to configure copier(s)
 on the cache for the key, value or both.</p>
 </div>
 <div class="paragraph">
@@ -548,8 +548,8 @@ on the cache for the key, value or both.</p>
 <p>If a copier is configured directly at the cache level, it will be used, ignoring any cache manager level configuration.</p>
 </div>
 <div class="paragraph">
-<p>If a copier is configured at the cache manager level, upon initialization, a cache with no specifically configured copier will<br>
-search through its cache manager&#8217;s registered list of copiers and try to find one that directly matches the cache&#8217;s key or value type. If such<br>
+<p>If a copier is configured at the cache manager level, upon initialization, a cache with no specifically configured copier will
+search through its cache manager&#8217;s registered list of copiers and try to find one that directly matches the cache&#8217;s key or value type. If such
 search fails, all the registered copiers will be tried in the added order to find one that handles compatible types.</p>
 </div>
 <div class="paragraph">
@@ -582,19 +582,19 @@ Given the above, it is recommended to limit <code>Copier</code> registration to 
 <div class="sect2">
 <h3 id="bundled-implementations-2"><a class="anchor" href="#bundled-implementations-2"></a>Bundled implementations</h3>
 <div class="paragraph">
-<p>A <code>SerializingCopier</code> class exists in case you want to configure store <em>by value</em> on-heap using the configured (or default) serializer.<br>
+<p>A <code>SerializingCopier</code> class exists in case you want to configure store <em>by value</em> on-heap using the configured (or default) serializer.
 Note that this implementation performs a serialization / deserialization on each read or write operation.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="lifecycle-instances-vs-class-names-2"><a class="anchor" href="#lifecycle-instances-vs-class-names-2"></a>Lifecycle: instances vs class names</h3>
 <div class="paragraph">
-<p>When a <code>Copier</code> is configured by providing an <em>instance</em>, it is up to the provider of that instance to manage its lifecycle.<br>
+<p>When a <code>Copier</code> is configured by providing an <em>instance</em>, it is up to the provider of that instance to manage its lifecycle.
 It will have dispose of any resource the copier might hold upon.</p>
 </div>
 <div class="paragraph">
-<p>When a <code>Copier</code> is configured by providing a <em>class name</em> either at the cache or cache manager level, since Ehcache is responsible for creating the<br>
-instance, it also is responsible for disposing of it.<br>
+<p>When a <code>Copier</code> is configured by providing a <em>class name</em> either at the cache or cache manager level, since Ehcache is responsible for creating the
+instance, it also is responsible for disposing of it.
 If the <code>Copier</code> implements <code>java.io.Closeable</code> then <code>close()</code> will be called when the cache is closed and the <code>Copier</code> no longer needed.</p>
 </div>
 </div>
@@ -656,7 +656,7 @@ public interface Copier&lt;T&gt; {
 <p>The separation between copying for read and for write can be useful when you want to store a lighter version of your objects into the cache.</p>
 </div>
 <div class="paragraph">
-<p>Alternatively, you can extend from <code>org.ehcache.impl.copy.ReadWriteCopier</code> if copying for read and copying for write implementations<br>
+<p>Alternatively, you can extend from <code>org.ehcache.impl.copy.ReadWriteCopier</code> if copying for read and copying for write implementations
 are identical and only have to implement</p>
 </div>
 <div class="ulist">

@@ -177,7 +177,7 @@
 <p>Cache listeners allow implementers to register callback methods that will be executed when a cache event occurs.</p>
 </div>
 <div class="paragraph">
-<p>Listeners are registered at the cache level - and therefore only receive events for caches that they have been<br>
+<p>Listeners are registered at the cache level - and therefore only receive events for caches that they have been
 registered with.</p>
 </div>
 <div class="listingblock">
@@ -227,7 +227,7 @@ cache.remove("Hello"); <i class="conum" data-value="6"></i><b>(6)</b></code></pr
 </table>
 </div>
 <div class="paragraph">
-<p>Created, updated, and removed events are triggered by user execution of mutative methods as outlined in the table below.<br>
+<p>Created, updated, and removed events are triggered by user execution of mutative methods as outlined in the table below.
 Eviction and expiration events can be triggered by both internal processes and by user execution of methods targeting both related and unrelated keys within the cache.</p>
 </div>
 <table class="tableblock frame-topbot grid-all spread">
@@ -360,12 +360,12 @@ cache.remove(1L);</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Register it on the <code>RuntimeConfiguration</code>, indicating the delivery mode and events of interest.<br>
+<td>Register it on the <code>RuntimeConfiguration</code>, indicating the delivery mode and events of interest.
 The following <code>put()</code> and <code>remove()</code> cache calls will make the listener receive events.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Unregister the previously registered <code>CacheEventListener</code> instance.<br>
+<td>Unregister the previously registered <code>CacheEventListener</code> instance.
 The following <code>put()</code> and <code>remove()</code> cache calls will have no effect on the listener anymore.</td>
 </tr>
 </table>

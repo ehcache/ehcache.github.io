@@ -174,8 +174,8 @@
 <h2 id="getting-started-with-ehcache-3-0-jsr-107"><a class="anchor" href="#getting-started-with-ehcache-3-0-jsr-107"></a>Getting started with Ehcache 3.0 &amp; JSR-107</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There is nothing special for you to do to use Ehcache 3.0 as the caching provider for your application: add the<br>
-<code>ehcache-3.0.0.jar</code> to your application&#8217;s classpath (possibly removing the previous provider&#8217;s jar) and you are ready to<br>
+<p>There is nothing special for you to do to use Ehcache 3.0 as the caching provider for your application: add the
+<code>ehcache-3.0.0.jar</code> to your application&#8217;s classpath (possibly removing the previous provider&#8217;s jar) and you are ready to
 go:</p>
 </div>
 <div class="listingblock">
@@ -188,7 +188,7 @@ CacheManager cacheManager = provider.getCacheManager(); <i class="conum" data-va
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Retrieves the default <code>CachingProvider</code>, this should be <code>org.ehcache.jsr107.EhcacheCachingProvider</code>.<br>
+<td>Retrieves the default <code>CachingProvider</code>, this should be <code>org.ehcache.jsr107.EhcacheCachingProvider</code>.
 You can also force use of <code>org.ehcache.jsr107.EhcacheCachingProvider</code> by using the <code>Caching.getCachingProvider(String)</code> static method instead.</td>
 </tr>
 <tr>
@@ -217,7 +217,7 @@ See <a href="http://www.ehcache.org/#using_jsr107_api">the section on using Ehca
 <div class="sect2">
 <h3 id="starting-from-jsr-107-created-caches"><a class="anchor" href="#starting-from-jsr-107-created-caches"></a>Starting from JSR-107 created caches</h3>
 <div class="paragraph">
-<p>When you create a <code>Cache</code> on a <code>CacheManager</code> using a <code>MutableConfiguration</code> - that is you only use JSR-107 types -<br>
+<p>When you create a <code>Cache</code> on a <code>CacheManager</code> using a <code>MutableConfiguration</code> - that is you only use JSR-107 types -
 you can still get to the underlying Ehcache <code>RuntimeCacheConfiguration</code>:</p>
 </div>
 <div class="listingblock">
@@ -257,7 +257,7 @@ CacheRuntimeConfiguration&lt;Long, String&gt; runtimeConfiguration = eh107Config
 <div class="sect2">
 <h3 id="building-the-configuration-using-ehcache-apis"><a class="anchor" href="#building-the-configuration-using-ehcache-apis"></a>Building the configuration using Ehcache APIs</h3>
 <div class="paragraph">
-<p>You can also create a JSR-107 <code>Cache</code> using an Ehcache <code>CacheConfiguration</code>.<br>
+<p>You can also create a JSR-107 <code>Cache</code> using an Ehcache <code>CacheConfiguration</code>.
 When using this mechanism, no JSR-107 <code>CompleteConfiguration</code> is used and so you cannot get to one.</p>
 </div>
 <div class="listingblock">
@@ -309,7 +309,7 @@ try {
 <div class="sect2">
 <h3 id="getting-jsr-107-caches-configured-through-ehcache-xml"><a class="anchor" href="#getting-jsr-107-caches-configured-through-ehcache-xml"></a>Getting JSR-107 caches configured through Ehcache XML</h3>
 <div class="paragraph">
-<p>Another way to have the full Ehcache configuration options on your caches while having no code dependency on the provider is<br>
+<p>Another way to have the full Ehcache configuration options on your caches while having no code dependency on the provider is
 to use XML based configuration. See <a href="xml.html">the XML documentation</a> for more details on configuring `Cache`s in XML.</p>
 </div>
 <div class="paragraph">
@@ -356,7 +356,7 @@ Cache&lt;Long, Product&gt; readyCache = manager.getCache("ready-cache", Long.cla
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>the second argument being the <code>ClassLoader</code> to use to load user-types if needed; i.e. <code>Class</code> instances that are<br>
+<td>the second argument being the <code>ClassLoader</code> to use to load user-types if needed; i.e. <code>Class</code> instances that are
 stored in the <code>Cache</code> managed by our <code>CacheManager</code>.</td>
 </tr>
 <tr>
@@ -372,9 +372,9 @@ stored in the <code>Cache</code> managed by our <code>CacheManager</code>.</td>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You can also use the <code>CachingProvider.getCacheManager()</code> method that takes no arguments instead.<br>
-      The <code>URI</code> and <code>ClassLoader</code> used to configure the <code>CacheManager</code> will then use the<br>
-      vendor specific values returned by <code>CachingProvider.getDefaultURI</code> and <code>.getDefaultClassLoader</code> respectively.<br>
+You can also use the <code>CachingProvider.getCacheManager()</code> method that takes no arguments instead.
+      The <code>URI</code> and <code>ClassLoader</code> used to configure the <code>CacheManager</code> will then use the
+      vendor specific values returned by <code>CachingProvider.getDefaultURI</code> and <code>.getDefaultClassLoader</code> respectively.
       Be aware that these are not entirely specified for Ehcache 3.0 and may change in future releases!
 </td>
 </tr>
@@ -383,7 +383,7 @@ You can also use the <code>CachingProvider.getCacheManager()</code> method that 
 <div class="sect3">
 <h4 id="control-jsr-107-mbeans-from-xml"><a class="anchor" href="#control-jsr-107-mbeans-from-xml"></a>Control JSR-107 MBeans from XML</h4>
 <div class="paragraph">
-<p>When using Ehcache XML, you may want to enable management and / or statistics MBeans for JSR-107 caches.<br>
+<p>When using Ehcache XML, you may want to enable management and / or statistics MBeans for JSR-107 caches.
 This is giving you control over the following:</p>
 </div>
 <div class="ulist">
@@ -461,8 +461,8 @@ This is giving you control over the following:</p>
 <div class="sect2">
 <h3 id="supplement-jsr-107-configurations"><a class="anchor" href="#supplement-jsr-107-configurations"></a>Supplement JSR-107&#8217;s configurations</h3>
 <div class="paragraph">
-<p>As of Ehcache 3.0, you can also create <code>cache-templates</code>.  See the<br>
-<a href="xml.html#cache-template-elements">Cache Templates</a> section of the XML Documentation for more details. The Ehcache 3.0<br>
+<p>As of Ehcache 3.0, you can also create <code>cache-templates</code>.  See the
+<a href="xml.html#cache-template-elements">Cache Templates</a> section of the XML Documentation for more details. The Ehcache 3.0
 JSR-107 Caching Provider comes with an extension to the regular XML configuration so you can:</p>
 </div>
 <div class="olist arabic">
@@ -476,7 +476,7 @@ JSR-107 Caching Provider comes with an extension to the regular XML configuratio
 </ol>
 </div>
 <div class="paragraph">
-<p>This feature is particularly useful to configure <code>Cache</code> beyond the JSR-107 specification, for example, giving <code>Cache</code> a capacity<br>
+<p>This feature is particularly useful to configure <code>Cache</code> beyond the JSR-107 specification, for example, giving <code>Cache</code> a capacity
 constraint. All that&#8217;s needed is adding a <code>jsr107</code> service in your XML configuration file:</p>
 </div>
 <div class="listingblock">
@@ -550,15 +550,15 @@ constraint. All that&#8217;s needed is adding a <code>jsr107</code> service in y
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The element takes an optional attribute <code>default-template</code>, which references the <code>cache-template</code> to use for all<br>
-<code>javax.cache.Cache</code> created by the application at runtime using <code>javax.cache.CacheManager.createCache</code>. In<br>
-this example, the default <code>cache-template</code> used will be <code>tinyCache</code>, meaning that atop of their particular config,<br>
+<td>The element takes an optional attribute <code>default-template</code>, which references the <code>cache-template</code> to use for all
+<code>javax.cache.Cache</code> created by the application at runtime using <code>javax.cache.CacheManager.createCache</code>. In
+this example, the default <code>cache-template</code> used will be <code>tinyCache</code>, meaning that atop of their particular config,
 programmatically created <code>Cache</code> instances will have their capacity constrained to 20 entries.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Nested within the <code>jsr107:defaults</code>, add specific <code>cache-templates</code> to use for given named <code>Cache</code>, e.g. when<br>
-creating the <code>Cache</code> named <code>foos</code> at runtime, Ehcache will enhance its config, giving it a capacity of 2000 entries,<br>
+<td>Nested within the <code>jsr107:defaults</code>, add specific <code>cache-templates</code> to use for given named <code>Cache</code>, e.g. when
+creating the <code>Cache</code> named <code>foos</code> at runtime, Ehcache will enhance its config, giving it a capacity of 2000 entries,
 as well as insuring both key and value types are <code>String</code>.</td>
 </tr>
 </table>
@@ -576,7 +576,7 @@ See <a href="xsds.html#jsr-107-extension">this xsd</a> for complete definition
 </table>
 </div>
 <div class="paragraph">
-<p>Using the above configuration, you can not only supplement but also override the configuration of JSR-107 created caches<br>
+<p>Using the above configuration, you can not only supplement but also override the configuration of JSR-107 created caches
 without modifying the application code.</p>
 </div>
 <div class="listingblock">
@@ -634,7 +634,7 @@ try {
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>The cache template will override the JSR-107 cache&#8217;s store-by-value config to store-by-ref since the <code>byRefTemplate</code><br>
+<td>The cache template will override the JSR-107 cache&#8217;s store-by-value config to store-by-ref since the <code>byRefTemplate</code>
 template that is used to create the cache is configured explicitly using <code>IdentityCopier</code>.</td>
 </tr>
 <tr>
@@ -662,10 +662,10 @@ template that is used to create the cache is configured explicitly using <code>I
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As mentioned in step 5, in order to override store-by-value configuration of a JSR-107 cache using templates you<br>
-can explicitly configure the template using <code>IdentityCopier</code>. But the usage of <code>IdentityCopier</code> is not mandatory to get<br>
-a store-by-ref cache. You can use any custom copier implementation that does not perform any "copying" but returns<br>
-the exact same reference that gets passed into the copy methods. <code>IdentityCopier</code> is just one that we have provided to<br>
+As mentioned in step 5, in order to override store-by-value configuration of a JSR-107 cache using templates you
+can explicitly configure the template using <code>IdentityCopier</code>. But the usage of <code>IdentityCopier</code> is not mandatory to get
+a store-by-ref cache. You can use any custom copier implementation that does not perform any "copying" but returns
+the exact same reference that gets passed into the copy methods. <code>IdentityCopier</code> is just one that we have provided to
 make your life easier.
 </td>
 </tr>
