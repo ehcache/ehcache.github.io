@@ -4,13 +4,860 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://www.ehcache.org/feed.xml" />
 <link rel="alternate" type="text/html" href="http://www.ehcache.org" />
-<updated>2016-05-11T16:05:53+02:00</updated>
+<updated>2016-05-12T18:37:13+02:00</updated>
 <id>http://www.ehcache.org/</id>
 <author>
   <name>Ehcache</name>
   <uri>http://www.ehcache.org/</uri>
   <email>tc-oss@softwareag.com</email>
 </author>
+
+    
+        
+        <entry>
+          <title type="html"><![CDATA[Ehcache 3 Custom Serializers]]></title>
+          <link rel="alternate" type="text/html" href="http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html" />
+          <id>http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers</id>
+          <published>2016-05-12T17:45:00+02:00</published>
+          <updated>2016-05-12T17:45:00+02:00</updated>
+          <author>
+            <name>Albin Suresh</name>
+            <uri>http://www.ehcache.org</uri>
+          </author>
+          <content type="html">&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The Ehcache 3 documentation at &lt;a href=&quot;http://www.ehcache.org/documentation/3.0/serializers-copiers.html#serializers&quot;&gt;Serializers&lt;/a&gt;
+gives you an overview of how to use custom serializers with a cache.
+The section on &lt;a href=&quot;http://www.ehcache.org/documentation/3.0/serializers-copiers.html#persistent-vs-transient-caches&quot;&gt;Persistent and Transient Serializers&lt;/a&gt;
+briefly covers the serializer contracts that must be honored while writing custom serializers to be used with
+persistent/transient caches.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article explains how you can write a transient/persistent custom serializer that works with Ehcache.
+Here we discuss the significance of transient serializers and persistent serializers in detail through some
+practical examples.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;serializer-types&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#serializer-types&quot;&gt;&lt;/a&gt;Serializer types&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As indicated in the Ehcache documentation, serializers require a single argument constructor or a double-argument
+constructor or both based on the type of cache they are used in.
+The single-argument constructor is fit to be used with transient caches and the ones with the double-argument constructor can be used with persistent caches.
+An implementation having both the constructors can be used with both &lt;em&gt;persistent&lt;/em&gt; and &lt;em&gt;transient&lt;/em&gt; caches.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Hmm&amp;#8230;&amp;#8203; So what does that really mean?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you look at the custom serializer implementations in the GettingStarted samples they are all have both the constructors
+and if you look at the code they don&amp;#8217;t do anything different.
+It&amp;#8217;s all standard java serialization.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;So what difference do the constructors make?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;What is a &lt;em&gt;transient&lt;/em&gt; serializer with single-argument constructor?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;How do I implement a &lt;em&gt;persistent&lt;/em&gt; serializer with the double-argument constructor?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;When would I use both?&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Read along for the answers to these questions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;These constructors are associated with the state of the serializer implementations.
+So if your custom serializer doesn&amp;#8217;t have any state associated with it; that affects the serialization and
+deserialization logic; then that is a serializer implementation that can safely be used with transient and persistent
+caches. Such serializers would have both the constructors.
+If you look at the &lt;code&gt;LongSerializer&lt;/code&gt; or &lt;code&gt;StringSerializer&lt;/code&gt; implementations in the GettingStarted samples, they don&amp;#8217;t have
+any state that the serialization and deserialization depend on.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So what are these serializers with &lt;strong&gt;state&lt;/strong&gt;? I&amp;#8217;ll try to explain that with some examples in the subsequent sections.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+The code samples in this article were compiled and tested with Ehcache v3.0.0.
+Complete samples can be found at &lt;a href=&quot;https://github.com/albinsuresh/ehcache-demo&quot; class=&quot;bare&quot;&gt;https://github.com/albinsuresh/ehcache-demo&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;stateful-serializers&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#stateful-serializers&quot;&gt;&lt;/a&gt;Stateful serializers&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I have an application that deals with fruits. So I have a &lt;em&gt;fruits&lt;/em&gt; cache &lt;code&gt;Cache&amp;lt;Long, String&amp;gt;&lt;/code&gt; that holds the mappings
+from fruit ids to fruit names.
+If this cache is a multi-tiered one then the keys and values will be stored in their serialized form in the
+non-heap tiers.
+For simplicity I&amp;#8217;ll restrict the scope of our discussion only to the values that are fruit names of type &lt;code&gt;String&lt;/code&gt;.
+I can use standard Java serialization to serialize these values.
+But for some reason I wanted to reduce the amount of serialized data.
+So instead of serializing the strings directly I decided to map all the fruit names to some integer and store those
+serialized integers instead of strings thinking that it&amp;#8217;d save some space(dumb, huh?).
+Since this serializer is designed specifically for the fruits cache, I was fairly confident that the integer range would
+be more than enough to handle all possible fruit names on this planet.
+And here is the serializer implementation that I came up with:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class SimpleTransientStringSerializer implements Serializer&amp;lt;String&amp;gt; {
+
+  protected Map&amp;lt;Integer, String&amp;gt; idStringMap = new HashMap&amp;lt;Integer, String&amp;gt;();
+  protected Map&amp;lt;String, Integer&amp;gt; stringIdMap = new HashMap&amp;lt;String, Integer&amp;gt;();
+  protected int id = 0;
+
+  public SimpleTransientStringSerializer(ClassLoader loader) {
+    //no-op
+  }
+
+  @Override
+  public ByteBuffer serialize(final String object) throws SerializerException {
+    Integer currentId = stringIdMap.get(object);
+    if(currentId == null) {
+      stringIdMap.put(object, id);
+      idStringMap.put(id, object);
+      currentId = id++;
+    }
+
+    ByteBuffer buff = ByteBuffer.allocate(4);
+    buff.putInt(currentId).flip();
+    return buff;
+  }
+
+  @Override
+  public String read(final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    Integer mapping = binary.getInt();
+    String obj = idStringMap.get(mapping);
+    if(obj == null) {
+      throw new SerializerException(&quot;Unable to serialize: &quot; + binary.array() + &quot;. No value mapping found for &quot; + mapping);
+    }
+    return obj;
+  }
+
+  @Override
+  public boolean equals(final String object, final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    return object.equals(read(binary));
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In short this is what the above serializer does: Whenever it gets a string(the fruit name, in our application) to be
+serialized it checks if there is a mapping that exists already for that name in &lt;code&gt;stringIdMap&lt;/code&gt;.
+If yes, the mapped integer is retrieved from the map and that integer value is serialized.
+If a mapping is not found, we generate a new &lt;code&gt;id&lt;/code&gt; for the new fruit name add it to both the maps that we preserve
+(&lt;code&gt;stringIdMap&lt;/code&gt; and &lt;code&gt;idStringMap&lt;/code&gt;) and then serialize this newly generated id.
+Now on deserialization, the same &lt;code&gt;idStringMap&lt;/code&gt; map is used to retrieve the fruit names from the deserialised integer
+values.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So in the above serializer, the &lt;code&gt;idStringMap&lt;/code&gt;, &lt;code&gt;stringIdMap&lt;/code&gt; and the &lt;code&gt;id&lt;/code&gt; constitutes the &lt;em&gt;state&lt;/em&gt; of the serializer.
+The serialization and deserialization depends on this state and would not work properly without that state.
+This serializer has the single-argument constructor making it fit to be used with transient caches.
+So now that we have a state-full serializer understanding the idea of &lt;em&gt;transient&lt;/em&gt; and &lt;em&gt;persistent&lt;/em&gt; serializers would be
+simpler.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Here is a sample code that uses the &lt;code&gt;SimpleTransientStringSerializer&lt;/code&gt; with a cache:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+CacheConfiguration&amp;lt;Long, String&amp;gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(
+        Long.class, String.class, ResourcePoolsBuilder.heap(10).offheap(5, MemoryUnit.MB))  &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+    .withValueSerializer(SimpleTransientStringSerializer.class)   &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+    .build();
+
+Cache&amp;lt;Long, String&amp;gt; fruitsCache = cacheManager.createCache(&quot;fruitsCache&quot;, cacheConfig);
+fruitsCache.put(1L, &quot;apple&quot;);
+fruitsCache.put(2L, &quot;orange&quot;);
+fruitsCache.put(3L, &quot;mango&quot;);
+assertThat(fruitsCache.get(1L), is(&quot;apple&quot;));   &lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;(3)&lt;/b&gt;
+assertThat(fruitsCache.get(3L), is(&quot;mango&quot;));
+assertThat(fruitsCache.get(2L), is(&quot;orange&quot;));
+assertThat(fruitsCache.get(1L), is(&quot;apple&quot;));&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Create a multi-tiered cache that requires key and value serialization.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Configure a serializer for the values. The &lt;code&gt;SimpleTransientStringSerializer&lt;/code&gt; in this case. For the sake of simplicity
+we have omitted key serializer. Since one is not provided explicitly, ehcache would provide default serializers to
+perform the key serialization.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;3&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Verify that the cache/serializer works.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In the previous section we demonstrated the use of a transient serializer.
+We used that serializer with a transient cache and everything works just fine.
+Now imagine what would happen if we use the same serializer with a persistent cache.
+Everything would work as long as your application is running. Once you close the cache manager or end the application
+the data associated with the cache will be persisted so that the same data will be available on a restart.
+But there is a serious problem. The following piece of code would demonstrate that:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;CacheConfiguration&amp;lt;Long, String&amp;gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(
+        Long.class, String.class,
+        ResourcePoolsBuilder.heap(10).disk(10, MemoryUnit.MB, true))  &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+        .withValueSerializer(SimpleTransientStringSerializer.class)
+        .build();
+
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .with(new CacheManagerPersistenceConfiguration(new File(PERSISTENCE_PATH)))   &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+    .withCache(&quot;fruitsCache&quot;, cacheConfig)
+    .build(true);
+
+Cache&amp;lt;Long, String&amp;gt; fruitsCache = cacheManager.getCache(&quot;fruitsCache&quot;, Long.class, String.class);   &lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;(3)&lt;/b&gt;
+fruitsCache.put(1L, &quot;apple&quot;);
+fruitsCache.put(2L, &quot;mango&quot;);
+fruitsCache.put(3L, &quot;orange&quot;);   &lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;(4)&lt;/b&gt;
+assertThat(fruitsCache.get(1L), is(&quot;apple&quot;));   &lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;(5)&lt;/b&gt;
+
+cacheManager.close();   &lt;i class=&quot;conum&quot; data-value=&quot;6&quot;&gt;&lt;/i&gt;&lt;b&gt;(6)&lt;/b&gt;
+cacheManager.init();    &lt;i class=&quot;conum&quot; data-value=&quot;7&quot;&gt;&lt;/i&gt;&lt;b&gt;(7)&lt;/b&gt;
+fruitsCache = cacheManager.getCache(&quot;fruitsCache&quot;, Long.class, String.class);   &lt;i class=&quot;conum&quot; data-value=&quot;8&quot;&gt;&lt;/i&gt;&lt;b&gt;(8)&lt;/b&gt;
+assertThat(fruitsCache.get(1L), is(&quot;apple&quot;));   &lt;i class=&quot;conum&quot; data-value=&quot;9&quot;&gt;&lt;/i&gt;&lt;b&gt;(9)&lt;/b&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Create a cache configuration with persistent disk tier.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Configure the &lt;code&gt;LocalPersistenceService&lt;/code&gt; for the cache manager.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;3&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Retrieve the cache.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;4&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Populate data.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;5&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Verify that everything works.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;6&quot;&gt;&lt;/i&gt;&lt;b&gt;6&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Close the cache manager.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;7&quot;&gt;&lt;/i&gt;&lt;b&gt;7&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Reinitialize the cache manager.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;8&quot;&gt;&lt;/i&gt;&lt;b&gt;8&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Retrieve the cache.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;9&quot;&gt;&lt;/i&gt;&lt;b&gt;9&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Retrieve a cached/persisted value.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The above piece of code would fail in the cache creation step since the serializer provided does not meet the 2-arg
+constructor requirement for persistent caches.
+But why does &lt;code&gt;Ehcache&lt;/code&gt; enforce this requirement and fail-fast if the requirement is violated?
+What would have happened if we had proceeded with the sample code?
+Would it have failed? If yes, then where?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The above piece of code would have failed in step 9 because the cache would not be able to retrieve the persisted data.
+Because the serializer that you provided would fail in retrieving that data.
+When the cache is reinitialized, the associated serializer instance is also initialized for the cache to work.
+But the newly initialized serializer would have an empty state(empty &lt;code&gt;stringIdMap&lt;/code&gt; and &lt;code&gt;idStringMap&lt;/code&gt; maps and the &lt;code&gt;id&lt;/code&gt;
+initialized to 0).
+So when the cache tries to read a value it gets an integer value from the persistent tier as that is what got persisted.
+But using the empty state the serializer will not able to map that value to a fruit name, and so it would throw.
+That leaves the persisted data unusable.
+So what could you have done differently to make it work?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The answer is simple.
+Persist the serializer&amp;#8217;s state as well and restore it when the cache is re-initialized.
+And that is exactly what persistent serializers would do.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;persistent-serializers&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#persistent-serializers&quot;&gt;&lt;/a&gt;Persistent serializers&lt;/h3&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A persistent serializer persists its state and retrieves it when reinitialized.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A persistent serializer implementation can choose to persist the data wherever it wants.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;But a recommended way is to use the cache manager&amp;#8217;s &lt;code&gt;LocalPersistenceService&lt;/code&gt; so that the cache manager would take care
+of the persistence.
+Inorder to do that, the serializer implementation needs to have a constructor that takes in a
+&lt;code&gt;FileBasedPersistenceContext&lt;/code&gt; as an argument, in addition to the class loader argument.
+The use of the &lt;code&gt;FileBasedPersistenceContext&lt;/code&gt; argument is optional.
+But the presence of this double-argument constructor is a strict requirement for persistent caches.
+When the cache using this serializer is initialized, this 2-argument constructor is used to instantiate the serializer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Have a look at this implementation of a persistent serializer.
+It is just an extension of the same old transient serializer with the persistent stuff wired in.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class SimplePersistentStringSerializer extends SimpleTransientStringSerializer implements Closeable {
+
+  private final File stateFile;
+
+  public SimplePersistentStringSerializer(final ClassLoader loader, FileBasedPersistenceContext persistence) throws IOException, ClassNotFoundException {
+    super(loader);
+    stateFile = new File(persistence.getDirectory(), &quot;serializer.data&quot;);
+    if(stateFile.exists()) {
+      restoreState();
+    }
+  }
+
+  @Override
+  public void close() throws IOException {
+    persistState();
+  }
+
+  private void restoreState() throws IOException, ClassNotFoundException {
+    FileInputStream fin = new FileInputStream(stateFile);
+    try {
+      ObjectInputStream oin = new ObjectInputStream(fin);
+      try {
+        idStringMap = (Map&amp;lt;Integer, String&amp;gt;) oin.readObject();
+        stringIdMap = (Map&amp;lt;String, Integer&amp;gt;) oin.readObject();
+        id = oin.readInt();
+      } finally {
+        oin.close();
+      }
+    } finally {
+      fin.close();
+    }
+  }
+
+  private void persistState() throws IOException {
+    OutputStream fout = new FileOutputStream(stateFile);
+    try {
+      ObjectOutputStream oout = new ObjectOutputStream(fout);
+      try {
+        oout.writeObject(idStringMap);
+        oout.writeObject(stringIdMap);
+        oout.writeInt(id);
+      } finally {
+        oout.close();
+      }
+    } finally {
+      fout.close();
+    }
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In the above persistent serializer, the state or the serialization/deserialization has not changed.
+The only additional thing is the persistence logic. And that is fairly simple too.
+The state is restored on initialization if one is found, and persisted on close.
+And have a look at the sample from the previous section modified to use our persistent serializer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;CacheConfiguration&amp;lt;Long, String&amp;gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(
+        Long.class, String.class,
+        ResourcePoolsBuilder.newResourcePoolsBuilder()
+            .heap(10, EntryUnit.ENTRIES).disk(10, MemoryUnit.MB, true))
+        .withValueSerializer(SimplePersistentStringSerializer.class)   &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+        .build();
+
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .with(new CacheManagerPersistenceConfiguration(new File(PERSISTENCE_PATH)))
+    .withCache(&quot;fruitsCache&quot;, cacheConfig)
+    .build(true);
+
+Cache&amp;lt;Long, String&amp;gt; fruitsCache = cacheManager.getCache(&quot;fruitsCache&quot;, Long.class, String.class);
+fruitsCache.put(1L, &quot;apple&quot;);
+fruitsCache.put(2L, &quot;mango&quot;);
+fruitsCache.put(3L, &quot;orange&quot;);
+assertThat(fruitsCache.get(1L), is(&quot;apple&quot;));
+
+cacheManager.close();
+cacheManager.init();
+fruitsCache = cacheManager.getCache(&quot;fruitsCache&quot;, Long.class, String.class);
+assertThat(fruitsCache.get(1L), is(&quot;apple&quot;));&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;The only change from the previous sample is the usage of &lt;code&gt;SimplePersistentStringSerializer&lt;/code&gt; here.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;third-party-serializers&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#third-party-serializers&quot;&gt;&lt;/a&gt;Third-party serializers&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ehcache by-default relies on a tweaked form of java standard serialization to perform serialization and deserialization.
+But most of you already know that java built-in serialization is not the best performing serialization technique.
+A lot of alternative serialization techniques are available in the market.
+With the custom serializers support of ehcache you can take advantage of any one of those third-party serializers out
+there and use those within ehcache.
+All you have to do is write a custom serializer using the third-party serializer of your choice.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In-order to demonstrate that, I have written a custom serializer using the popular serialization framework &lt;strong&gt;Kryo&lt;/strong&gt;.
+Samples used in this section are not the same fruits cache based ones.
+Here I&amp;#8217;m using an employee cache of type &lt;code&gt;Cache&amp;lt;Long, Employee&amp;gt;&lt;/code&gt;.
+I have kept the &lt;code&gt;Employee&lt;/code&gt; object as simple as possible and yet represent a real-life object structure.
+These are the structures that we have used:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class Description {
+
+  String alias;
+  int id;
+
+  public Description() {}
+
+  public Description(final String alias, final int id) {
+    this.alias = alias;
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if(this == obj) return true;
+    if(obj == null || this.getClass() != obj.getClass()) return false;
+
+    Description other = (Description)obj;
+    if(id != other.id) return false;
+    if ((alias == null) ? (alias != null) : !alias.equals(other.alias)) return false;
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 1;
+    result = 31 * result + id;
+    result = 31 * result + (alias == null ? 0 : alias.hashCode());
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return alias + &quot;;&quot; + id;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class Person {
+
+  String name;
+  int age;
+  Description desc;
+
+  public Person() {}
+
+  public Person(String name, int age, Description desc) {
+    this.name = name;
+    this.age = age;
+    this.desc = desc;
+  }
+
+  @Override
+  public boolean equals(final Object other) {
+    if(this == other) return true;
+    if(other == null) return false;
+    if(!(other instanceof Person)) return false;
+
+    Person that = (Person)other;
+    if(age != that.age) return false;
+    if((name == null) ? (that.name != null) : !name.equals(that.name)) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 1;
+    result = 31 * result + age;
+    result = 31 * result + (name == null ? 0 : name.hashCode());
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return name + &quot;;&quot; + age + &quot;::&quot; + desc;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class Employee extends Person {
+
+  long employeeId;
+
+  public Employee() {}
+
+  public Employee(long employeeId, String name, int age, Description desc) {
+    super(name, age, desc);
+    this.employeeId = employeeId;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (!super.equals(obj)) return false;
+    if(!(obj instanceof Employee)) return false;
+
+    Employee other = (Employee)obj;
+    if(employeeId != other.employeeId) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return (31 * (int)employeeId) +  super.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return employeeId + &quot;;&quot; + super.toString();
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+None of the above classes are &lt;code&gt;Serializable&lt;/code&gt;. Yet they can be serialized with Kryo. But for that every class needs
+a no-arg constructor and these classes meet that requirement.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So here is the kryo based custom serializer:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class KryoSerializer implements Serializer&amp;lt;Employee&amp;gt; {
+
+  private static final Kryo kryo = new Kryo();
+
+  public KryoSerializer(ClassLoader loader) {
+    //no-op
+  }
+
+  @Override
+  public ByteBuffer serialize(final Employee object) throws SerializerException {
+    Output output = new Output(new ByteArrayOutputStream());
+    kryo.writeObject(output, object);
+    output.close();
+
+    return ByteBuffer.wrap(output.getBuffer());
+  }
+
+  @Override
+  public Employee read(final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    Input input =  new Input(new ByteBufferInputStream(binary)) ;
+    return kryo.readObject(input, Employee.class);
+  }
+
+  @Override
+  public boolean equals(final Employee object, final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    return object.equals(read(binary));
+  }
+
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The above serializer is a state-less one that demonstrates the basic integration with kryo.
+Here is the sample code that uses the same:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+CacheConfiguration&amp;lt;Long, Employee&amp;gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Employee.class, ResourcePoolsBuilder.heap(10))
+        .withValueSerializer(KryoSerializer.class)  &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+        .build();
+
+Cache&amp;lt;Long, Employee&amp;gt; employeeCache = cacheManager.createCache(&quot;employeeCache&quot;, cacheConfig);
+Employee emp =  new Employee(1234, &quot;foo&quot;, 23, new Description(&quot;bar&quot;, 879));
+employeeCache.put(1L, emp);
+assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Here we configure the &lt;code&gt;KryoSerializer&lt;/code&gt; for the &lt;strong&gt;VALUE&lt;/strong&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Using some advanced features of kryo I managed to write the &lt;em&gt;transient&lt;/em&gt; only and &lt;em&gt;persistent&lt;/em&gt; only versions too.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Here is the transient one:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class TransientKryoSerializer implements Serializer&amp;lt;Employee&amp;gt;, Closeable{
+
+  protected static final Kryo kryo = new Kryo();
+
+  protected Map&amp;lt;Class, Integer&amp;gt; objectHeaderMap = new HashMap&amp;lt;Class, Integer&amp;gt;();  &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+
+  public TransientKryoSerializer() {
+  }
+
+  public TransientKryoSerializer(ClassLoader loader) {
+    populateObjectHeadersMap(kryo.register(Employee.class));  &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+    populateObjectHeadersMap(kryo.register(Person.class));  &lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;(3)&lt;/b&gt;
+    populateObjectHeadersMap(kryo.register(Description.class)); &lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;(4)&lt;/b&gt;
+  }
+
+  protected void populateObjectHeadersMap(Registration reg) {
+    objectHeaderMap.put(reg.getType(), reg.getId());  &lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;(5)&lt;/b&gt;
+  }
+
+  @Override
+  public ByteBuffer serialize(Employee object) throws SerializerException {
+    Output output = new Output(new ByteArrayOutputStream());
+    kryo.writeObject(output, object);
+    output.close();
+
+    return ByteBuffer.wrap(output.getBuffer());
+  }
+
+  @Override
+  public Employee read(final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    Input input =  new Input(new ByteBufferInputStream(binary)) ;
+    return kryo.readObject(input, Employee.class);
+  }
+
+  @Override
+  public boolean equals(final Employee object, final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    return object.equals(read(binary));
+  }
+
+  @Override
+  public void close() throws IOException {
+    objectHeaderMap.clear();
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;This &lt;strong&gt;objectHeaderMap&lt;/strong&gt; is the state of the serializer. When an object is serialized the fully qualified name of the
+class is written in the header. Since writing the entire name is costly I decided to map these names to some integer
+values and then write out that integer instead of the name. So this map would contain the mapping between the
+classes and the corresponding integer values.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Here we register a class with kryo and then kryo will assign an integer value to that class so that all instances of
+class will be serialized with this assigned integer in-place of the fully-qualified class name. The &lt;code&gt;Employee&lt;/code&gt; class
+in this case. Refer &lt;a href=&quot;https://github.com/EsotericSoftware/kryo#registration&quot;&gt;Kryo#Registartion&lt;/a&gt; for more information.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;3&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Since &lt;code&gt;Employee&lt;/code&gt; extends &lt;code&gt;Person&lt;/code&gt; we register that too.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;4&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Since the &lt;code&gt;Person&lt;/code&gt; class contain a &lt;code&gt;Description&lt;/code&gt; instance we register that too. So the idea is to register all
+known custom class types associated with the object to be serialized(the employee object).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;5&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;This is how we populate the &lt;strong&gt;objectHeaderMap&lt;/strong&gt; every time we register a class.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The following sample is the same as the one in the previous section with just the serializer changed:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+CacheConfiguration&amp;lt;Long, Employee&amp;gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Employee.class, ResourcePoolsBuilder.heap(10))
+        .withValueSerializer(TransientKryoSerializer.class)
+        .build();
+
+Cache&amp;lt;Long, Employee&amp;gt; employeeCache = cacheManager.createCache(&quot;employeeCache&quot;, cacheConfig);
+Employee emp =  new Employee(1234, &quot;foo&quot;, 23, new Description(&quot;bar&quot;, 879));
+employeeCache.put(1L, emp);
+assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The above sample must be self explanatory as we have already seen this sample so many times.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;And now the persistent adaptation of the transient serializer is here:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;public class PersistentKryoSerializer extends TransientKryoSerializer {
+
+  private final File stateFile;
+
+  public PersistentKryoSerializer(ClassLoader loader, FileBasedPersistenceContext persistence) throws IOException, ClassNotFoundException {
+    stateFile = new File(persistence.getDirectory(), &quot;PersistentKryoSerializerState.ser&quot;);
+    if(stateFile.exists()) {  &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+      restoreState();   &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+      for(Map.Entry&amp;lt;Class, Integer&amp;gt; entry: objectHeaderMap.entrySet()) {  &lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;(3)&lt;/b&gt;
+        kryo.register(entry.getKey(), entry.getValue());  &lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;(4)&lt;/b&gt;
+      }
+    }
+  }
+
+  @Override
+  public void close() throws IOException {
+    persistState(); &lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;(5)&lt;/b&gt;
+  }
+
+  private void persistState() throws FileNotFoundException {
+    Output output = new Output(new FileOutputStream(stateFile));
+    try {
+      kryo.writeObject(output, objectHeaderMap);
+    } finally {
+      output.close();
+    }
+  }
+
+  private void restoreState() throws FileNotFoundException {
+    Input input = new Input(new FileInputStream(stateFile));
+    try {
+      objectHeaderMap = kryo.readObject(input, HashMap.class);
+    } finally {
+      input.close();
+    }
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You must be familiar with this routine already:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;On initialization, if a persistent file is found&amp;#8230;&amp;#8203;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Restore the contents of the file which essentially restores the &lt;strong&gt;objectHeaderMap&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;3&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Then iterate through the contents of the map and&amp;#8230;&amp;#8203;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;4&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Register the types again with &lt;strong&gt;kryo&lt;/strong&gt; using the same integer mapped values. Then only the persisted data can be
+deserialized as they are persisted with these integer values in their headers.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;5&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;On &lt;em&gt;close&lt;/em&gt;, the map is serialized and persisted to a file.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;And the familiar test sample again testing this persistent serializer implementation:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;CacheConfiguration&amp;lt;Long, Employee&amp;gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(
+        Long.class, Employee.class,
+        ResourcePoolsBuilder.newResourcePoolsBuilder()
+            .heap(10, EntryUnit.ENTRIES).offheap(5, MemoryUnit.MB).disk(10, MemoryUnit.MB, true))
+        .withValueSerializer(PersistentKryoSerializer.class)
+        .build();
+
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .with(new CacheManagerPersistenceConfiguration(new File(PERSISTENCE_PATH)))
+    .withCache(&quot;employeeCache&quot;, cacheConfig)
+    .build(true);
+
+Cache&amp;lt;Long, Employee&amp;gt; employeeCache = cacheManager.getCache(&quot;employeeCache&quot;, Long.class, Employee.class);
+Employee emp =  new Employee(1234, &quot;foo&quot;, 23, new Description(&quot;bar&quot;, 879));
+employeeCache.put(1L, emp);
+assertThat(employeeCache.get(1L), is(emp));
+
+cacheManager.close();
+cacheManager.init();
+employeeCache = cacheManager.getCache(&quot;employeeCache&quot;, Long.class, Employee.class);
+assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html&quot;&gt;Ehcache 3 Custom Serializers&lt;/a&gt; was originally published by Albin Suresh at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 12, 2016.&lt;/p&gt;</content>
+        </entry>
+    
 
     
 

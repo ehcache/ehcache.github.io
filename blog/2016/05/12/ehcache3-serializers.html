@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 3 Custom Serializers</title>
+
+  <meta name="description" content="">
+
+  <link rel="canonical" href="http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
+
+
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/contribute.html"><i class="fa fa-code"></i> Contributing</a></li>
+                <li><a href="/resources/"><i class="fa fa-external-link-square"></i> External Resources</a></li>
+                <li><a href="http://blog.terracotta.org" target="_blank"><i class="fa fa-rss-square"></i> Terracotta Blog</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3" target="_blank"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk" target="_blank"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues" target="_blank"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC" target="_blank"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="/blog"><i class="fa fa-rss-square"></i> Ehcache Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 3 Custom Serializers</h1>
+      </div>
+      <div>
+        <BR/>
+        <br/>
+
+
+
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+      
+      <div>
+        <img src="https://www.gravatar.com/avatar/96e343b457349974907f37d8574e97e9" class="bio-photo" alt="Albin Suresh bio photo"></a>
+      </div>
+      
+
+      
+      <div class="section">By <span class="fn"><a target="_blank" href="https://www.linkedin.com/in/albinsuresh">Albin Suresh</a></span></div>
+      
+
+      <div class="section">
+        Software Engineer at Terracotta
+      </div>
+
+      <div class="section entry-date date published"><time datetime="2016-05-12T17:45:00+02:00"><i class="fa fa-calendar-o"></i> May 12, 2016</time></div>
+
+      
+
+      <div class="section entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Leave a comment</a></div>
+
+      
+
+      <div class="section"><div class="social-share twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=ehcache,serializers&amp;text=Ehcache%203%20Custom%20Serializers&amp;url=http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</div>
+<div class="social-share facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</div>
+<div class="social-share googleplus">
+  <a href="https://plus.google.com/share?url=http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</div>
+</div>
+
+      <div class="section">Tags: <a href="/tags/#ehcache" title="Pages tagged ehcache">ehcache</a>&nbsp;&bull;&nbsp;<a href="/tags/#serializers" title="Pages tagged serializers">serializers</a></div>
+
+    </div>
+
+    <!-- main area -->
+    <div class="col-xs-12 col-sm-9">
+
+      <header class="post-header">
+        <h1 class="post-title">Ehcache 3 Custom Serializers</h1>
+      </header>
+
+      <article class="post-content">
+
+        <div class="entry-wrapper">
+          <header class="entry-header">
+            <h2 class="entry-title">Understand and leverage the serialization subsystem in Ehcache 3</h2>
+          </header>
+
+          <div class="entry-content">
+            <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Ehcache 3 documentation at <a href="http://www.ehcache.org/documentation/3.0/serializers-copiers.html#serializers">Serializers</a>
+gives you an overview of how to use custom serializers with a cache.
+The section on <a href="http://www.ehcache.org/documentation/3.0/serializers-copiers.html#persistent-vs-transient-caches">Persistent and Transient Serializers</a>
+briefly covers the serializer contracts that must be honored while writing custom serializers to be used with
+persistent/transient caches.</p>
+</div>
+<div class="paragraph">
+<p>This article explains how you can write a transient/persistent custom serializer that works with Ehcache.
+Here we discuss the significance of transient serializers and persistent serializers in detail through some
+practical examples.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="serializer-types"><a class="anchor" href="#serializer-types"></a>Serializer types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As indicated in the Ehcache documentation, serializers require a single argument constructor or a double-argument
+constructor or both based on the type of cache they are used in.
+The single-argument constructor is fit to be used with transient caches and the ones with the double-argument constructor can be used with persistent caches.
+An implementation having both the constructors can be used with both <em>persistent</em> and <em>transient</em> caches.</p>
+</div>
+<div class="paragraph">
+<p>Hmm&#8230;&#8203; So what does that really mean?</p>
+</div>
+<div class="paragraph">
+<p>If you look at the custom serializer implementations in the GettingStarted samples they are all have both the constructors
+and if you look at the code they don&#8217;t do anything different.
+It&#8217;s all standard java serialization.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>So what difference do the constructors make?</p>
+</li>
+<li>
+<p>What is a <em>transient</em> serializer with single-argument constructor?</p>
+</li>
+<li>
+<p>How do I implement a <em>persistent</em> serializer with the double-argument constructor?</p>
+</li>
+<li>
+<p>When would I use both?</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Read along for the answers to these questions.</p>
+</div>
+<div class="paragraph">
+<p>These constructors are associated with the state of the serializer implementations.
+So if your custom serializer doesn&#8217;t have any state associated with it; that affects the serialization and
+deserialization logic; then that is a serializer implementation that can safely be used with transient and persistent
+caches. Such serializers would have both the constructors.
+If you look at the <code>LongSerializer</code> or <code>StringSerializer</code> implementations in the GettingStarted samples, they don&#8217;t have
+any state that the serialization and deserialization depend on.</p>
+</div>
+<div class="paragraph">
+<p>So what are these serializers with <strong>state</strong>? I&#8217;ll try to explain that with some examples in the subsequent sections.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The code samples in this article were compiled and tested with Ehcache v3.0.0.
+Complete samples can be found at <a href="https://github.com/albinsuresh/ehcache-demo" class="bare">https://github.com/albinsuresh/ehcache-demo</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="stateful-serializers"><a class="anchor" href="#stateful-serializers"></a>Stateful serializers</h3>
+<div class="paragraph">
+<p>I have an application that deals with fruits. So I have a <em>fruits</em> cache <code>Cache&lt;Long, String&gt;</code> that holds the mappings
+from fruit ids to fruit names.
+If this cache is a multi-tiered one then the keys and values will be stored in their serialized form in the
+non-heap tiers.
+For simplicity I&#8217;ll restrict the scope of our discussion only to the values that are fruit names of type <code>String</code>.
+I can use standard Java serialization to serialize these values.
+But for some reason I wanted to reduce the amount of serialized data.
+So instead of serializing the strings directly I decided to map all the fruit names to some integer and store those
+serialized integers instead of strings thinking that it&#8217;d save some space(dumb, huh?).
+Since this serializer is designed specifically for the fruits cache, I was fairly confident that the integer range would
+be more than enough to handle all possible fruit names on this planet.
+And here is the serializer implementation that I came up with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class SimpleTransientStringSerializer implements Serializer&lt;String&gt; {
+
+  protected Map&lt;Integer, String&gt; idStringMap = new HashMap&lt;Integer, String&gt;();
+  protected Map&lt;String, Integer&gt; stringIdMap = new HashMap&lt;String, Integer&gt;();
+  protected int id = 0;
+
+  public SimpleTransientStringSerializer(ClassLoader loader) {
+    //no-op
+  }
+
+  @Override
+  public ByteBuffer serialize(final String object) throws SerializerException {
+    Integer currentId = stringIdMap.get(object);
+    if(currentId == null) {
+      stringIdMap.put(object, id);
+      idStringMap.put(id, object);
+      currentId = id++;
+    }
+
+    ByteBuffer buff = ByteBuffer.allocate(4);
+    buff.putInt(currentId).flip();
+    return buff;
+  }
+
+  @Override
+  public String read(final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    Integer mapping = binary.getInt();
+    String obj = idStringMap.get(mapping);
+    if(obj == null) {
+      throw new SerializerException("Unable to serialize: " + binary.array() + ". No value mapping found for " + mapping);
+    }
+    return obj;
+  }
+
+  @Override
+  public boolean equals(final String object, final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    return object.equals(read(binary));
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In short this is what the above serializer does: Whenever it gets a string(the fruit name, in our application) to be
+serialized it checks if there is a mapping that exists already for that name in <code>stringIdMap</code>.
+If yes, the mapped integer is retrieved from the map and that integer value is serialized.
+If a mapping is not found, we generate a new <code>id</code> for the new fruit name add it to both the maps that we preserve
+(<code>stringIdMap</code> and <code>idStringMap</code>) and then serialize this newly generated id.
+Now on deserialization, the same <code>idStringMap</code> map is used to retrieve the fruit names from the deserialised integer
+values.</p>
+</div>
+<div class="paragraph">
+<p>So in the above serializer, the <code>idStringMap</code>, <code>stringIdMap</code> and the <code>id</code> constitutes the <em>state</em> of the serializer.
+The serialization and deserialization depends on this state and would not work properly without that state.
+This serializer has the single-argument constructor making it fit to be used with transient caches.
+So now that we have a state-full serializer understanding the idea of <em>transient</em> and <em>persistent</em> serializers would be
+simpler.</p>
+</div>
+<div class="paragraph">
+<p>Here is a sample code that uses the <code>SimpleTransientStringSerializer</code> with a cache:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+CacheConfiguration&lt;Long, String&gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(
+        Long.class, String.class, ResourcePoolsBuilder.heap(10).offheap(5, MemoryUnit.MB))  <i class="conum" data-value="1"></i><b>(1)</b>
+    .withValueSerializer(SimpleTransientStringSerializer.class)   <i class="conum" data-value="2"></i><b>(2)</b>
+    .build();
+
+Cache&lt;Long, String&gt; fruitsCache = cacheManager.createCache("fruitsCache", cacheConfig);
+fruitsCache.put(1L, "apple");
+fruitsCache.put(2L, "orange");
+fruitsCache.put(3L, "mango");
+assertThat(fruitsCache.get(1L), is("apple"));   <i class="conum" data-value="3"></i><b>(3)</b>
+assertThat(fruitsCache.get(3L), is("mango"));
+assertThat(fruitsCache.get(2L), is("orange"));
+assertThat(fruitsCache.get(1L), is("apple"));</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create a multi-tiered cache that requires key and value serialization.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure a serializer for the values. The <code>SimpleTransientStringSerializer</code> in this case. For the sake of simplicity
+we have omitted key serializer. Since one is not provided explicitly, ehcache would provide default serializers to
+perform the key serialization.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Verify that the cache/serializer works.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the previous section we demonstrated the use of a transient serializer.
+We used that serializer with a transient cache and everything works just fine.
+Now imagine what would happen if we use the same serializer with a persistent cache.
+Everything would work as long as your application is running. Once you close the cache manager or end the application
+the data associated with the cache will be persisted so that the same data will be available on a restart.
+But there is a serious problem. The following piece of code would demonstrate that:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(
+        Long.class, String.class,
+        ResourcePoolsBuilder.heap(10).disk(10, MemoryUnit.MB, true))  <i class="conum" data-value="1"></i><b>(1)</b>
+        .withValueSerializer(SimpleTransientStringSerializer.class)
+        .build();
+
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .with(new CacheManagerPersistenceConfiguration(new File(PERSISTENCE_PATH)))   <i class="conum" data-value="2"></i><b>(2)</b>
+    .withCache("fruitsCache", cacheConfig)
+    .build(true);
+
+Cache&lt;Long, String&gt; fruitsCache = cacheManager.getCache("fruitsCache", Long.class, String.class);   <i class="conum" data-value="3"></i><b>(3)</b>
+fruitsCache.put(1L, "apple");
+fruitsCache.put(2L, "mango");
+fruitsCache.put(3L, "orange");   <i class="conum" data-value="4"></i><b>(4)</b>
+assertThat(fruitsCache.get(1L), is("apple"));   <i class="conum" data-value="5"></i><b>(5)</b>
+
+cacheManager.close();   <i class="conum" data-value="6"></i><b>(6)</b>
+cacheManager.init();    <i class="conum" data-value="7"></i><b>(7)</b>
+fruitsCache = cacheManager.getCache("fruitsCache", Long.class, String.class);   <i class="conum" data-value="8"></i><b>(8)</b>
+assertThat(fruitsCache.get(1L), is("apple"));   <i class="conum" data-value="9"></i><b>(9)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create a cache configuration with persistent disk tier.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure the <code>LocalPersistenceService</code> for the cache manager.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Retrieve the cache.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Populate data.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Verify that everything works.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Close the cache manager.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Reinitialize the cache manager.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>Retrieve the cache.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>Retrieve a cached/persisted value.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The above piece of code would fail in the cache creation step since the serializer provided does not meet the 2-arg
+constructor requirement for persistent caches.
+But why does <code>Ehcache</code> enforce this requirement and fail-fast if the requirement is violated?
+What would have happened if we had proceeded with the sample code?
+Would it have failed? If yes, then where?</p>
+</div>
+<div class="paragraph">
+<p>The above piece of code would have failed in step 9 because the cache would not be able to retrieve the persisted data.
+Because the serializer that you provided would fail in retrieving that data.
+When the cache is reinitialized, the associated serializer instance is also initialized for the cache to work.
+But the newly initialized serializer would have an empty state(empty <code>stringIdMap</code> and <code>idStringMap</code> maps and the <code>id</code>
+initialized to 0).
+So when the cache tries to read a value it gets an integer value from the persistent tier as that is what got persisted.
+But using the empty state the serializer will not able to map that value to a fruit name, and so it would throw.
+That leaves the persisted data unusable.
+So what could you have done differently to make it work?</p>
+</div>
+<div class="paragraph">
+<p>The answer is simple.
+Persist the serializer&#8217;s state as well and restore it when the cache is re-initialized.
+And that is exactly what persistent serializers would do.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="persistent-serializers"><a class="anchor" href="#persistent-serializers"></a>Persistent serializers</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>A persistent serializer persists its state and retrieves it when reinitialized.</p>
+</li>
+<li>
+<p>A persistent serializer implementation can choose to persist the data wherever it wants.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>But a recommended way is to use the cache manager&#8217;s <code>LocalPersistenceService</code> so that the cache manager would take care
+of the persistence.
+Inorder to do that, the serializer implementation needs to have a constructor that takes in a
+<code>FileBasedPersistenceContext</code> as an argument, in addition to the class loader argument.
+The use of the <code>FileBasedPersistenceContext</code> argument is optional.
+But the presence of this double-argument constructor is a strict requirement for persistent caches.
+When the cache using this serializer is initialized, this 2-argument constructor is used to instantiate the serializer.</p>
+</div>
+<div class="paragraph">
+<p>Have a look at this implementation of a persistent serializer.
+It is just an extension of the same old transient serializer with the persistent stuff wired in.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class SimplePersistentStringSerializer extends SimpleTransientStringSerializer implements Closeable {
+
+  private final File stateFile;
+
+  public SimplePersistentStringSerializer(final ClassLoader loader, FileBasedPersistenceContext persistence) throws IOException, ClassNotFoundException {
+    super(loader);
+    stateFile = new File(persistence.getDirectory(), "serializer.data");
+    if(stateFile.exists()) {
+      restoreState();
+    }
+  }
+
+  @Override
+  public void close() throws IOException {
+    persistState();
+  }
+
+  private void restoreState() throws IOException, ClassNotFoundException {
+    FileInputStream fin = new FileInputStream(stateFile);
+    try {
+      ObjectInputStream oin = new ObjectInputStream(fin);
+      try {
+        idStringMap = (Map&lt;Integer, String&gt;) oin.readObject();
+        stringIdMap = (Map&lt;String, Integer&gt;) oin.readObject();
+        id = oin.readInt();
+      } finally {
+        oin.close();
+      }
+    } finally {
+      fin.close();
+    }
+  }
+
+  private void persistState() throws IOException {
+    OutputStream fout = new FileOutputStream(stateFile);
+    try {
+      ObjectOutputStream oout = new ObjectOutputStream(fout);
+      try {
+        oout.writeObject(idStringMap);
+        oout.writeObject(stringIdMap);
+        oout.writeInt(id);
+      } finally {
+        oout.close();
+      }
+    } finally {
+      fout.close();
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above persistent serializer, the state or the serialization/deserialization has not changed.
+The only additional thing is the persistence logic. And that is fairly simple too.
+The state is restored on initialization if one is found, and persisted on close.
+And have a look at the sample from the previous section modified to use our persistent serializer.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(
+        Long.class, String.class,
+        ResourcePoolsBuilder.newResourcePoolsBuilder()
+            .heap(10, EntryUnit.ENTRIES).disk(10, MemoryUnit.MB, true))
+        .withValueSerializer(SimplePersistentStringSerializer.class)   <i class="conum" data-value="1"></i><b>(1)</b>
+        .build();
+
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .with(new CacheManagerPersistenceConfiguration(new File(PERSISTENCE_PATH)))
+    .withCache("fruitsCache", cacheConfig)
+    .build(true);
+
+Cache&lt;Long, String&gt; fruitsCache = cacheManager.getCache("fruitsCache", Long.class, String.class);
+fruitsCache.put(1L, "apple");
+fruitsCache.put(2L, "mango");
+fruitsCache.put(3L, "orange");
+assertThat(fruitsCache.get(1L), is("apple"));
+
+cacheManager.close();
+cacheManager.init();
+fruitsCache = cacheManager.getCache("fruitsCache", Long.class, String.class);
+assertThat(fruitsCache.get(1L), is("apple"));</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The only change from the previous sample is the usage of <code>SimplePersistentStringSerializer</code> here.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="third-party-serializers"><a class="anchor" href="#third-party-serializers"></a>Third-party serializers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ehcache by-default relies on a tweaked form of java standard serialization to perform serialization and deserialization.
+But most of you already know that java built-in serialization is not the best performing serialization technique.
+A lot of alternative serialization techniques are available in the market.
+With the custom serializers support of ehcache you can take advantage of any one of those third-party serializers out
+there and use those within ehcache.
+All you have to do is write a custom serializer using the third-party serializer of your choice.</p>
+</div>
+<div class="paragraph">
+<p>In-order to demonstrate that, I have written a custom serializer using the popular serialization framework <strong>Kryo</strong>.
+Samples used in this section are not the same fruits cache based ones.
+Here I&#8217;m using an employee cache of type <code>Cache&lt;Long, Employee&gt;</code>.
+I have kept the <code>Employee</code> object as simple as possible and yet represent a real-life object structure.
+These are the structures that we have used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class Description {
+
+  String alias;
+  int id;
+
+  public Description() {}
+
+  public Description(final String alias, final int id) {
+    this.alias = alias;
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if(this == obj) return true;
+    if(obj == null || this.getClass() != obj.getClass()) return false;
+
+    Description other = (Description)obj;
+    if(id != other.id) return false;
+    if ((alias == null) ? (alias != null) : !alias.equals(other.alias)) return false;
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 1;
+    result = 31 * result + id;
+    result = 31 * result + (alias == null ? 0 : alias.hashCode());
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return alias + ";" + id;
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class Person {
+
+  String name;
+  int age;
+  Description desc;
+
+  public Person() {}
+
+  public Person(String name, int age, Description desc) {
+    this.name = name;
+    this.age = age;
+    this.desc = desc;
+  }
+
+  @Override
+  public boolean equals(final Object other) {
+    if(this == other) return true;
+    if(other == null) return false;
+    if(!(other instanceof Person)) return false;
+
+    Person that = (Person)other;
+    if(age != that.age) return false;
+    if((name == null) ? (that.name != null) : !name.equals(that.name)) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 1;
+    result = 31 * result + age;
+    result = 31 * result + (name == null ? 0 : name.hashCode());
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return name + ";" + age + "::" + desc;
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class Employee extends Person {
+
+  long employeeId;
+
+  public Employee() {}
+
+  public Employee(long employeeId, String name, int age, Description desc) {
+    super(name, age, desc);
+    this.employeeId = employeeId;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (!super.equals(obj)) return false;
+    if(!(obj instanceof Employee)) return false;
+
+    Employee other = (Employee)obj;
+    if(employeeId != other.employeeId) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return (31 * (int)employeeId) +  super.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return employeeId + ";" + super.toString();
+  }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+None of the above classes are <code>Serializable</code>. Yet they can be serialized with Kryo. But for that every class needs
+a no-arg constructor and these classes meet that requirement.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>So here is the kryo based custom serializer:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class KryoSerializer implements Serializer&lt;Employee&gt; {
+
+  private static final Kryo kryo = new Kryo();
+
+  public KryoSerializer(ClassLoader loader) {
+    //no-op
+  }
+
+  @Override
+  public ByteBuffer serialize(final Employee object) throws SerializerException {
+    Output output = new Output(new ByteArrayOutputStream());
+    kryo.writeObject(output, object);
+    output.close();
+
+    return ByteBuffer.wrap(output.getBuffer());
+  }
+
+  @Override
+  public Employee read(final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    Input input =  new Input(new ByteBufferInputStream(binary)) ;
+    return kryo.readObject(input, Employee.class);
+  }
+
+  @Override
+  public boolean equals(final Employee object, final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    return object.equals(read(binary));
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above serializer is a state-less one that demonstrates the basic integration with kryo.
+Here is the sample code that uses the same:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+CacheConfiguration&lt;Long, Employee&gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Employee.class, ResourcePoolsBuilder.heap(10))
+        .withValueSerializer(KryoSerializer.class)  <i class="conum" data-value="1"></i><b>(1)</b>
+        .build();
+
+Cache&lt;Long, Employee&gt; employeeCache = cacheManager.createCache("employeeCache", cacheConfig);
+Employee emp =  new Employee(1234, "foo", 23, new Description("bar", 879));
+employeeCache.put(1L, emp);
+assertThat(employeeCache.get(1L), is(emp));</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Here we configure the <code>KryoSerializer</code> for the <strong>VALUE</strong>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Using some advanced features of kryo I managed to write the <em>transient</em> only and <em>persistent</em> only versions too.</p>
+</div>
+<div class="paragraph">
+<p>Here is the transient one:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class TransientKryoSerializer implements Serializer&lt;Employee&gt;, Closeable{
+
+  protected static final Kryo kryo = new Kryo();
+
+  protected Map&lt;Class, Integer&gt; objectHeaderMap = new HashMap&lt;Class, Integer&gt;();  <i class="conum" data-value="1"></i><b>(1)</b>
+
+  public TransientKryoSerializer() {
+  }
+
+  public TransientKryoSerializer(ClassLoader loader) {
+    populateObjectHeadersMap(kryo.register(Employee.class));  <i class="conum" data-value="2"></i><b>(2)</b>
+    populateObjectHeadersMap(kryo.register(Person.class));  <i class="conum" data-value="3"></i><b>(3)</b>
+    populateObjectHeadersMap(kryo.register(Description.class)); <i class="conum" data-value="4"></i><b>(4)</b>
+  }
+
+  protected void populateObjectHeadersMap(Registration reg) {
+    objectHeaderMap.put(reg.getType(), reg.getId());  <i class="conum" data-value="5"></i><b>(5)</b>
+  }
+
+  @Override
+  public ByteBuffer serialize(Employee object) throws SerializerException {
+    Output output = new Output(new ByteArrayOutputStream());
+    kryo.writeObject(output, object);
+    output.close();
+
+    return ByteBuffer.wrap(output.getBuffer());
+  }
+
+  @Override
+  public Employee read(final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    Input input =  new Input(new ByteBufferInputStream(binary)) ;
+    return kryo.readObject(input, Employee.class);
+  }
+
+  @Override
+  public boolean equals(final Employee object, final ByteBuffer binary) throws ClassNotFoundException, SerializerException {
+    return object.equals(read(binary));
+  }
+
+  @Override
+  public void close() throws IOException {
+    objectHeaderMap.clear();
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This <strong>objectHeaderMap</strong> is the state of the serializer. When an object is serialized the fully qualified name of the
+class is written in the header. Since writing the entire name is costly I decided to map these names to some integer
+values and then write out that integer instead of the name. So this map would contain the mapping between the
+classes and the corresponding integer values.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Here we register a class with kryo and then kryo will assign an integer value to that class so that all instances of
+class will be serialized with this assigned integer in-place of the fully-qualified class name. The <code>Employee</code> class
+in this case. Refer <a href="https://github.com/EsotericSoftware/kryo#registration">Kryo#Registartion</a> for more information.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Since <code>Employee</code> extends <code>Person</code> we register that too.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Since the <code>Person</code> class contain a <code>Description</code> instance we register that too. So the idea is to register all
+known custom class types associated with the object to be serialized(the employee object).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>This is how we populate the <strong>objectHeaderMap</strong> every time we register a class.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following sample is the same as the one in the previous section with just the serializer changed:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+CacheConfiguration&lt;Long, Employee&gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Employee.class, ResourcePoolsBuilder.heap(10))
+        .withValueSerializer(TransientKryoSerializer.class)
+        .build();
+
+Cache&lt;Long, Employee&gt; employeeCache = cacheManager.createCache("employeeCache", cacheConfig);
+Employee emp =  new Employee(1234, "foo", 23, new Description("bar", 879));
+employeeCache.put(1L, emp);
+assertThat(employeeCache.get(1L), is(emp));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above sample must be self explanatory as we have already seen this sample so many times.</p>
+</div>
+<div class="paragraph">
+<p>And now the persistent adaptation of the transient serializer is here:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class PersistentKryoSerializer extends TransientKryoSerializer {
+
+  private final File stateFile;
+
+  public PersistentKryoSerializer(ClassLoader loader, FileBasedPersistenceContext persistence) throws IOException, ClassNotFoundException {
+    stateFile = new File(persistence.getDirectory(), "PersistentKryoSerializerState.ser");
+    if(stateFile.exists()) {  <i class="conum" data-value="1"></i><b>(1)</b>
+      restoreState();   <i class="conum" data-value="2"></i><b>(2)</b>
+      for(Map.Entry&lt;Class, Integer&gt; entry: objectHeaderMap.entrySet()) {  <i class="conum" data-value="3"></i><b>(3)</b>
+        kryo.register(entry.getKey(), entry.getValue());  <i class="conum" data-value="4"></i><b>(4)</b>
+      }
+    }
+  }
+
+  @Override
+  public void close() throws IOException {
+    persistState(); <i class="conum" data-value="5"></i><b>(5)</b>
+  }
+
+  private void persistState() throws FileNotFoundException {
+    Output output = new Output(new FileOutputStream(stateFile));
+    try {
+      kryo.writeObject(output, objectHeaderMap);
+    } finally {
+      output.close();
+    }
+  }
+
+  private void restoreState() throws FileNotFoundException {
+    Input input = new Input(new FileInputStream(stateFile));
+    try {
+      objectHeaderMap = kryo.readObject(input, HashMap.class);
+    } finally {
+      input.close();
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You must be familiar with this routine already:</p>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>On initialization, if a persistent file is found&#8230;&#8203;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Restore the contents of the file which essentially restores the <strong>objectHeaderMap</strong></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Then iterate through the contents of the map and&#8230;&#8203;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Register the types again with <strong>kryo</strong> using the same integer mapped values. Then only the persisted data can be
+deserialized as they are persisted with these integer values in their headers.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>On <em>close</em>, the map is serialized and persisted to a file.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>And the familiar test sample again testing this persistent serializer implementation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, Employee&gt; cacheConfig =
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(
+        Long.class, Employee.class,
+        ResourcePoolsBuilder.newResourcePoolsBuilder()
+            .heap(10, EntryUnit.ENTRIES).offheap(5, MemoryUnit.MB).disk(10, MemoryUnit.MB, true))
+        .withValueSerializer(PersistentKryoSerializer.class)
+        .build();
+
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .with(new CacheManagerPersistenceConfiguration(new File(PERSISTENCE_PATH)))
+    .withCache("employeeCache", cacheConfig)
+    .build(true);
+
+Cache&lt;Long, Employee&gt; employeeCache = cacheManager.getCache("employeeCache", Long.class, Employee.class);
+Employee emp =  new Employee(1234, "foo", 23, new Description("bar", 879));
+employeeCache.put(1L, emp);
+assertThat(employeeCache.get(1L), is(emp));
+
+cacheManager.close();
+cacheManager.init();
+employeeCache = cacheManager.getCache("employeeCache", Long.class, Employee.class);
+assertThat(employeeCache.get(1L), is(emp));</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+            
+            <div id="disqus_thread"></div>
+            
+          </div>
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ehcache'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/ehcache">
+              <i class="fa fa-github"></i> GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+
+          <li>
+            <a href="/feed.xml" title="Atom/RSS Feed">
+              <i class="fa fa-rss-square"></i> Atom/RSS Feed
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <a href="/resources/"><i class="fa fa-external-link-square"></i> Resources</a>
+      <br/>
+      <a href="/blog/"><i class="fa fa-rss-square"></i> Ehcache Blog</a>
+      <br/>
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        <br/>
+        <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>
