@@ -170,7 +170,274 @@
         
       </header>
       <article class="post-content">
-        
+        <div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As conveyed in the <a href="caching-concepts.html#data-freshness-and-expiration"><em>Data Freshness and Expiration</em></a> documentation, this is one of the key aspects of caching.
+In Ehcache 3 this is addressed with the <code>Expiry</code> interface and its use in controlling the age of cache mappings.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configuration"><a class="anchor" href="#configuration"></a>Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Expiry is configured at the cache level, in Java or in XML:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+        ResourcePoolsBuilder.heap(100)) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withExpiry(Expirations.timeToLiveExpiration(Duration.of(20, TimeUnit.SECONDS))) <i class="conum" data-value="2"></i><b>(2)</b>
+    .build();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Expiry is configured at the cache level, so start by defining a cache configuration,</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>then add to it an <code>Expiry</code>, here using the predefined <em>time-to-live</em> one, configured with the required <code>Duration</code>.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache alias="foo"&gt;
+  &lt;expiry&gt;
+    &lt;ttl unit="seconds"&gt;20&lt;/ttl&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;/expiry&gt;
+  &lt;heap&gt;100&lt;/heap&gt;
+&lt;/cache&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>At the cache level, using the predefined <em>time-to-live</em> again.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Both Java and XML offer direct support for three types of expiry:</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+no expiry
+</td>
+<td class="hdlist2">
+<p>this means cache mappings will never expire,</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+time-to-live
+</td>
+<td class="hdlist2">
+<p>this means cache mappings will expire after a fixed duration following their creation,</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+time-to-idle
+</td>
+<td class="hdlist2">
+<p>this means cache mappings will expire after a fixed duration following their last access time.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For Java, see <code>org.ehcache.expiry.Expirations</code> and the XSD for XML.</p>
+</div>
+<div class="paragraph">
+<p>Read on to implement your own expiration scheme.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="custom-expiry"><a class="anchor" href="#custom-expiry"></a>Custom expiry</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Support your own expiration scheme simply means implementing the <code>Expiry</code> interface:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">/**
+ * A policy object that governs expiration for mappings in a {@link org.ehcache.Cache Cache}.
+ * &lt;P&gt;
+ *   Previous values are not accessible directly but are rather available through a {@link ValueSupplier value supplier}
+ *   to indicate that access can require computation (such as deserialization).
+ * &lt;/P&gt;
+ * &lt;P&gt;
+ * NOTE: Some cache configurations (eg. caches with eventual consistency) may use local (ie. non-consistent) state
+ * to decide whether to call {@link #getExpiryForUpdate(Object, ValueSupplier, Object)}  vs.
+ * {@link #getExpiryForCreation(Object, Object)}. For these cache configurations it is advised to return the same
+ * value for both of these methods
+ * &lt;/P&gt;
+ * &lt;P&gt;
+ * See {@link Expirations} for helper methods to create common {@code Expiry} instances.
+ * &lt;/P&gt;
+ *
+ * @param &lt;K&gt; the key type for the cache
+ * @param &lt;V&gt; the value type for the cache
+ *
+ * @see Expirations
+ */
+public interface Expiry&lt;K, V&gt; {
+
+  /**
+   * Returns the lifetime of an entry when it is initially added to a {@link org.ehcache.Cache Cache}.
+   * &lt;P&gt;
+   *   This method must not return {@code null}.
+   * &lt;/P&gt;
+   * &lt;P&gt;
+   *   Exceptions thrown from this method will be swallowed and result in the expiry duration being
+   *   {@link Duration#ZERO ZERO}.
+   * &lt;/P&gt;
+   *
+   * @param key the key of the newly added entry
+   * @param value the value of the newly added entry
+   * @return a non-null {@link Duration}
+   */
+  Duration getExpiryForCreation(K key, V value);
+
+  /**
+   * Returns the expiration {@link Duration} (relative to the current time) when an existing entry is accessed from a
+   * {@link org.ehcache.Cache Cache}.
+   * &lt;P&gt;
+   *   Returning {@code null} indicates that the expiration time remains unchanged.
+   * &lt;/P&gt;
+   * &lt;P&gt;
+   *   Exceptions thrown from this method will be swallowed and result in the expiry duration being
+   *   {@link Duration#ZERO ZERO}.
+   * &lt;/P&gt;
+   *
+   * @param key the key of the accessed entry
+   * @param value a value supplier for the accessed entry
+   * @return an expiration {@code Duration}, {@code null} means unchanged
+   */
+  Duration getExpiryForAccess(K key, ValueSupplier&lt;? extends V&gt; value);
+
+
+  /**
+   * Returns the expiration {@link Duration} (relative to the current time) when an existing entry is updated in a
+   * {@link org.ehcache.Cache Cache}.
+   * &lt;P&gt;
+   *   Returning {@code null} indicates that the expiration time remains unchanged.
+   * &lt;/P&gt;
+   * &lt;P&gt;
+   *   Exceptions thrown from this method will be swallowed and result in the expiry duration being
+   *   {@link Duration#ZERO ZERO}.
+   * &lt;/P&gt;
+   *
+   * @param key the key of the updated entry
+   * @param oldValue a value supplier for the previous value of the entry
+   * @param newValue the new value of the entry
+   * @return an expiration {@code Duration}, {@code null} means unchanged
+   */
+  Duration getExpiryForUpdate(K key, ValueSupplier&lt;? extends V&gt; oldValue, V newValue);
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The main points to remember on the return value from these methods:</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+some <code>Duration</code>
+</td>
+<td class="hdlist2">
+<p>indicates that the mapping will expire after that duration,</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<code>Duration.ZERO</code>
+</td>
+<td class="hdlist2">
+<p>indicates that the mapping is immediately expired,</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<code>Duration.INFINITE</code>
+</td>
+<td class="hdlist2">
+<p>indicates that the mapping will never expire,</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<code>null</code> <code>Duration</code>
+</td>
+<td class="hdlist2">
+<p>indicates that the previous expiration time is to be left unchanged, illegal at mapping creation time.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Note that you can access the details of the mapping, thus providing expiration times that are different per mapping.</p>
+</div>
+<div class="paragraph">
+<p>Also when used from XML, Ehcache expects your expiry implementation to have a <em>no-arg</em> constructor.</p>
+</div>
+<div class="paragraph">
+<p>Once you have implemented your own expiry, simply configure it.</p>
+</div>
+<div class="paragraph">
+<p>In Java:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+        ResourcePoolsBuilder.heap(100))
+    .withExpiry(new CustomExpiry()) <i class="conum" data-value="1"></i><b>(1)</b>
+    .build();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Simply pass your custom expiry instance into the cache builder.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In XML:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache alias="foo"&gt;
+  &lt;expiry&gt;
+    &lt;class&gt;com.pany.ehcache.MyExpiry&lt;/class&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+  &lt;/expiry&gt;
+  &lt;heap&gt;100&lt;/heap&gt;
+&lt;/cache&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Simply pass the fully qualified class name of your custom expiry.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
       </article>
     </div>
 
