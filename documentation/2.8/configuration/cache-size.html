@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.8 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -114,7 +114,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.8 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -148,7 +148,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="how-to-size-caches">How to Size Caches</h1><div id="toc-container">
@@ -293,7 +296,7 @@
 
 <p>The following configuration sets pools for all of this CacheManager’s caches:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
     <span class="na">name=</span><span class="s">"CM1"</span>
     <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span>
     <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
@@ -313,7 +316,7 @@
 <h3 id="explicitly-sizing-caches">Explicitly Sizing Caches</h3>
 <p>You can explicitly allocate resources to specific caches:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
     <span class="na">name=</span><span class="s">"CM1"</span>
     <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span>
     <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
@@ -345,7 +348,7 @@
 <h3 id="mixed-sizing-configurations">Mixed Sizing Configurations</h3>
 <p>If a CacheManager does not pool a particular resource, that resource can still be allocated in cache configuration, as shown in the following example.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
     <span class="na">name=</span><span class="s">"CM2"</span>
     <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span><span class="nt">&gt;</span>
   ...
@@ -370,7 +373,7 @@
 <h3 id="using-percents">Using Percents</h3>
 <p>The following configuration sets pools for each tier:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
     <span class="na">name=</span><span class="s">"CM1"</span>
     <span class="na">maxBytesLocalHeap=</span><span class="s">"1G"</span>
     <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
@@ -409,7 +412,7 @@
 
 <p>The CacheManager in this example does not pool any resources.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
     <span class="na">name=</span><span class="s">"CM3"</span>
     <span class="err">...</span> <span class="nt">&gt;</span>
   ...
@@ -439,7 +442,7 @@
 <h3 id="overflows">Overflows</h3>
 <p>Caches that do not specify overflow will overflow if a pool is set for off-heap and disk.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">maxBytesLocalHeap=</span><span class="s">"1g"</span> <span class="na">maxBytesLocalOffHeap=</span><span class="s">"4g"</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">maxBytesLocalHeap=</span><span class="s">"1g"</span> <span class="na">maxBytesLocalOffHeap=</span><span class="s">"4g"</span>
          <span class="na">maxBytesLocalDisk=</span><span class="s">"100g"</span> <span class="nt">&gt;</span>
 
   <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"explicitlyAllocatedCache1"</span>
@@ -477,7 +480,7 @@
 
 <p>For example, a cache may have the following configuration on one node:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
       <span class="na">maxEntriesOnHeap=</span><span class="s">"10000"</span>
       <span class="na">maxBytesLocalOffHeap=</span><span class="s">"8g"</span>
       <span class="na">eternal=</span><span class="s">"false"</span>
@@ -491,7 +494,7 @@
 
 <p>The same cache may have the following size configuration on another node:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
       <span class="na">maxEntriesOnHeap=</span><span class="s">"10000"</span>
       <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10g"</span>
       <span class="na">eternal=</span><span class="s">"false"</span>
@@ -505,7 +508,7 @@
 
 <p>If the cache exceeds its size constraints on a node, then with this configuration the Terracotta Server Array provides myCache with an unlimited amount of disk space for spillover and backup. To impose a limit, you must set <code class="highlighter-rouge">maxEntriesInCache</code> to a positive non-zero value:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
       <span class="na">maxEntriesOnHeap=</span><span class="s">"10000"</span>
       <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10g"</span>
       <span class="na">eternal=</span><span class="s">"false"</span>
@@ -546,7 +549,7 @@
 
 <p>The following example shows how to ignore the <code class="highlighter-rouge">Dog</code> class.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nd">@IgnoreSizeOf</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@IgnoreSizeOf</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Dog</span> <span class="o">{</span>
   <span class="kd">private</span> <span class="n">Gender</span> <span class="n">gender</span><span class="o">;</span>
   <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
@@ -556,7 +559,7 @@
 
 <p>The following example shows how to ignore the <code class="highlighter-rouge">sharedInstance</code> field.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyCacheEntry</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyCacheEntry</span> <span class="o">{</span>
   <span class="nd">@IgnoreSizeOf</span>
   <span class="kd">private</span> <span class="kd">final</span> <span class="n">SharedClass</span> <span class="n">sharedInstance</span><span class="o">;</span>
   <span class="o">...</span>
@@ -566,7 +569,7 @@
 
 <p>Packages may also be ignored if you add the @IgnoreSizeOf annotation to appropriate package-info.java of the desired package. Here is a sample package-info.java for and in the com.pany.ignore package:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nd">@IgnoreSizeOf</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@IgnoreSizeOf</span>
 <span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">pany</span><span class="o">.</span><span class="na">ignore</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">net.sf.ehcache.pool.sizeof.filter.IgnoreSizeOf</span><span class="o">;</span>
 </code></pre>
@@ -596,7 +599,7 @@ are serialized as byte arrays. The serialized size is then used as the basis for
 <h5 id="size-of-limitation-at-the-cachemanager-level">Size-Of Limitation at the CacheManager Level</h5>
 <p>Control how deep the size-of engine can go when sizing on-heap elements by adding the following element at the CacheManager level:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;sizeOfPolicy</span> <span class="na">maxDepth=</span><span class="s">"100"</span> <span class="na">maxDepthExceededBehavior=</span><span class="s">"abort"</span><span class="nt">/&gt;</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;sizeOfPolicy</span> <span class="na">maxDepth=</span><span class="s">"100"</span> <span class="na">maxDepthExceededBehavior=</span><span class="s">"abort"</span><span class="nt">/&gt;</span>
 </code></pre>
 </div>
 
@@ -783,7 +786,7 @@ one if both are set. This element has no effect on distributed caches.</p>
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 

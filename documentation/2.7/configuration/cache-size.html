@@ -10,7 +10,7 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache 2.7 Documentation</title>
+  <title>Ehcache</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
@@ -114,7 +114,7 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Ehcache 2.7 Documentation</h1>
+        <h1></h1>
       </div>
       <div>
         <BR/>
@@ -148,7 +148,10 @@
 
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
-         
+        
+        <h1 class="post-title"></h1>
+        <hr/>
+        
       </header>
       <article class="post-content">
         <h1 id="how-to-size-caches">How to Size Caches</h1><div id="toc-container">
@@ -213,7 +216,7 @@
   <td>`maxBytesLocalDisk` only</td>
   <td>The maximum number of cache entries or bytes a standalone cache can use on the local disk, or, when set at the CacheManager level (maxBytesLocalDisk only), a local pool available to all caches under that CacheManager. Distributed caches cannot use the local disk. Note that these settings apply only to temporary swapping of data to disk ("localTempSwap"); these settings do not apply to disk persistence.</td>
  </tr>
-
+&lt;/table&gt;
 
 Attributes that set a number of entries take an integer. Attributes that set a memory size (bytes) use the Java -Xmx syntax (for example: "500k", "200m", "2g") or percentage (for example: "20%"). Percentages, however, can be used only in the case where a CacheManager-level pool has been configured (see below).
 
@@ -263,9 +266,9 @@ The following configuration sets pools for all of this CacheManager's caches:
     <ehcache xmlns...="" name="CM1" maxbyteslocalheap="100M" maxbyteslocaloffheap="10G" maxbyteslocaldisk="50G">
     ...
     
-    &lt;cache name="Cache1" ... 
-    &lt;cache name="Cache2" ... 
-    &lt;cache name="Cache3" ... 
+    &lt;cache name="Cache1" ... &lt;/cache&gt;
+    &lt;cache name="Cache2" ... &lt;/cache&gt;
+    &lt;cache name="Cache3" ... &lt;/cache&gt;
     
     </ehcache>
 
@@ -280,13 +283,13 @@ You can explicitly allocate resources to specific caches:
     &lt;cache name="Cache1" ...
             maxBytesLocalHeap="50M"
             ...
-      
+      &lt;/cache&gt;
 
     &lt;cache name="Cache2" ...
            maxBytesLocalOffHeap="5G"
            ...
-      
-    &lt;cache name="Cache3" ... 
+      &lt;/cache&gt;
+    &lt;cache name="Cache3" ... &lt;/cache&gt;
     
     </ehcache>
 
@@ -306,13 +309,13 @@ If a CacheManager does not pool a particular resource, that resource can still b
             maxBytesLocalHeap="50M"
             maxEntriesLocalDisk="100000"
             ...
-      
+      &lt;/cache&gt;
 
     &lt;cache name="Cache5" ...
            maxBytesLocalOffHeap="10G"
            ...
-      
-    &lt;cache name="Cache6" ... 
+      &lt;/cache&gt;
+    &lt;cache name="Cache6" ... &lt;/cache&gt;
     
     </ehcache>
 
@@ -327,17 +330,17 @@ The following configuration sets pools for each tier:
     <!-- Cache1 gets 400Mb of heap, 2.5Gb of off-heap, and 5Gb of disk. -->
     &lt;cache name="Cache1" ... 
     maxBytesLocalHeap="40%"&gt;
-    
+    &lt;/cache&gt;
     
     <!-- Cache2 gets 300Mb of heap, 5Gb of off-heap, and 5Gb of disk. -->
     &lt;cache name="Cache2" ... 
     maxBytesLocalOffHeap="50%"&gt;
-    
+    &lt;/cache&gt;
     
     <!-- Cache2 gets 300Mb of heap, 2.5Gb of off-heap, and 40Gb of disk. -->
     &lt;cache name="Cache3" ... 
     maxBytesLocalDisk="80%"&gt;
-    
+    &lt;/cache&gt;
     </ehcache>
 
 
@@ -361,19 +364,19 @@ The CacheManager in this example does not pool any resources.
             maxBytesLocalHeap="50M"
             maxEntriesLocalDisk="100000"
             ...
-      
+      &lt;/cache&gt;
 
     &lt;cache name="Cache8" ...
            maxEntriesLocalHeap="1000"
            maxBytesLocalOffHeap="10G"
            ...
-      
+      &lt;/cache&gt;
     &lt;cache name="Cache9" ... 
            maxBytesLocalHeap="50M"
     ...
+    &lt;/cache&gt;
     
-    
-    
+    &lt;/ehcache&gt;
 
 Caches can be configured to use resources as necessary. Note that every cache in this example must declare a value for local heap. This is because no pool exists for the local heap; implicit (CacheManager configuration) or explicit (cache configuration) local-heap allocation is required.
 
@@ -690,7 +693,7 @@ If we model the hit distribution as a simple power-law then:
 <!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
 
 <script type="text/javascript">
-        $('#ehc_mnu_docs').addClass("active");
+        $('#').addClass("active");
         $('#').addClass("active");
 </script>
 
