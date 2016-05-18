@@ -4,13 +4,545 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://www.ehcache.org/feed.xml" />
 <link rel="alternate" type="text/html" href="http://www.ehcache.org" />
-<updated>2016-05-18T00:33:27-07:00</updated>
+<updated>2016-05-18T00:48:44-07:00</updated>
 <id>http://www.ehcache.org/</id>
 <author>
   <name>Ehcache</name>
   <uri>http://www.ehcache.org/</uri>
   <email>tc-oss@softwareag.com</email>
 </author>
+
+    
+        
+        <entry>
+          <title type="html"><![CDATA[Ehcache 3, JSR-107 and Spring 4.2]]></title>
+          <link rel="alternate" type="text/html" href="http://www.ehcache.org/blog/2016/05/17/ehcache3_jsr107_spring.html" />
+          <id>http://www.ehcache.org/blog/2016/05/17/ehcache3_jsr107_spring</id>
+          <published>2016-05-17T22:30:00-07:00</published>
+          <updated>2016-05-17T22:30:00-07:00</updated>
+          <author>
+            <name>Geoff Gibson</name>
+            <uri>http://www.ehcache.org</uri>
+          </author>
+          <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In this post I would like to demonstrate how to use &lt;a href=&quot;https://github.com/ehcache/ehcache3&quot;&gt;Ehcache 3.0&lt;/a&gt; as Spring&amp;#8217;s caching implementation.
+This article will show you how to use &lt;a href=&quot;https://github.com/ehcache/ehcache3&quot;&gt;Ehcache 3.0&lt;/a&gt;, &lt;a href=&quot;http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/&quot;&gt;Spring 4.2&lt;/a&gt; and the &lt;a href=&quot;https://jcp.org/en/jsr/detail?id=107&quot;&gt;JSR-107&lt;/a&gt; annotations to build a simple Spring web application.
+I have also included some background reading for those of you that would like to read more in depth on the subject matter.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;background-reading&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#background-reading&quot;&gt;&lt;/a&gt;Background reading&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Ehcache 3.0 Documentation&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/documentation/3.0/&quot; class=&quot;bare&quot;&gt;http://www.ehcache.org/documentation/3.0/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Spring Cache Abstraction&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/cache.html&quot; class=&quot;bare&quot;&gt;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/cache.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Spring Cache Abstraction, JCache (JSR-107) annotations&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/cache.html#cache-jsr-107&quot; class=&quot;bare&quot;&gt;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/cache.html#cache-jsr-107&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://spring.io/blog/2014/04/14/cache-abstraction-jcache-jsr-107-annotations-support&quot; class=&quot;bare&quot;&gt;https://spring.io/blog/2014/04/14/cache-abstraction-jcache-jsr-107-annotations-support&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The following is the GitHub example associated with this post:&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/gibsong/ehcache-jsr107-spring&quot; class=&quot;bare&quot;&gt;https://github.com/gibsong/ehcache-jsr107-spring&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;jsr-107-jcache-annotations&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#jsr-107-jcache-annotations&quot;&gt;&lt;/a&gt;JSR-107(JCache) Annotations&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you are familiar with Spring, you know that it provides annotations to assist in developing applications.
+In regards to caching, Spring offers support for two sets of annotations that can be used to implement caching.
+You have the original Spring annotations and the new JSR-107 annotations.
+The original Spring annotations are available to use with Spring versions 3.1+, while the JSR-107 annotations are only available in Spring 4.1+.
+In this example we are going to use the JSR-107 annotations.
+Below I have listed the most commonly used JSR-107(JCache) annotations, with brief descriptions as well as links to their API&amp;#8217;s.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;@CacheDefaults&lt;/strong&gt; - allows configuration of defaults at the class level.
+For instance, you can define a cache name at the class level and this will be used as the default.&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CacheDefaults.html&quot; class=&quot;bare&quot;&gt;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CacheDefaults.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;@CacheResult&lt;/strong&gt; - Cache the return value of the method.
+The first time the method is invoked with a particular key it will be run and the value will be cached.
+On subsequent calls with the same key if the value is still cached it will be taken from the cache instead of running the method.&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CacheResult.html&quot; class=&quot;bare&quot;&gt;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CacheResult.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock important&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-important&quot; title=&quot;Important&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+Remember that the value is not cached forever.
+The length of time will be influenced by how you set your eviction policy, TTL and TTI.
+Please see this discussion for the difference between TTL and TTI: &lt;a href=&quot;http://stackoverflow.com/questions/2583429/how-to-differentiate-between-time-to-live-and-time-to-idle-in-ehcache&quot; class=&quot;bare&quot;&gt;http://stackoverflow.com/questions/2583429/how-to-differentiate-between-time-to-live-and-time-to-idle-in-ehcache&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;@CachePut&lt;/strong&gt; - Cache the value specified as the @CacheValue.
+This is similar to @CacheResult but the difference is it will cache the @CacheValue every time the method is called.&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CachePut.html&quot; class=&quot;bare&quot;&gt;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CachePut.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;@CacheRemove&lt;/strong&gt; - removes entries from the specified cache that match the provided/generated key&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CacheRemove.html&quot; class=&quot;bare&quot;&gt;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CacheRemove.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;@CacheRemoveAll&lt;/strong&gt; - removes all elements in the specified cache&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CacheRemoveAll.html&quot; class=&quot;bare&quot;&gt;http://static.javadoc.io/javax.cache/cache-api/1.0.0/javax/cache/annotation/CacheRemoveAll.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;strong&gt;javax.cache.annotation&lt;/strong&gt; package which includes all the JSR-107 annotations:&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.javadoc.io/doc/javax.cache/cache-api/1.0.0&quot; class=&quot;bare&quot;&gt;http://www.javadoc.io/doc/javax.cache/cache-api/1.0.0&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;steps&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#steps&quot;&gt;&lt;/a&gt;Steps&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Let&amp;#8217;s get started!
+Below are a few quick steps to get you up and running with Ehcache 3, Spring 4.1+ and JSR-107.
+The entire example can be found on GitHub at &lt;a href=&quot;https://github.com/gibsong/ehcache-jsr107-spring&quot; class=&quot;bare&quot;&gt;https://github.com/gibsong/ehcache-jsr107-spring&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;olist arabic&quot;&gt;
+&lt;ol class=&quot;arabic&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Create a maven Spring project&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add Ehcache 3 to your pom.xml.&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;pom.xml&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;  &amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.ehcache&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;ehcache&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;3.0.0&amp;lt;/version&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+  &amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Be sure to substitute the version number above with the version number of Ehcache that you want to use.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock important&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-important&quot; title=&quot;Important&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+The Ehcache 3 jar must be on the classpath!
+Remove all existing caching provider jars from the classpath to ensure that the right implementation is used.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add the jar for the JSR-107 API to the pom.xml&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;pom.xml&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;  &amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;javax.cache&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;cache-api&amp;lt;/artifactId&amp;gt;
+  &amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add Spring boot jars&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;pom.xml&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;  &amp;lt;parent&amp;gt;
+    &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;spring-boot-starter-parent&amp;lt;/artifactId&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+    &amp;lt;version&amp;gt;1.3.2.RELEASE&amp;lt;/version&amp;gt;
+  &amp;lt;/parent&amp;gt;
+  ...
+  &amp;lt;dependencies&amp;gt;
+    &amp;lt;dependency&amp;gt;
+      &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+      &amp;lt;artifactId&amp;gt;spring-boot-starter-cache&amp;lt;/artifactId&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+    &amp;lt;/dependency&amp;gt;
+    &amp;lt;dependency&amp;gt;
+      &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+      &amp;lt;artifactId&amp;gt;spring-boot-starter-web&amp;lt;/artifactId&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;(3)&lt;/b&gt;
+    &amp;lt;/dependency&amp;gt;
+    ...
+  &amp;lt;dependencies&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Add the spring-boot-starter-parent parent project to use Spring boot&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Add the spring-boot-starter-cache to use Spring Framework&amp;#8217;s caching support&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;3&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Add spring-boot-starter-web to use Spring MVC&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Enable caching.
+This can be done in 1 of 2 ways:&lt;/p&gt;
+&lt;div class=&quot;olist loweralpha&quot;&gt;
+&lt;ol class=&quot;loweralpha&quot; type=&quot;a&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Enable with @EnableCaching annotation:&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;SpringJsr107Ehcache3Application.java&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;  @EnableCaching
+  public class SpringJsr107Ehcache3Application
+  {
+    public static void main(String[] args)
+    {
+        SpringApplication.run(SpringJsr107Ehcache3Application.class, args);
+    }
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Or enable from the Spring xml configuration file by adding the following tag: &amp;lt;cache:annotation-driven /&amp;gt;&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;  &amp;lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:cache=&quot;http://www.springframework.org/schema/cache&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd&quot;&amp;gt;
+
+    &amp;lt;cache:annotation-driven /&amp;gt;
+
+  &amp;lt;/beans&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Declare caching on a method by adding the @CacheResult annotation.&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;PersonService.java&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;  @CacheResult &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+  Person getPerson(int ssn)
+  {
+    switch (ssn)
+    {
+      case 123456789:
+        return new Person(ssn, &quot;Geoff&quot;, &quot;Gibson&quot;);
+      case 987654321:
+        return new Person(ssn, &quot;Cory&quot;, &quot;Beck&quot;);
+      default:
+        return new Person(ssn,&quot;John&quot;,&quot;Doe&quot;);
+    }
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Add the @CacheResult annotation above the method.
+In this case the key is the &quot;int ssn&quot; parameter and the value cached is a Person instance.
+So if you call this method with ssn=&quot;123456789&quot;, the Person(ssn, &quot;Geoff&quot;, &quot;Gibson&quot;) will be returned and cached.
+The next time the getPerson(&amp;#8230;&amp;#8203;) method is called with ssn=&quot;123456789&quot; (assuming the key/value wasn&amp;#8217;t evicted from the cache) the method won&amp;#8217;t run and instead it will grab Person(ssn, &quot;Geoff&quot;, &quot;Gibson&quot;) from the cache and return it.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Configure ehcache.xml&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;ehcache.xml&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;config
+    xmlns:xsi=&#39;http://www.w3.org/2001/XMLSchema-instance&#39;
+    xmlns=&#39;http://www.ehcache.org/v3&#39;  &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+    xmlns:jsr107=&#39;http://www.ehcache.org/v3/jsr107&#39;&amp;gt;  &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+
+  &amp;lt;service&amp;gt;
+    &amp;lt;jsr107:defaults&amp;gt;
+      &amp;lt;jsr107:cache name=&quot;people&quot; template=&quot;heap-cache&quot;/&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;(3)&lt;/b&gt;
+    &amp;lt;/jsr107:defaults&amp;gt;
+  &amp;lt;/service&amp;gt;
+
+  &amp;lt;cache-template name=&quot;heap-cache&quot;&amp;gt;
+    &amp;lt;listeners&amp;gt;     &lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;(4)&lt;/b&gt;
+      &amp;lt;listener&amp;gt;
+        &amp;lt;class&amp;gt;org.terracotta.ehcache.EventLogger&amp;lt;/class&amp;gt;
+        &amp;lt;event-firing-mode&amp;gt;ASYNCHRONOUS&amp;lt;/event-firing-mode&amp;gt;
+        &amp;lt;event-ordering-mode&amp;gt;UNORDERED&amp;lt;/event-ordering-mode&amp;gt;
+        &amp;lt;events-to-fire-on&amp;gt;CREATED&amp;lt;/events-to-fire-on&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;(5)&lt;/b&gt;
+      &amp;lt;/listener&amp;gt;
+      &amp;lt;listener&amp;gt;
+        &amp;lt;class&amp;gt;org.terracotta.ehcache.EventLogger&amp;lt;/class&amp;gt;
+        &amp;lt;event-firing-mode&amp;gt;ASYNCHRONOUS&amp;lt;/event-firing-mode&amp;gt;
+        &amp;lt;event-ordering-mode&amp;gt;UNORDERED&amp;lt;/event-ordering-mode&amp;gt;
+        &amp;lt;events-to-fire-on&amp;gt;UPDATED&amp;lt;/events-to-fire-on&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;6&quot;&gt;&lt;/i&gt;&lt;b&gt;(6)&lt;/b&gt;
+      &amp;lt;/listener&amp;gt;
+      &amp;lt;listener&amp;gt;
+        &amp;lt;class&amp;gt;org.terracotta.ehcache.EventLogger&amp;lt;/class&amp;gt;
+        &amp;lt;event-firing-mode&amp;gt;ASYNCHRONOUS&amp;lt;/event-firing-mode&amp;gt;
+        &amp;lt;event-ordering-mode&amp;gt;UNORDERED&amp;lt;/event-ordering-mode&amp;gt;
+        &amp;lt;events-to-fire-on&amp;gt;EXPIRED&amp;lt;/events-to-fire-on&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;7&quot;&gt;&lt;/i&gt;&lt;b&gt;(7)&lt;/b&gt;
+      &amp;lt;/listener&amp;gt;
+      &amp;lt;listener&amp;gt;
+        &amp;lt;class&amp;gt;org.terracotta.ehcache.EventLogger&amp;lt;/class&amp;gt;
+        &amp;lt;event-firing-mode&amp;gt;ASYNCHRONOUS&amp;lt;/event-firing-mode&amp;gt;
+        &amp;lt;event-ordering-mode&amp;gt;UNORDERED&amp;lt;/event-ordering-mode&amp;gt;
+        &amp;lt;events-to-fire-on&amp;gt;REMOVED&amp;lt;/events-to-fire-on&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;8&quot;&gt;&lt;/i&gt;&lt;b&gt;(8)&lt;/b&gt;
+      &amp;lt;/listener&amp;gt;
+      &amp;lt;listener&amp;gt;
+        &amp;lt;class&amp;gt;org.terracotta.ehcache.EventLogger&amp;lt;/class&amp;gt;
+        &amp;lt;event-firing-mode&amp;gt;ASYNCHRONOUS&amp;lt;/event-firing-mode&amp;gt;
+        &amp;lt;event-ordering-mode&amp;gt;UNORDERED&amp;lt;/event-ordering-mode&amp;gt;
+        &amp;lt;events-to-fire-on&amp;gt;EVICTED&amp;lt;/events-to-fire-on&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;9&quot;&gt;&lt;/i&gt;&lt;b&gt;(9)&lt;/b&gt;
+      &amp;lt;/listener&amp;gt;
+    &amp;lt;/listeners&amp;gt;
+    &amp;lt;resources&amp;gt;
+      &amp;lt;heap unit=&quot;entries&quot;&amp;gt;2000&amp;lt;/heap&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;10&quot;&gt;&lt;/i&gt;&lt;b&gt;(10)&lt;/b&gt;
+      &amp;lt;offheap unit=&quot;MB&quot;&amp;gt;100&amp;lt;/offheap&amp;gt; &lt;i class=&quot;conum&quot; data-value=&quot;11&quot;&gt;&lt;/i&gt;&lt;b&gt;(11)&lt;/b&gt;
+    &amp;lt;/resources&amp;gt;
+  &amp;lt;/cache-template&amp;gt;
+&amp;lt;/config&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;The core namespace, the xsd can be found here: &lt;a href=&quot;http://www.ehcache.org/schema/ehcache-core-3.0.xsd&quot; class=&quot;bare&quot;&gt;http://www.ehcache.org/schema/ehcache-core-3.0.xsd&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;The JSR-107 namespace, the xsd can be found here: &lt;a href=&quot;http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd&quot; class=&quot;bare&quot;&gt;http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;3&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Defines a cache with alias &quot;people&quot;, which inherits from cache-template &quot;heap-cache&quot;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;4&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;This section allows you to add cache event listeners.
+I have added 4 event listeners.
+Each event will be logged, by the EventLogger class, when it occurs.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;5&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Defines an event listener for when an entry is added to the cache&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;6&quot;&gt;&lt;/i&gt;&lt;b&gt;6&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Defines an event listener for when an entry is updated in the cache.
+However in this example this one will never be used.
+I just added it as an example.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;7&quot;&gt;&lt;/i&gt;&lt;b&gt;7&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Defines an event listener for when an entry is expired from the cache&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;8&quot;&gt;&lt;/i&gt;&lt;b&gt;8&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Defines an event listener for when an entry is removed from the cache&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;9&quot;&gt;&lt;/i&gt;&lt;b&gt;9&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Defines an event listener for when an entry is evicted from the cache&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;10&quot;&gt;&lt;/i&gt;&lt;b&gt;10&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;The heap is configured to allow 2000 entries&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;11&quot;&gt;&lt;/i&gt;&lt;b&gt;11&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;The offheap storage is configured with 100 MB of space.
+Remember the unit of measure is case sensitive.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+XML Configuration Documentation: &lt;a href=&quot;http://www.ehcache.org/documentation/3.0/xml.html&quot; class=&quot;bare&quot;&gt;http://www.ehcache.org/documentation/3.0/xml.html&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create a cache by implementing the JCacheManagerCustomizer.customize(CacheManager cacheManager) method, which will be invoked before the CacheManager is used.&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;PersonService.java&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;  @Component
+  public static class CachingSetup implements JCacheManagerCustomizer
+  {
+    @Override
+    public void customize(CacheManager cacheManager)
+    {
+      cacheManager.createCache(&quot;people&quot;, new MutableConfiguration&amp;lt;&amp;gt;()  &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+        .setExpiryPolicyFactory(TouchedExpiryPolicy.factoryOf(new Duration(SECONDS, 10))) &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+        .setStoreByValue(false)
+        .setStatisticsEnabled(true));
+    }
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Creates a cache with an alias of &quot;people&quot;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;This line sets the expiration policy.
+In this case we set it to 10 seconds.
+Thus, if an entry hasn&amp;#8217;t been touched (created, updated, or accessed) for the last 10 seconds it will be evicted.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+JCacheManagerCustomizer API: &lt;a href=&quot;https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/cache/JCacheManagerCustomizer.html&quot; class=&quot;bare&quot;&gt;https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/cache/JCacheManagerCustomizer.html&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now you can build the project by running the following maven command: mvn clean install&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;To run the application use this maven command: mvn spring-boot:run&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;To make a get request to the application use the following url: &lt;a href=&quot;http://localhost:8080/person/{ssn}&quot; class=&quot;bare&quot;&gt;http://localhost:8080/person/{ssn}&lt;/a&gt;
+IMPORTANT: Remember to replace {ssn} in the url with an integer value.  123456789 and 987654321 are mapped to unique Person instances, while anything else maps to a generic Person instance.
+== Conclusion&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Wow wasn&amp;#8217;t that easy!
+I hope you enjoyed my quick start tutorial on how to use Ehcache 3 with Spring 4.1+ and JSR-107.
+If you have any questions please feel free to send them to me at &lt;a href=&quot;mailto:geoff.gibson@softwareag.com&quot;&gt;geoff.gibson@softwareag.com&lt;/a&gt; and I will be happy to help out.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/blog/2016/05/17/ehcache3_jsr107_spring.html&quot;&gt;Ehcache 3, JSR-107 and Spring 4.2&lt;/a&gt; was originally published by Geoff Gibson at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 17, 2016.&lt;/p&gt;</content>
+        </entry>
+    
 
     
         
