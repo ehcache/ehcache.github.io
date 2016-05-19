@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://www.ehcache.org/feed.xml" />
 <link rel="alternate" type="text/html" href="http://www.ehcache.org" />
-<updated>2016-05-19T02:06:58-07:00</updated>
+<updated>2016-05-19T08:18:32-07:00</updated>
 <id>http://www.ehcache.org/</id>
 <author>
   <name>Ehcache</name>
@@ -1393,6 +1393,25 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 
     
 
+    
+
+    
+        
+        <entry>
+          <title type="html"><![CDATA[Ehcache 3.0 Released with Revamped API and Off-Heap Storage]]></title>
+          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2016/05/01/ehcache-released.html" />
+          <id>http://www.ehcache.org/resources/2016/05/01/ehcache-released</id>
+          <published>2016-05-01T17:00:00-07:00</published>
+          <updated>2016-05-01T17:00:00-07:00</updated>
+          <author>
+            <name></name>
+            <uri>http://www.ehcache.org</uri>
+          </author>
+          <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;An &lt;a href=&quot;https://www.infoq.com/news/2016/05/ehcache-3.0&quot;&gt;article about the Ehcache 3 release&lt;/a&gt; on InfoQ by &lt;a href=&quot;https://twitter.com/mraible&quot;&gt;Matt Raible&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2016/05/01/ehcache-released.html&quot;&gt;Ehcache 3.0 Released with Revamped API and Off-Heap Storage&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 01, 2016.&lt;/p&gt;</content>
+        </entry>
     
 
     
