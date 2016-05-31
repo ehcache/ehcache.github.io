@@ -349,7 +349,8 @@ The entire example can be found on GitHub at <a href="https://github.com/gibsong
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Create a maven Spring project</p>
+<p>Create a maven Spring project.
+Maven 3.2 or greater is required.</p>
 </li>
 <li>
 <p>Add Ehcache 3 to your pom.xml.</p>
@@ -436,6 +437,16 @@ Remove all existing caching provider jars from the classpath to ensure that the 
 <td>Add spring-boot-starter-web to use Spring MVC</td>
 </tr>
 </table>
+</div>
+</li>
+<li>
+<p>Set the <strong>spring.cache.jcache.config</strong> property to include the classpath and ehcache.xml file.
+This needs to be done in the application.properties file.</p>
+<div class="listingblock">
+<div class="title">application.properties</div>
+<div class="content">
+<pre>spring.cache.jcache.config=classpath:ehcache.xml</pre>
+</div>
 </div>
 </li>
 <li>
@@ -526,38 +537,18 @@ The next time the getPerson(&#8230;&#8203;) method is called with ssn="123456789
   &lt;/service&gt;
 
   &lt;cache-template name="heap-cache"&gt;
-    &lt;listeners&gt;     <i class="conum" data-value="4"></i><b>(4)</b>
-      &lt;listener&gt;
-        &lt;class&gt;org.terracotta.ehcache.EventLogger&lt;/class&gt;
-        &lt;event-firing-mode&gt;ASYNCHRONOUS&lt;/event-firing-mode&gt;
-        &lt;event-ordering-mode&gt;UNORDERED&lt;/event-ordering-mode&gt;
-        &lt;events-to-fire-on&gt;CREATED&lt;/events-to-fire-on&gt; <i class="conum" data-value="5"></i><b>(5)</b>
-      &lt;/listener&gt;
-      &lt;listener&gt;
-        &lt;class&gt;org.terracotta.ehcache.EventLogger&lt;/class&gt;
-        &lt;event-firing-mode&gt;ASYNCHRONOUS&lt;/event-firing-mode&gt;
-        &lt;event-ordering-mode&gt;UNORDERED&lt;/event-ordering-mode&gt;
-        &lt;events-to-fire-on&gt;UPDATED&lt;/events-to-fire-on&gt; <i class="conum" data-value="6"></i><b>(6)</b>
-      &lt;/listener&gt;
-      &lt;listener&gt;
-        &lt;class&gt;org.terracotta.ehcache.EventLogger&lt;/class&gt;
-        &lt;event-firing-mode&gt;ASYNCHRONOUS&lt;/event-firing-mode&gt;
-        &lt;event-ordering-mode&gt;UNORDERED&lt;/event-ordering-mode&gt;
-        &lt;events-to-fire-on&gt;EXPIRED&lt;/events-to-fire-on&gt; <i class="conum" data-value="7"></i><b>(7)</b>
-      &lt;/listener&gt;
-      &lt;listener&gt;
-        &lt;class&gt;org.terracotta.ehcache.EventLogger&lt;/class&gt;
-        &lt;event-firing-mode&gt;ASYNCHRONOUS&lt;/event-firing-mode&gt;
-        &lt;event-ordering-mode&gt;UNORDERED&lt;/event-ordering-mode&gt;
-        &lt;events-to-fire-on&gt;REMOVED&lt;/events-to-fire-on&gt; <i class="conum" data-value="8"></i><b>(8)</b>
-      &lt;/listener&gt;
-      &lt;listener&gt;
-        &lt;class&gt;org.terracotta.ehcache.EventLogger&lt;/class&gt;
-        &lt;event-firing-mode&gt;ASYNCHRONOUS&lt;/event-firing-mode&gt;
-        &lt;event-ordering-mode&gt;UNORDERED&lt;/event-ordering-mode&gt;
-        &lt;events-to-fire-on&gt;EVICTED&lt;/events-to-fire-on&gt; <i class="conum" data-value="9"></i><b>(9)</b>
-      &lt;/listener&gt;
-    &lt;/listeners&gt;
+    &lt;listeners&gt;    <i class="conum" data-value="4"></i><b>(4)</b>
+      &lt;listener&gt;
+        &lt;class&gt;org.terracotta.ehcache.EventLogger&lt;/class&gt;
+        &lt;event-firing-mode&gt;ASYNCHRONOUS&lt;/event-firing-mode&gt;
+        &lt;event-ordering-mode&gt;UNORDERED&lt;/event-ordering-mode&gt;
+        &lt;events-to-fire-on&gt;CREATED&lt;/events-to-fire-on&gt; <i class="conum" data-value="5"></i><b>(5)</b>
+        &lt;events-to-fire-on&gt;UPDATED&lt;/events-to-fire-on&gt; <i class="conum" data-value="6"></i><b>(6)</b>
+        &lt;events-to-fire-on&gt;EXPIRED&lt;/events-to-fire-on&gt; <i class="conum" data-value="7"></i><b>(7)</b>
+        &lt;events-to-fire-on&gt;REMOVED&lt;/events-to-fire-on&gt; <i class="conum" data-value="8"></i><b>(8)</b>
+        &lt;events-to-fire-on&gt;EVICTED&lt;/events-to-fire-on&gt; <i class="conum" data-value="9"></i><b>(9)</b>
+      &lt;/listener&gt;
+    &lt;/listeners&gt;
     &lt;resources&gt;
       &lt;heap unit="entries"&gt;2000&lt;/heap&gt; <i class="conum" data-value="10"></i><b>(10)</b>
       &lt;offheap unit="MB"&gt;100&lt;/offheap&gt; <i class="conum" data-value="11"></i><b>(11)</b>
@@ -583,30 +574,30 @@ The next time the getPerson(&#8230;&#8203;) method is called with ssn="123456789
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
 <td>This section allows you to add cache event listeners.
-I have added 4 event listeners.
+I added a listener for 5 events.
 Each event will be logged, by the EventLogger class, when it occurs.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Defines an event listener for when an entry is added to the cache</td>
+<td>Defines a CREATED event, when an entry is added to the cache, with this listener.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Defines an event listener for when an entry is updated in the cache.
+<td>Defines an UPDATED event, when an entry is updated in the cache, with this listener.
 However in this example this one will never be used.
 I just added it as an example.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>Defines an event listener for when an entry is expired from the cache</td>
+<td>Defines an EXPIRED event, when an entry is expired from the cache, with this listener.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>Defines an event listener for when an entry is removed from the cache</td>
+<td>Defines an REMOVED event, when an entry is removed from the cache, with this listener.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
-<td>Defines an event listener for when an entry is evicted from the cache</td>
+<td>Defines an EVICTED event, when an entry is evicted from the cache, with this listener.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="10"></i><b>10</b></td>
@@ -686,11 +677,16 @@ JCacheManagerCustomizer API: <a href="https://docs.spring.io/spring-boot/docs/cu
 </li>
 <li>
 <p>To make a get request to the application use the following url: <a href="http://localhost:8080/person/{ssn}" class="bare">http://localhost:8080/person/{ssn}</a>
-IMPORTANT: Remember to replace {ssn} in the url with an integer value.  123456789 and 987654321 are mapped to unique Person instances, while anything else maps to a generic Person instance.
-== Conclusion</p>
+IMPORTANT: Remember to replace {ssn} in the url with an integer value.
+123456789 and 987654321 are mapped to unique Person instances, while anything else maps to a generic Person instance.</p>
 </li>
 </ol>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="conclusion"><a class="anchor" href="#conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Wow wasn&#8217;t that easy!
 I hope you enjoyed my quick start tutorial on how to use Ehcache 3 with Spring 4.1+ and JSR-107.
