@@ -528,6 +528,19 @@ pre {
 .post-list .entry:last-child {
   border-bottom: none; }
 
+.ehcache-documentation .current {
+  float: right;
+  color: limegreen;
+  font-size: 14px; }
+.ehcache-documentation .future {
+  float: right;
+  color: orange;
+  font-size: 14px; }
+.ehcache-documentation .old {
+  float: right;
+  color: red;
+  font-size: 14px; }
+
 /**
  * Site footer
  */

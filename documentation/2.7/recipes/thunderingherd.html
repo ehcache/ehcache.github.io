@@ -218,7 +218,7 @@
 <p>The application is using a cache using a read-through pattern with code that looks approximately like:</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/* read some data, check cache first, otherwise read from SoR */</span>
-<span class="kd">public</span> <span class="n">V</span> <span class="nf">readSomeData</span><span class="p">(</span><span class="n">K</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="n">V</span> <span class="nf">readSomeData</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
   <span class="n">Element</span> <span class="n">element</span><span class="o">;</span>
   <span class="k">if</span> <span class="o">((</span><span class="n">element</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">))</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>

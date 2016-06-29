@@ -206,7 +206,7 @@ It has caching support for classes and methods using two annotations:</p>
 In the following example, the value is the return type, a Manual. The key is extracted from the ISBN argument using the id.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">"manual"</span><span class="o">,</span> <span class="n">key</span><span class="o">=</span><span class="s">"#isbn.id"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">Manual</span> <span class="nf">findManual</span><span class="p">(</span><span class="n">ISBN</span> <span class="n">isbn</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">checkWarehouse</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Manual</span> <span class="nf">findManual</span><span class="o">(</span><span class="n">ISBN</span> <span class="n">isbn</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">checkWarehouse</span><span class="o">)</span>
 </code></pre>
 </div>
 
@@ -214,7 +214,7 @@ In the following example, the value is the return type, a Manual. The key is ext
 <p>Clears the cache when called.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@CacheEvict</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"manuals"</span><span class="o">,</span> <span class="n">allEntries</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">loadManuals</span><span class="p">(</span><span class="n">InputStream</span> <span class="n">batch</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">loadManuals</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">batch</span><span class="o">)</span>
 </code></pre>
 </div>
 
@@ -229,7 +229,7 @@ can use it with 3.1.</p>
 named “messageCache”. The values are of type <code class="highlighter-rouge">Message</code>. The id for each entry is the <code class="highlighter-rouge">id</code> argument given.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">cacheName</span> <span class="o">=</span> <span class="s">"messageCache"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="n">Message</span> <span class="nf">findMessage</span><span class="p">(</span><span class="kt">long</span> <span class="n">id</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">Message</span> <span class="nf">findMessage</span><span class="o">(</span><span class="kt">long</span> <span class="n">id</span><span class="o">)</span>
 </code></pre>
 </div>
 
@@ -239,7 +239,7 @@ In this example, <code class="highlighter-rouge">cache.removeAll()</code> is cal
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@TriggersRemove</span><span class="o">(</span><span class="n">cacheName</span> <span class="o">=</span> <span class="s">"messagesCache"</span><span class="o">,</span>
 <span class="n">when</span> <span class="o">=</span> <span class="n">When</span><span class="o">.</span><span class="na">AFTER_METHOD_INVOCATION</span><span class="o">,</span> <span class="n">removeAll</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addMessage</span><span class="p">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addMessage</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">)</span>
 </code></pre>
 </div>
 
@@ -275,7 +275,7 @@ and providing further links.</p>
 <p>Add the Annotation to methods you would like to cache. Lets assume you are using the Dog getDog(String name) method from above:</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"getDog"</span><span class="o">)</span>
-<span class="n">Dog</span> <span class="nf">getDog</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">Dog</span> <span class="nf">getDog</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
   <span class="o">....</span>
 <span class="o">}</span>
 </code></pre>

@@ -279,7 +279,7 @@ The following example demonstrates how to create an abstract CacheEventListenerF
    *                   separated name value pairs in ehcache.xml
    * @return a constructed CacheEventListener
    */</span>
-  <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">CacheEventListener</span> <span class="n">createCacheEventListener</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">);</span>
+  <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">CacheEventListener</span> <span class="nf">createCacheEventListener</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
 </div>
@@ -326,7 +326,7 @@ interface:</p>
    * @param cache   the cache emitting the notification
    * @param element just deleted
    */</span>
-  <span class="kt">void</span> <span class="n">notifyElementRemoved</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+  <span class="kt">void</span> <span class="nf">notifyElementRemoved</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
 
   <span class="cm">/**
    * Called immediately after an element has been put into the cache. The
@@ -340,7 +340,7 @@ interface:</p>
    * @param cache   the cache emitting the notification
    * @param element the element which was just put into the cache.
    */</span>
-  <span class="kt">void</span> <span class="n">notifyElementPut</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+  <span class="kt">void</span> <span class="nf">notifyElementPut</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
 
   <span class="cm">/**
    * Called immediately after an element has been put into the cache and the element already
@@ -356,7 +356,7 @@ interface:</p>
    * @param cache   the cache emitting the notification
    * @param element the element which was just put into the cache.
    */</span>
-  <span class="kt">void</span> <span class="n">notifyElementUpdated</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+  <span class="kt">void</span> <span class="nf">notifyElementUpdated</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
   
   <span class="cm">/**
    * Called immediately after an element is &lt;i&gt;found&lt;/i&gt; to be expired. The
@@ -384,12 +384,12 @@ interface:</p>
    *    DiskStore a deadlock will result. Accordingly implementers of this method
    *    should not call back into Cache.
    */</span>
-  <span class="kt">void</span> <span class="n">notifyElementExpired</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">);</span>
+  <span class="kt">void</span> <span class="nf">notifyElementExpired</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">);</span>
 
   <span class="cm">/**
    * Give the replicator a chance to cleanup and free resources when no longer needed
    */</span>
-  <span class="kt">void</span> <span class="n">dispose</span><span class="o">();</span>
+  <span class="kt">void</span> <span class="nf">dispose</span><span class="o">();</span>
 
   <span class="cm">/**
    * Creates a clone of this listener. This method will only be called by Ehcache before a
@@ -400,7 +400,7 @@ interface:</p>
    * @return a clone
    * @throws CloneNotSupportedException if the listener could not be cloned.
    */</span>
-  <span class="kd">public</span> <span class="n">Object</span> <span class="n">clone</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">Object</span> <span class="nf">clone</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span><span class="o">;</span>
 <span class="o">}</span>
 </code></pre>
 </div>

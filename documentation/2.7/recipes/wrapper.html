@@ -212,9 +212,9 @@
 <p>You can still get the Ehcache cache in case you want access to the full API.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
-  <span class="kt">void</span> <span class="n">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">);</span>
+  <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">);</span>
     
-  <span class="n">V</span> <span class="n">get</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">);</span>
+  <span class="n">V</span> <span class="nf">get</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
 </div>
@@ -227,16 +227,16 @@
   <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">;</span>
   <span class="kd">private</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">;</span>
 
-  <span class="kd">public</span> <span class="n">EhcacheWrapper</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">EhcacheWrapper</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">this</span><span class="o">.</span><span class="na">cacheName</span> <span class="o">=</span> <span class="n">cacheName</span><span class="o">;</span>
     <span class="k">this</span><span class="o">.</span><span class="na">cacheManager</span> <span class="o">=</span> <span class="n">cacheManager</span><span class="o">;</span>
   <span class="o">}</span>
     
-  <span class="kd">public</span> <span class="kt">void</span> <span class="n">put</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="kd">final</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="kd">final</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">getCache</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
   <span class="o">}</span>
     
-  <span class="kd">public</span> <span class="n">V</span> <span class="n">get</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">V</span> <span class="nf">get</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">Element</span> <span class="n">element</span> <span class="o">=</span> <span class="n">getCache</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
     <span class="k">if</span> <span class="o">(</span><span class="n">element</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
       <span class="k">return</span> <span class="o">(</span><span class="n">V</span><span class="o">)</span> <span class="n">element</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
@@ -244,7 +244,7 @@
     <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
   <span class="o">}</span>
     
-  <span class="kd">public</span> <span class="n">Ehcache</span> <span class="n">getCache</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">Ehcache</span> <span class="nf">getCache</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">cacheManager</span><span class="o">.</span><span class="na">getEhcache</span><span class="o">(</span><span class="n">cacheName</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>

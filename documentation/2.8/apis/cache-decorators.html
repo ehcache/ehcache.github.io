@@ -274,7 +274,7 @@ found in <code class="highlighter-rouge">CachingFilter</code>:</p>
  *                        configured in Ehcache's configuration file ehcache.xml
  *                        for the filter name
  */</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">doInit</span><span class="p">(</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">doInit</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CacheException</span> <span class="o">{</span>
   <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getClass</span><span class="o">())</span> <span class="o">{</span>
     <span class="k">if</span> <span class="o">(</span><span class="n">blockingCache</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
       <span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span> <span class="o">=</span> <span class="n">getCacheName</span><span class="o">();</span>
@@ -329,7 +329,7 @@ with <code class="highlighter-rouge">CacheManager.addDecoratedCache()</code>.</p
  * @throws ObjectExistsException
  *             if another cache with the same name already exists.
  */</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addDecoratedCache</span><span class="p">(</span><span class="n">Ehcache</span> <span class="n">decoratedCache</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ObjectExistsException</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addDecoratedCache</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">decoratedCache</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ObjectExistsException</span> <span class="o">{</span>
 </code></pre>
 </div>
 

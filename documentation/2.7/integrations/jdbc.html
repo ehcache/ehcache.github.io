@@ -221,8 +221,8 @@ to add caching.  To add caching, follow these steps:</p>
 
 <p>Example methods that are commonly cacheable:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="n">V</span> <span class="nf">getById</span><span class="p">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">id</span><span class="o">);</span>
-<span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">findXXX</span><span class="o">(...);</span>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="n">V</span> <span class="nf">getById</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">id</span><span class="o">);</span>
+<span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="nf">findXXX</span><span class="o">(...);</span>
 </code></pre>
 </div>
 
@@ -277,8 +277,8 @@ will be available shortly.</p>
 <p>Simple get/put wrapper interface.</p>
 
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
-  <span class="kt">void</span> <span class="n">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">);</span>
-  <span class="n">V</span> <span class="n">get</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">);</span>
+  <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">);</span>
+  <span class="n">V</span> <span class="nf">get</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre>
 </div>
@@ -289,23 +289,23 @@ will be available shortly.</p>
 <div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EhCacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
   <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">;</span>
   <span class="kd">private</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">EhCacheWrapper</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">EhCacheWrapper</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">this</span><span class="o">.</span><span class="na">cacheName</span> <span class="o">=</span> <span class="n">cacheName</span><span class="o">;</span>
     <span class="k">this</span><span class="o">.</span><span class="na">cacheManager</span> <span class="o">=</span> <span class="n">cacheManager</span><span class="o">;</span>
   <span class="o">}</span>
 
-  <span class="kd">public</span> <span class="kt">void</span> <span class="n">put</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="kd">final</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="kd">final</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">getCache</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
   <span class="o">}</span>
 
-  <span class="kd">public</span> <span class="n">V</span> <span class="n">get</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">CacheEntryAdapter</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">adapter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">V</span> <span class="nf">get</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">CacheEntryAdapter</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">adapter</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">Element</span> <span class="n">element</span> <span class="o">=</span> <span class="n">getCache</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
     <span class="k">if</span> <span class="o">(</span><span class="n">element</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
         <span class="k">return</span> <span class="o">(</span><span class="n">V</span><span class="o">)</span> <span class="n">element</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
     <span class="o">}</span>
     <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
   <span class="o">}</span>
-  <span class="kd">public</span> <span class="n">Ehcache</span> <span class="n">getCache</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">Ehcache</span> <span class="nf">getCache</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">cacheManager</span><span class="o">.</span><span class="na">getEhcache</span><span class="o">(</span><span class="n">cacheName</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>
@@ -320,17 +320,17 @@ will be available shortly.</p>
   <span class="kd">protected</span> <span class="n">SimpleJdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">;</span>
   <span class="cm">/* Here is the cache reference */</span>
   <span class="kd">protected</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">cache</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="n">setJdbcTemplate</span><span class="o">(</span><span class="kd">final</span> <span class="n">SimpleJdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setJdbcTemplate</span><span class="o">(</span><span class="kd">final</span> <span class="n">SimpleJdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">)</span> <span class="o">{</span>
       <span class="k">this</span><span class="o">.</span><span class="na">jdbcTemplate</span> <span class="o">=</span> <span class="n">jdbcTemplate</span><span class="o">;</span>
   <span class="o">}</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="n">setDatasource</span><span class="o">(</span><span class="kd">final</span> <span class="n">DataSource</span> <span class="n">datasource</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setDatasource</span><span class="o">(</span><span class="kd">final</span> <span class="n">DataSource</span> <span class="n">datasource</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">this</span><span class="o">.</span><span class="na">datasource</span> <span class="o">=</span> <span class="n">datasource</span><span class="o">;</span>
   <span class="o">}</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="n">setCache</span><span class="o">(</span><span class="kd">final</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">cache</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setCache</span><span class="o">(</span><span class="kd">final</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">cache</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">this</span><span class="o">.</span><span class="na">cache</span> <span class="o">=</span> <span class="n">cache</span><span class="o">;</span>
   <span class="o">}</span>
   <span class="cm">/* the cacheable method */</span>
-  <span class="kd">public</span> <span class="n">V</span> <span class="n">getById</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">V</span> <span class="nf">getById</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">V</span> <span class="n">value</span><span class="o">;</span>
     <span class="k">if</span> <span class="o">((</span><span class="n">value</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">id</span><span class="o">))</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
       <span class="n">value</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">jdbcTemplate</span><span class="o">.</span><span class="na">queryForObject</span><span class="o">(</span><span class="n">findById</span><span class="o">,</span> <span class="n">mapper</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span>
