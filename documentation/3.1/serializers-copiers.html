@@ -449,17 +449,24 @@ of the serialized types as they might not be available in the current class load
 <div class="sect3">
 <h4 id="persistent-vs-transient-caches"><a class="anchor" href="#persistent-vs-transient-caches"></a>Persistent vs. transient caches</h4>
 <div class="paragraph">
-<p>When configured on a persistent cache, serializers may need to persist and restore their state across restarts, so you have to implement a
-constructor with the following signature:</p>
+<p>When configured on a persistent cache, serializers may need to persist and restore their state across restarts.
+For clustered caches there might be an additional requirement that the state of the serializer must be visible to all clients using the same cache(configured with the same serializer).
+To address these requirement you have to implement a constructor with the following signature:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public MySerializer(ClassLoader classLoader, FileBasedPersistenceContext persistenceContext) {
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public MySerializer(ClassLoader classLoader, StateRepository stateRepository) {
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>otherwise persistent caches won&#8217;t be able to use your serializer.</p>
+</div>
+<div class="paragraph">
+<p>The <code>StateRepository.getPersistentConcurrentMap()</code> provides a <code>ConcurrentMap</code> that you can use to store any relevant state.
+The users don&#8217;t have to worry about the persistence aspects of this map as it is taken care by <code>Ehcache</code>.
+In the case of a disk persistent cache, the contents of the map will be persisted locally on to the disk.
+For clustered caches the contents are persisted in the cluster itself so that other clients using the same cache can also access the contents of the map.</p>
 </div>
 <div class="paragraph">
 <p>Attempting to configure a serializer that lacks such constructor on a persistent cache using either of
@@ -489,6 +496,19 @@ will be sanctioned with an exception upon cache initialization.</p>
 </div>
 <div class="paragraph">
 <p>Registering a serializer that lacks such constructor at the cache manager level will prevent it from being chosen for persistent caches.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The constructor with the signature <code>(ClassLoader classLoader, FileBasedPersistenceContext persistenceContext)</code>
+      that existed in v3.0 is still supported to respect backward compatibility but the usage is limited to disk based caches.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
