@@ -179,32 +179,36 @@
       </header>
       <article class="post-content">
         <div class="sect1">
-<h2 id="getting-started-with-ehcache-3-0-jsr-107"><a class="anchor" href="#getting-started-with-ehcache-3-0-jsr-107"></a>Getting started with Ehcache 3.0 &amp; JSR-107</h2>
+<h2 id="jcache-overview"><a class="anchor" href="#jcache-overview"></a>JCache overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There is nothing special for you to do to use Ehcache 3.0 as the caching provider for your application: add the
-<code>ehcache-3.0.0.jar</code> to your application&#8217;s classpath (possibly removing the previous provider&#8217;s jar) and you are ready to
-go:</p>
+<p>JCache (aka JSR-107) specification defines the standard caching API for Java.
+The specification was developed under the Java Community Process v2.9 by an expert group including members from the Ehcache developer community.
+JCache provides a very simple API set that is easy to use and vendor neutral.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CachingProvider provider = Caching.getCachingProvider(); <i class="conum" data-value="1"></i><b>(1)</b>
-CacheManager cacheManager = provider.getCacheManager(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+<div class="paragraph">
+<p>Being one of the pioneers in the Java caching domain, Ehcache had to offer an implementation that is fully compliant with the JCache specification.</p>
+</div>
+<div class="paragraph">
+<p>For years the biggest problems that application developers have faced while wanting to try cache implementations by different vendors is the stark contrast in the APIs offered by these vendors.
+Developers were forced to rewrite a whole lot of their caching related code in an application just to try out a new caching solution.
+This lead to developers sticking with what they had as the bar to investigating other products was too high.</p>
+</div>
+<div class="paragraph">
+<p>The availability of the JCache specification gives real added value for developers as there is now a standard caching API they can use.
+So it is easier for an application developer to switch between products by different vendors and choose the one that suits them best without changing a single line of their application code interacting with caches.
+All they have to do is swap the caching library from one vendor with another.
+Unless they use vendor specific APIs or configurations, this swap will be transparent.</p>
+</div>
+<div class="paragraph">
+<p>This document covers the basic usage of JCache API with Ehcache&#8217;s implementation.
+Complete details on the JCache specification can be found <a href="https://www.jcp.org/en/jsr/detail?id=107">here</a>.</p>
 </div>
 </div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Retrieves the default <code>CachingProvider</code>, this should be <code>org.ehcache.jsr107.EhcacheCachingProvider</code>.
-You can also force use of <code>org.ehcache.jsr107.EhcacheCachingProvider</code> by using the <code>Caching.getCachingProvider(String)</code> static method instead.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Retrieve the default <code>CacheManager</code> instance using the provider.</td>
-</tr>
-</table>
 </div>
+<div class="sect1">
+<h2 id="getting-started-with-ehcache-3-jcache"><a class="anchor" href="#getting-started-with-ehcache-3-jcache"></a>Getting started with Ehcache 3 &amp; JCache</h2>
+<div class="sectionbody">
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -217,11 +221,83 @@ See <a href="http://www.ehcache.org/#using_jsr107_api">the section on using Ehca
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>In addition to the <code>Cache</code> interface, JCache specification has defined two more interfaces: <code>CachingProvider</code> and <code>CacheManager</code>.
+Applications need to use a <code>CacheManager</code> to create/retrieve a <code>Cache</code>.
+Similarly a <code>CachingProvider</code> is required to get/access a <code>CacheManager</code>.</p>
+</div>
+<div class="paragraph">
+<p>Here is a sample code that demonstrates the usage of basic JCache configuration APIs:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">    CachingProvider provider = Caching.getCachingProvider();  <i class="conum" data-value="1"></i><b>(1)</b>
+    CacheManager cacheManager = provider.getCacheManager();   <i class="conum" data-value="2"></i><b>(2)</b>
+    MutableConfiguration&lt;Long, String&gt; configuration =
+        new MutableConfiguration&lt;Long, String&gt;()  <i class="conum" data-value="3"></i><b>(3)</b>
+            .setTypes(Long.class, String.class)   <i class="conum" data-value="4"></i><b>(4)</b>
+            .setStoreByValue(false)   <i class="conum" data-value="5"></i><b>(5)</b>
+            .setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE));  <i class="conum" data-value="6"></i><b>(6)</b>
+    Cache&lt;Long, String&gt; cache = cacheManager.createCache("jCache", configuration); <i class="conum" data-value="7"></i><b>(7)</b>
+    cache.put(1L, "one"); <i class="conum" data-value="8"></i><b>(8)</b>
+    String value = cache.get(1L); <i class="conum" data-value="9"></i><b>(9)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Retrieves the default <code>CachingProvider</code> implementation from the application&#8217;s classpath.
+This method will work if and only if there is only one JCache implementation jar in the classpath.
+If there are multiple providers in your classpath then use the fully qualified name <code>org.ehcache.jsr107.EhcacheCachingProvider</code> to retrieve the Ehcache caching provider.
+You can do this by using the <code>Caching.getCachingProvider(String)</code> static method instead.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Retrieve the default <code>CacheManager</code> instance using the provider.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create a cache configuration using <code>MutableConfiguration</code>&#8230;&#8203;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>with key type and value type as <code>Long</code> and <code>String</code> respectively&#8230;&#8203;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>configured to store the cache entries by reference(not by value)&#8230;&#8203;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>and with an expiry time of one minute defined for entries from the moment they are created.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Using the cache manager, create a cache named <code>jCache</code> with the configuration created in step &lt;3&gt;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>Put some data into the cache.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>Retrieve the data from the same cache.</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="jsr-107-and-ehcache-configuration-integration"><a class="anchor" href="#jsr-107-and-ehcache-configuration-integration"></a>JSR-107 and Ehcache configuration integration</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>As mentioned already the JCache specification offers a minimal set of configuration that is ideal for an in-memory cache.
+But Ehcache native APIs support topologies that are much more complex and provides more features.
+At times application developers might want to configure caches that are much complex (in terms of topology or features)
+than the ones that JCache <code>MutableConfiguration</code> permits and still be able to use the JCache&#8217;s caching APIs.
+Ehcache provides several ways to achieve that and this section covers the same.</p>
+</div>
 <div class="sect2">
 <h3 id="starting-from-jsr-107-created-caches"><a class="anchor" href="#starting-from-jsr-107-created-caches"></a>Starting from JSR-107 created caches</h3>
 <div class="paragraph">
@@ -678,6 +754,81 @@ make your life easier.
 </td>
 </tr>
 </table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="a-word-on-defaults"><a class="anchor" href="#a-word-on-defaults"></a>A word on defaults</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ehcache 3 and Ehcache 3 through JCache do not always agree on default behavior.
+While native Ehcache 3 can behave the way JCache specifies, depending on the used configuration mechanism, you may see differences in defaults.</p>
+</div>
+<div class="sect2">
+<h3 id="em-by-reference-em-or-em-by-value-em"><a class="anchor" href="#em-by-reference-em-or-em-by-value-em"></a><em>by-reference</em> or <em>by-value</em></h3>
+<div class="paragraph">
+<p>Ehcache 3 and Ehcache 3 through JCache disagree on the default mode for heap only caching.</p>
+</div>
+<div class="sect3">
+<h4 id="ehcache-configuration-with-jcache-code-mutableconfiguration-code"><a class="anchor" href="#ehcache-configuration-with-jcache-code-mutableconfiguration-code"></a>Ehcache configuration with JCache <code>MutableConfiguration</code></h4>
+<div class="paragraph">
+<p>Unless you invoke <code>MutableConfiguration.setStoreByValue(boolean)</code>, the default value is <code>true</code>.
+This means that you will be limited to <code>Serializable</code> keys and values when using Ehcache 3.</p>
+</div>
+<div class="paragraph">
+<p>Under the cover this will trigger the use of <a href="serializers-copiers.html#copiers-bundled">serializing copiers</a>
+and pick the appropriate serializer from the <a href="serializers-copiers.html#serializers-bundled">default ones</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ehcache-configuration-with-native-xml-or-code"><a class="anchor" href="#ehcache-configuration-with-native-xml-or-code"></a>Ehcache configuration with native XML or code</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Heap only</dt>
+<dd>
+<p>When using heap only caches, the default is <em>by-reference</em> unless you configure a <a href="serializers-copiers.html#copiers"><code>Copier</code></a>.</p>
+</dd>
+<dt class="hdlist1">Other tiering configuration</dt>
+<dd>
+<p>When using any other tiers, since serialization comes into play the default is <em>by-value</em>.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>See the documentation <a href="serializers-copiers.html">dedicated to serializers and copiers</a> for more information.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-through-and-compare-and-swap-operations"><a class="anchor" href="#cache-through-and-compare-and-swap-operations"></a>Cache-through and compare-and-swap operations</h3>
+<div class="paragraph">
+<p>Ehcache 3 and Ehcache 3 through JCache disagree on the role of the cache loader for <em>compare-and-swap</em> operations.</p>
+</div>
+<div class="sect3">
+<h4 id="ehcache-through-jcache-behaviour"><a class="anchor" href="#ehcache-through-jcache-behaviour"></a>Ehcache through JCache behaviour</h4>
+<div class="paragraph">
+<p>When using <em>compare-and-swap</em> operations, such as <code>putIfAbsent(K, V)</code>, the cache loader will not be used if the cache has no mapping present.
+If the <code>putIfAbsent(K, V)</code> succeeds then the cache writer will be used to propagate the update to the system of record.
+This could result in the cache behaving like <code>INSERT</code> but effectively causing a blind update on the underlying system of record.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="native-ehcache-3-behaviour"><a class="anchor" href="#native-ehcache-3-behaviour"></a>Native Ehcache 3 behaviour</h4>
+<div class="paragraph">
+<p>The <code>CacheLoaderWriter</code> will always be used to load missing mappings with and to write updates.
+This enables the <code>putIfAbsent(K, V)</code> in <em>cache-through</em> to behave as an <code>INSERT</code> on the system of record.</p>
+</div>
+<div class="paragraph">
+<p>If you need <em>Ehcache through JCache</em> behaviour, the following shows the relevant XML configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;service&gt;
+  &lt;jsr107:defaults jsr-107-compliant-atomics="true"/&gt;
+&lt;/service&gt;</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
