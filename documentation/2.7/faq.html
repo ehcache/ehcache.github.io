@@ -418,11 +418,13 @@ diskExpiryThreadIntervalSeconds to a very large value.</p>
 <h4 id="how-many-threads-does-ehcache-use-and-how-much-memory-does-that-consume">How many threads does Ehcache use, and how much memory does that consume?</h4>
 <p>The amount of memory consumed per thread is determined by the Stack Size. This is set using -Xss.
 The amount varies by OS.  The default is 512KB (for Linux), but 100kb is also recommended.
-The threads are created per cache as follows:
-* DiskStore expiry thread - if DiskStore is used
-* DiskStore spool thread - if DiskStore is used
-* Replication thread - if asynchronous replication is configured.
-If you are not doing any of the above, no extra threads are created.</p>
+The threads are created per cache as follows:</p>
+<ul>
+  <li>DiskStore expiry thread - if DiskStore is used</li>
+  <li>DiskStore spool thread - if DiskStore is used</li>
+  <li>Replication thread - if asynchronous replication is configured.
+If you are not doing any of the above, no extra threads are created.</li>
+</ul>
 
 <h4 id="why-cant-i-run-multiple-applications-using-ehcache-on-one-machine">Why can’t I run multiple applications using Ehcache on one machine?</h4>
 <p>With JDK versions prior to JDK1.5, the number of RMI registries is limited to one per virtual machine, and therefore Ehcache is limited to one CacheManager per virtual machine operating in a replicated cache topology. Because this is the expected deployment configuration, however,

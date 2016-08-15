@@ -372,13 +372,17 @@ cacheConfiguration.addCopyStrategy(copyStrategyConfiguration);
 
 <h2 id="special-system-properties">Special System Properties</h2>
 
-<p><a id="net.sf.ehcache.disabled"></a>
-### net.sf.ehcache.disabled
-Setting this system property to <code class="highlighter-rouge">true</code> (using <code class="highlighter-rouge">java -Dnet.sf.ehcache.disabled=true</code> in the Java command line) disables caching in ehcache. If disabled, no elements can be added to a cache (puts are silently discarded).</p>
+<p>
+   <a id="net.sf.ehcache.disabled"></a>
+</p>
+<h3 id="netsfehcachedisabled">net.sf.ehcache.disabled</h3>
+<p>Setting this system property to <code class="highlighter-rouge">true</code> (using <code class="highlighter-rouge">java -Dnet.sf.ehcache.disabled=true</code> in the Java command line) disables caching in ehcache. If disabled, no elements can be added to a cache (puts are silently discarded).</p>
 
-<p><a id="net.sf.ehcache.use.classic.lru"></a>
-### net.sf.ehcache.use.classic.lru
-When LRU is selected as the eviction policy, set this system property to <code class="highlighter-rouge">true</code> (using <code class="highlighter-rouge">java -Dnet.sf.ehcache.use.classic.lru=true</code> in the Java command line) to use the older LruMemoryStore implementation. This is provided for ease of migration.</p>
+<p>
+   <a id="net.sf.ehcache.use.classic.lru"></a>
+</p>
+<h3 id="netsfehcacheuseclassiclru">net.sf.ehcache.use.classic.lru</h3>
+<p>When LRU is selected as the eviction policy, set this system property to <code class="highlighter-rouge">true</code> (using <code class="highlighter-rouge">java -Dnet.sf.ehcache.use.classic.lru=true</code> in the Java command line) to use the older LruMemoryStore implementation. This is provided for ease of migration.</p>
 
 <h2 id="ehcache.xsd">ehcache.xsd</h2>
 <p>Ehcache configuration files must be comply with the Ehcache XML schema, <code class="highlighter-rouge">ehcache.xsd</code>.

@@ -219,8 +219,8 @@ JRuby. All of the strength of Ehcache is there, including BigMemory and the abil
 It can be used directly via its own API, or as a Rails caching provider.</p>
 
 <h2 id="installation">Installation</h2>
-<p>### Installation for JRuby
-Ehcache JRuby integration is provided by the jruby-ehcache gem.  To install it, simply execute:</p>
+<h3 id="installation-for-jruby">Installation for JRuby</h3>
+<p>Ehcache JRuby integration is provided by the jruby-ehcache gem.  To install it, simply execute:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>jgem install jruby-ehcache
 </code></pre>
@@ -369,8 +369,8 @@ cache entry using the :ttl option in cache.put.</p>
 <h2 id="using-ehcache-from-within-rails">Using Ehcache from within Rails</h2>
 
 <h3 id="general-overview">General Overview</h3>
-<p>#### The ehcache.xml file
-Configuration of Ehcache is still done with the ehcache.xml file, but for Rails applications you must place this file in the
+<h4 id="the-ehcachexml-file">The ehcache.xml file</h4>
+<p>Configuration of Ehcache is still done with the ehcache.xml file, but for Rails applications you must place this file in the
 config directory of your Rails app.
 Also note that you must use JRuby to execute your Rails application, as these gems utilize JRuby’s Java integration
 to call the Ehcache API.
