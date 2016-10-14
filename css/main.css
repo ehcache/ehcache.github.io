@@ -466,11 +466,6 @@ pre {
 #content h1:hover > a.anchor, #content h1 > a.anchor:hover, h2:hover > a.anchor, h2 > a.anchor:hover, h3:hover > a.anchor, #toctitle:hover > a.anchor, .sidebarblock > .content > .title:hover > a.anchor, h3 > a.anchor:hover, #toctitle > a.anchor:hover, .sidebarblock > .content > .title > a.anchor:hover, h4:hover > a.anchor, h4 > a.anchor:hover, h5:hover > a.anchor, h5 > a.anchor:hover, h6:hover > a.anchor, h6 > a.anchor:hover {
   visibility: visible; }
 
-.sect1 > h2,
-.sect2 > h3,
-.sect3 > h4 {
-  padding-top: 3em; }
-
 #sidebar .section {
   margin-left: auto;
   margin-right: auto;
@@ -552,13 +547,6 @@ pre {
 .site-footer {
   border-top: 1px solid #e8e8e8;
   padding: 30px 0; }
-
-.site-footer .container-fluid .SAG-Logo {
-  display: inline-block;
-  margin-top: .5em; }
-.site-footer .container-fluid .footer-text {
-  display: inline-block;
-  float: right; }
 
 .footer-heading {
   font-size: 18px;

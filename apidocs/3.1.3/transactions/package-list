@@ -1,5 +1,0 @@
-org.ehcache.transactions.xa
-org.ehcache.transactions.xa.configuration
-org.ehcache.transactions.xa.txmgr
-org.ehcache.transactions.xa.txmgr.btm
-org.ehcache.transactions.xa.txmgr.provider
