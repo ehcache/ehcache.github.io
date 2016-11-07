@@ -10,11 +10,11 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Documentation</title>
+  <title>Eviction Advisor</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
-  <link rel="canonical" href="http://www.ehcache.org/documentation/">
+  <link rel="canonical" href="http://www.ehcache.org/documentation/3.2/eviction-advisor.html">
   <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
 
 
@@ -130,198 +130,163 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Documentation</h1>
+        <h1>Eviction Advisor</h1>
       </div>
       <div>
         <BR/>
         <br/>
 
-<div class="container-fluid">
+<div class="container-fluid ehcache-documentation v3.2   future  ">
+
 
   <div class="row row-offcanvas row-offcanvas-left">
 
     <!-- sidebar -->
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <ul class="nav">
-          <li id="ehc_mnu_docs_current" class="submenu"><a href="#current_version">Current Documentation</a></li>
-          <li id="ehc_mnu_doce_release_notes" class="submenu"><a href="http://www.terracotta.org/confluence/display/release/Home" target="_blank">Release Notes</a></li>
-          <li id="ehc_mnu_docs_previous" class="submenu"><a href="#historical_versions">Historical Versions</a></li>
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          
+          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
+          
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
         </ul>
     </div>
 
     <!-- main area -->
+
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
         
-        <h1 class="post-title">Ehcache Documentation </h1>
+        <h1 class="post-title">
+            <span>Eviction Advisor</span>
+            
+            
+            <span class="future">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.1">3.1</a></span>
+            
+            
+        </h1>
         <hr/>
         
       </header>
       <article class="post-content">
-        <h1 id="documentation">Documentation</h1>
-
-<p>
-   <a name="current_version" id="current_version"></a>
-</p>
-
-<h4 id="current-documentation">Current Documentation</h4>
-
+        <div class="admonitionblock note">
 <table>
-  <thead>
-    <tr>
-      <th style="text-align: left"> </th>
-      <th style="text-align: left"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/3.1/">Ehcache 3.1 User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/3.1.3/index.html" target="_blank">Core JavaDoc</a> <br /> <a href="/apidocs/3.1.3/clustered/index.html" target="_blank">Clustered Module JavaDoc</a> <br /> <a href="/apidocs/3.1.3/transactions/index.html" target="_blank">Transactions Module JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/generated/2.10.3/html/ehc-all">Ehcache 2.10.x User Guide</a>   also available as <a href="/documentation/2.10.3/pdf/index.html">PDF</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.10.3/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-  </tbody>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This is an advanced topic/feature that will not be of interest to most users.
+</td>
+</tr>
 </table>
+</div>
+<div class="paragraph">
+<p>You can affect which elements are selected for eviction from the cache by providing a class that implements the
+<code>org.ehcache.config.EvictionAdvisor</code> interface.</p>
+</div>
+<div class="paragraph">
+<p><code>EvictionAdvisor</code> implementations are invoked when Ehcache attempts to evict entries from the cache
+(in order to make room for new entries) in order to determine whether the given entry should not be considered
+a good candidate for eviction.  If the eviction is advised against, Ehcache will try to honor the preference of
+preserving that entry in the cache, though there is no full guarantee of such.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                                                                    ResourcePoolsBuilder.heap(2L)) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withEvictionAdvisor(new OddKeysEvictionAdvisor&lt;Long, String&gt;()) <i class="conum" data-value="2"></i><b>(2)</b>
+    .build();
 
+CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .withCache("cache", cacheConfiguration)
+    .build(true);
+
+Cache&lt;Long, String&gt; cache = cacheManager.getCache("cache", Long.class, String.class);
+
+// Work with the cache
+cache.put(42L, "The Answer!");
+cache.put(41L, "The wrong Answer!");
+cache.put(39L, "The other wrong Answer!");
+
+cacheManager.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
 <table>
-  <tbody>
-    <tr>
-      <td>—</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td><a href="http://www.terracotta.org/confluence/display/release/Home" target="_blank">Platform and Release Compatibility Tables</a></td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td><a href="/about/license.html">License</a> (Apache 2.0),  <a href="https://confluence.terracotta.org/display/release/Third+Party+Licenses" target="_blank">3rd Party Licenses</a> (Apache 2.0), <a href="http://documentation.softwareag.com/legal/" target="_blank">Legal Notices</a></td>
-      <td> </td>
-    </tr>
-  </tbody>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure a constrained heap, as the eviction advisor is only relevant when mappings get evicted from the cache.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>If you want to hint to the eviction algorithm to advise against the eviction of some mappings, you have to
+configure an instance of <code>EvictionAdvisor</code>.</td>
+</tr>
 </table>
-
-<p>In addition to the documentation, there are a number of resources available online - see the <a href="/resources/">Resources page</a> for links to some of them.</p>
-
-<p>If you don’t find what you’re looking for in the docs, post a question to the <a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank">Ehcache support forums</a>.</p>
-
-<hr />
-
-<h4 id="release-notes">Release Notes</h4>
-
-<p><a href="https://confluence.terracotta.org//display/release/Home" target="_blank">Release Notes</a>  (all versions)</p>
-
-<hr />
-
-<p>
-   <a name="future_versions" id="future_versions"></a>
-</p>
-
-<h4 id="upcoming-versions">Upcoming Versions</h4>
-
+</div>
+<div class="paragraph">
+<p>In this particular example, the <code>OddKeysEvictionAdvisor</code> class will advise against eviction of any key that is an odd number.
+The cache is constrained to only be allowed to contain two entries, however the code has put three entries
+into the cache - which will trigger capacity eviction.
+By the time the cache manager gets closed, only mappings with odd keys should be left in the cache as their
+prime candidacy for eviction would have been advised against.</p>
+</div>
+<div class="admonitionblock note">
 <table>
-  <thead>
-    <tr>
-      <th style="text-align: left"> </th>
-      <th style="text-align: left"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/3.2/">Ehcache 3.2 User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/3.2.0.beta1/index.html" target="_blank">Core JavaDoc</a> <br /> <a href="/apidocs/3.2.0.beta1/clustered/index.html" target="_blank">Clustered Module JavaDoc</a> <br /> <a href="/apidocs/3.2.0.beta1/transactions/index.html" target="_blank">Transactions Module JavaDoc</a></td>
-    </tr>
-  </tbody>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Eviction advisory status is computed when a mapping is written to the cache.
+This means that proper eviction advisor implementations are expected to be constant for a key-value pair.
+</td>
+</tr>
 </table>
-
-<hr />
-
-<p>
-   <a name="historical_versions" id="historical_versions"></a>
-</p>
-
-<h4 id="historical-versions">Historical Versions</h4>
-
+</div>
+<div class="admonitionblock note">
 <table>
-  <thead>
-    <tr>
-      <th style="text-align: left"> </th>
-      <th style="text-align: left"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/3.0/">Ehcache 3.0 User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/3.0.3/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/2.9/">Ehcache 2.9.x User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.9/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/2.8/">Ehcache 2.8.x User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.8.5/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/2.7/">Ehcache 2.7.x User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/ehcache-2.6.x-documentation.pdf">Ehcache 2.6.x User Guide</a> (pdf)</td>
-      <td style="text-align: left"><a href="/apidocs/2.6.9/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/ehcache-2.5.x-documentation.pdf">Ehcache 2.5.x User Guide</a> (pdf)</td>
-      <td style="text-align: left"><a href="/apidocs/2.5.2/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-2.4.1.pdf">Ehcache 2.4.1 User Guide</a> (pdf)</td>
-      <td style="text-align: left"><a href="/apidocs/2.4.4/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-2.4.pdf">Ehcache 2.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-2.0-2.3.pdf">Ehcache 2.0 - 2.3 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.7.1.pdf">Ehcache 1.7.1 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.6.pdf">Ehcache 1.6 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.5.pdf">Ehcache 1.5 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.4.pdf">Ehcache 1.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.3.0.pdf">Ehcache 1.3.0 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.2.4.pdf">Ehcache 1.2.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.2.4.pdf">Ehcache 1.2.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.2.3.pdf">Ehcache 1.2.3 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-  </tbody>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Please keep in mind that configuring an eviction advisor can slow down eviction: the more often you advise against
+eviction, the harder the cache has to work to evict an element when room is required. After a certain time, if a cache
+determines that the configured eviction advisor rejected too many eviction candidates, the cache can decide to completely
+bypass the eviction advisor and evict anything it sees fit.
+</td>
+</tr>
 </table>
-
+</div>
       </article>
     </div>
 

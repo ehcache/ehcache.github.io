@@ -10,11 +10,11 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Documentation</title>
+  <title>Concepts Related to Caching</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
-  <link rel="canonical" href="http://www.ehcache.org/documentation/">
+  <link rel="canonical" href="http://www.ehcache.org/documentation/3.2/caching-concepts.html">
   <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
 
 
@@ -130,198 +130,194 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Documentation</h1>
+        <h1>Concepts Related to Caching</h1>
       </div>
       <div>
         <BR/>
         <br/>
 
-<div class="container-fluid">
+<div class="container-fluid ehcache-documentation v3.2   future  ">
+
 
   <div class="row row-offcanvas row-offcanvas-left">
 
     <!-- sidebar -->
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <ul class="nav">
-          <li id="ehc_mnu_docs_current" class="submenu"><a href="#current_version">Current Documentation</a></li>
-          <li id="ehc_mnu_doce_release_notes" class="submenu"><a href="http://www.terracotta.org/confluence/display/release/Home" target="_blank">Release Notes</a></li>
-          <li id="ehc_mnu_docs_previous" class="submenu"><a href="#historical_versions">Historical Versions</a></li>
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          
+          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
+          
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
         </ul>
     </div>
 
     <!-- main area -->
+
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
         
-        <h1 class="post-title">Ehcache Documentation </h1>
+        <h1 class="post-title">
+            <span>Concepts Related to Caching</span>
+            
+            
+            <span class="future">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.1">3.1</a></span>
+            
+            
+        </h1>
         <hr/>
         
       </header>
       <article class="post-content">
-        <h1 id="documentation">Documentation</h1>
-
-<p>
-   <a name="current_version" id="current_version"></a>
-</p>
-
-<h4 id="current-documentation">Current Documentation</h4>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left"> </th>
-      <th style="text-align: left"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/3.1/">Ehcache 3.1 User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/3.1.3/index.html" target="_blank">Core JavaDoc</a> <br /> <a href="/apidocs/3.1.3/clustered/index.html" target="_blank">Clustered Module JavaDoc</a> <br /> <a href="/apidocs/3.1.3/transactions/index.html" target="_blank">Transactions Module JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/generated/2.10.3/html/ehc-all">Ehcache 2.10.x User Guide</a>   also available as <a href="/documentation/2.10.3/pdf/index.html">PDF</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.10.3/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<table>
-  <tbody>
-    <tr>
-      <td>—</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td><a href="http://www.terracotta.org/confluence/display/release/Home" target="_blank">Platform and Release Compatibility Tables</a></td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td><a href="/about/license.html">License</a> (Apache 2.0),  <a href="https://confluence.terracotta.org/display/release/Third+Party+Licenses" target="_blank">3rd Party Licenses</a> (Apache 2.0), <a href="http://documentation.softwareag.com/legal/" target="_blank">Legal Notices</a></td>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
-
-<p>In addition to the documentation, there are a number of resources available online - see the <a href="/resources/">Resources page</a> for links to some of them.</p>
-
-<p>If you don’t find what you’re looking for in the docs, post a question to the <a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank">Ehcache support forums</a>.</p>
-
-<hr />
-
-<h4 id="release-notes">Release Notes</h4>
-
-<p><a href="https://confluence.terracotta.org//display/release/Home" target="_blank">Release Notes</a>  (all versions)</p>
-
-<hr />
-
-<p>
-   <a name="future_versions" id="future_versions"></a>
-</p>
-
-<h4 id="upcoming-versions">Upcoming Versions</h4>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left"> </th>
-      <th style="text-align: left"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/3.2/">Ehcache 3.2 User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/3.2.0.beta1/index.html" target="_blank">Core JavaDoc</a> <br /> <a href="/apidocs/3.2.0.beta1/clustered/index.html" target="_blank">Clustered Module JavaDoc</a> <br /> <a href="/apidocs/3.2.0.beta1/transactions/index.html" target="_blank">Transactions Module JavaDoc</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<hr />
-
-<p>
-   <a name="historical_versions" id="historical_versions"></a>
-</p>
-
-<h4 id="historical-versions">Historical Versions</h4>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left"> </th>
-      <th style="text-align: left"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/3.0/">Ehcache 3.0 User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/3.0.3/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/2.9/">Ehcache 2.9.x User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.9/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/2.8/">Ehcache 2.8.x User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.8.5/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/2.7/">Ehcache 2.7.x User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/ehcache-2.6.x-documentation.pdf">Ehcache 2.6.x User Guide</a> (pdf)</td>
-      <td style="text-align: left"><a href="/apidocs/2.6.9/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/ehcache-2.5.x-documentation.pdf">Ehcache 2.5.x User Guide</a> (pdf)</td>
-      <td style="text-align: left"><a href="/apidocs/2.5.2/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-2.4.1.pdf">Ehcache 2.4.1 User Guide</a> (pdf)</td>
-      <td style="text-align: left"><a href="/apidocs/2.4.4/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-2.4.pdf">Ehcache 2.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-2.0-2.3.pdf">Ehcache 2.0 - 2.3 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.7.1.pdf">Ehcache 1.7.1 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.6.pdf">Ehcache 1.6 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.5.pdf">Ehcache 1.5 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.4.pdf">Ehcache 1.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.3.0.pdf">Ehcache 1.3.0 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.2.4.pdf">Ehcache 1.2.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.2.4.pdf">Ehcache 1.2.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.2.3.pdf">Ehcache 1.2.3 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-  </tbody>
-</table>
-
+        <div class="sect1">
+<h2 id="data-freshness-and-expiration"><a class="anchor" href="#data-freshness-and-expiration"></a>Data Freshness and Expiration</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="data-freshness"><a class="anchor" href="#data-freshness"></a>Data Freshness</h3>
+<div class="paragraph">
+<p>Data <em>freshness</em> refers to how up-to-date a copy of data (e.g. in a cache) is compared to the source version of the
+data (e.g. in the system-of-record (SoR)).  A <em>stale</em> copy is considered to be out of sync (or likely to be out of
+sync) with the SoR.</p>
+</div>
+<div class="paragraph">
+<p>Databases (and other SORs) weren&#8217;t built with caching outside of the database in mind, and therefore don&#8217;t normally
+come with any default mechanism for notifying external processes when data has been updated or modified.  Thus external
+components that have loaded data from the SoR have no direct way of ensuring that data is not stale.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-entry-expiration"><a class="anchor" href="#cache-entry-expiration"></a>Cache Entry Expiration</h3>
+<div class="paragraph">
+<p>Ehcache can assist you with reducing the likelihood that stale data is used by your application by <em>expiring</em> cache
+entries after some amount of configured time. Once expired, the entry is automatically removed from the cache.</p>
+</div>
+<div class="paragraph">
+<p>For instance the cache could be configured to expire entries five seconds after they are put into the cache - which is a
+time-to-live <em>TTL</em> setting.  Or to expire entries 17 seconds after the last time the entry was retrieved from the
+cache - which is a time-to-idle <em>TTI</em> setting.</p>
+</div>
+<div class="paragraph">
+<p>The expiration configuration that would be most appropriate for your cache (if any) would be a mixture of a business
+and technical decision based upon the requirements and assumptions of your application.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="storage-tiers"><a class="anchor" href="#storage-tiers"></a>Storage Tiers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can configure Ehcache to use various data storage areas.  When a cache is configured to use more than one data
+store, these stores are referred to as tiers.</p>
+</div>
+<div class="paragraph">
+<p>Data stores supported by Ehcache include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>On-Heap Store – Utilizes Java&#8217;s on-heap RAM memory to store cache entries. This tier utilizes the same heap memory as
+your Java application, all of which must be scanned by the JVM&#8217;s garbage collector.  The more heap space your JVM
+utilizes, the more your application&#8217;s performance will be impacted by garbage collection pauses.  This store is
+extremely fast, but is typically your most limited storage resource.</p>
+</li>
+<li>
+<p>Off-Heap Store – Limited in size only by available RAM (tested to as much as 6TB on a single machine!). Not subject
+to Java garbage collection (GC). Is quite fast, yet slower than the On-Heap Store because data must be moved off and
+on the JVM&#8217;s heap as it is stored and re-accessed.</p>
+</li>
+<li>
+<p>Disk Store – Utilizes a disk (file system) to store cache entries.  This type of storage resource is typically very
+abundant but much slower than the RAM-based stores.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/EhcacheTerminology.png" alt="EhcacheTerminology">
+</div>
+</div>
+<div class="paragraph">
+<p>When a cache is configured to use more than one storage area, those areas are arranged and managed as tiers - where
+the <em>hottest</em> (most recently accessed) data is kept in the faster (and typically less abundant) tiers, and data that
+is less hot remains in the slower (and more abundant) tiers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="topology-types"><a class="anchor" href="#topology-types"></a>Topology Types</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="standalone"><a class="anchor" href="#standalone"></a>Standalone</h3>
+<div class="paragraph">
+<p>The data set is held in the application node. Any other application nodes are independent with no
+communication between them. If a standalone topology is used where there are multiple application nodes running the
+same application, then their caches are completely independent.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="distributed-clustered"><a class="anchor" href="#distributed-clustered"></a>Distributed / Clustered</h3>
+<div class="paragraph">
+<p>The data is held in a remote server (or array of servers) with a subset of hot data held in each application node.
+This topology offers offers a selection of consistency options.
+A distributed topology is the recommended approach in a clustered or scaled-out application environment.
+It provides the highest level of performance, availability, and scalability.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ClusteredEhcacheTopology.png" alt="ClusteredEhcacheTopology">
+</div>
+</div>
+<div class="paragraph">
+<p>It is common for many production applications to be deployed in clusters of multiple instances for availability and scalability.
+However, without a distributed cache, application clusters exhibit a number of undesirable behaviors, such as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Cache Drift - If each application instance maintains its own cache, updates made to one cache will not appear in the
+other instances. A distributed cache ensures that all of the cache instances are kept in sync with each
+other.</p>
+</li>
+<li>
+<p>Database Bottlenecks - In a single-instance application, a cache effectively shields a database from the overhead of
+redundant queries. However, in a distributed application environment, each instance must load and keep its own cache
+fresh. The overhead of loading and refreshing multiple caches leads to database bottlenecks as more application
+instances are added. A distributed cache eliminates the per-instance overhead of loading and refreshing
+multiple caches from a database.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
       </article>
     </div>
 

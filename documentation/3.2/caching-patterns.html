@@ -10,11 +10,11 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Documentation</title>
+  <title>Cache Usage Patterns</title>
 
   <meta name="description" content="Java's most widely used cache.">
 
-  <link rel="canonical" href="http://www.ehcache.org/documentation/">
+  <link rel="canonical" href="http://www.ehcache.org/documentation/3.2/caching-patterns.html">
   <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
 
 
@@ -130,198 +130,196 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1>Documentation</h1>
+        <h1>Cache Usage Patterns</h1>
       </div>
       <div>
         <BR/>
         <br/>
 
-<div class="container-fluid">
+<div class="container-fluid ehcache-documentation v3.2   future  ">
+
 
   <div class="row row-offcanvas row-offcanvas-left">
 
     <!-- sidebar -->
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <ul class="nav">
-          <li id="ehc_mnu_docs_current" class="submenu"><a href="#current_version">Current Documentation</a></li>
-          <li id="ehc_mnu_doce_release_notes" class="submenu"><a href="http://www.terracotta.org/confluence/display/release/Home" target="_blank">Release Notes</a></li>
-          <li id="ehc_mnu_docs_previous" class="submenu"><a href="#historical_versions">Historical Versions</a></li>
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          
+          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
+          
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
         </ul>
     </div>
 
     <!-- main area -->
+
     <div class="col-xs-12 col-sm-9">
       <header class="post-header">
         
-        <h1 class="post-title">Ehcache Documentation </h1>
+        <h1 class="post-title">
+            <span>Cache Usage Patterns</span>
+            
+            
+            <span class="future">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.1">3.1</a></span>
+            
+            
+        </h1>
         <hr/>
         
       </header>
       <article class="post-content">
-        <h1 id="documentation">Documentation</h1>
-
-<p>
-   <a name="current_version" id="current_version"></a>
-</p>
-
-<h4 id="current-documentation">Current Documentation</h4>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left"> </th>
-      <th style="text-align: left"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/3.1/">Ehcache 3.1 User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/3.1.3/index.html" target="_blank">Core JavaDoc</a> <br /> <a href="/apidocs/3.1.3/clustered/index.html" target="_blank">Clustered Module JavaDoc</a> <br /> <a href="/apidocs/3.1.3/transactions/index.html" target="_blank">Transactions Module JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/generated/2.10.3/html/ehc-all">Ehcache 2.10.x User Guide</a>   also available as <a href="/documentation/2.10.3/pdf/index.html">PDF</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.10.3/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<table>
-  <tbody>
-    <tr>
-      <td>—</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td><a href="http://www.terracotta.org/confluence/display/release/Home" target="_blank">Platform and Release Compatibility Tables</a></td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td><a href="/about/license.html">License</a> (Apache 2.0),  <a href="https://confluence.terracotta.org/display/release/Third+Party+Licenses" target="_blank">3rd Party Licenses</a> (Apache 2.0), <a href="http://documentation.softwareag.com/legal/" target="_blank">Legal Notices</a></td>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
-
-<p>In addition to the documentation, there are a number of resources available online - see the <a href="/resources/">Resources page</a> for links to some of them.</p>
-
-<p>If you don’t find what you’re looking for in the docs, post a question to the <a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank">Ehcache support forums</a>.</p>
-
-<hr />
-
-<h4 id="release-notes">Release Notes</h4>
-
-<p><a href="https://confluence.terracotta.org//display/release/Home" target="_blank">Release Notes</a>  (all versions)</p>
-
-<hr />
-
-<p>
-   <a name="future_versions" id="future_versions"></a>
-</p>
-
-<h4 id="upcoming-versions">Upcoming Versions</h4>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left"> </th>
-      <th style="text-align: left"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/3.2/">Ehcache 3.2 User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/3.2.0.beta1/index.html" target="_blank">Core JavaDoc</a> <br /> <a href="/apidocs/3.2.0.beta1/clustered/index.html" target="_blank">Clustered Module JavaDoc</a> <br /> <a href="/apidocs/3.2.0.beta1/transactions/index.html" target="_blank">Transactions Module JavaDoc</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<hr />
-
-<p>
-   <a name="historical_versions" id="historical_versions"></a>
-</p>
-
-<h4 id="historical-versions">Historical Versions</h4>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left"> </th>
-      <th style="text-align: left"> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/3.0/">Ehcache 3.0 User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/3.0.3/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/2.9/">Ehcache 2.9.x User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.9/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/2.8/">Ehcache 2.8.x User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.8.5/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/2.7/">Ehcache 2.7.x User Guide</a></td>
-      <td style="text-align: left"><a href="/apidocs/2.7.6/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/ehcache-2.6.x-documentation.pdf">Ehcache 2.6.x User Guide</a> (pdf)</td>
-      <td style="text-align: left"><a href="/apidocs/2.6.9/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/ehcache-2.5.x-documentation.pdf">Ehcache 2.5.x User Guide</a> (pdf)</td>
-      <td style="text-align: left"><a href="/apidocs/2.5.2/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-2.4.1.pdf">Ehcache 2.4.1 User Guide</a> (pdf)</td>
-      <td style="text-align: left"><a href="/apidocs/2.4.4/index.html" target="_blank">JavaDoc</a></td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-2.4.pdf">Ehcache 2.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-2.0-2.3.pdf">Ehcache 2.0 - 2.3 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.7.1.pdf">Ehcache 1.7.1 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.6.pdf">Ehcache 1.6 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.5.pdf">Ehcache 1.5 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.4.pdf">Ehcache 1.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.3.0.pdf">Ehcache 1.3.0 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.2.4.pdf">Ehcache 1.2.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.2.4.pdf">Ehcache 1.2.4 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><a href="/documentation/EhcacheUserGuide-1.2.3.pdf">Ehcache 1.2.3 User Guide</a> (pdf)</td>
-      <td style="text-align: left"> </td>
-    </tr>
-  </tbody>
-</table>
-
+        <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several common access patterns when using a cache. Ehcache supports the following patterns:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cache-aside"><a class="anchor" href="#cache-aside"></a>Cache-Aside</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With the cache-aside pattern, application code uses the cache directly.</p>
+</div>
+<div class="paragraph">
+<p>This means that application code which accesses the system-of-record (SOR) should consult the cache first, and if the
+cache contains the data, then return the data directly from the cache, bypassing the SOR.  Otherwise, the application
+code must fetch the data from the system-of-record, store the data in the cache, and then return it. When data is
+written, the cache must be updated along with the system-of-record.</p>
+</div>
+<div class="listingblock">
+<div class="title">Pseudocode for reading values</div>
+<div class="content">
+<pre>v = cache.get(k)
+if(v == null) {
+    v = sor.get(k)
+    cache.put(k, v)
+}</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Pseudocode for writing values</div>
+<div class="content">
+<pre>v = newV
+sor.put(k, v)
+cache.put(k, v)</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cache-through"><a class="anchor" href="#cache-through"></a>Cache-As-SoR</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The cache-as-SoR pattern implies using the cache as though it were the primary system-of-record (SoR).</p>
+</div>
+<div class="paragraph">
+<p>The pattern delegates SOR reading and writing activities to the cache, so that application code is (at least directly)
+absolved of this responsibility. To implement the cache-as-sor pattern, use a combination of the following read and
+write patterns:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>read-through</p>
+</li>
+<li>
+<p>write-through or write-behind</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Advantages of using the cache-as-SoR pattern are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Less cluttered application code (improved maintainability through centralized SoR read/write operations)</p>
+</li>
+<li>
+<p>Choice of write-through or write-behind strategies on a per-cache basis</p>
+</li>
+<li>
+<p>Allows the cache to solve the <em>thundering-herd</em> problem</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A disadvantage of using the cache-as-SoR pattern is:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Less directly visible code-path</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="read-through"><a class="anchor" href="#read-through"></a>Read-Through</h3>
+<div class="paragraph">
+<p>Under the read-through pattern, the cache is configured with a <em>loader</em> component that knows how to load data from the
+system-of-record (SoR).</p>
+</div>
+<div class="paragraph">
+<p>When the cache is asked for the value associated with a given key and such an entry does not
+exist within the cache, the cache invokes the loader to retrieve the value from the SoR, then caches the value, then
+returns it to the caller.</p>
+</div>
+<div class="paragraph">
+<p>The next time the cache is asked for the value for the same key it can be returned from the
+cache without using the loader (unless the entry has been evicted or expired).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="write-through"><a class="anchor" href="#write-through"></a>Write-Through</h3>
+<div class="paragraph">
+<p>Under the write-through pattern, the cache is configured with a <em>writer</em> component that knows how to write data to the
+system-of-record (SoR).</p>
+</div>
+<div class="paragraph">
+<p>When the cache is asked to store a value for a key, the cache invokes the writer to store
+the value in the SoR, as well as updating the cache.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="write-behind"><a class="anchor" href="#write-behind"></a>Write-Behind</h3>
+<div class="paragraph">
+<p>The write-behind pattern changes the timing of the write to the system-of-record. Rather than writing to the
+system-of-record while the thread making the update waits (as with write-through), write-behind queues the data for
+writing at a later time.  This allows the user&#8217;s thread to move along more quickly, at the cost of introducing some
+lag in time before the SoR is updated.</p>
+</div>
+</div>
+</div>
+</div>
       </article>
     </div>
 
