@@ -312,16 +312,16 @@
 
 <p>The following configuration sets pools for all of this CacheManager’s caches:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">xmlns=</span><span class="s">"..."</span>
     <span class="na">name=</span><span class="s">"CM1"</span>
     <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span>
     <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
     <span class="na">maxBytesLocalDisk=</span><span class="s">"50G"</span><span class="nt">&gt;</span>
   ...
 
-  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache1"</span> <span class="err">...</span> <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache2"</span> <span class="err">...</span> <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span> <span class="err">...</span> <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache1"</span> <span class="err">...</span><span class="nt">&gt;</span> <span class="nt">&lt;/cache&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache2"</span> <span class="err">...</span><span class="nt">&gt;</span> <span class="nt">&lt;/cache&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span> <span class="err">...</span><span class="nt">&gt;</span> <span class="nt">&lt;/cache&gt;</span>
 
 <span class="nt">&lt;/ehcache&gt;</span>
 </code></pre>
@@ -332,7 +332,7 @@
 <h3 id="explicitly-sizing-caches">Explicitly Sizing Caches</h3>
 <p>You can explicitly allocate resources to specific caches:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">xmlns=</span><span class="s">"..."</span>
     <span class="na">name=</span><span class="s">"CM1"</span>
     <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span>
     <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
@@ -340,17 +340,18 @@
   ...
 
   <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache1"</span> <span class="err">...</span>
-      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
-    <span class="err">...</span>
-  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
 
   <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache2"</span> <span class="err">...</span>
-      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"5G"</span>
-    <span class="err">...</span>
-  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"5G"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
   
-  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span> <span class="err">...</span> 
-  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span><span class="nt">&gt;</span>
+    ... 
+  <span class="nt">&lt;/cache&gt;</span>
 <span class="nt">&lt;/ehcache&gt;</span>
 </code></pre>
 </div>
@@ -364,22 +365,22 @@
 <h3 id="mixed-sizing-configurations">Mixed Sizing Configurations</h3>
 <p>If a CacheManager does not pool a particular resource, that resource can still be allocated in cache configuration, as shown in the following example.</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">xmlns=</span><span class="s">"..."</span>
     <span class="na">name=</span><span class="s">"CM2"</span>
     <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span><span class="nt">&gt;</span>
   ...
 
   <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache4"</span> <span class="err">...</span>
       <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
-      <span class="na">maxEntriesLocalDisk=</span><span class="s">"100000"</span>
-    <span class="err">...</span>
-  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+      <span class="na">maxEntriesLocalDisk=</span><span class="s">"100000"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
 
   <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache5"</span> <span class="err">...</span>
-      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
-    <span class="err">...</span>
-  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache6"</span> <span class="err">...</span> <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache6"</span><span class="nt">&gt;</span> ... <span class="nt">&lt;/cache&gt;</span>
 <span class="nt">&lt;/ehcache&gt;</span>
 </code></pre>
 </div>
@@ -428,26 +429,26 @@
 
 <p>The CacheManager in this example does not pool any resources.</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">xmlns=</span><span class="s">"..."</span>
     <span class="na">name=</span><span class="s">"CM3"</span>
     <span class="err">...</span> <span class="nt">&gt;</span>
   ...
 
   <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache7"</span> <span class="err">...</span>
       <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
-      <span class="na">maxEntriesLocalDisk=</span><span class="s">"100000"</span>
-    <span class="err">...</span>
-  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+      <span class="na">maxEntriesLocalDisk=</span><span class="s">"100000"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
 
   <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache8"</span> <span class="err">...</span>
       <span class="na">maxEntriesLocalHeap=</span><span class="s">"1000"</span>
-      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
-    <span class="err">...</span>
-  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
   <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache9"</span> <span class="err">...</span>
-      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
-    <span class="err">...</span>
-  <span class="err">&lt;/cache</span><span class="nt">&gt;</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
 
 <span class="nt">&lt;/ehcache&gt;</span>
 </code></pre>

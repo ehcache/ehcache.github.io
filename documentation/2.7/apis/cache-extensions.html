@@ -227,11 +227,11 @@ or even a CacheManagerEventListener, all from within a CacheExtension, creating 
 <p>Cache extension are configured per cache. Each cache can have zero or more.
 A CacheExtension is configured by adding a cacheExceptionHandlerFactory element as shown in the following example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache ...&gt;
-    &lt;cacheExtensionFactory class="com.example.FileWatchingCacheRefresherExtensionFactory"
-    properties="refreshIntervalMillis=18000, loaderTimeout=3000,
-        flushPeriod=whatever, someOtherProperty=someValue ..."/&gt;
-&lt;/cache&gt;
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="err">...</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;cacheExtensionFactory</span> <span class="na">class=</span><span class="s">"com.example.FileWatchingCacheRefresherExtensionFactory"</span>
+    <span class="na">properties=</span><span class="s">"refreshIntervalMillis=18000,</span> <span class="na">loaderTimeout=</span><span class="s">3000,</span>
+        <span class="na">flushPeriod=</span><span class="s">whatever,</span> <span class="na">someOtherProperty=</span><span class="s">someValue</span> <span class="err">..."</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/cache&gt;</span>
 </code></pre>
 </div>
 
@@ -243,92 +243,93 @@ ehcache.xml
 The factory class needs to be a concrete subclass of the abstract
 factory class CacheExtensionFactory, which is reproduced below:</p>
 
-<pre>
-   <code>/**
-* An abstract factory for creating <code>CacheExtension</code>s. Implementers should
-* provide their own * concrete factory extending this factory. It can then be configured
-* in ehcache.xml.
-*
-* @author <a href="mailto:gluck@gregluck.com">Greg Luck</a>
-* @version $Id: cache_extensions.apt 4369 2011-07-15 19:59:14Z ilevy $
-*/
-public abstract class CacheExtensionFactory {
-/**
-* @param cache the cache this extension should hold a reference to, and to whose
-* lifecycle it should be bound.
-* @param properties implementation specific properties configured as delimiter separated
-* name value pairs in ehcache.xml
-*/
-public abstract CacheExtension createCacheExtension(Ehcache cache, Properties properties);
-"/&gt;
-</code>
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * An abstract factory for creating &lt;code&gt;CacheExtension&lt;/code&gt;s. Implementers should
+ * provide their own * concrete factory extending this factory. It can then be configured
+ * in ehcache.xml.
+ *
+ * @author &lt;a href="mailto:gluck@gregluck.com"&gt;Greg Luck&lt;/a&gt;
+ * @version $Id: cache_extensions.apt 4369 2011-07-15 19:59:14Z ilevy $
+ */</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">CacheExtensionFactory</span> <span class="o">{</span>
+	<span class="cm">/**
+	 * @param cache the cache this extension should hold a reference to, and to whose
+	 * lifecycle it should be bound.
+	 * @param properties implementation specific properties configured as delimiter separated
+	 * name value pairs in ehcache.xml
+	 */</span>
+	<span class="kd">public</span> <span class="kd">abstract</span> <span class="n">CacheExtension</span> <span class="nf">createCacheExtension</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="n">Properties</span> <span class="n">properties</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
 <p>The factory creates a concrete implementation of the CacheExtension
 interface, which is reproduced below:</p>
 
-<pre>
-   <code>/**
-* This is a general purpose mechanism to allow generic extensions to a Cache.
-* 
-* CacheExtensions are tied into the Cache lifecycle. For that reason this interface has the
-*  lifecycle methods.
-*
-* CacheExtensions are created using the CacheExtensionFactory which has a
-* <code>createCacheCacheExtension()</code> method which takes as a parameter a Cache and
-* properties. It can thus call back into any public method on Cache, including, of course,
-*  the load methods.
-* 
-* CacheExtensions are suitable for timing services, where you want to create a timer to
-* perform cache operations. The other way of adding Cache behaviour is to decorate a cache.
-* See {@link net.sf.ehcache.constructs.blocking.BlockingCache} for an example of how to do
-* this.
-* 
-* Because a CacheExtension holds a reference to a Cache, the CacheExtension can do things
-* such as registering a CacheEventListener or even a CacheManagerEventListener, all from
-* within a CacheExtension, creating more opportunities for customisation.
-*
-* @author <a href="mailto:gluck@gregluck.com">Greg Luck</a>
-* @version $Id: cache_extensions.apt 4369 2011-07-15 19:59:14Z ilevy $
-*/
-public interface CacheExtension {
-/**
-* Notifies providers to initialise themselves.
-* 
-* This method is called during the Cache's initialise method after it has changed it's
-* status to alive. Cache operations are legal in this method.
-*
-* @throws CacheException
-*/
-void init();
-/**
-* Providers may be doing all sorts of exotic things and need to be able to clean up on
-* dispose.
-* 
-* Cache operations are illegal when this method is called. The cache itself is partly
-* disposed when this method is called.
-*
-* @throws CacheException
-*/
-void dispose() throws CacheException;
-/**
-* Creates a clone of this extension. This method will only be called by Ehcache before a
-* cache is initialized.
-* 
-* Implementations should throw CloneNotSupportedException if they do not support clone
-* but that will stop them from being used with defaultCache.
-*
-* @return a clone
-* @throws CloneNotSupportedException if the extension could not be cloned.
-*/
-public CacheExtension clone(Ehcache cache) throws CloneNotSupportedException;
-/**
-* @return the status of the extension
-*/
-public Status getStatus();
-"/&gt;
-</code>
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * This is a general purpose mechanism to allow generic extensions to a Cache.
+ *
+ * CacheExtensions are tied into the Cache lifecycle. For that reason this interface has the
+ *  lifecycle methods.
+ *
+ * CacheExtensions are created using the CacheExtensionFactory which has a
+ * &lt;code&gt;createCacheCacheExtension()&lt;/code&gt; method which takes as a parameter a Cache and
+ * properties. It can thus call back into any public method on Cache, including, of course,
+ *  the load methods.
+ *
+ * CacheExtensions are suitable for timing services, where you want to create a timer to
+ * perform cache operations. The other way of adding Cache behaviour is to decorate a cache.
+ * See {@link net.sf.ehcache.constructs.blocking.BlockingCache} for an example of how to do
+ * this.
+ *
+ * Because a CacheExtension holds a reference to a Cache, the CacheExtension can do things
+ * such as registering a CacheEventListener or even a CacheManagerEventListener, all from
+ * within a CacheExtension, creating more opportunities for customisation.
+ *
+ * @author &lt;a href="mailto:gluck@gregluck.com"&gt;Greg Luck&lt;/a&gt;
+ * @version $Id: cache_extensions.apt 4369 2011-07-15 19:59:14Z ilevy $
+ */</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheExtension</span> <span class="o">{</span>
+	<span class="cm">/**
+	 * Notifies providers to initialise themselves.
+	 *
+	 * This method is called during the Cache's initialise method after it has changed it's
+	 * status to alive. Cache operations are legal in this method.
+	 *
+	 * @throws CacheException
+	 */</span>
+	<span class="kt">void</span> <span class="nf">init</span><span class="o">();</span>
+
+	<span class="cm">/**
+	 * Providers may be doing all sorts of exotic things and need to be able to clean up on
+	 * dispose.
+	 *
+	 * Cache operations are illegal when this method is called. The cache itself is partly
+	 * disposed when this method is called.
+	 *
+	 * @throws CacheException
+	 */</span>
+	<span class="kt">void</span> <span class="nf">dispose</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+
+	<span class="cm">/**
+	 * Creates a clone of this extension. This method will only be called by Ehcache before a
+	 * cache is initialized.
+	 *
+	 * Implementations should throw CloneNotSupportedException if they do not support clone
+	 * but that will stop them from being used with defaultCache.
+	 *
+	 * @return a clone
+	 * @throws CloneNotSupportedException if the extension could not be cloned.
+	 */</span>
+	<span class="kd">public</span> <span class="n">CacheExtension</span> <span class="nf">clone</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span><span class="o">;</span>
+
+	<span class="cm">/**
+	 * @return the status of the extension
+	 */</span>
+	<span class="kd">public</span> <span class="n">Status</span> <span class="nf">getStatus</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
 <p>The implementations need to be placed in the classpath accessible to ehcache.
 See the chapter on <a href="/documentation/2.7/user-guide/class-loading">Classloading</a> for details on how class
@@ -337,13 +338,11 @@ loading of these classes will be done.</p>
 <h2 id="programmatic-configuration">Programmatic Configuration</h2>
 <p>Cache Extensions may also be programmatically added to a Cache as shown.</p>
 
-<pre>
-   <code>
-TestCacheExtension testCacheExtension = new TestCacheExtension(cache, ...);
-testCacheExtension.init();
-cache.registerCacheExtension(testCacheExtension);
-</code>
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">TestCacheExtension</span> <span class="n">testCacheExtension</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TestCacheExtension</span><span class="o">(</span><span class="n">cache</span><span class="o">,</span> <span class="o">...);</span>
+<span class="n">testCacheExtension</span><span class="o">.</span><span class="na">init</span><span class="o">();</span>
+<span class="n">cache</span><span class="o">.</span><span class="na">registerCacheExtension</span><span class="o">(</span><span class="n">testCacheExtension</span><span class="o">);</span>
+</code></pre>
+</div>
 
       </article>
     </div>

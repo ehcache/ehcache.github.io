@@ -368,62 +368,62 @@ for durability and HA. The data is still kept in the originating node for perfor
 <p>There are many configuration options. See the <code class="highlighter-rouge">CacheWriterConfiguration</code> for properties that may be set and their effect.
 Below is an example of how to configure the cache writer in XML:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="writeThroughCache1" ... &gt;
-&lt;cacheWriter writeMode="write_behind" maxWriteDelay="8" rateLimitPerSecond="5"
-        writeCoalescing="true" writeBatching="true" writeBatchSize="20"
-        retryAttempts="2" retryAttemptDelaySeconds="2"&gt;
-   &lt;cacheWriterFactory class="com.company.MyCacheWriterFactory"
-                   properties="just.some.property=test; another.property=test2" propertySeparator=";"/&gt;
-&lt;/cacheWriter&gt;
-&lt;/cache&gt;
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeThroughCache1"</span> <span class="err">...</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;cacheWriter</span> <span class="na">writeMode=</span><span class="s">"write-behind"</span> <span class="na">maxWriteDelay=</span><span class="s">"8"</span> <span class="na">rateLimitPerSecond=</span><span class="s">"5"</span>
+          <span class="na">writeCoalescing=</span><span class="s">"true"</span> <span class="na">writeBatching=</span><span class="s">"true"</span> <span class="na">writeBatchSize=</span><span class="s">"20"</span>
+          <span class="na">retryAttempts=</span><span class="s">"2"</span> <span class="na">retryAttemptDelaySeconds=</span><span class="s">"2"</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;cacheWriterFactory</span> <span class="na">class=</span><span class="s">"com.company.MyCacheWriterFactory"</span>
+                     <span class="na">properties=</span><span class="s">"just.some.property=test; another.property=test2"</span> <span class="na">propertySeparator=</span><span class="s">";"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/cacheWriter&gt;</span>
+<span class="nt">&lt;/cache&gt;</span>
 </code></pre>
 </div>
 
 <p>Further examples:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="writeThroughCache2" ... &gt;
- &lt;cacheWriter/&gt;
-&lt;/cache&gt;
-&lt;cache name="writeThroughCache3" ... &gt;
- &lt;cacheWriter writeMode="write_through" notifyListenersOnException="true" maxWriteDelay="30"
-      rateLimitPerSecond="10" writeCoalescing="true" writeBatching="true" writeBatchSize="8"
-      retryAttempts="20" retryAttemptDelaySeconds="60"/&gt;
-&lt;/cache&gt;
-&lt;cache name="writeThroughCache4" ... &gt;
- &lt;cacheWriter writeMode="write_through" notifyListenersOnException="false" maxWriteDelay="0"
-      rateLimitPerSecond="0" writeCoalescing="false" writeBatching="false" writeBatchSize="1"
-      retryAttempts="0" retryAttemptDelaySeconds="0"&gt;
- &lt;cacheWriterFactory class="net.sf.ehcache.writer.WriteThroughTestCacheWriterFactory"/&gt;
- &lt;/cacheWriter&gt;
-&lt;/cache&gt;
-&lt;cache name="writeBehindCache5" ... &gt;
- &lt;cacheWriter writeMode="write-behind" notifyListenersOnException="true" maxWriteDelay="8" rateLimitPerSecond="5"
-      writeCoalescing="true" writeBatching="false" writeBatchSize="20"
-      retryAttempts="2" retryAttemptDelaySeconds="2"&gt;
- &lt;cacheWriterFactory class="net.sf.ehcache.writer.WriteThroughTestCacheWriterFactory"
-                 properties="just.some.property=test; another.property=test2" propertySeparator=";"/&gt;
- &lt;/cacheWriter&gt;
-&lt;/cache&gt;
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeThroughCache2"</span> <span class="err">...</span> <span class="nt">&gt;</span>
+ <span class="nt">&lt;cacheWriter/&gt;</span>
+<span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeThroughCache3"</span> <span class="err">...</span> <span class="nt">&gt;</span>
+ <span class="nt">&lt;cacheWriter</span> <span class="na">writeMode=</span><span class="s">"write-through"</span> <span class="na">notifyListenersOnException=</span><span class="s">"true"</span> <span class="na">maxWriteDelay=</span><span class="s">"30"</span>
+      <span class="na">rateLimitPerSecond=</span><span class="s">"10"</span> <span class="na">writeCoalescing=</span><span class="s">"true"</span> <span class="na">writeBatching=</span><span class="s">"true"</span> <span class="na">writeBatchSize=</span><span class="s">"8"</span>
+      <span class="na">retryAttempts=</span><span class="s">"20"</span> <span class="na">retryAttemptDelaySeconds=</span><span class="s">"60"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeThroughCache4"</span> <span class="err">...</span> <span class="nt">&gt;</span>
+ <span class="nt">&lt;cacheWriter</span> <span class="na">writeMode=</span><span class="s">"write-through"</span> <span class="na">notifyListenersOnException=</span><span class="s">"false"</span> <span class="na">maxWriteDelay=</span><span class="s">"0"</span>
+      <span class="na">rateLimitPerSecond=</span><span class="s">"0"</span> <span class="na">writeCoalescing=</span><span class="s">"false"</span> <span class="na">writeBatching=</span><span class="s">"false"</span> <span class="na">writeBatchSize=</span><span class="s">"1"</span>
+      <span class="na">retryAttempts=</span><span class="s">"0"</span> <span class="na">retryAttemptDelaySeconds=</span><span class="s">"0"</span><span class="nt">&gt;</span>
+ <span class="nt">&lt;cacheWriterFactory</span> <span class="na">class=</span><span class="s">"net.sf.ehcache.writer.WriteThroughTestCacheWriterFactory"</span><span class="nt">/&gt;</span>
+ <span class="nt">&lt;/cacheWriter&gt;</span>
+<span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeBehindCache5"</span> <span class="err">...</span> <span class="nt">&gt;</span>
+ <span class="nt">&lt;cacheWriter</span> <span class="na">writeMode=</span><span class="s">"write-behind"</span> <span class="na">notifyListenersOnException=</span><span class="s">"true"</span> <span class="na">maxWriteDelay=</span><span class="s">"8"</span> <span class="na">rateLimitPerSecond=</span><span class="s">"5"</span>
+      <span class="na">writeCoalescing=</span><span class="s">"true"</span> <span class="na">writeBatching=</span><span class="s">"false"</span> <span class="na">writeBatchSize=</span><span class="s">"20"</span>
+      <span class="na">retryAttempts=</span><span class="s">"2"</span> <span class="na">retryAttemptDelaySeconds=</span><span class="s">"2"</span><span class="nt">&gt;</span>
+ <span class="nt">&lt;cacheWriterFactory</span> <span class="na">class=</span><span class="s">"net.sf.ehcache.writer.WriteThroughTestCacheWriterFactory"</span>
+                 <span class="na">properties=</span><span class="s">"just.some.property=test; another.property=test2"</span> <span class="na">propertySeparator=</span><span class="s">";"</span><span class="nt">/&gt;</span>
+ <span class="nt">&lt;/cacheWriter&gt;</span>
+<span class="nt">&lt;/cache&gt;</span>
 </code></pre>
 </div>
 
 <p>This configuration can also be achieved through the <code class="highlighter-rouge">Cache</code> constructor in Java:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Cache cache = new Cache(
-new CacheConfiguration("cacheName", 10)
-.cacheWriter(new CacheWriterConfiguration()
-.writeMode(CacheWriterConfiguration.WriteMode.WRITE_BEHIND)
-.maxWriteDelay(8)
-.rateLimitPerSecond(5)
-.writeCoalescing(true)
-.writeBatching(true)
-.writeBatchSize(20)
-.retryAttempts(2)
-.retryAttemptDelaySeconds(2)
-.cacheWriterFactory(new CacheWriterConfiguration.CacheWriterFactoryConfiguration()
-   .className("com.company.MyCacheWriterFactory")
-   .properties("just.some.property=test; another.property=test2")
-   .propertySeparator(";"))));
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Cache</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cache</span><span class="o">(</span>
+<span class="k">new</span> <span class="nf">CacheConfiguration</span><span class="o">(</span><span class="s">"cacheName"</span><span class="o">,</span> <span class="mi">10</span><span class="o">)</span>
+<span class="o">.</span><span class="na">cacheWriter</span><span class="o">(</span><span class="k">new</span> <span class="n">CacheWriterConfiguration</span><span class="o">()</span>
+<span class="o">.</span><span class="na">writeMode</span><span class="o">(</span><span class="n">CacheWriterConfiguration</span><span class="o">.</span><span class="na">WriteMode</span><span class="o">.</span><span class="na">WRITE</span><span class="o">-</span><span class="n">BEHIND</span><span class="o">)</span>
+<span class="o">.</span><span class="na">maxWriteDelay</span><span class="o">(</span><span class="mi">8</span><span class="o">)</span>
+<span class="o">.</span><span class="na">rateLimitPerSecond</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+<span class="o">.</span><span class="na">writeCoalescing</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+<span class="o">.</span><span class="na">writeBatching</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+<span class="o">.</span><span class="na">writeBatchSize</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+<span class="o">.</span><span class="na">retryAttempts</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+<span class="o">.</span><span class="na">retryAttemptDelaySeconds</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+<span class="o">.</span><span class="na">cacheWriterFactory</span><span class="o">(</span><span class="k">new</span> <span class="n">CacheWriterConfiguration</span><span class="o">.</span><span class="na">CacheWriterFactoryConfiguration</span><span class="o">()</span>
+   <span class="o">.</span><span class="na">className</span><span class="o">(</span><span class="s">"com.company.MyCacheWriterFactory"</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">properties</span><span class="o">(</span><span class="s">"just.some.property=test; another.property=test2"</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">propertySeparator</span><span class="o">(</span><span class="s">";"</span><span class="o">))));</span>
 </code></pre>
 </div>
 
@@ -431,9 +431,9 @@ new CacheConfiguration("cacheName", 10)
 register a <code class="highlighter-rouge">CacheWriter</code> instance from within Java code. This allows you to refer to local resources like database
 connections or file handles.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Cache cache = manager.getCache("cacheName");
-MyCacheWriter writer = new MyCacheWriter(jdbcConnection);
-cache.registerCacheWriter(writer);
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="n">Cache</span> <span class="n">cache</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="na">getCache</span><span class="o">(</span><span class="s">"cacheName"</span><span class="o">);</span>
+  <span class="n">MyCacheWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyCacheWriter</span><span class="o">(</span><span class="n">jdbcConnection</span><span class="o">);</span>
+  <span class="n">cache</span><span class="o">.</span><span class="na">registerCacheWriter</span><span class="o">(</span><span class="n">writer</span><span class="o">);</span>
 </code></pre>
 </div>
 
@@ -480,28 +480,27 @@ cache.registerCacheWriter(writer);
 <code class="highlighter-rouge">cache.putWithWriter(...)</code> and <code class="highlighter-rouge">cache.removeWithWriter(...)</code> methods.
 For example, following is the method signature for <code class="highlighter-rouge">cache.putWithWriter(...)</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
-* Put an element in the cache writing through a CacheWriter. If no CacheWriter has been
-* set for the cache, then this method has the same effect as cache.put().
-* 
-* Resets the access statistics on the element, which would be the case if it has previously
-* been gotten from a cache, and is now being put back.
-* 
-* Also notifies the CacheEventListener, if the writer operation succeeds, that:
-* 
-* - the element was put, but only if the Element was actually put.
-* - if the element exists in the cache, that an update has occurred, even if the element
-* would be expired if it was requested
-* 
-*
-* @param element An object. If Serializable it can fully participate in replication and the
-* DiskStore.
-* @throws IllegalStateException    if the cache is not {@link net.sf.ehcache.Status#STATUS_ALIVE"/&gt;
-* @throws IllegalArgumentException if the element is null
-* @throws CacheException
-*/
-void putWithWriter(Element element) throws IllegalArgumentException, IllegalStateException,
-CacheException;
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * Put an element in the cache writing through a CacheWriter. If no CacheWriter has been
+ * set for the cache, then this method has the same effect as cache.put().
+ *
+ * Resets the access statistics on the element, which would be the case if it has previously
+ * been gotten from a cache, and is now being put back.
+ *
+ * Also notifies the CacheEventListener, if the writer operation succeeds, that:
+ *
+ * - the element was put, but only if the Element was actually put.
+ * - if the element exists in the cache, that an update has occurred, even if the element
+ * would be expired if it was requested
+ *
+ *
+ * @param element An object. If Serializable it can fully participate in replication and the
+ * DiskStore.
+ * @throws IllegalStateException    if the cache is not {@link net.sf.ehcache.Status#STATUS_ALIVE"/&gt;
+ * @throws IllegalArgumentException if the element is null
+ * @throws CacheException
+ */</span>
+<span class="kt">void</span> <span class="nf">putWithWriter</span><span class="o">(</span><span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IllegalArgumentException</span><span class="o">,</span> <span class="n">IllegalStateException</span><span class="o">,</span> <span class="n">CacheException</span><span class="o">;</span>
 </code></pre>
 </div>
 
@@ -511,123 +510,130 @@ CacheException;
 <p>The Ehcache write-through SPI is the <code class="highlighter-rouge">CacheWriter</code> interface. Implementers perform writes to the underlying resource
 in their implementation.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
-* A CacheWriter is an interface used for write-through and write-behind caching to a
-* underlying resource.
-* &lt;p/&gt;
-* If configured for a cache, CacheWriter's methods will be called on a cache operation.
-* A cache put will cause a CacheWriter write
-* and a cache remove will cause a writer delete.
-* &lt;p&gt;
-* Implementers should create an implementation which handles storing and deleting to an
-* underlying resource.
-* &lt;/p&gt;
-* &lt;h4&gt;Write-Through&lt;/h4&gt;
-* In write-through mode, the cache operation will occur and the writer operation will occur
-* before CacheEventListeners are notified. If
-* the write operation fails an exception will be thrown. This can result in a cache which
-* is inconsistent with the underlying resource.
-* To avoid this, the cache and the underlying resource should be configured to participate
-* in a transaction. In the event of a failure
-* a rollback can return all components to a consistent state.
-* &lt;p/&gt;
-* &lt;h4&gt;Write-Behind&lt;/h4&gt;
-* In write-behind mode, writes are written to a write-behind queue. They are written by a
-* separate execution thread in a configurable
-* way. When used with Terracotta Server Array, the queue is highly available. In addition
-* any node in the cluster may perform the
-* write-behind operations.
-* &lt;p/&gt;
-* &lt;h4&gt;Creation and Configuration&lt;/h4&gt;
-* CacheWriters can be created using the CacheWriterFactory.
-* &lt;p/&gt;
-* The manner upon which a CacheWriter is actually called is determined by the
-* {@link net.sf.ehcache.config.CacheWriterConfiguration} that is set up for a cache
-* using the CacheWriter.
-* &lt;p/&gt;
-* See the CacheWriter chapter in the documentation for more information on how to use writers.
-*
-* @author Greg Luck
-* @author Geert Bevin
-* @version $Id: $
-*/
-public interface CacheWriter {
-/**
-* Creates a clone of this writer. This method will only be called by ehcache before a
-* cache is initialized.
-* &lt;p/&gt;
-* Implementations should throw CloneNotSupportedException if they do not support clone
-* but that will stop them from being used with defaultCache.
-*
-* @return a clone
-* @throws CloneNotSupportedException if the extension could not be cloned.
-*/
-public CacheWriter clone(Ehcache cache) throws CloneNotSupportedException;
- /**
-* Notifies writer to initialise themselves.
-* &lt;p/&gt;
-* This method is called during the Cache's initialise method after it has changed it's
-* status to alive. Cache operations are legal in this method.
-*
-* @throws net.sf.ehcache.CacheException
-*/
-void init();
-/**
-* Providers may be doing all sorts of exotic things and need to be able to clean up on
-* dispose.
-* &lt;p/&gt;
-* Cache operations are illegal when this method is called. The cache itself is partly
-* disposed when this method is called.
-*/
-void dispose() throws CacheException;
-/**
-* Write the specified value under the specified key to the underlying store.
-* This method is intended to support both key/value creation and value update for a
-* specific key.
-*
-* @param element the element to be written
-*/
-void write(Element element) throws CacheException;
-/**
-* Write the specified Elements to the underlying store. This method is intended to
-* support both insert and update.
-* If this operation fails (by throwing an exception) after a partial success,
-* the convention is that entries which have been written successfully are to be removed
-* from the specified mapEntries, indicating that the write operation for the entries left
-* in the map has failed or has not been attempted.
-*
-* @param elements the Elements to be written
-*/
-void writeAll(Collection&lt;Element&gt; elements) throws CacheException;
- /**
-* Delete the cache entry from the store
-*
-* @param entry the cache entry that is used for the delete operation
-*/
-void delete(CacheEntry entry) throws CacheException;
- /**
-* Remove data and keys from the underlying store for the given collection of keys, if
-* present. If this operation fails * (by throwing an exception) after a partial success,
-* the convention is that keys which have been erased successfully are to be removed from
-* the specified keys, indicating that the erase operation for the keys left in the collection
-* has failed or has not been attempted.
-*
-* @param entries the entries that have been removed from the cache
-*/
-void deleteAll(Collection&lt;CacheEntry&gt; entries) throws CacheException;
-  /**
- * This method will be called whenever an Element couldn't be handled by the writer and all of
- * the {@link net.sf.ehcache.config.CacheWriterConfiguration#getRetryAttempts() retryAttempts} have been tried.
- * &lt;p&gt;When batching is enabled, all of the elements in the failing batch will be passed to this method.
- * &lt;p&gt;Try to not throw RuntimeExceptions from this method. Should an Exception occur, it will be logged, but
- * the element will still be lost.
- * @param element the Element that triggered the failure, or one of the elements in the batch that failed
- * @param operationType the operation we tried to execute
- * @param e the RuntimeException thrown by the Writer when the last retry attempt was being executed
- */
-void throwAway(Element element, SingleOperationType operationType, RuntimeException e);
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * A CacheWriter is an interface used for write-through and write-behind caching to a
+ * underlying resource.
+ * &lt;p/&gt;
+ * If configured for a cache, CacheWriter's methods will be called on a cache operation.
+ * A cache put will cause a CacheWriter write
+ * and a cache remove will cause a writer delete.
+ * &lt;p&gt;
+ * Implementers should create an implementation which handles storing and deleting to an
+ * underlying resource.
+ * &lt;/p&gt;
+ * &lt;h4&gt;Write-Through&lt;/h4&gt;
+ * In write-through mode, the cache operation will occur and the writer operation will occur
+ * before CacheEventListeners are notified. If
+ * the write operation fails an exception will be thrown. This can result in a cache which
+ * is inconsistent with the underlying resource.
+ * To avoid this, the cache and the underlying resource should be configured to participate
+ * in a transaction. In the event of a failure
+ * a rollback can return all components to a consistent state.
+ * &lt;p/&gt;
+ * &lt;h4&gt;Write-Behind&lt;/h4&gt;
+ * In write-behind mode, writes are written to a write-behind queue. They are written by a
+ * separate execution thread in a configurable
+ * way. When used with Terracotta Server Array, the queue is highly available. In addition
+ * any node in the cluster may perform the
+ * write-behind operations.
+ * &lt;p/&gt;
+ * &lt;h4&gt;Creation and Configuration&lt;/h4&gt;
+ * CacheWriters can be created using the CacheWriterFactory.
+ * &lt;p/&gt;
+ * The manner upon which a CacheWriter is actually called is determined by the
+ * {@link net.sf.ehcache.config.CacheWriterConfiguration} that is set up for a cache
+ * using the CacheWriter.
+ * &lt;p/&gt;
+ * See the CacheWriter chapter in the documentation for more information on how to use writers.
+ *
+ * @author Greg Luck
+ * @author Geert Bevin
+ * @version $Id: $
+ */</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheWriter</span> <span class="o">{</span>
+  <span class="cm">/**
+   * Creates a clone of this writer. This method will only be called by ehcache before a
+   * cache is initialized.
+   * &lt;p/&gt;
+   * Implementations should throw CloneNotSupportedException if they do not support clone
+   * but that will stop them from being used with defaultCache.
+   *
+   * @return a clone
+   * @throws CloneNotSupportedException if the extension could not be cloned.
+   */</span>
+  <span class="kd">public</span> <span class="n">CacheWriter</span> <span class="nf">clone</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span><span class="o">;</span>
 
-"/&gt;
+  <span class="cm">/**
+   * Notifies writer to initialise themselves.
+   * &lt;p/&gt;
+   * This method is called during the Cache's initialise method after it has changed it's
+   * status to alive. Cache operations are legal in this method.
+   *
+   * @throws net.sf.ehcache.CacheException
+   */</span>
+  <span class="kt">void</span> <span class="nf">init</span><span class="o">();</span>
+
+  <span class="cm">/**
+   * Providers may be doing all sorts of exotic things and need to be able to clean up on
+   * dispose.
+   * &lt;p/&gt;
+   * Cache operations are illegal when this method is called. The cache itself is partly
+   * disposed when this method is called.
+   */</span>
+  <span class="kt">void</span> <span class="nf">dispose</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+
+  <span class="cm">/**
+   * Write the specified value under the specified key to the underlying store.
+   * This method is intended to support both key/value creation and value update for a
+   * specific key.
+   *
+   * @param element the element to be written
+   */</span>
+  <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+
+  <span class="cm">/**
+   * Write the specified Elements to the underlying store. This method is intended to
+   * support both insert and update.
+   * If this operation fails (by throwing an exception) after a partial success,
+   * the convention is that entries which have been written successfully are to be removed
+   * from the specified mapEntries, indicating that the write operation for the entries left
+   * in the map has failed or has not been attempted.
+   *
+   * @param elements the Elements to be written
+   */</span>
+  <span class="kt">void</span> <span class="nf">writeAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">Element</span><span class="o">&gt;</span> <span class="n">elements</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+
+  <span class="cm">/**
+   * Delete the cache entry from the store
+   *
+   * @param entry the cache entry that is used for the delete operation
+   */</span>
+  <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="n">CacheEntry</span> <span class="n">entry</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+
+  <span class="cm">/**
+   * Remove data and keys from the underlying store for the given collection of keys, if
+   * present. If this operation fails * (by throwing an exception) after a partial success,
+   * the convention is that keys which have been erased successfully are to be removed from
+   * the specified keys, indicating that the erase operation for the keys left in the collection
+   * has failed or has not been attempted.
+   *
+   * @param entries the entries that have been removed from the cache
+   */</span>
+  <span class="kt">void</span> <span class="nf">deleteAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">CacheEntry</span><span class="o">&gt;</span> <span class="n">entries</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+
+  <span class="cm">/**
+   * This method will be called whenever an Element couldn't be handled by the writer and all of
+   * the {@link net.sf.ehcache.config.CacheWriterConfiguration#getRetryAttempts() retryAttempts} have been tried.
+   * &lt;p&gt;When batching is enabled, all of the elements in the failing batch will be passed to this method.
+   * &lt;p&gt;Try to not throw RuntimeExceptions from this method. Should an Exception occur, it will be logged, but
+   * the element will still be lost.
+   * @param element the Element that triggered the failure, or one of the elements in the batch that failed
+   * @param operationType the operation we tried to execute
+   * @param e the RuntimeException thrown by the Writer when the last retry attempt was being executed
+   */</span>
+  <span class="kt">void</span> <span class="nf">throwAway</span><span class="o">(</span><span class="n">Element</span> <span class="n">element</span><span class="o">,</span> <span class="n">SingleOperationType</span> <span class="n">operationType</span><span class="o">,</span> <span class="n">RuntimeException</span> <span class="n">e</span><span class="o">);</span>
+
+<span class="o">}</span>
 </code></pre>
 </div>
 

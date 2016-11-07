@@ -191,6 +191,31 @@
                               <span class="toctext">Cache Configuration Sizing Attributes</span>
                            </a>
                         </li>
+                        <li class="toc_level-2 toc_section-4">
+                           <a href="#pooling-resources-versus-sizing-individual-caches">
+                              <span class="toctext">Pooling Resources Versus Sizing Individual Caches</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#cache-sizing-examples">
+                              <span class="toctext">Cache Sizing Examples</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-6">
+                           <a href="#sizing-distributed-caches">
+                              <span class="toctext">Sizing Distributed Caches</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-7">
+                           <a href="#overriding-size-limitations">
+                              <span class="toctext">Overriding Size Limitations</span>
+                           </a>
+                        </li>
+                        <li class="toc_level-2 toc_section-8">
+                           <a href="#built-in-sizing-computation-and-enforcement">
+                              <span class="toctext">Built-In Sizing Computation and Enforcement</span>
+                           </a>
+                        </li>
                      </ul>
                   </li>
                </ul>
@@ -207,306 +232,368 @@
 <p>The following table summarizes cache-sizing attributes for standalone Ehcache.</p>
 
 <table>
- <tr>
-  <th>Tier</th>
-  <th>Attribute</th>
-  <th>Pooling available at CacheManager Level?</th>
-  <th>Description</th>
- </tr>
- <tr>
-  <td>Heap</td>
-  <td>`maxEntriesLocalHeap`
-`maxBytesLocalHeap`</td>
-  <td>`maxBytesLocalHeap` only</td>
-  <td width="50%">The maximum number of cache entries or bytes a cache can use in local heap memory, or, when set at the CacheManager level (maxBytesLocalHeap only), a local pool available to all caches under that CacheManager. This setting is required for every cache or at the CacheManager level.</td>
- </tr><tr>
-  <td>Off-heap</td>
-  <td>`maxBytesLocalOffHeap`</td>
-  <td>Yes</td>
-  <td>This tier is available with <a href="http://terracotta.org/products/bigmemorygo">BigMemory Go</a>.The maximum number of bytes a cache can use in off-heap memory, or, when set at the CacheManager level, as a pool available to all caches under that CacheManager. This setting requires BigMemory.</td>
- </tr>
- <tr>
-  <td>Local disk</td>
-  <td>`maxEntriesLocalDisk`
-  `maxBytesLocalDisk`</td>
-  <td>`maxBytesLocalDisk` only</td>
-  <td>The maximum number of cache entries or bytes a standalone cache can use on the local disk, or, when set at the CacheManager level (maxBytesLocalDisk only), a local pool available to all caches under that CacheManager. Distributed caches cannot use the local disk. Note that these settings apply only to temporary swapping of data to disk ("localTempSwap"); these settings do not apply to disk persistence.</td>
- </tr>
-&lt;/table&gt;
-
-Attributes that set a number of entries take an integer. Attributes that set a memory size (bytes) use the Java -Xmx syntax (for example: "500k", "200m", "2g") or percentage (for example: "20%"). Percentages, however, can be used only in the case where a CacheManager-level pool has been configured (see below).
-
-The following diagram illustrates the tiers and their effective sizing attributes.
-
-![Ehcache Data Tiers and Sizing Attributes](/images/documentation/tier-size-standalone.png)
-
-## Pooling Resources Versus Sizing Individual Caches
-You can constrain the size of any cache on a specific tier in that cache's configuration. You can also constrain the size of all of a CacheManager's caches in a specific tier by configuring an overall size at the CacheManager level.
-
-If there is no CacheManager-level pool specified for a tier, an individual cache claims the amount of that tier specified in its configuration. If there is a CacheManager-level pool specified for a tier, an individual cache claims that amount _from the pool_. In this case, caches with no size configuration for that tier receive an equal share of the remainder of the pool (after caches with explicit sizing configuration have claimed their portion).
-
-For example, if CacheManager with eight caches pools one gigabyte of heap, and two caches each explicitly specify 200MB of heap while the remaining caches do not specify a size, the remaining caches will share 600MB of heap equally. Note that caches must use bytes-based attributes to claim a portion of a pool; entries-based attributes such as `maxEntriesLocal` cannot be used with a pool.
-
-On startup, the sizes specified by caches are checked to ensure that any CacheManager-level pools are not over-allocated. If over-allocation occurs for any pool, an InvalidConfigurationException is thrown. Note that percentages should not add up to more than 100% of a single pool.
-
-If the sizes specified by caches for any tier take exactly the entire CacheManager-level pool specified for that tier, a warning is logged. In this case, caches that do not specify a size for that tier cannot use the tier as nothing is left over.
-
-### Local Heap
-A size must be provided for local heap, either in the CacheManager (`maxBytesLocalHeap` only) or in each individual cache (`maxBytesLocalHeap` or `maxEntriesLocalHeap`). Not doing so causes an InvalidConfigurationException.
-
-If pool is configured, it can be combined with a local-heap setting in an individual cache. This allows the cache to claim a specified portion of the heap setting configured in the pool. However, in this case the cache setting must use `maxBytesLocalHeap` (same as the CacheManager). 
-
-In any case, every cache **must** have a local-heap setting, either configured explicitly or taken from the pool configured in the CacheManager.
-
-### BigMemory (Local Off-Heap)
-If you are using [BigMemory Go](http://terracotta.org/products/bigmemorygo), off-heap sizing is available. Off-heap sizing can be configured in bytes only, never by entries.
-
-If a CacheManager has a pool configured for off-heap, your application cannot add caches dynamically that have off-heap configuration — doing so generates an error. In addition, if any caches that used the pool are removed programmatically or through the Developer Console, other caches in the pool cannot claim the unused portion. To allot the entire off-heap pool to the remaining caches, remove the unwanted cache from the Ehcache configuration and then reload the configuration.
-
-To use local off-heap as a data tier, a cache must have `overflowToOffHeap` set to "true". If a CacheManager has a pool configured for using off-heap, the `overflowToOffHeap` attribute is automatically set to "true" for all caches. In this case, you can prevent a specific cache from overflowing to off-heap by explicitly setting its `overflowToOffHeap` attribute to "false".
-
-### Local Disk
-The local disk can be used as a data tier. Note the following:
-
-* Distributed caches cannot use the local disk.
-* To use the local disk as a data tier, a cache must have `persistenceStrategy` set to "localTempSwap".
-* The local disk is the slowest local tier.
-
-## Cache Sizing Examples
-The following examples illustrate both pooled and individual cache-sizing configurations.
-
-### Pooled Resources
-
-The following configuration sets pools for all of this CacheManager's caches:
-
-    <ehcache xmlns...="" name="CM1" maxbyteslocalheap="100M" maxbyteslocaloffheap="10G" maxbyteslocaldisk="50G">
-    ...
-    
-    &lt;cache name="Cache1" ... &lt;/cache&gt;
-    &lt;cache name="Cache2" ... &lt;/cache&gt;
-    &lt;cache name="Cache3" ... &lt;/cache&gt;
-    
-    </ehcache>
-
-CacheManager CM1 automatically allocates these pools equally among its three caches. Each cache gets one third of the allocated heap, off-heap, and local disk. Note that at the CacheManager level, resources can be allocated in bytes only.
-
-### Explicitly Sizing Caches
-You can explicitly allocate resources to specific caches:
-
-    <ehcache xmlns...="" name="CM1" maxbyteslocalheap="100M" maxbyteslocaloffheap="10G" maxbyteslocaldisk="60G">
-    ...
-    
-    &lt;cache name="Cache1" ...
-            maxBytesLocalHeap="50M"
-            ...
-      &lt;/cache&gt;
-
-    &lt;cache name="Cache2" ...
-           maxBytesLocalOffHeap="5G"
-           ...
-      &lt;/cache&gt;
-    &lt;cache name="Cache3" ... &lt;/cache&gt;
-    
-    </ehcache>
-
-In the example above, Cache1 reserves 50Mb of the 100Mb local-heap pool; the other caches divide the remaining portion of the pool equally. Cache2 takes half of the local off-heap pool; the other caches divide the remaining portion of the pool equally. Cache3 receives 25Mb of local heap, 2.5Gb of off-heap, and 20Gb of the local disk.
-
-Caches that reserve a portion of a pool are not required to use that portion. Cache1, for example, has a fixed portion of the local heap but may have any amount of data in heap up to the configured value of 50Mb.
-
-Note that caches must use the same sizing attributes used to create the pool. Cache1, for example, cannot use `maxEntriesLocalHeap` to reserve a portion of the pool.
-
-### Mixed Sizing Configurations
-If a CacheManager does not pool a particular resource, that resource can still be allocated in cache configuration, as shown in the following example.
-
-    <ehcache xmlns...="" name="CM2" maxbyteslocalheap="100M">
-    ...
-    
-    &lt;cache name="Cache4" ...
-            maxBytesLocalHeap="50M"
-            maxEntriesLocalDisk="100000"
-            ...
-      &lt;/cache&gt;
-
-    &lt;cache name="Cache5" ...
-           maxBytesLocalOffHeap="10G"
-           ...
-      &lt;/cache&gt;
-    &lt;cache name="Cache6" ... &lt;/cache&gt;
-    
-    </ehcache>
-
-CacheManager CM2 creates one pool (local heap). Its caches all use the local heap and are constrained by the pool setting, as expected. However, cache configuration can allocate other resources as desired. In this example, Cache4 allocates disk space for its data, and Cache5 allocates off-heap space for its data. Cache6 gets 25Mb of local heap only.
-
-### Using Percents
-The following configuration sets pools for each tier:
-
-    <ehcache xmlns...="" name="CM1" maxbyteslocalheap="1G" maxbyteslocaloffheap="10G" maxbyteslocaldisk="50G">
-    ...
-    
-    <!-- Cache1 gets 400Mb of heap, 2.5Gb of off-heap, and 5Gb of disk. -->
-    &lt;cache name="Cache1" ... 
-    maxBytesLocalHeap="40%"&gt;
-    &lt;/cache&gt;
-    
-    <!-- Cache2 gets 300Mb of heap, 5Gb of off-heap, and 5Gb of disk. -->
-    &lt;cache name="Cache2" ... 
-    maxBytesLocalOffHeap="50%"&gt;
-    &lt;/cache&gt;
-    
-    <!-- Cache2 gets 300Mb of heap, 2.5Gb of off-heap, and 40Gb of disk. -->
-    &lt;cache name="Cache3" ... 
-    maxBytesLocalDisk="80%"&gt;
-    &lt;/cache&gt;
-    </ehcache>
-
-
-<table>
-<caption>NOTE: Configuring Cache Sizes with Percentages</caption>
-<tr><td>
-You can use a percentage of the total JVM heap for the CacheManager maxBytesLocalHeap. The CacheManager percentage, then, is a portion of the total JVM heap, and in turn, the Cache percentage is the portion of the CacheManager pool for that tier.
-</td></tr>
+  <thead>
+    <tr>
+      <th style="text-align: left">Tier</th>
+      <th style="text-align: left">Attribute</th>
+      <th style="text-align: left">Pooling available at CacheManager level?</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Heap</td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxEntriesLocalHeap</code> <code class="highlighter-rouge">maxBytesLocalHeap</code></td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxBytesLocalHeap</code> only</td>
+      <td style="text-align: left">The maximum number of cache entries or bytes a cache can use in local heap memory, or, when set at the CacheManager level (maxBytesLocalHeap only), a local pool available to all caches under that CacheManager. This setting is required for every cache or at the CacheManager level.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Off-heap</td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxBytesLocalOffHeap</code></td>
+      <td style="text-align: left">Yes</td>
+      <td style="text-align: left">This tier is available with <a href="http://terracotta.org/products/bigmemorygo">BigMemory Go</a>.The maximum number of bytes a cache can use in off-heap memory, or, when set at the CacheManager level, as a pool available to all caches under that CacheManager. This setting requires BigMemory.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Local disk</td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxEntriesLocalDisk</code> <code class="highlighter-rouge">maxBytesLocalDisk</code></td>
+      <td style="text-align: left"><code class="highlighter-rouge">maxBytesLocalDisk</code> only</td>
+      <td style="text-align: left">The maximum number of cache entries or bytes a standalone cache can use on the local disk, or, when set at the CacheManager level (maxBytesLocalDisk only), a local pool available to all caches under that CacheManager. Distributed caches cannot use the local disk. Note that these settings apply only to temporary swapping of data to disk (“localTempSwap”); these settings do not apply to disk persistence.</td>
+    </tr>
+  </tbody>
 </table>
 
-### Sizing Caches Without a Pool
+<p>Attributes that set a number of entries take an integer. Attributes that set a memory size (bytes) use the Java -Xmx syntax (for example: “500k”, “200m”, “2g”) or percentage (for example: “20%”). Percentages, however, can be used only in the case where a CacheManager-level pool has been configured (see below).</p>
 
-The CacheManager in this example does not pool any resources.
+<p>The following diagram illustrates the tiers and their effective sizing attributes.</p>
 
-    &lt;ehcache xmlns...
-            Name="CM3"
-           ... &gt;
+<p>
+   <img src="/images/documentation/tier-size-standalone.png" alt="Ehcache Data Tiers and Sizing Attributes" />
+</p>
+
+<h2 id="pooling-resources-versus-sizing-individual-caches">Pooling Resources Versus Sizing Individual Caches</h2>
+<p>You can constrain the size of any cache on a specific tier in that cache’s configuration. You can also constrain the size of all of a CacheManager’s caches in a specific tier by configuring an overall size at the CacheManager level.</p>
+
+<p>If there is no CacheManager-level pool specified for a tier, an individual cache claims the amount of that tier specified in its configuration. If there is a CacheManager-level pool specified for a tier, an individual cache claims that amount <em>from the pool</em>. In this case, caches with no size configuration for that tier receive an equal share of the remainder of the pool (after caches with explicit sizing configuration have claimed their portion).</p>
+
+<p>For example, if CacheManager with eight caches pools one gigabyte of heap, and two caches each explicitly specify 200MB of heap while the remaining caches do not specify a size, the remaining caches will share 600MB of heap equally. Note that caches must use bytes-based attributes to claim a portion of a pool; entries-based attributes such as <code class="highlighter-rouge">maxEntriesLocal</code> cannot be used with a pool.</p>
+
+<p>On startup, the sizes specified by caches are checked to ensure that any CacheManager-level pools are not over-allocated. If over-allocation occurs for any pool, an InvalidConfigurationException is thrown. Note that percentages should not add up to more than 100% of a single pool.</p>
+
+<p>If the sizes specified by caches for any tier take exactly the entire CacheManager-level pool specified for that tier, a warning is logged. In this case, caches that do not specify a size for that tier cannot use the tier as nothing is left over.</p>
+
+<h3 id="local-heap">Local Heap</h3>
+<p>A size must be provided for local heap, either in the CacheManager (<code class="highlighter-rouge">maxBytesLocalHeap</code> only) or in each individual cache (<code class="highlighter-rouge">maxBytesLocalHeap</code> or <code class="highlighter-rouge">maxEntriesLocalHeap</code>). Not doing so causes an InvalidConfigurationException.</p>
+
+<p>If pool is configured, it can be combined with a local-heap setting in an individual cache. This allows the cache to claim a specified portion of the heap setting configured in the pool. However, in this case the cache setting must use <code class="highlighter-rouge">maxBytesLocalHeap</code> (same as the CacheManager).</p>
+
+<p>In any case, every cache <strong>must</strong> have a local-heap setting, either configured explicitly or taken from the pool configured in the CacheManager.</p>
+
+<h3 id="bigmemory-local-off-heap">BigMemory (Local Off-Heap)</h3>
+<p>If you are using <a href="http://terracotta.org/products/bigmemorygo">BigMemory Go</a>, off-heap sizing is available. Off-heap sizing can be configured in bytes only, never by entries.</p>
+
+<p>If a CacheManager has a pool configured for off-heap, your application cannot add caches dynamically that have off-heap configuration — doing so generates an error. In addition, if any caches that used the pool are removed programmatically or through the Developer Console, other caches in the pool cannot claim the unused portion. To allot the entire off-heap pool to the remaining caches, remove the unwanted cache from the Ehcache configuration and then reload the configuration.</p>
+
+<p>To use local off-heap as a data tier, a cache must have <code class="highlighter-rouge">overflowToOffHeap</code> set to “true”. If a CacheManager has a pool configured for using off-heap, the <code class="highlighter-rouge">overflowToOffHeap</code> attribute is automatically set to “true” for all caches. In this case, you can prevent a specific cache from overflowing to off-heap by explicitly setting its <code class="highlighter-rouge">overflowToOffHeap</code> attribute to “false”.</p>
+
+<h3 id="local-disk">Local Disk</h3>
+<p>The local disk can be used as a data tier. Note the following:</p>
+
+<ul>
+  <li>Distributed caches cannot use the local disk.</li>
+  <li>To use the local disk as a data tier, a cache must have <code class="highlighter-rouge">persistenceStrategy</code> set to “localTempSwap”.</li>
+  <li>The local disk is the slowest local tier.</li>
+</ul>
+
+<h2 id="cache-sizing-examples">Cache Sizing Examples</h2>
+<p>The following examples illustrate both pooled and individual cache-sizing configurations.</p>
+
+<h3 id="pooled-resources">Pooled Resources</h3>
+
+<p>The following configuration sets pools for all of this CacheManager’s caches:</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">xmlns=</span><span class="s">"..."</span>
+    <span class="na">name=</span><span class="s">"CM1"</span>
+    <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span>
+    <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
+    <span class="na">maxBytesLocalDisk=</span><span class="s">"50G"</span><span class="nt">&gt;</span>
+  ...
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache1"</span> <span class="err">...</span><span class="nt">&gt;</span> <span class="nt">&lt;/cache&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache2"</span> <span class="err">...</span><span class="nt">&gt;</span> <span class="nt">&lt;/cache&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span> <span class="err">...</span><span class="nt">&gt;</span> <span class="nt">&lt;/cache&gt;</span>
+
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
+
+<p>CacheManager CM1 automatically allocates these pools equally among its three caches. Each cache gets one third of the allocated heap, off-heap, and local disk. Note that at the CacheManager level, resources can be allocated in bytes only.</p>
+
+<h3 id="explicitly-sizing-caches">Explicitly Sizing Caches</h3>
+<p>You can explicitly allocate resources to specific caches:</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">xmlns=</span><span class="s">"..."</span>
+    <span class="na">name=</span><span class="s">"CM1"</span>
+    <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span>
+    <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
+    <span class="na">maxBytesLocalDisk=</span><span class="s">"60G"</span><span class="nt">&gt;</span>
+  ...
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache1"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span><span class="nt">&gt;</span>
     ...
-    
-    &lt;cache name="Cache7" ...
-            maxBytesLocalHeap="50M"
-            maxEntriesLocalDisk="100000"
-            ...
-      &lt;/cache&gt;
+  <span class="nt">&lt;/cache&gt;</span>
 
-    &lt;cache name="Cache8" ...
-           maxEntriesLocalHeap="1000"
-           maxBytesLocalOffHeap="10G"
-           ...
-      &lt;/cache&gt;
-    &lt;cache name="Cache9" ... 
-           maxBytesLocalHeap="50M"
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache2"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"5G"</span><span class="nt">&gt;</span>
     ...
-    &lt;/cache&gt;
-    
-    &lt;/ehcache&gt;
+  <span class="nt">&lt;/cache&gt;</span>
+  
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span><span class="nt">&gt;</span>
+    ... 
+  <span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
 
-Caches can be configured to use resources as necessary. Note that every cache in this example must declare a value for local heap. This is because no pool exists for the local heap; implicit (CacheManager configuration) or explicit (cache configuration) local-heap allocation is required.
+<p>In the example above, Cache1 reserves 50Mb of the 100Mb local-heap pool; the other caches divide the remaining portion of the pool equally. Cache2 takes half of the local off-heap pool; the other caches divide the remaining portion of the pool equally. Cache3 receives 25Mb of local heap, 2.5Gb of off-heap, and 20Gb of the local disk.</p>
 
-### Overflows
-Caches that do not specify overflow will overflow if a pool is set for off-heap and disk.
+<p>Caches that reserve a portion of a pool are not required to use that portion. Cache1, for example, has a fixed portion of the local heap but may have any amount of data in heap up to the configured value of 50Mb.</p>
 
-    <ehcache maxbyteslocalheap="1g" maxbyteslocaloffheap="4g" maxbyteslocaldisk="100g">
+<p>Note that caches must use the same sizing attributes used to create the pool. Cache1, for example, cannot use <code class="highlighter-rouge">maxEntriesLocalHeap</code> to reserve a portion of the pool.</p>
 
-    <cache name="explicitlyAllocatedCache1" maxbyteslocalheap="50m" maxbyteslocaloffheap="200m" timetoliveseconds="100">
-    </cache>
+<h3 id="mixed-sizing-configurations">Mixed Sizing Configurations</h3>
+<p>If a CacheManager does not pool a particular resource, that resource can still be allocated in cache configuration, as shown in the following example.</p>
 
-    <!-- Does not use off-heap because overflow has been explicitly
-    disabled. -->
-    <cache name="automaticallyAllocatedCache2" timetoliveseconds="100" overflowtooffheap="false">
-    </cache>
-    </ehcache>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">xmlns=</span><span class="s">"..."</span>
+    <span class="na">name=</span><span class="s">"CM2"</span>
+    <span class="na">maxBytesLocalHeap=</span><span class="s">"100M"</span><span class="nt">&gt;</span>
+  ...
 
-    <!-- Does not overflow to disk because the cache is configured for Fast Restart (a different use of the disk which supercedes overflow to disk). -->
-    <cache name="explicitlyAllocatedCache2" maxlocalheap="10%" maxbyteslocaloffheap="200m" timetoliveseconds="100">
-          <persistence strategy="localRestartable"></persistence>
-    </cache>
-    
-    <!-- Overflows automatically to off-heap and disk because no specific override and resources are set at the CacheManager level -->
-    <cache name="automaticallyAllocatedCache1" timetoliveseconds="100">
-    </cache>
-    
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache4"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
+      <span class="na">maxEntriesLocalDisk=</span><span class="s">"100000"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
 
-## Sizing Distributed Caches
-Distributed caches, available with [BigMemory Max](http://terracotta.org/products/bigmemorymax), can be sized as noted above, except that they do not use the local disk and therefore cannot be configured with *LocalDisk sizing attributes. Distributed caches use the storage resources (off-heap and disk) available on the Terracotta Server Array. 
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache5"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache6"</span><span class="nt">&gt;</span> ... <span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
 
-Cache-configuration sizing attributes behave as local configuration, which means that every node can load its own sizing attributes for the same caches. That is, while some elements and attributes are fixed by the first Ehcache configuration loaded in the cluster, cache-configuration sizing attributes can vary across nodes for the same cache.
+<p>CacheManager CM2 creates one pool (local heap). Its caches all use the local heap and are constrained by the pool setting, as expected. However, cache configuration can allocate other resources as desired. In this example, Cache4 allocates disk space for its data, and Cache5 allocates off-heap space for its data. Cache6 gets 25Mb of local heap only.</p>
 
-For example, a cache may have the following configuration on one node:
+<h3 id="using-percents">Using Percents</h3>
+<p>The following configuration sets pools for each tier:</p>
 
-    <cache name="myCache" maxentriesonheap="10000" maxbyteslocaloffheap="8g" eternal="false" timetoidleseconds="3600" timetoliveseconds="1800">
-        <persistence strategy="distributed"></persistence>
-        <terracotta></terracotta>
-    </cache>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="err">xmlns...</span>
+    <span class="na">name=</span><span class="s">"CM1"</span>
+    <span class="na">maxBytesLocalHeap=</span><span class="s">"1G"</span>
+    <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span>
+    <span class="na">maxBytesLocalDisk=</span><span class="s">"50G"</span><span class="nt">&gt;</span>
+  ...
 
-The same cache may have the following size configuration on another node:
+  <span class="c">&lt;!-- Cache1 gets 400Mb of heap, 2.5Gb of off-heap, and 5Gb of disk. --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache1"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"40%"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
 
-    <cache name="myCache" maxentriesonheap="10000" maxbyteslocaloffheap="10g" eternal="false" timetoidleseconds="3600" timetoliveseconds="1800">
-        <persistence strategy="distributed"></persistence>
-        <terracotta></terracotta>
-    </cache>
+  <span class="c">&lt;!-- Cache2 gets 300Mb of heap, 5Gb of off-heap, and 5Gb of disk. --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache2"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"50%"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
 
-If the cache exceeds its size constraints on a node, then with this configuration the Terracotta Server Array provides myCache with an unlimited amount of disk space for spillover and backup. To impose a limit, you must set `maxEntriesInCache` to a positive non-zero value:
+  <span class="c">&lt;!-- Cache2 gets 300Mb of heap, 2.5Gb of off-heap, and 40Gb of disk. --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache3"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalDisk=</span><span class="s">"80%"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
 
-    <cache name="myCache" maxentriesonheap="10000" maxbyteslocaloffheap="10g" eternal="false" timetoidleseconds="3600" timetoliveseconds="1800" maxentriesincache="1000000">
-        <persistence strategy="distributed"></persistence>
-        <terracotta></terracotta>
-    </cache>
+<caption>NOTE: Configuring Cache Sizes with Percentages</caption>
 
+<table>
+  <tbody>
+    <tr>
+      <td>You can use a percentage of the total JVM heap for the CacheManager maxBytesLocalHeap. The CacheManager percentage, then, is a portion of the total JVM heap, and in turn, the Cache percentage is the portion of the CacheManager pool for that tier.</td>
+    </tr>
+  </tbody>
+</table>
 
-The Terracotta Server Array will now evict myCache entries to stay within the limit set by `maxEntriesInCache`. However, for any particular cache, eviction on the Terracotta Server Array is based on the largest size configured for that cache. In addition, the Terracotta Server Array will _not_ evict any cache entries that exist on at least one client node, regardless of the limit imposed by `maxEntriesInCache`.
+<h3 id="sizing-caches-without-a-pool">Sizing Caches Without a Pool</h3>
 
+<p>The CacheManager in this example does not pool any resources.</p>
 
-## Overriding Size Limitations
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">xmlns=</span><span class="s">"..."</span>
+    <span class="na">name=</span><span class="s">"CM3"</span>
+    <span class="err">...</span> <span class="nt">&gt;</span>
+  ...
 
-Pinned caches can override the limits set by cache-configuration sizing attributes, potentially causing OutOfMemory errors. This is because pinning prevents flushing of cache entries to lower tiers. For more information on pinning, see [Pinning, Eviction, and Expiration](/documentation/2.7/configuration/data-life).
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache7"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span>
+      <span class="na">maxEntriesLocalDisk=</span><span class="s">"100000"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
 
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache8"</span> <span class="err">...</span>
+      <span class="na">maxEntriesLocalHeap=</span><span class="s">"1000"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"Cache9"</span> <span class="err">...</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50M"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/cache&gt;</span>
 
-## Built-In Sizing Computation and Enforcement
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
 
-Internal Ehcache mechanisms track data-element sizes and enforce the limits set by CacheManager sizing pools.
+<p>Caches can be configured to use resources as necessary. Note that every cache in this example must declare a value for local heap. This is because no pool exists for the local heap; implicit (CacheManager configuration) or explicit (cache configuration) local-heap allocation is required.</p>
 
-### Sizing of cached entries
+<h3 id="overflows">Overflows</h3>
+<p>Caches that do not specify overflow will overflow if a pool is set for off-heap and disk.</p>
 
-Elements put in a memory-limited cache will have their memory sizes measured. The entire Element instance added
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">maxBytesLocalHeap=</span><span class="s">"1g"</span> <span class="na">maxBytesLocalOffHeap=</span><span class="s">"4g"</span>
+         <span class="na">maxBytesLocalDisk=</span><span class="s">"100g"</span> <span class="nt">&gt;</span>
+
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"explicitlyAllocatedCache1"</span>
+      <span class="na">maxBytesLocalHeap=</span><span class="s">"50m"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"200m"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"100"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+
+  <span class="c">&lt;!-- Does not use off-heap because overflow has been explicitly disabled. --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"automaticallyAllocatedCache2"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"100"</span>
+      <span class="na">overflowToOffHeap=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+
+  <span class="c">&lt;!-- Does not overflow to disk because the cache is configured for Fast Restart (a different use of the disk which supercedes overflow to disk). --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"explicitlyAllocatedCache2"</span>
+      <span class="na">maxLocalHeap=</span><span class="s">"10%"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"200m"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"100"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"localRestartable"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+
+  <span class="c">&lt;!-- Overflows automatically to off-heap and disk because no specific override and resources are set at the CacheManager level --&gt;</span>
+  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"automaticallyAllocatedCache1"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"100"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+<span class="nt">&lt;/ehcache&gt;</span>
+</code></pre>
+</div>
+
+<h2 id="sizing-distributed-caches">Sizing Distributed Caches</h2>
+<p>Distributed caches, available with <a href="http://terracotta.org/products/bigmemorymax">BigMemory Max</a>, can be sized as noted above, except that they do not use the local disk and therefore cannot be configured with *LocalDisk sizing attributes. Distributed caches use the storage resources (off-heap and disk) available on the Terracotta Server Array.</p>
+
+<p>Cache-configuration sizing attributes behave as local configuration, which means that every node can load its own sizing attributes for the same caches. That is, while some elements and attributes are fixed by the first Ehcache configuration loaded in the cluster, cache-configuration sizing attributes can vary across nodes for the same cache.</p>
+
+<p>For example, a cache may have the following configuration on one node:</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
+      <span class="na">maxEntriesOnHeap=</span><span class="s">"10000"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"8g"</span>
+      <span class="na">eternal=</span><span class="s">"false"</span>
+      <span class="na">timeToIdleSeconds=</span><span class="s">"3600"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"1800"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"distributed"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;terracotta/&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+</code></pre>
+</div>
+
+<p>The same cache may have the following size configuration on another node:</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
+      <span class="na">maxEntriesOnHeap=</span><span class="s">"10000"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10g"</span>
+      <span class="na">eternal=</span><span class="s">"false"</span>
+      <span class="na">timeToIdleSeconds=</span><span class="s">"3600"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"1800"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"distributed"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;terracotta/&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+</code></pre>
+</div>
+
+<p>If the cache exceeds its size constraints on a node, then with this configuration the Terracotta Server Array provides myCache with an unlimited amount of disk space for spillover and backup. To impose a limit, you must set <code class="highlighter-rouge">maxEntriesInCache</code> to a positive non-zero value:</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"myCache"</span>
+      <span class="na">maxEntriesOnHeap=</span><span class="s">"10000"</span>
+      <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10g"</span>
+      <span class="na">eternal=</span><span class="s">"false"</span>
+      <span class="na">timeToIdleSeconds=</span><span class="s">"3600"</span>
+      <span class="na">timeToLiveSeconds=</span><span class="s">"1800"</span>
+      <span class="na">maxEntriesInCache=</span><span class="s">"1000000"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"distributed"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;terracotta/&gt;</span>
+  <span class="nt">&lt;/cache&gt;</span>
+</code></pre>
+</div>
+
+<p>The Terracotta Server Array will now evict myCache entries to stay within the limit set by <code class="highlighter-rouge">maxEntriesInCache</code>. However, for any particular cache, eviction on the Terracotta Server Array is based on the largest size configured for that cache. In addition, the Terracotta Server Array will <em>not</em> evict any cache entries that exist on at least one client node, regardless of the limit imposed by <code class="highlighter-rouge">maxEntriesInCache</code>.</p>
+
+<h2 id="overriding-size-limitations">Overriding Size Limitations</h2>
+
+<p>Pinned caches can override the limits set by cache-configuration sizing attributes, potentially causing OutOfMemory errors. This is because pinning prevents flushing of cache entries to lower tiers. For more information on pinning, see <a href="/documentation/2.7/configuration/data-life">Pinning, Eviction, and Expiration</a>.</p>
+
+<h2 id="built-in-sizing-computation-and-enforcement">Built-In Sizing Computation and Enforcement</h2>
+
+<p>Internal Ehcache mechanisms track data-element sizes and enforce the limits set by CacheManager sizing pools.</p>
+
+<h3 id="sizing-of-cached-entries">Sizing of cached entries</h3>
+
+<p>Elements put in a memory-limited cache will have their memory sizes measured. The entire Element instance added
  to the cache is measured, including key and value, as well as the memory footprint of adding that instance to
  internal data structures. Key and value are measured as object graphs – each reference is followed and the object
- reference also measured. This goes on recursively.
+ reference also measured. This goes on recursively.</p>
 
-Shared references will be measured by each class that references it. This will result in an overstatement. Shared references
- should therefore be ignored.
+<p>Shared references will be measured by each class that references it. This will result in an overstatement. Shared references
+ should therefore be ignored.</p>
 
-#### Ignoring for Size Calculations
+<h4 id="ignoring-for-size-calculations">Ignoring for Size Calculations</h4>
 
-For the purposes of measurement, references can be ignored using the `@IgnoreSizeOf` annotation. The annotation may be declared at the class level, on a field, or on a package. You can also specify a file containing the fully qualified names of classes, fields, and packages to be ignored. 
+<p>For the purposes of measurement, references can be ignored using the <code class="highlighter-rouge">@IgnoreSizeOf</code> annotation. The annotation may be declared at the class level, on a field, or on a package. You can also specify a file containing the fully qualified names of classes, fields, and packages to be ignored.</p>
 
-This annotation is not inherited, and must be added to any subclasses that should also be excluded from sizing.
+<p>This annotation is not inherited, and must be added to any subclasses that should also be excluded from sizing.</p>
 
-The following example shows how to ignore the `Dog` class.
+<p>The following example shows how to ignore the <code class="highlighter-rouge">Dog</code> class.</p>
 
-<pre>
-@IgnoreSizeOf
-public class Dog {
-  private Gender gender;
-  private String name;
-"/&gt;
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@IgnoreSizeOf</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Dog</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="n">Gender</span> <span class="n">gender</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
-The following example shows how to ignore the `sharedInstance` field.
+<p>The following example shows how to ignore the <code class="highlighter-rouge">sharedInstance</code> field.</p>
 
-<pre>
-public class MyCacheEntry {
-  @IgnoreSizeOf
-  private final SharedClass sharedInstance;
-    ...
-"/&gt;
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyCacheEntry</span> <span class="o">{</span>
+  <span class="nd">@IgnoreSizeOf</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">SharedClass</span> <span class="n">sharedInstance</span><span class="o">;</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
-Packages may also be ignored if you add the @IgnoreSizeOf annotation to appropriate package-info.java of the desired package. Here is a sample package-info.java for and in the com.pany.ignore package:
+<p>Packages may also be ignored if you add the @IgnoreSizeOf annotation to appropriate package-info.java of the desired package. Here is a sample package-info.java for and in the com.pany.ignore package:</p>
 
-<pre>
-@IgnoreSizeOf
-package com.pany.ignore;
-import net.sf.ehcache.pool.sizeof.filter.IgnoreSizeOf;
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@IgnoreSizeOf</span>
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">pany</span><span class="o">.</span><span class="na">ignore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">net.sf.ehcache.pool.sizeof.filter.IgnoreSizeOf</span><span class="o">;</span>
+</code></pre>
+</div>
 
-Alternatively, you may declare ignored classes and fields in a file and specify a `net.sf.ehcache.sizeof.filter` system property to point to that file.
+<p>Alternatively, you may declare ignored classes and fields in a file and specify a <code class="highlighter-rouge">net.sf.ehcache.sizeof.filter</code> system property to point to that file.</p>
 
-<pre>
-# That field references a common graph between all cached entries
+<div class="highlighter-rouge"><pre class="highlight"><code># That field references a common graph between all cached entries
 com.pany.domain.cache.MyCacheEntry.sharedInstance
 
 # This will ignore all instances of that type
@@ -514,94 +601,100 @@ com.pany.domain.SharedState
 
 # This ignores a package
 com.pany.example
-</pre>
+</code></pre>
+</div>
 
-Note that these measurements and configurations apply only to on-heap storage. If Elements are moved to off-heap memory, disk, or the Terracotta Server Array, they
-are serialized as byte arrays. The serialized size is then used as the basis for measurement.
+<p>Note that these measurements and configurations apply only to on-heap storage. If Elements are moved to off-heap memory, disk, or the Terracotta Server Array, they
+are serialized as byte arrays. The serialized size is then used as the basis for measurement.</p>
 
-#### Configuration for Limiting the Traversed Object Graph
-As noted above, sizing caches involves traversing object graphs, a process that can be limited with annotations. This process can also be controlled at both the CacheManager and cache levels.
+<h4 id="configuration-for-limiting-the-traversed-object-graph">Configuration for Limiting the Traversed Object Graph</h4>
+<p>As noted above, sizing caches involves traversing object graphs, a process that can be limited with annotations. This process can also be controlled at both the CacheManager and cache levels.</p>
 
-Note that the following configuration has no effect on distributed caches.
+<p>Note that the following configuration has no effect on distributed caches.</p>
 
-##### Size-Of Limitation at the CacheManager Level
-Control how deep the size-of engine can go when sizing on-heap elements by adding the following element at the CacheManager level:
+<h5 id="size-of-limitation-at-the-cachemanager-level">Size-Of Limitation at the CacheManager Level</h5>
+<p>Control how deep the size-of engine can go when sizing on-heap elements by adding the following element at the CacheManager level:</p>
 
-    <sizeofpolicy maxdepth="100" maxdepthexceededbehavior="abort"></sizeofpolicy>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;sizeOfPolicy</span> <span class="na">maxDepth=</span><span class="s">"100"</span> <span class="na">maxDepthExceededBehavior=</span><span class="s">"abort"</span><span class="nt">/&gt;</span>
+</code></pre>
+</div>
 
-This element has the following attributes
+<p>This element has the following attributes</p>
 
-* `maxDepth` – Controls how many linked objects can be visited before the size-of engine takes any action. This attribute is required.
-* `maxDepthExceededBehavior` – Specifies what happens when the max depth is exceeded while sizing an object graph:
-    * "continue" – DEFAULT Forces the size-of engine to log a warning and continue the sizing operation. If this attribute is not specified, "continue" is the behavior used.
-    * "abort" – Forces the SizeOf engine to abort the sizing, log a warning, and mark the cache as not correctly tracking memory usage. With this setting, `Ehcache.hasAbortedSizeOf()` returns true.
+<ul>
+  <li><code class="highlighter-rouge">maxDepth</code> – Controls how many linked objects can be visited before the size-of engine takes any action. This attribute is required.</li>
+  <li><code class="highlighter-rouge">maxDepthExceededBehavior</code> – Specifies what happens when the max depth is exceeded while sizing an object graph:
+    <ul>
+      <li>“continue” – DEFAULT Forces the size-of engine to log a warning and continue the sizing operation. If this attribute is not specified, “continue” is the behavior used.</li>
+      <li>“abort” – Forces the SizeOf engine to abort the sizing, log a warning, and mark the cache as not correctly tracking memory usage. With this setting, <code class="highlighter-rouge">Ehcache.hasAbortedSizeOf()</code> returns true.</li>
+    </ul>
+  </li>
+</ul>
 
-The SizeOf policy can be configured at the cache manager level (directly under `<ehcache>`) and at
-the cache level (under `<cache>` or `<defaultcache>`). The cache policy always overrides the cache manager
-one if both are set. This element has no effect on distributed caches.
+<p>The SizeOf policy can be configured at the cache manager level (directly under <code class="highlighter-rouge">&lt;ehcache&gt;</code>) and at
+the cache level (under <code class="highlighter-rouge">&lt;cache&gt;</code> or <code class="highlighter-rouge">&lt;defaultCache&gt;</code>). The cache policy always overrides the cache manager
+one if both are set. This element has no effect on distributed caches.</p>
 
+<h5 id="size-of-limitation-at-the-cache-level">Size-Of Limitation at the Cache level</h5>
+<p>Use the <code class="highlighter-rouge">&lt;sizeOfPolicy&gt;</code> as a subelement in any <code class="highlighter-rouge">&lt;cache&gt;</code> block to control how deep the size-of engine can go when sizing on-heap elements belonging to the target cache. This cache-level setting overrides the CacheManager size-of setting.</p>
 
-##### Size-Of Limitation at the Cache level
-Use the `<sizeofpolicy>` as a subelement in any `<cache>` block to control how deep the size-of engine can go when sizing on-heap elements belonging to the target cache. This cache-level setting overrides the CacheManager size-of setting.
+<h4 id="debugging-of-size-of-related-errors">Debugging of Size-Of Related Errors</h4>
 
+<p>If warnings or errors appear that seem related to size-of measurement (usually caused by the size-of engine walking the graph), generate more log information on sizing activities:</p>
 
-#### Debugging of Size-Of Related Errors
+<ul>
+  <li>Set the <code class="highlighter-rouge">net.sf.ehcache.sizeof.verboseDebugLogging</code> system property to true.</li>
+  <li>Enable debug logs on <code class="highlighter-rouge">net.sf.ehcache.pool.sizeof</code> in your chosen implementation of SLF4J.</li>
+</ul>
 
-If warnings or errors appear that seem related to size-of measurement (usually caused by the size-of engine walking the graph), generate more log information on sizing activities:
+<h3 id="eviction-when-using-cachemanager-level-storage">Eviction When Using CacheManager-Level Storage</h3>
 
-* Set the `net.sf.ehcache.sizeof.verboseDebugLogging` system property to true.
-* Enable debug logs on `net.sf.ehcache.pool.sizeof` in your chosen implementation of SLF4J.
-
-
-### Eviction When Using CacheManager-Level Storage
-
-When a CacheManager-level storage pool is exhausted, a cache is selected on which to perform eviction to recover pool space. The eviction from
- the selected cache is performed using the cache's configured eviction algorithm (LRU, LFU, etc...).
- The cache from which eviction is performed is selected using the "minimal eviction cost" algorithm described below:
+<p>When a CacheManager-level storage pool is exhausted, a cache is selected on which to perform eviction to recover pool space. The eviction from
+ the selected cache is performed using the cache’s configured eviction algorithm (LRU, LFU, etc…).
+ The cache from which eviction is performed is selected using the “minimal eviction cost” algorithm described below:</p>
 
 <pre>
  eviction-cost = mean-entry-size * drop-in-hit-rate
 </pre>
 
- Eviction cost is defined as the increase in bytes requested from the underlying SOR (the database for example) per unit time used
- by evicting the requested number of bytes from the cache.
+<p>Eviction cost is defined as the increase in bytes requested from the underlying SOR (the database for example) per unit time used
+ by evicting the requested number of bytes from the cache.</p>
 
-If we model the hit distribution as a simple power-law then:
+<p>If we model the hit distribution as a simple power-law then:</p>
 
 <pre>
  P(hit n'th element) ~ 1/n^{alpha"/&gt;
 </pre>
 
- In the continuous limit this means the total hit rate is proportional to the integral of this distribution function over the elements in
+<p>In the continuous limit this means the total hit rate is proportional to the integral of this distribution function over the elements in
  the cache. The change in hit rate due to an eviction is then the integral of this distribution function between the initial size and
- the final size.  Assuming that the eviction size is small compared to the overall cache size we can model this as:
+ the final size.  Assuming that the eviction size is small compared to the overall cache size we can model this as:</p>
 
 <pre>
  drop ~ access * 1/x^{alpha} * Delta(x)
 </pre>
 
- Where 'access' is the overall access rate (hits + misses) and x is a unit-less measure of the 'fill level' of the cache.  Approximating the fill level as the
- ratio of hit rate to access rate, and substituting in to the eviction-cost expression we get:
+<p>Where ‘access’ is the overall access rate (hits + misses) and x is a unit-less measure of the ‘fill level’ of the cache.  Approximating the fill level as the
+ ratio of hit rate to access rate, and substituting in to the eviction-cost expression we get:</p>
 
 <pre>
  eviction-cost = mean-entry-size * access * 1/(hits/access)^{alpha} * (eviction / (byteSize / (hits/access)))
 </pre>
 
- Simplifying:
+<p>Simplifying:</p>
 
 <pre>
  eviction-cost = (byteSize / countSize) * access * 1/(h/A)^{alpha} * (eviction * hits)/(access * byteSize)
  eviction-cost = (eviction * hits) / (countSize * (hits/access)^{alpha})
 </pre>
 
- Removing the common factor of 'eviction' which is the same in all caches lead us to evicting from the cache with the minimum value of:
+<p>Removing the common factor of ‘eviction’ which is the same in all caches lead us to evicting from the cache with the minimum value of:</p>
 
 <pre>
  eviction-cost = (hits / countSize) / (hits/access)^{alpha"/&gt;
 </pre>
 
- When a cache has a zero hit-rate (it is in a pure loading phase) we deviate from this algorithm and allow the cache to occupy 1/n'th of the pool space where 'n' is the number of caches using the pool.  Once the cache starts to be accessed we re-adjust to match the actual usage pattern of that cache.
-</cache></sizeofpolicy></defaultcache></cache></ehcache></table>
+<p>When a cache has a zero hit-rate (it is in a pure loading phase) we deviate from this algorithm and allow the cache to occupy 1/n’th of the pool space where ‘n’ is the number of caches using the pool.  Once the cache starts to be accessed we re-adjust to match the actual usage pattern of that cache.</p>
 
       </article>
     </div>

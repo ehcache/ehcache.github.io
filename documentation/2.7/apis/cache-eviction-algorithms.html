@@ -285,34 +285,33 @@ that an Element in the lowest quartile of use is evicted 99% of the time.</p>
 any Element metadata which makes possible some very interesting approaches. For example, evict
 an Element if it has been hit more than 10 times.</p>
 
-<pre>
-/**
-* Sets the eviction policy strategy. The Cache will use a policy at startup.
-* There are three policies which can be configured: LRU, LFU and FIFO. However
-* many other policies are possible. That the policy has access to the whole element
-* enables policies based on the key, value, metadata, statistics, or a combination
-* of any of the above. 
-* 
-* It is safe to change the policy of a store at any time. The new policy takes
-* effect immediately.
-*
-* @param policy the new policy
-*/
-public void setMemoryStoreEvictionPolicy(Policy policy) {
-  memoryStore.setEvictionPolicy(policy);
-"/&gt;
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * Sets the eviction policy strategy. The Cache will use a policy at startup.
+ * There are three policies which can be configured: LRU, LFU and FIFO. However
+ * many other policies are possible. That the policy has access to the whole element
+ * enables policies based on the key, value, metadata, statistics, or a combination
+ * of any of the above.
+ *
+ * It is safe to change the policy of a store at any time. The new policy takes
+ * effect immediately.
+ *
+ * @param policy the new policy
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMemoryStoreEvictionPolicy</span><span class="o">(</span><span class="n">Policy</span> <span class="n">policy</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">memoryStore</span><span class="o">.</span><span class="na">setEvictionPolicy</span><span class="o">(</span><span class="n">policy</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
 <p>A Policy must implement the following interface:</p>
 
-<pre>
-public interface Policy {
-  /**
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Policy</span> <span class="o">{</span>
+  <span class="cm">/**
    * @return the name of the Policy. Inbuilt examples are LRU, LFU and FIFO.
-   */
-  String getName();
-  /**
-   * Finds the best eviction candidate based on the sampled elements. What 
+   */</span>
+  <span class="n">String</span> <span class="nf">getName</span><span class="o">();</span>
+  <span class="cm">/**
+   * Finds the best eviction candidate based on the sampled elements. What
    * distinguishes this approach from the classic data structures approach is
    * that an Element contains metadata (e.g. usage statistics) which can be used
    * for making policy decisions, while generic data structures do not. It is
@@ -322,19 +321,20 @@ public interface Policy {
    * @param justAdded we probably never want to select the element just added.
    * It is provided so that it can be ignored if selected. May be null.
    * @return the selected Element
-   */
-  Element selectedBasedOnPolicy(Element[] sampledElements, Element justAdded);
-  /**
+   */</span>
+  <span class="n">Element</span> <span class="nf">selectedBasedOnPolicy</span><span class="o">(</span><span class="n">Element</span><span class="o">[]</span> <span class="n">sampledElements</span><span class="o">,</span> <span class="n">Element</span> <span class="n">justAdded</span><span class="o">);</span>
+  <span class="cm">/**
    * Compares the desirableness for eviction of two elements
    *
    * @param element1 the element to compare against
    * @param element2 the element to compare
    * @return true if the second element is preferable for eviction to the first
    * element under ths policy
-   */
-  boolean compare(Element element1, Element element2);
-"/&gt;
-</pre>
+   */</span>
+  <span class="kt">boolean</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Element</span> <span class="n">element1</span><span class="o">,</span> <span class="n">Element</span> <span class="n">element2</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
 <h2 id="diskstore-eviction-algorithms">DiskStore Eviction Algorithms</h2>
 

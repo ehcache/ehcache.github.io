@@ -242,10 +242,10 @@ multiple listeners.
 Each listener is configured by adding a
 cacheEventListenerFactory element as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache ...&gt;
-  &lt;cacheEventListenerFactory class="" properties="" listenFor=""/&gt;
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="err">...</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;cacheEventListenerFactory</span> <span class="na">class=</span><span class="s">""</span> <span class="na">properties=</span><span class="s">""</span> <span class="na">listenFor=</span><span class="s">""</span><span class="nt">/&gt;</span>
   ...
-&lt;/cache&gt;
+<span class="nt">&lt;/cache&gt;</span>
 </code></pre>
 </div>
 
@@ -280,138 +280,144 @@ cache event listeners. Implementers should provide their own concrete
 factory, extending this abstract factory. It can then be configured in <code class="highlighter-rouge">ehcache.xml</code>.
 The following example demonstrates how to create an abstract CacheEventListenerFactory:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
-* An abstract factory for creating listeners. Implementers should provide their own
-* concrete factory extending this factory. It can then be configured in ehcache.xml
-*
-* @author Greg Luck
-* @version $Id: cache_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
-*/
-public abstract class CacheEventListenerFactory {
-/**
-* Create a &lt;code&gt;CacheEventListener&lt;/code&gt;
-*
-* @param properties implementation specific properties. These are configured as comma
-*                   separated name value pairs in ehcache.xml
-* @return a constructed CacheEventListener
-*/
-public abstract CacheEventListener createCacheEventListener(Properties properties);
-"/&gt;
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * An abstract factory for creating listeners. Implementers should provide their own
+ * concrete factory extending this factory. It can then be configured in ehcache.xml
+ *
+ * @author Greg Luck
+ * @version $Id: cache_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
+ */</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">CacheEventListenerFactory</span> <span class="o">{</span>
+  <span class="cm">/**
+   * Create a &lt;code&gt;CacheEventListener&lt;/code&gt;
+   *
+   * @param properties implementation specific properties. These are configured as comma
+   *                   separated name value pairs in ehcache.xml
+   * @return a constructed CacheEventListener
+   */</span>
+  <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">CacheEventListener</span> <span class="nf">createCacheEventListener</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 </div>
 
 <p>The following example demonstrates how to create a concrete implementation of the CacheEventListener
 interface:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
-* Allows implementers to register callback methods that will be executed when a cache event
-*  occurs.
-* The events include:
-* &lt;ol&gt;
-* &lt;li&gt;put Element
-* &lt;li&gt;update Element
-* &lt;li&gt;remove Element
-* &lt;li&gt;an Element expires, either because timeToLive or timeToIdle has been reached.
-* &lt;/ol&gt;
-* &lt;p/&gt;
-* Callbacks to these methods are synchronous and unsynchronized. It is the responsibility of
-* the implementer to safely handle the potential performance and thread safety issues
-* depending on what their listener is doing.
-* &lt;p/&gt;
-* Events are guaranteed to be notified in the order in which they occurred.
-* &lt;p/&gt;
-* Cache also has putQuiet and removeQuiet methods which do not notify listeners.
-*
-* @author Greg Luck
-* @version $Id: cache_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
-* @see CacheManagerEventListener
-* @since 1.2
-*/
-public interface CacheEventListener extends Cloneable {
-/**
-* Called immediately after an element has been removed. The remove method will block until
-* this method returns.
-* &lt;p/&gt;
-* Ehcache does not chech for
-* &lt;p/&gt;
-* As the {@link net.sf.ehcache.Element} has been removed, only what was the key of the
-* element is known.
-* &lt;p/&gt;
-*
-* @param cache   the cache emitting the notification
-* @param element just deleted
-*/
-void notifyElementRemoved(final Ehcache cache, final Element element) throws CacheException;
-/**
-* Called immediately after an element has been put into the cache. The
-* {@link net.sf.ehcache.Cache#put(net.sf.ehcache.Element)} method
-* will block until this method returns.
-* &lt;p/&gt;
-* Implementers may wish to have access to the Element's fields, including value, so the
-* element is provided. Implementers should be careful not to modify the element. The
-* effect of any modifications is undefined.
-*
-* @param cache   the cache emitting the notification
-* @param element the element which was just put into the cache.
-*/
-void notifyElementPut(final Ehcache cache, final Element element) throws CacheException;
-/**
-* Called immediately after an element has been put into the cache and the element already
-* existed in the cache. This is thus an update.
-* &lt;p/&gt;
-* The {@link net.sf.ehcache.Cache#put(net.sf.ehcache.Element)} method
-* will block until this method returns.
-* &lt;p/&gt;
-* Implementers may wish to have access to the Element's fields, including value, so the
-* element is provided. Implementers should be careful not to modify the element. The
-* effect of any modifications is undefined.
-*
-* @param cache   the cache emitting the notification
-* @param element the element which was just put into the cache.
-*/
-void notifyElementUpdated(final Ehcache cache, final Element element) throws CacheException;
-/**
-* Called immediately after an element is &lt;i&gt;found&lt;/i&gt; to be expired. The
-* {@link net.sf.ehcache.Cache#remove(Object)} method will block until this method returns.
-* &lt;p/&gt;
-* As the {@link Element} has been expired, only what was the key of the element is known.
-* &lt;p/&gt;
-* Elements are checked for expiry in Ehcache at the following times:
-* &lt;ul&gt;
-* &lt;li&gt;When a get request is made
-* &lt;li&gt;When an element is spooled to the diskStore in accordance with a MemoryStore
-* eviction policy
-* &lt;li&gt;In the DiskStore when the expiry thread runs, which by default is
-* {@link net.sf.ehcache.Cache#DEFAULT_EXPIRY_THREAD_INTERVAL_SECONDS"/&gt;
-* &lt;/ul&gt;
-* If an element is found to be expired, it is deleted and this method is notified.
-*
-* @param cache   the cache emitting the notification
-* @param element the element that has just expired
-*    &lt;p/&gt;
-*    Deadlock Warning: expiry will often come from the &lt;code&gt;DiskStore&lt;/code&gt;
-*    expiry thread. It holds a lock to the DiskStore at the time the
-*    notification is sent. If the implementation of this method calls into a
-*    synchronized &lt;code&gt;Cache&lt;/code&gt; method and that subsequently calls into
-*    DiskStore a deadlock will result. Accordingly implementers of this method
-*    should not call back into Cache.
-*/
-void notifyElementExpired(final Ehcache cache, final Element element);
-/**
-* Give the replicator a chance to cleanup and free resources when no longer needed
-*/
-void dispose();
-/**
-* Creates a clone of this listener. This method will only be called by Ehcache before a
-* cache is initialized.
-* &lt;p/&gt;
-* This may not be possible for listeners after they have been initialized. Implementations
-* should throw CloneNotSupportedException if they do not support clone.
-* @return a clone
-* @throws CloneNotSupportedException if the listener could not be cloned.
-*/
-public Object clone() throws CloneNotSupportedException;
-"/&gt;
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * Allows implementers to register callback methods that will be executed when a cache event
+ *  occurs.
+ * The events include:
+ * &lt;ol&gt;
+ * &lt;li&gt;put Element
+ * &lt;li&gt;update Element
+ * &lt;li&gt;remove Element
+ * &lt;li&gt;an Element expires, either because timeToLive or timeToIdle has been reached.
+ * &lt;/ol&gt;
+ * &lt;p/&gt;
+ * Callbacks to these methods are synchronous and unsynchronized. It is the responsibility of
+ * the implementer to safely handle the potential performance and thread safety issues
+ * depending on what their listener is doing.
+ * &lt;p/&gt;
+ * Events are guaranteed to be notified in the order in which they occurred.
+ * &lt;p/&gt;
+ * Cache also has putQuiet and removeQuiet methods which do not notify listeners.
+ *
+ * @author Greg Luck
+ * @version $Id: cache_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
+ * @see CacheManagerEventListener
+ * @since 1.2
+ */</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheEventListener</span> <span class="kd">extends</span> <span class="n">Cloneable</span> <span class="o">{</span>
+
+  <span class="cm">/**
+   * Called immediately after an element has been removed. The remove method will block until
+   * this method returns.
+   * &lt;p/&gt;
+   * Ehcache does not chech for
+   * &lt;p/&gt;
+   * As the {@link net.sf.ehcache.Element} has been removed, only what was the key of the
+   * element is known.
+   * &lt;p/&gt;
+   *
+   * @param cache   the cache emitting the notification
+   * @param element just deleted
+   */</span>
+  <span class="kt">void</span> <span class="nf">notifyElementRemoved</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+
+  <span class="cm">/**
+   * Called immediately after an element has been put into the cache. The
+   * {@link net.sf.ehcache.Cache#put(net.sf.ehcache.Element)} method
+   * will block until this method returns.
+   * &lt;p/&gt;
+   * Implementers may wish to have access to the Element's fields, including value, so the
+   * element is provided. Implementers should be careful not to modify the element. The
+   * effect of any modifications is undefined.
+   *
+   * @param cache   the cache emitting the notification
+   * @param element the element which was just put into the cache.
+   */</span>
+  <span class="kt">void</span> <span class="nf">notifyElementPut</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+
+  <span class="cm">/**
+   * Called immediately after an element has been put into the cache and the element already
+   * existed in the cache. This is thus an update.
+   * &lt;p/&gt;
+   * The {@link net.sf.ehcache.Cache#put(net.sf.ehcache.Element)} method
+   * will block until this method returns.
+   * &lt;p/&gt;
+   * Implementers may wish to have access to the Element's fields, including value, so the
+   * element is provided. Implementers should be careful not to modify the element. The
+   * effect of any modifications is undefined.
+   *
+   * @param cache   the cache emitting the notification
+   * @param element the element which was just put into the cache.
+   */</span>
+  <span class="kt">void</span> <span class="nf">notifyElementUpdated</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+  
+  <span class="cm">/**
+   * Called immediately after an element is &lt;i&gt;found&lt;/i&gt; to be expired. The
+   * {@link net.sf.ehcache.Cache#remove(Object)} method will block until this method returns.
+   * &lt;p/&gt;
+   * As the {@link Element} has been expired, only what was the key of the element is known.
+   * &lt;p/&gt;
+   * Elements are checked for expiry in Ehcache at the following times:
+   * &lt;ul&gt;
+   * &lt;li&gt;When a get request is made
+   * &lt;li&gt;When an element is spooled to the diskStore in accordance with a MemoryStore
+   * eviction policy
+   * &lt;li&gt;In the DiskStore when the expiry thread runs, which by default is
+   * {@link net.sf.ehcache.Cache#DEFAULT_EXPIRY_THREAD_INTERVAL_SECONDS"/&gt;
+   * &lt;/ul&gt;
+   * If an element is found to be expired, it is deleted and this method is notified.
+   *
+   * @param cache   the cache emitting the notification
+   * @param element the element that has just expired
+   *    &lt;p/&gt;
+   *    Deadlock Warning: expiry will often come from the &lt;code&gt;DiskStore&lt;/code&gt;
+   *    expiry thread. It holds a lock to the DiskStore at the time the
+   *    notification is sent. If the implementation of this method calls into a
+   *    synchronized &lt;code&gt;Cache&lt;/code&gt; method and that subsequently calls into
+   *    DiskStore a deadlock will result. Accordingly implementers of this method
+   *    should not call back into Cache.
+   */</span>
+  <span class="kt">void</span> <span class="nf">notifyElementExpired</span><span class="o">(</span><span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Element</span> <span class="n">element</span><span class="o">);</span>
+
+  <span class="cm">/**
+   * Give the replicator a chance to cleanup and free resources when no longer needed
+   */</span>
+  <span class="kt">void</span> <span class="nf">dispose</span><span class="o">();</span>
+
+  <span class="cm">/**
+   * Creates a clone of this listener. This method will only be called by Ehcache before a
+   * cache is initialized.
+   * &lt;p/&gt;
+   * This may not be possible for listeners after they have been initialized. Implementations
+   * should throw CloneNotSupportedException if they do not support clone.
+   * @return a clone
+   * @throws CloneNotSupportedException if the listener could not be cloned.
+   */</span>
+  <span class="kd">public</span> <span class="n">Object</span> <span class="nf">clone</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span><span class="o">;</span>
+<span class="o">}</span>
 </code></pre>
 </div>
 
@@ -437,7 +443,7 @@ of these classes will be done.</p>
 
 <p>To add a listener programmatically, follow this example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cache.getCacheEventNotificationService().registerListener(myListener);
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">cache</span><span class="o">.</span><span class="na">getCacheEventNotificationService</span><span class="o">().</span><span class="na">registerListener</span><span class="o">(</span><span class="n">myListener</span><span class="o">);</span>
 </code></pre>
 </div>
 

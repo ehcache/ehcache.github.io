@@ -218,62 +218,63 @@ Since ehcache-1.2, all classloading is done in a standard way in one utility cla
 
 <p>Ehcache allows plugins for events and distribution. These are loaded and created as follows:</p>
 
-<pre>
-/**
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
  * Creates a new class instance. Logs errors along the way. Classes are loaded
  * using the Ehcache standard classloader.
  *
  * @param className a fully qualified class name
  * @return null if the instance cannot be loaded
- */
-public static Object createNewInstance(String className) throws CacheException {
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">Object</span> <span class="nf">createNewInstance</span><span class="o">(</span><span class="n">String</span> <span class="n">className</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span> <span class="o">{</span>
 
-    Class clazz;
-    Object newInstance;
-    try {
-	clazz = Class.forName(className, true, getStandardClassLoader());
-    } catch (ClassNotFoundException e) {
-	//try fallback
-	try {
-	    clazz = Class.forName(className, true, getFallbackClassLoader());
-	} catch (ClassNotFoundException ex) {
-	    throw new CacheException("Unable to load class " + className +
-				     ". Initial cause was " + e.getMessage(), e);
-	"/&gt;
-    "/&gt;
-    try {
-	newInstance = clazz.newInstance();
-    } catch (IllegalAccessException e) {
-	throw new CacheException("Unable to load class " + className +
-				 ". Initial cause was " + e.getMessage(), e);
-    } catch (InstantiationException e) {
-	throw new CacheException("Unable to load class " + className +
-				 ". Initial cause was " + e.getMessage(), e);
-    "/&gt;
-    return newInstance;
-"/&gt;
+    <span class="n">Class</span> <span class="n">clazz</span><span class="o">;</span>
+    <span class="n">Object</span> <span class="n">newInstance</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+	<span class="n">clazz</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="n">className</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="n">getStandardClassLoader</span><span class="o">());</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ClassNotFoundException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">//try fallback</span>
+		<span class="k">try</span> <span class="o">{</span>
+		    <span class="n">clazz</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="n">className</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="n">getFallbackClassLoader</span><span class="o">());</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ClassNotFoundException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+		    <span class="k">throw</span> <span class="k">new</span> <span class="nf">CacheException</span><span class="o">(</span><span class="s">"Unable to load class "</span> <span class="o">+</span> <span class="n">className</span> <span class="o">+</span>
+					     <span class="s">". Initial cause was "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+		<span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">try</span> <span class="o">{</span>
+	<span class="n">newInstance</span> <span class="o">=</span> <span class="n">clazz</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IllegalAccessException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">throw</span> <span class="k">new</span> <span class="nf">CacheException</span><span class="o">(</span><span class="s">"Unable to load class "</span> <span class="o">+</span> <span class="n">className</span> <span class="o">+</span>
+				 <span class="s">". Initial cause was "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InstantiationException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">throw</span> <span class="k">new</span> <span class="nf">CacheException</span><span class="o">(</span><span class="s">"Unable to load class "</span> <span class="o">+</span> <span class="n">className</span> <span class="o">+</span>
+				 <span class="s">". Initial cause was "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">newInstance</span><span class="o">;</span>
+<span class="o">}</span>
 
-/**
- * Gets the <code>ClassLoader</code> that all classes in ehcache, and extensions,
+
+<span class="cm">/**
+ * Gets the &lt;code&gt;ClassLoader&lt;/code&gt; that all classes in ehcache, and extensions,
  *  should use for classloading. All ClassLoading in Ehcache should use this one.
- * This is the only thing that seems to work for all of the class loading 
+ * This is the only thing that seems to work for all of the class loading
  * situations found in the wild.
  * @return the thread context class loader.
- */
-public static ClassLoader getStandardClassLoader() {
-    return Thread.currentThread().getContextClassLoader();
-"/&gt;
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">ClassLoader</span> <span class="nf">getStandardClassLoader</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getContextClassLoader</span><span class="o">();</span>
+<span class="o">}</span>
 
-/**
- * Gets a fallback <code>ClassLoader</code> that all classes in ehcache, and
+<span class="cm">/**
+ * Gets a fallback &lt;code&gt;ClassLoader&lt;/code&gt; that all classes in ehcache, and
  * extensions, should use for classloading. This is used if the context class loader
  * does not work.
- * @return the <code>ClassLoaderUtil.class.getClassLoader();</code>
- */
-public static ClassLoader getFallbackClassLoader() {
-    return ClassLoaderUtil.class.getClassLoader();
-"/&gt;
-</pre>
+ * @return the &lt;code&gt;ClassLoaderUtil.class.getClassLoader();&lt;/code&gt;
+ */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">ClassLoader</span> <span class="nf">getFallbackClassLoader</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">ClassLoaderUtil</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
 <p>If this does not work for some reason a CacheException is thrown with a
 detailed error message.</p>

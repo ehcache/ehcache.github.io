@@ -226,9 +226,9 @@ Note that, for backward compatibility, <code class="highlighter-rouge">CacheMana
 
 <p>Cache decorators are created as follows:</p>
 
-<pre>
-BlockingCache newBlockingCache = new BlockingCache(cache);
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">BlockingCache</span> <span class="n">newBlockingCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BlockingCache</span><span class="o">(</span><span class="n">cache</span><span class="o">);</span>
+</code></pre>
+</div>
 
 <p>The class must implement Ehcache.</p>
 
@@ -243,11 +243,11 @@ BlockingCache newBlockingCache = new BlockingCache(cache);
 
 <p>It is configured as per the following example:</p>
 
-<pre>
-   &lt;cacheDecoratorFactory
-		class="com.company.SomethingCacheDecoratorFactory"
-		properties="property1=36 ..." /&gt;
-</pre>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cacheDecoratorFactory</span>
+    <span class="na">class=</span><span class="s">"com.company.SomethingCacheDecoratorFactory"</span>
+    <span class="na">properties=</span><span class="s">"property1=36 ..."</span> <span class="nt">/&gt;</span>
+</code></pre>
+</div>
 
 <p>Note that from version 2.2, decorators can be configured against the <code class="highlighter-rouge">defaultCache</code>. This is very useful for frameworks
  like Hibernate that add caches based on the <code class="highlighter-rouge">defaultCache</code>.</p>
@@ -262,9 +262,9 @@ Note that decorators created via configuration in ehcache.xml have already been 
 <p>A built-in way is to replace the Cache in CacheManager with the decorated one. This is achieved as in the following
 example:</p>
 
-<pre>
-cacheManager.replaceCacheWithDecoratedCache(cache, newBlockingCache);
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">cacheManager</span><span class="o">.</span><span class="na">replaceCacheWithDecoratedCache</span><span class="o">(</span><span class="n">cache</span><span class="o">,</span> <span class="n">newBlockingCache</span><span class="o">);</span>
+</code></pre>
+</div>
 
 <p>The <code class="highlighter-rouge">CacheManager</code> <code class="highlighter-rouge"><span class="p">{</span><span class="err">replaceCacheWithDecoratedCache</span><span class="p">}</span></code> method requires that the decorated cache be built from
  the underlying cache from the same name.</p>
@@ -278,38 +278,38 @@ cacheManager.replaceCacheWithDecoratedCache(cache, newBlockingCache);
 attempt to use it. All threads must be referencing the same decorated cache. An example of a suitable init method is
 found in <code class="highlighter-rouge">CachingFilter</code>:</p>
 
-<pre>
-/**
-* The cache holding the web pages. Ensure that all threads for a given cache name
-* are using the same instance of this.
-*/
-private BlockingCache blockingCache;
-/**
-* Initialises blockingCache to use
-*
-* @throws CacheException The most likely cause is that a cache has not been
-*                        configured in Ehcache's configuration file ehcache.xml
-*                        for the filter name
-*/
-public void doInit() throws CacheException {
-  synchronized (this.getClass()) {
-    if (blockingCache == null) {
-      final String cacheName = getCacheName();
-      Ehcache cache = getCacheManager().getEhcache(cacheName);
-      if (!(cache instanceof BlockingCache)) {
-        //decorate and substitute
-        BlockingCache newBlockingCache = new BlockingCache(cache);
-        getCacheManager().replaceCacheWithDecoratedCache(cache, newBlockingCache);
-      "/&gt;
-      blockingCache = (BlockingCache) getCacheManager().getEhcache(getCacheName());
-    "/&gt;
-  "/&gt;
-"/&gt;
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * The cache holding the web pages. Ensure that all threads for a given cache name
+ * are using the same instance of this.
+ */</span>
+<span class="kd">private</span> <span class="n">BlockingCache</span> <span class="n">blockingCache</span><span class="o">;</span>
+<span class="cm">/**
+ * Initialises blockingCache to use
+ *
+ * @throws CacheException The most likely cause is that a cache has not been
+ *                        configured in Ehcache's configuration file ehcache.xml
+ *                        for the filter name
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">doInit</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CacheException</span> <span class="o">{</span>
+  <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getClass</span><span class="o">())</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">blockingCache</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span> <span class="o">=</span> <span class="n">getCacheName</span><span class="o">();</span>
+      <span class="n">Ehcache</span> <span class="n">cache</span> <span class="o">=</span> <span class="n">getCacheManager</span><span class="o">().</span><span class="na">getEhcache</span><span class="o">(</span><span class="n">cacheName</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(!(</span><span class="n">cache</span> <span class="k">instanceof</span> <span class="n">BlockingCache</span><span class="o">))</span> <span class="o">{</span>
+        <span class="c1">//decorate and substitute</span>
+        <span class="n">BlockingCache</span> <span class="n">newBlockingCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BlockingCache</span><span class="o">(</span><span class="n">cache</span><span class="o">);</span>
+        <span class="n">getCacheManager</span><span class="o">().</span><span class="na">replaceCacheWithDecoratedCache</span><span class="o">(</span><span class="n">cache</span><span class="o">,</span> <span class="n">newBlockingCache</span><span class="o">);</span>
+      <span class="o">}</span>
+      <span class="n">blockingCache</span> <span class="o">=</span> <span class="o">(</span><span class="n">BlockingCache</span><span class="o">)</span> <span class="n">getCacheManager</span><span class="o">().</span><span class="na">getEhcache</span><span class="o">(</span><span class="n">getCacheName</span><span class="o">());</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
 
-<pre>
-Ehcache blockingCache = singletonManager.getEhcache("sampleCache1");
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Ehcache</span> <span class="n">blockingCache</span> <span class="o">=</span> <span class="n">singletonManager</span><span class="o">.</span><span class="na">getEhcache</span><span class="o">(</span><span class="s">"sampleCache1"</span><span class="o">);</span>
+</code></pre>
+</div>
 
 <p>The returned cache will exhibit the decorations.</p>
 
@@ -320,34 +320,34 @@ Ehcache blockingCache = singletonManager.getEhcache("sampleCache1");
 <p>The way to do this is to create a decorated cache and then call <code class="highlighter-rouge">cache.setName(new_name)</code> and then add it to <code class="highlighter-rouge">CacheManager</code>
 with <code class="highlighter-rouge">CacheManager.addDecoratedCache()</code>.</p>
 
-<pre>
-/**
-* Adds a decorated {@link Ehcache} to the CacheManager. This method neither creates
-* the memory/disk store nor initializes the cache. It only adds the cache reference
-* to the map of caches held by this cacheManager.
-* <p></p>
-* It is generally required that a decorated cache, once constructed, is made available
-* to other execution threads. The simplest way of doing this is to either add it to
-* the cacheManager with a different name or substitute the original cache with the
-* decorated one.
-* <p></p>
-* This method adds the decorated cache assuming it has a different name. If another
-* cache (decorated or not) with the same name already exists, it will throw 
-* {@link ObjectExistsException}. For replacing existing
-* cache with another decorated cache having same name, please use
-* {@link #replaceCacheWithDecoratedCache(Ehcache, Ehcache)"/&gt;
-* <p></p>
-* Note that any overridden Ehcache methods by the decorator will take on new
-* behaviours without casting. Casting is only required for new methods that the
-* decorator introduces. For more information see the well known Gang of Four 
-* Decorator pattern.
-*
-* @param decoratedCache
-* @throws ObjectExistsException
-*             if another cache with the same name already exists.
-*/
-public void addDecoratedCache(Ehcache decoratedCache) throws ObjectExistsException {
-</pre>
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * Adds a decorated {@link Ehcache} to the CacheManager. This method neither creates
+ * the memory/disk store nor initializes the cache. It only adds the cache reference
+ * to the map of caches held by this cacheManager.
+ * &lt;p/&gt;
+ * It is generally required that a decorated cache, once constructed, is made available
+ * to other execution threads. The simplest way of doing this is to either add it to
+ * the cacheManager with a different name or substitute the original cache with the
+ * decorated one.
+ * &lt;p/&gt;
+ * This method adds the decorated cache assuming it has a different name. If another
+ * cache (decorated or not) with the same name already exists, it will throw
+ * {@link ObjectExistsException}. For replacing existing
+ * cache with another decorated cache having same name, please use
+ * {@link #replaceCacheWithDecoratedCache(Ehcache, Ehcache)"/&gt;
+ * &lt;p/&gt;
+ * Note that any overridden Ehcache methods by the decorator will take on new
+ * behaviours without casting. Casting is only required for new methods that the
+ * decorator introduces. For more information see the well known Gang of Four
+ * Decorator pattern.
+ *
+ * @param decoratedCache
+ * @throws ObjectExistsException
+ *             if another cache with the same name already exists.
+ */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addDecoratedCache</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">decoratedCache</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ObjectExistsException</span> <span class="o">{</span>
+</code></pre>
+</div>
 
 <h2 id="built-in-decorators">Built-in Decorators</h2>
 

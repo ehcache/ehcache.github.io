@@ -196,6 +196,11 @@
                               <span class="toctext">Cache Usage Patterns</span>
                            </a>
                         </li>
+                        <li class="toc_level-2 toc_section-5">
+                           <a href="#specific-technologies">
+                              <span class="toctext">Specific Technologies</span>
+                           </a>
+                        </li>
                      </ul>
                   </li>
                </ul>
@@ -249,34 +254,34 @@ system-of-record, store the data in the cache, and then return it.</p>
 <p>When data is written, the cache must be updated with the system-of-record.
 This results in code that often looks like the following pseudo-code:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public class MyDataAccessClass
-{
-  private final Ehcache cache;
-  public MyDataAccessClass(Ehcache cache)
-  {
-    this.cache = cache;
-  "/&gt;
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyDataAccessClass</span>
+<span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nf">MyDataAccessClass</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">cache</span> <span class="o">=</span> <span class="n">cache</span><span class="o">;</span>
+  <span class="o">}</span>
 
-  /* read some data, check cache first, otherwise read from sor */
-  public V readSomeData(K key)
-  {
-     Element element;
-     if ((element = cache.get(key)) != null) {
-         return element.getValue();
-     "/&gt;
-      // note here you should decide whether your cache
-     // will cache 'nulls' or not
-     if (value = readDataFromDataStore(key)) != null) {
-         cache.put(new Element(key, value));
-     "/&gt;
-     return value;
-  "/&gt;
-  /* write some data, write to sor, then update cache */
-  public void writeSomeData(K key, V value)
-  {
-     writeDataToDataStore(key, value);
-     cache.put(new Element(key, value);
-  "/&gt;
+  <span class="cm">/* read some data, check cache first, otherwise read from sor */</span>
+  <span class="kd">public</span> <span class="n">V</span> <span class="nf">readSomeData</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">)</span>
+  <span class="o">{</span>
+     <span class="n">Element</span> <span class="n">element</span><span class="o">;</span>
+     <span class="k">if</span> <span class="o">((</span><span class="n">element</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">))</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+         <span class="k">return</span> <span class="n">element</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+     <span class="o">}</span>
+      <span class="c1">// note here you should decide whether your cache</span>
+     <span class="c1">// will cache 'nulls' or not</span>
+     <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">readDataFromDataStore</span><span class="o">(</span><span class="n">key</span><span class="o">))</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+         <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
+     <span class="o">}</span>
+     <span class="k">return</span> <span class="n">value</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="cm">/* write some data, write to sor, then update cache */</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">writeSomeData</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span>
+  <span class="o">{</span>
+     <span class="n">writeDataToDataStore</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+     <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+  <span class="o">}</span>
 </code></pre>
 </div>
 
@@ -351,148 +356,157 @@ Guide chapter on <a href="/documentation/2.7/apis/write-through-caching">Write-t
 
 <h3 id="cache-as-sor-example">cache-as-sor example</h3>
 
-<pre>
-public class MyDataAccessClass
-{
-private final Ehcache cache;
-public MyDataAccessClass(Ehcache cache)
-{
-   cache.registerCacheWriter(new MyCacheWriter());
-   this.cache = new SelfPopulatingCache(cache);
-"/&gt;
-/* read some data - notice the cache is treated as an SOR.
-* the application code simply assumes the key will always be available
-*/
-public V readSomeData(K key)
-{
-   return cache.get(key);
-"/&gt;
-/* write some data - notice the cache is treated as an SOR, it is
-* the cache's responsibility to write the data to the SOR.
-*/
-public void writeSomeData(K key, V value)
-{
-   cache.put(new Element(key, value);
-"/&gt;
-/**
-* Implement the CacheEntryFactory that allows the cache to provide
-* the read-through strategy
-*/
-private class MyCacheEntryFactory implements CacheEntryFactory
-{
-   public Object createEntry(Object key) throws Exception
-   {
-       return readDataFromDataStore(key);
-   "/&gt;
-"/&gt;
-/**
-* Implement the CacheWriter interface which allows the cache to provide
-* the write-through or write-behind strategy.
-*/
-private class MyCacheWriter implements CacheWriter
-   public CacheWriter clone(Ehcache cache) throws CloneNotSupportedException;
-   {
-       throw new CloneNotSupportedException();
-   "/&gt;
-    public void init() { "/&gt;
-   void dispose() throws CacheException { "/&gt;
-    void write(Element element) throws CacheException;
-   {
-       writeDataToDataStore(element.getKey(), element.getValue());
-   "/&gt;
-    void writeAll(Collection<element> elements) throws CacheException
-   {
-       for (Element element : elements) {
-           write(element);
-       "/&gt;
-   "/&gt;
-    void delete(CacheEntry entry) throws CacheException
-   {
-       deleteDataFromDataStore(element.getKey());
-   "/&gt;
-    void deleteAll(Collection<cacheentry> entries) throws CacheException
-   {
-       for (Element element : elements) {
-           delete(element);
-       "/&gt;
-   "/&gt;
-"/&gt;
-"/&gt;
-&lt;/pre&gt;
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyDataAccessClass</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">;</span>
 
-### Copy Cache
-A Copy Cache can have two behaviors: it can copy Element instances it returns, when `copyOnRead` is true and copy elements it stores,
-when  `copyOnWrite` to true.
+  <span class="kd">public</span> <span class="nf">MyDataAccessClass</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">)</span>
+  <span class="o">{</span>
+     <span class="n">cache</span><span class="o">.</span><span class="na">registerCacheWriter</span><span class="o">(</span><span class="k">new</span> <span class="n">MyCacheWriter</span><span class="o">());</span>
+     <span class="k">this</span><span class="o">.</span><span class="na">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SelfPopulatingCache</span><span class="o">(</span><span class="n">cache</span><span class="o">);</span>
+  <span class="o">}</span>
 
-A copy on read cache can be useful when you can't let multiple threads access the same Element instance (and the
-value it holds) concurrently. For example, where the programming model doesn't allow it, or you want to isolate changes done concurrently from
-each other.
+  <span class="cm">/* read some data - notice the cache is treated as an SOR.
+  * the application code simply assumes the key will always be available
+  */</span>
+  <span class="kd">public</span> <span class="n">V</span> <span class="nf">readSomeData</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">)</span>
+  <span class="o">{</span>
+     <span class="k">return</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+  <span class="o">}</span>
 
-Copy on write also lets you determine exactly what goes in the cache and when. i.e. when the value that will be in the cache will be
-in state it was when it actually was put in cache. *All mutations to the value, or the element, after the put operation will not be
-reflected in the cache*.
+  <span class="cm">/* write some data - notice the cache is treated as an SOR, it is
+  * the cache's responsibility to write the data to the SOR.
+  */</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">writeSomeData</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">)</span>
+  <span class="o">{</span>
+     <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+  <span class="o">}</span>
 
-A concrete example of a copy cache is a Cache configured for `XA`. It will always be configured `copyOnRead` and `copyOnWrite` to provide proper
+  <span class="cm">/**
+  * Implement the CacheEntryFactory that allows the cache to provide
+  * the read-through strategy
+  */</span>
+  <span class="kd">private</span> <span class="kd">class</span> <span class="nc">MyCacheEntryFactory</span> <span class="kd">implements</span> <span class="n">CacheEntryFactory</span>
+  <span class="o">{</span>
+     <span class="kd">public</span> <span class="n">Object</span> <span class="nf">createEntry</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span>
+     <span class="o">{</span>
+         <span class="k">return</span> <span class="nf">readDataFromDataStore</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+     <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**
+  * Implement the CacheWriter interface which allows the cache to provide
+  * the write-through or write-behind strategy.
+  */</span>
+  <span class="kd">private</span> <span class="kd">class</span> <span class="nc">MyCacheWriter</span> <span class="kd">implements</span> <span class="n">CacheWriter</span> <span class="o">{</span>
+     <span class="kd">public</span> <span class="n">CacheWriter</span> <span class="nf">clone</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span><span class="o">;</span>
+     <span class="o">{</span>
+         <span class="k">throw</span> <span class="k">new</span> <span class="nf">CloneNotSupportedException</span><span class="o">();</span>
+     <span class="o">}</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span> <span class="o">}</span>
+     <span class="kt">void</span> <span class="nf">dispose</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CacheException</span> <span class="o">{</span> <span class="o">}</span>
+      <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span><span class="o">;</span>
+     <span class="o">{</span>
+         <span class="n">writeDataToDataStore</span><span class="o">(</span><span class="n">element</span><span class="o">.</span><span class="na">getKey</span><span class="o">(),</span> <span class="n">element</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
+     <span class="o">}</span>
+      <span class="kt">void</span> <span class="nf">writeAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">Element</span><span class="o">&gt;</span> <span class="n">elements</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span>
+     <span class="o">{</span>
+         <span class="k">for</span> <span class="o">(</span><span class="n">Element</span> <span class="n">element</span> <span class="o">:</span> <span class="n">elements</span><span class="o">)</span> <span class="o">{</span>
+             <span class="n">write</span><span class="o">(</span><span class="n">element</span><span class="o">);</span>
+         <span class="o">}</span>
+     <span class="o">}</span>
+      <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="n">CacheEntry</span> <span class="n">entry</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span>
+     <span class="o">{</span>
+         <span class="n">deleteDataFromDataStore</span><span class="o">(</span><span class="n">element</span><span class="o">.</span><span class="na">getKey</span><span class="o">());</span>
+     <span class="o">}</span>
+      <span class="kt">void</span> <span class="nf">deleteAll</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">CacheEntry</span><span class="o">&gt;</span> <span class="n">entries</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CacheException</span>
+     <span class="o">{</span>
+         <span class="k">for</span> <span class="o">(</span><span class="n">Element</span> <span class="n">element</span> <span class="o">:</span> <span class="n">elements</span><span class="o">)</span> <span class="o">{</span>
+             <span class="n">delete</span><span class="o">(</span><span class="n">element</span><span class="o">);</span>
+         <span class="o">}</span>
+     <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h3 id="copy-cache">Copy Cache</h3>
+<p>A Copy Cache can have two behaviors: it can copy Element instances it returns, when <code class="highlighter-rouge">copyOnRead</code> is true and copy elements it stores,
+when  <code class="highlighter-rouge">copyOnWrite</code> to true.</p>
+
+<p>A copy on read cache can be useful when you can’t let multiple threads access the same Element instance (and the
+value it holds) concurrently. For example, where the programming model doesn’t allow it, or you want to isolate changes done concurrently from
+each other.</p>
+
+<p>Copy on write also lets you determine exactly what goes in the cache and when. i.e. when the value that will be in the cache will be
+in state it was when it actually was put in cache. <em>All mutations to the value, or the element, after the put operation will not be
+reflected in the cache</em>.</p>
+
+<p>A concrete example of a copy cache is a Cache configured for <code class="highlighter-rouge">XA</code>. It will always be configured <code class="highlighter-rouge">copyOnRead</code> and <code class="highlighter-rouge">copyOnWrite</code> to provide proper
 transaction isolation and clear transaction boundaries (the state the objects are in at commit time is the state making it into the cache).
 By default, the copy operation will be performed using standard Java object serialization. We do recognize though that for some
-applications this might not be good (or fast) enough. You can configure your own `CopyStrategy` which will be used to perform
-these copy operations. For example, you could easily implement use cloning rather than Serialization.
+applications this might not be good (or fast) enough. You can configure your own <code class="highlighter-rouge">CopyStrategy</code> which will be used to perform
+these copy operations. For example, you could easily implement use cloning rather than Serialization.</p>
 
-More information on configuration can be found here: [copyOnRead and copyOnWrite cache configuration](/documentation/2.7/configuration/configuration#copyonread-and-copyonwrite-cache-configuration).
+<p>More information on configuration can be found here: <a href="/documentation/2.7/configuration/configuration#copyonread-and-copyonwrite-cache-configuration">copyOnRead and copyOnWrite cache configuration</a>.</p>
 
-## Specific Technologies
+<h2 id="specific-technologies">Specific Technologies</h2>
 
-### Distributed Caching
-Distributed Ehcache combines the power of the Terracotta platform with the ease of Ehcache application-data caching. Ehcache supports [distributed caching](http://terracotta.org/documentation/2.7/enterprise-ehcache/get-started) with two lines of configuration.
+<h3 id="distributed-caching">Distributed Caching</h3>
+<p>Distributed Ehcache combines the power of the Terracotta platform with the ease of Ehcache application-data caching. Ehcache supports <a href="http://terracotta.org/documentation/2.7/enterprise-ehcache/get-started">distributed caching</a> with two lines of configuration.</p>
 
-By integrating Enterprise Ehcache with the Terracotta platform, you can take advantage of BigMemory and expanded Terracotta Server Arrays to greatly scale your application and cluster.
+<p>By integrating Enterprise Ehcache with the Terracotta platform, you can take advantage of BigMemory and expanded Terracotta Server Arrays to greatly scale your application and cluster.</p>
 
-The distributed-cache documentation covers how to configure Ehcache in a Terracotta cluster and how to use its  API in your application.
+<p>The distributed-cache documentation covers how to configure Ehcache in a Terracotta cluster and how to use its  API in your application.</p>
 
+<h3 id="hibernate">Hibernate</h3>
 
-### Hibernate
+<ul>
+  <li>Perform the same steps as for general-purpose caching (above).</li>
+  <li>Create caches in ehcache.xml.</li>
+</ul>
 
-* Perform the same steps as for general-purpose caching (above).
-* Create caches in ehcache.xml.
+<p>See the <a href="/documentation/2.7/integrations/hibernate">Hibernate Caching</a> chapter for more information.</p>
 
-See the [Hibernate Caching](/documentation/2.7/integrations/hibernate) chapter for more information.
+<h3 id="caching-with-java-ee-servlet">Caching with Java EE Servlet</h3>
 
+<ul>
+  <li>Perform the same steps as for general-purpose caching above.</li>
+  <li>Configure a cache for your web page in ehcache.xml.</li>
+  <li>To cache an entire web page, either use SimplePageCachingFilter or create your own subclass of CachingFilter</li>
+  <li>To cache a jsp:Include or anything callable from a RequestDispatcher, either use SimplePageFragmentCachingFilter
+or create a subclass of PageFragmentCachingFilter.</li>
+  <li>Configure the web.xml. Declare the filters created above and create filter mapping associating the filter with
+a URL.</li>
+</ul>
 
-### Caching with Java EE Servlet
+<p>See the <a href="/documentation/2.7/modules/web-caching">Web Caching</a> chapter for more information.</p>
 
-* Perform the same steps as for general-purpose caching above.
-* Configure a cache for your web page in ehcache.xml.
-* To cache an entire web page, either use SimplePageCachingFilter or create your own subclass of CachingFilter
-* To cache a jsp:Include or anything callable from a RequestDispatcher, either use SimplePageFragmentCachingFilter
-or create a subclass of PageFragmentCachingFilter.
-* Configure the web.xml. Declare the filters created above and create filter mapping associating the filter with
-a URL.
+<h3 id="restful-and-soap-caching-with-the-cache-server">RESTful and SOAP Caching with the Cache Server</h3>
 
-See the [Web Caching](/documentation/2.7/modules/web-caching) chapter for more information.
+<ul>
+  <li>Download the ehcache-standalone-server from <a href="https://sourceforge.net/projects/ehcache/files/ehcache-server">https://sourceforge.net/projects/ehcache/files/ehcache-server</a>.</li>
+  <li>cd to the bin directory</li>
+  <li>Type <code class="highlighter-rouge">startup.sh</code> to start the server with the log in the foreground.
+By default it will listen on port 8080,
+ will have both RESTful and SOAP web services enabled, and will use a sample Ehcache configuration from the WAR module.</li>
+  <li>See the <a href="/documentation/2.7/modules/cache-server#restful-code-samples">code samples</a> on the Cache Server page. You can use Java or any other programming language with the Cache Server.</li>
+</ul>
 
-### RESTful and SOAP Caching with the Cache Server
+<p>See the <a href="/documentation/2.7/modules/cache-server">Cache Server</a> page for more information.</p>
 
-* Download the ehcache-standalone-server from [https://sourceforge.net/projects/ehcache/files/ehcache-server](https://sourceforge.net/projects/ehcache/files/ehcache-server).
-* cd to the bin directory
-* Type `startup.sh` to start the server with the log in the foreground.
-  By default it will listen on port 8080,
- will have both RESTful and SOAP web services enabled, and will use a sample Ehcache configuration from the WAR module.
-* See the [code samples](/documentation/2.7/modules/cache-server#restful-code-samples) on the Cache Server page. You can use Java or any other programming language with the Cache Server.
+<h3 id="jcache-style-caching">JCache style caching</h3>
 
-See the [Cache Server](/documentation/2.7/modules/cache-server) page for more information.
+<p>Ehcache contains an early draft implementation of JCache contained in the net.sf.ehcache.jcache package.
+See the <a href="/documentation/2.7/integrations/jsr107">JSR107</a> chapter for usage.</p>
 
-### JCache style caching
+<h3 id="spring-cocoon-acegi-and-other-frameworks">Spring, Cocoon, Acegi and other frameworks</h3>
 
-Ehcache contains an early draft implementation of JCache contained in the net.sf.ehcache.jcache package.
-See the [JSR107](/documentation/2.7/integrations/jsr107) chapter for usage.
+<p>Usually, with these, you are using Ehcache without even realising it. The first steps in getting more control over what is happening are:</p>
 
-### Spring, Cocoon, Acegi and other frameworks
-
-Usually, with these, you are using Ehcache without even realising it. The first steps in getting more control over what is happening are:
-
-* discover the cache names used by the framework
-* create your own ehcache.xml with settings for the caches and place it in the application classpath.
-</cacheentry></element></pre>
+<ul>
+  <li>discover the cache names used by the framework</li>
+  <li>create your own ehcache.xml with settings for the caches and place it in the application classpath.</li>
+</ul>
 
       </article>
     </div>

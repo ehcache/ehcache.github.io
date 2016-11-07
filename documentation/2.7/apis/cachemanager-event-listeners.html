@@ -231,7 +231,7 @@ is doing.</p>
 <p>One CacheManagerEventListenerFactory and hence one CacheManagerEventListener can be specified per CacheManager instance.
 The factory is configured as below:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerEventListenerFactory class="" properties=""/&gt;
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cacheManagerEventListenerFactory</span> <span class="na">class=</span><span class="s">""</span> <span class="na">properties=</span><span class="s">""</span><span class="nt">/&gt;</span>
 </code></pre>
 </div>
 
@@ -265,84 +265,85 @@ ehcache.xml.
 The factory class needs to be a concrete subclass of the abstract
 factory CacheManagerEventListenerFactory, which is reproduced below:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
-* An abstract factory for creating {@link CacheManagerEventListener}s. Implementers should
-* provide their own concrete factory extending this factory. It can then be configured in
-* ehcache.xml
-*
-* @author Greg Luck
-* @version $Id: cachemanager_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
-* @see "http://ehcache.org/documentation/2.7/cachemanager_event_listeners.html"
-*/
-public abstract class CacheManagerEventListenerFactory {
-/**
-* Create a &lt;code&gt;CacheManagerEventListener&lt;/code&gt;
-*
-* @param properties implementation specific properties. These are configured as comma
-*                   separated name value pairs in ehcache.xml. Properties may be null
-* @return a constructed CacheManagerEventListener
-*/
-public abstract CacheManagerEventListener
-       createCacheManagerEventListener(Properties properties);
-"/&gt;
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * An abstract factory for creating {@link CacheManagerEventListener}s. Implementers should
+ * provide their own concrete factory extending this factory. It can then be configured in
+ * ehcache.xml
+ *
+ * @author Greg Luck
+ * @version $Id: cachemanager_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
+ * @see "http://ehcache.org/documentation/2.8/cachemanager_event_listeners.html"
+ */</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">CacheManagerEventListenerFactory</span> <span class="o">{</span>
+    <span class="cm">/**
+     * Create a &lt;code&gt;CacheManagerEventListener&lt;/code&gt;
+     *
+     * @param properties implementation specific properties. These are configured as comma
+     *                   separated name value pairs in ehcache.xml. Properties may be null
+     * @return a constructed CacheManagerEventListener
+     */</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">CacheManagerEventListener</span>
+           <span class="nf">createCacheManagerEventListener</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 </div>
 
 <p>The factory creates a concrete implementation of CacheManagerEventListener, which is reproduced below:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
-* Allows implementers to register callback methods that will be executed when a
-* &lt;code&gt;CacheManager&lt;/code&gt; event occurs.
-* The events include:
-* &lt;ol&gt;
-* &lt;li&gt;adding a &lt;code&gt;Cache&lt;/code&gt;
-* &lt;li&gt;removing a &lt;code&gt;Cache&lt;/code&gt;
-* &lt;/ol&gt;
-* &lt;p/&gt;
-* Callbacks to these methods are synchronous and unsynchronized. It is the responsibility of
-* the implementer to safely handle the potential performance and thread safety issues
-* depending on what their listener is doing.
-* @author Greg Luck
-* @version $Id: cachemanager_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
-* @since 1.2
-* @see CacheEventListener
-*/
-public interface CacheManagerEventListener {
-/**
-* Called immediately after a cache has been added and activated.
-* &lt;p/&gt;
-* Note that the CacheManager calls this method from a synchronized method. Any attempt to
-* call a synchronized method on CacheManager from this method will cause a deadlock.
-* &lt;p/&gt;
-* Note that activation will also cause a CacheEventListener status change notification
-* from {@link net.sf.ehcache.Status#STATUS_UNINITIALISED} to
-* {@link net.sf.ehcache.Status#STATUS_ALIVE}. Care should be taken on processing that
-* notification because:
-* &lt;ul&gt;
-* &lt;li&gt;the cache will not yet be accessible from the CacheManager.
-* &lt;li&gt;the addCaches methods whih cause this notification are synchronized on the
-* CacheManager. An attempt to call {@link net.sf.ehcache.CacheManager#getCache(String)"/&gt;
-* will cause a deadlock.
-* &lt;/ul&gt;
-* The calling method will block until this method returns.
-* &lt;p/&gt;
-* @param cacheName the name of the &lt;code&gt;Cache&lt;/code&gt; the operation relates to
-* @see CacheEventListener
-*/
-void notifyCacheAdded(String cacheName);
-/**
-* Called immediately after a cache has been disposed and removed. The calling method will
-* block until this method returns.
-* &lt;p/&gt;
-* Note that the CacheManager calls this method from a synchronized method. Any attempt to
-* call a synchronized method on CacheManager from this method will cause a deadlock.
-* &lt;p/&gt;
-* Note that a {@link CacheEventListener} status changed will also be triggered. Any
-* attempt from that notification to access CacheManager will also result in a deadlock.
-* @param cacheName the name of the &lt;code&gt;Cache&lt;/code&gt; the operation relates to
-*/
-void notifyCacheRemoved(String cacheName);
-"/&gt;
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * Allows implementers to register callback methods that will be executed when a
+ * &lt;code&gt;CacheManager&lt;/code&gt; event occurs.
+ * The events include:
+ * &lt;ol&gt;
+ * &lt;li&gt;adding a &lt;code&gt;Cache&lt;/code&gt;
+ * &lt;li&gt;removing a &lt;code&gt;Cache&lt;/code&gt;
+ * &lt;/ol&gt;
+ * &lt;p/&gt;
+ * Callbacks to these methods are synchronous and unsynchronized. It is the responsibility of
+ * the implementer to safely handle the potential performance and thread safety issues
+ * depending on what their listener is doing.
+ * @author Greg Luck
+ * @version $Id: cachemanager_event_listeners.apt 4369 2011-07-15 19:59:14Z ilevy $
+ * @since 1.2
+ * @see CacheEventListener
+ */</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheManagerEventListener</span> <span class="o">{</span>
+    <span class="cm">/**
+     * Called immediately after a cache has been added and activated.
+     * &lt;p/&gt;
+     * Note that the CacheManager calls this method from a synchronized method. Any attempt to
+     * call a synchronized method on CacheManager from this method will cause a deadlock.
+     * &lt;p/&gt;
+     * Note that activation will also cause a CacheEventListener status change notification
+     * from {@link net.sf.ehcache.Status#STATUS_UNINITIALISED} to
+     * {@link net.sf.ehcache.Status#STATUS_ALIVE}. Care should be taken on processing that
+     * notification because:
+     * &lt;ul&gt;
+     * &lt;li&gt;the cache will not yet be accessible from the CacheManager.
+     * &lt;li&gt;the addCaches methods whih cause this notification are synchronized on the
+     * CacheManager. An attempt to call {@link net.sf.ehcache.CacheManager#getCache(String)"/&gt;
+     * will cause a deadlock.
+     * &lt;/ul&gt;
+     * The calling method will block until this method returns.
+     * &lt;p/&gt;
+     * @param cacheName the name of the &lt;code&gt;Cache&lt;/code&gt; the operation relates to
+     * @see CacheEventListener
+     */</span>
+    <span class="kt">void</span> <span class="nf">notifyCacheAdded</span><span class="o">(</span><span class="n">String</span> <span class="n">cacheName</span><span class="o">);</span>
+
+    <span class="cm">/**
+     * Called immediately after a cache has been disposed and removed. The calling method will
+     * block until this method returns.
+     * &lt;p/&gt;
+     * Note that the CacheManager calls this method from a synchronized method. Any attempt to
+     * call a synchronized method on CacheManager from this method will cause a deadlock.
+     * &lt;p/&gt;
+     * Note that a {@link CacheEventListener} status changed will also be triggered. Any
+     * attempt from that notification to access CacheManager will also result in a deadlock.
+     * @param cacheName the name of the &lt;code&gt;Cache&lt;/code&gt; the operation relates to
+     */</span>
+    <span class="kt">void</span> <span class="nf">notifyCacheRemoved</span><span class="o">(</span><span class="n">String</span> <span class="n">cacheName</span><span class="o">);</span>
+<span class="o">}</span>
 </code></pre>
 </div>
 
