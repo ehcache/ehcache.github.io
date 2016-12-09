@@ -481,7 +481,7 @@ xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd"&gt;
 <h2 id="cachingfilter-exceptions">CachingFilter Exceptions</h2>
 <p>Additional exception types have been added to the Caching Filter.</p>
 
-<h3 id="filternonreentrantexception-a-namefilternonreentrantexception">FilterNonReentrantException <a name="FilterNonReentrantException" id="FilterNonReentrantException"></a></h3>
+<h3 id="filternonreentrantexception-">FilterNonReentrantException <a name="FilterNonReentrantException" id="FilterNonReentrantException"></a></h3>
 <p>Thrown when it is detected that a caching filter’s doFilter
   method is reentered by the same thread. Reentrant calls will block indefinitely because the first request has not yet
   unblocked the cache.</p>
@@ -489,13 +489,13 @@ xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd"&gt;
 <h3 id="responseheadersnotmodifiableexception">ResponseHeadersNotModifiableException</h3>
 <p>Same as <a href="#FilterNonReentrantException">FilterNonReentrantException</a>.</p>
 
-<h3 id="alreadygzippedexception-a-namealreadygzippedexception">AlreadyGzippedException <a name="AlreadyGzippedException" id="AlreadyGzippedException"></a></h3>
+<h3 id="alreadygzippedexception-">AlreadyGzippedException <a name="AlreadyGzippedException" id="AlreadyGzippedException"></a></h3>
 <p>This exception is thrown when a gzip is attempted on already gzipped content.</p>
 
 <p>The web package performs gzipping operations. One cause of problems on web browsers
   is getting content that is double or triple gzipped. They will either get unreadable content or a blank page.</p>
 
-<h3 id="responseheadersnotmodifiableexception-a-nameresponseheadersnotmodifiableexception">ResponseHeadersNotModifiableException <a name="ResponseHeadersNotModifiableException" id="ResponseHeadersNotModifiableException"></a></h3>
+<h3 id="responseheadersnotmodifiableexception-">ResponseHeadersNotModifiableException <a name="ResponseHeadersNotModifiableException" id="ResponseHeadersNotModifiableException"></a></h3>
 <p>A gzip encoding header needs to be added for gzipped content. The <code class="highlighter-rouge">HttpServletResponse#setHeader()</code> method
   is used for that purpose. If the header had already been set, the new value normally overwrites the previous one.
   In some cases according to the servlet specification, setHeader silently fails. Two scenarios where this happens are:</p>
