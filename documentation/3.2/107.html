@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.2   future  ">
+<div class="container-fluid ehcache-documentation v3.2  current ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -187,9 +187,7 @@
         <h1 class="post-title">
             <span>The Ehcache 3.x JSR-107 Provider</span>
             
-            
-            <span class="future">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.1">3.1</a></span>
-            
+            <span class="current">CURRENT</span>
             
         </h1>
         <hr/>
@@ -320,7 +318,7 @@ Ehcache provides several ways to achieve this, as described in the following sec
 <h3 id="starting-from-jsr-107-created-caches"><a class="anchor" href="#starting-from-jsr-107-created-caches"></a>Starting from JSR-107 created caches</h3>
 <div class="paragraph">
 <p>When you create a <code>Cache</code> on a <code>CacheManager</code> using a <code>MutableConfiguration</code> - in other words, using only JSR-107 types -
-you can still get to the underlying Ehcache <code>RuntimeCacheConfiguration</code>:</p>
+you can still get to the underlying Ehcache <code>CacheRuntimeConfiguration</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -351,7 +349,7 @@ CacheRuntimeConfiguration&lt;Long, String&gt; runtimeConfiguration = eh107Config
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Unwrap to the Ehcache <code>RuntimeCacheConfiguration</code> type</td>
+<td>Unwrap to the Ehcache <code>CacheRuntimeConfiguration</code> type</td>
 </tr>
 </table>
 </div>

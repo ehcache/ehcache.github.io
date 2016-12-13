@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.2   future  ">
+<div class="container-fluid ehcache-documentation v3.2  current ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -187,9 +187,7 @@
         <h1 class="post-title">
             <span>Serializers and Copiers</span>
             
-            
-            <span class="future">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.1">3.1</a></span>
-            
+            <span class="current">CURRENT</span>
             
         </h1>
         <hr/>
@@ -398,7 +396,8 @@ e.g. a serializer of type <code>com.pany.MyInterface</code> should</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java"> * Defines the contract used to transform type instances to and from a serial form.
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">/**
+ * Defines the contract used to transform type instances to and from a serial form.
  * &lt;P&gt;
  *   Implementations must be thread-safe.
  * &lt;/P&gt;

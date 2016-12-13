@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.2   future  ">
+<div class="container-fluid ehcache-documentation v3.2  current ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -187,9 +187,7 @@
         <h1 class="post-title">
             <span>Clustered Cache</span>
             
-            
-            <span class="future">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.1">3.1</a></span>
-            
+            <span class="current">CURRENT</span>
             
         </h1>
         <hr/>
@@ -282,15 +280,14 @@ Detailed instructions on how to configure and start a Terracotta server array ca
 <pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;tc-config xmlns="http://www.terracotta.org/config"
            xmlns:ohr="http://www.terracotta.org/config/offheap-resource"&gt;
-
-  &lt;services&gt;
-    &lt;service id="resources"&gt;
+  &lt;plugins&gt;
+    &lt;config&gt;
       &lt;ohr:offheap-resources&gt;
         &lt;ohr:resource name="primary-server-resource" unit="MB"&gt;128&lt;/ohr:resource&gt;   <i class="conum" data-value="1"></i><b>(1)</b>
         &lt;ohr:resource name="secondary-server-resource" unit="MB"&gt;96&lt;/ohr:resource&gt;  <i class="conum" data-value="2"></i><b>(2)</b>
       &lt;/ohr:offheap-resources&gt;
-    &lt;/service&gt;
-  &lt;/services&gt;
+    &lt;/config&gt;
+  &lt;/plugins&gt;
 &lt;/tc-config&gt;</code></pre>
 </div>
 </div>

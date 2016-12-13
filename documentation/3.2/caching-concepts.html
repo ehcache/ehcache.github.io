@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.2   future  ">
+<div class="container-fluid ehcache-documentation v3.2  current ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -187,9 +187,7 @@
         <h1 class="post-title">
             <span>Concepts Related to Caching</span>
             
-            
-            <span class="future">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.1">3.1</a></span>
-            
+            <span class="current">CURRENT</span>
             
         </h1>
         <hr/>
@@ -234,8 +232,12 @@ and technical decision based upon the requirements and assumptions of your appli
 <h2 id="storage-tiers"><a class="anchor" href="#storage-tiers"></a>Storage Tiers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can configure Ehcache to use various data storage areas.  When a cache is configured to use more than one data
-store, these stores are referred to as tiers.</p>
+<p>You can configure Ehcache to use various data storage areas.
+When a cache is configured to use more than one storage area, those areas are arranged and managed as <code>tiers `.
+They are organized in a hierarchy, withthe lowest tier being called the `authority</code> tier and the others being part of the <code>caching</code> tier.
+The caching tier can itself be composed of more than one storage area.
+The_hottest_  data is kept in the caching tier, which is typically less abundantbut faster than the authority tier.
+All the datais kept in the authority tier, which isslower but more abundant.</p>
 </div>
 <div class="paragraph">
 <p>Data stores supported by Ehcache include:</p>
@@ -243,19 +245,26 @@ store, these stores are referred to as tiers.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>On-Heap Store – Utilizes Java&#8217;s on-heap RAM memory to store cache entries. This tier utilizes the same heap memory as
+<p>On-Heap Store - Utilizes Java&#8217;s on-heap RAM memory to store cache entries. This tier utilizes the same heap memory as
 your Java application, all of which must be scanned by the JVM&#8217;s garbage collector.  The more heap space your JVM
 utilizes, the more your application&#8217;s performance will be impacted by garbage collection pauses.  This store is
 extremely fast, but is typically your most limited storage resource.</p>
 </li>
 <li>
-<p>Off-Heap Store – Limited in size only by available RAM (tested to as much as 6TB on a single machine!). Not subject
-to Java garbage collection (GC). Is quite fast, yet slower than the On-Heap Store because data must be moved off and
-on the JVM&#8217;s heap as it is stored and re-accessed.</p>
+<p>Off-Heap Store - Limited in size only by available RAM. Not subject
+to Java garbage collection (GC). Is quite fast, yet slower than the On-Heap Store because data must be moved to and
+from the JVM&#8217;s heap as it is stored and re-accessed.</p>
 </li>
 <li>
-<p>Disk Store – Utilizes a disk (file system) to store cache entries.  This type of storage resource is typically very
+<p>Disk Store - Utilizes a disk (file system) to store cache entries.  This type of storage resource is typically very
 abundant but much slower than the RAM-based stores.</p>
+</li>
+<li>
+<p>Clustered Store - This data store is a cache on a remote server.
+The remote server may optionally have a failover server providing improved high availability.
+Since clustered storage comes with performance penalties due to such
+factors as network latency as well as for establishing client/server consistency, this tier, by nature, is slower than
+local off-heap storage.</p>
 </li>
 </ul>
 </div>
@@ -263,11 +272,6 @@ abundant but much slower than the RAM-based stores.</p>
 <div class="content">
 <img src="images/EhcacheTerminology.png" alt="EhcacheTerminology">
 </div>
-</div>
-<div class="paragraph">
-<p>When a cache is configured to use more than one storage area, those areas are arranged and managed as tiers - where
-the <em>hottest</em> (most recently accessed) data is kept in the faster (and typically less abundant) tiers, and data that
-is less hot remains in the slower (and more abundant) tiers.</p>
 </div>
 </div>
 </div>
@@ -277,8 +281,7 @@ is less hot remains in the slower (and more abundant) tiers.</p>
 <div class="sect2">
 <h3 id="standalone"><a class="anchor" href="#standalone"></a>Standalone</h3>
 <div class="paragraph">
-<p>The data set is held in the application node. Any other application nodes are independent with no
-communication between them. If a standalone topology is used where there are multiple application nodes running the
+<p>The data set is held in the application node.  If a standalone topology is used where there are multiple application nodes running the
 same application, then their caches are completely independent.</p>
 </div>
 </div>
@@ -288,7 +291,7 @@ same application, then their caches are completely independent.</p>
 <p>The data is held in a remote server (or array of servers) with a subset of hot data held in each application node.
 This topology offers offers a selection of consistency options.
 A distributed topology is the recommended approach in a clustered or scaled-out application environment.
-It provides the highest level of performance, availability, and scalability.</p>
+It provides the best combination of performance, availability and scalability.</p>
 </div>
 <div class="imageblock">
 <div class="content">
