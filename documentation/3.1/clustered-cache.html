@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>Clustered Cache</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -235,26 +238,26 @@ Caches can reserve a storage area for their clustered tiers within these server 
 <dd>
 <p>The Ehcache <em>Clustered Tier Manager</em> is the server-side component that gives clustering capabilities to a cache manager.
 Cache managers connect to these to get access to the server&#8217;s storage resources so that the clustered tiers of caches defined in them can consume those resources.
-Ehcache <em>Clustered Tier Manager</em> at the server side are identified by a unique identifier.
+Each Ehcache <em>Clustered Tier Manager</em> at the server side has a unique identifier.
 Using it, multiple cache managers can connect to the same clustered tier manager to share cache data.
 The clustered tier manager is also responsible for managing the storage of the clustered tier of caches, with the following different options.</p>
 </dd>
 <dt class="hdlist1">Dedicated pool</dt>
 <dd>
-<p>Dedicated pools are a fixed-amount of storage pools allocated to the clustered tiers of caches.
+<p>Dedicated pools are storage pools with a fixed amount of storage allocated to the clustered tier of caches.
 A dedicated amount of storage is allocated directly from server off-heap resources to these pools.
 And this storage space is used exclusively by a given clustered tier.</p>
 </dd>
 <dt class="hdlist1">Shared pool</dt>
 <dd>
-<p>Shared pools are also fixed-amount storage pools, but can be shared by the clustered tiers of multiple caches.
+<p>Shared pools are also storage pools with a fixed amount of storage, but can be shared by the clustered tiers of multiple caches.
 As in the case of dedicated pools, shared pools are also carved out from server off-heap resources.
 The storage available in these shared pools is strictly shared.
-That is no cluster tier can ask for a fixed-amount of storage from a shared pool.</p>
+In other words, no cluster tier can ask for a fixed amount of storage from a shared pool.</p>
 <div class="paragraph">
 <p>Sharing of storage via shared pools does not mean that the data is shared.
-That is, if two caches are using a shared pool as their clustered tier, the data of each cache is still isolated but the underlying storage is shared.
-Consequently, when resource capacity is reached and triggers eviction, the evicted mapping can come from any of the clustered tiers sharing the pool.</p>
+This means that if two caches are using a shared pool as their clustered tier, the data of each cache is still isolated but the underlying storage is shared.
+Consequently, when resource capacity is reached and eviction is triggered, the evicted mapping can come from any of the clustered tiers sharing the pool.</p>
 </div>
 </dd>
 </dl>
@@ -270,7 +273,7 @@ Consequently, when resource capacity is reached and triggers eviction, the evict
 </div>
 </div>
 <div class="sect1">
-<h2 id="start-server"><a class="anchor" href="#start-server"></a>Starting Terracotta server</h2>
+<h2 id="start-server"><a class="anchor" href="#start-server"></a>Starting the Terracotta server</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>You can start the server with the following configuration.
@@ -313,7 +316,7 @@ Detailed instructions on how to configure and start a Terracotta server array ca
 <p>The rest of the document explains in detail how you can configure cache managers and caches to consume the server&#8217;s off-heap resources.</p>
 </div>
 <div class="paragraph">
-<p>Assuming that you have the clustered EhCache kit available locally, start with extracting the <strong>ehcache-clustered</strong> kit.
+<p>Assuming that you have the clustered Ehcache kit available locally, start with extracting the <strong>ehcache-clustered</strong> kit.
 Change to your extracted directory and then execute the <strong>start-tc-server</strong> script as below to start the Terracotta server with the above configuration:</p>
 </div>
 <div class="paragraph">
@@ -353,7 +356,7 @@ You will need to have <code>JAVA_HOME</code> set to JDK8 while starting the Terr
 </div>
 </div>
 <div class="sect1">
-<h2 id="creating-cache-manager-with-clustering-capabilities"><a class="anchor" href="#creating-cache-manager-with-clustering-capabilities"></a>Creating cache manager with clustering capabilities</h2>
+<h2 id="creating-a-cache-manager-with-clustering-capabilities"><a class="anchor" href="#creating-a-cache-manager-with-clustering-capabilities"></a>Creating a cache manager with clustering capabilities</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>After <a href="#start-server">starting the Terracotta server</a>, you can now proceed to create the cache manager.
@@ -381,7 +384,7 @@ cacheManager.close(); <i class="conum" data-value="5"></i><b>(5)</b></code></pre
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>Use the <code>ClusteringServiceConfigurationBuilder</code>'s static method <code>.cluster(URI)</code> for connecting the cache manager to the clustered storage at the
 URI specified that returns the clustering service configuration builder instance.
-Sample URI provided in the example is pointing to the clustered storage instance named <code>my-application</code> on the Terracotta server (Assuming the server is running on localhost and port <strong>9510</strong>).</td>
+The sample URI provided in the example points to the clustered storage instance named <code>my-application</code> on the Terracotta server (Assuming the server is running on localhost and port <strong>9510</strong>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -442,7 +445,7 @@ A resource pool at the cache manager level maps directly to a shared pool at the
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>Adds another resource pool for the cache manager with the specified name (<code>resource-pool-b</code>) and size (<code>32MB</code>).
-Since the server resource identifier is not explicitly passed, this resource pool will be consumed out of default server resource provided in Step 3.
+Since the server resource identifier is not explicitly passed, this resource pool will be consumed out of the default server resource provided in Step 3.
 This demonstrates that a cache manager with clustering support can have multiple resource pools created out of several server off-heap resources.</td>
 </tr>
 <tr>
@@ -451,12 +454,12 @@ This demonstrates that a cache manager with clustering support can have multiple
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td><code>ClusteredResourcePoolBuilder.fixed(String , long , MemoryUnit)</code> allocates a fixed pool of storage to the cache from the specified server off-heap resource.
-In this example, a fixed pool of 32MB is allocated for <code>clustered-cache</code> from <code>primary-server-resource</code>.</td>
+<td><code>ClusteredResourcePoolBuilder.clusteredDedicated(String , long , MemoryUnit)</code> allocates a dedicated pool of storage to the cache from the specified server off-heap resource.
+In this example, a dedicated pool of 32MB is allocated for <code>clustered-cache</code> from <code>primary-server-resource</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td><code>ClusteredResourcePoolBuilder.shared(String)</code>, passing the name of the resource pool specifies that <code>shared-cache-1</code> shares the storage resources with other caches using the same resource pool (<code>resource-pool-a</code>).</td>
+<td><code>ClusteredResourcePoolBuilder.clusteredShared(String)</code>, passing the name of the resource pool specifies that <code>shared-cache-1</code> shares the storage resources with other caches using the same resource pool (<code>resource-pool-a</code>).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
@@ -464,7 +467,7 @@ In this example, a fixed pool of 32MB is allocated for <code>clustered-cache</co
 </tr>
 <tr>
 <td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>Creates fully initialized cache manager with the clustered caches.</td>
+<td>Creates a fully initialized cache manager with the clustered caches.</td>
 </tr>
 </table>
 </div>
@@ -546,11 +549,11 @@ cache.put(42L, "All you need to know!");</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configuring heap tier for cache.</td>
+<td>Configuring the heap tier for cache.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configuring clustered tier of fixed size from server off-heap resource using <code>ClusteredResourcePoolBuilder</code>.</td>
+<td>Configuring the clustered tier of dedicated size from the server off-heap resource using <code>ClusteredResourcePoolBuilder</code>.</td>
 </tr>
 </table>
 </div>
@@ -584,7 +587,7 @@ cache.put(42L, "All you need to know!");</code></pre>
 <div class="sect2">
 <h3 id="specifying-consistency-level"><a class="anchor" href="#specifying-consistency-level"></a>Specifying consistency level</h3>
 <div class="paragraph">
-<p>Ehcache offers two level of consistency:</p>
+<p>Ehcache offers two levels of consistency:</p>
 </div>
 <div class="dlist">
 <dl>
@@ -596,7 +599,7 @@ However this consistency level guarantees that for a mapping <code>(K, V1)</code
 </dd>
 <dt class="hdlist1">Strong</dt>
 <dd>
-<p>This consistency level provides strong visibility guarantees ensuring that when a write operation returns other clients will be able to observe it immediately.
+<p>This consistency level provides strong visibility guarantees, ensuring that when a write operation returns other clients will be able to observe it immediately.
 This comes with a latency penalty on the write operation required to give this guarantee.</p>
 </dd>
 </dl>
@@ -617,7 +620,7 @@ cache.put(42L, "All you need to know!"); <i class="conum" data-value="2"></i><b>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specify the consistency level through the use of additional service configuration, using <em>strong</em> consistency here,</td>
+<td>Specify the consistency level through the use of an additional service configuration, using <em>strong</em> consistency here,</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -650,7 +653,7 @@ cache.put(42L, "All you need to know!"); <i class="conum" data-value="2"></i><b>
 <div class="sect2">
 <h3 id="clustered-cache-expiry"><a class="anchor" href="#clustered-cache-expiry"></a>Clustered Cache Expiry</h3>
 <div class="paragraph">
-<p>Expiry in clustered caches work with an exception that <code>Expiry#getExpiryForAccess</code> is handled on a best effort basis for clustered tiers.
+<p>Expiry in clustered caches works with the exception that <code>Expiry#getExpiryForAccess</code> is handled on a best effort basis for clustered tiers.
 It may not be as accurate as in the case of local tiers.</p>
 </div>
 </div>
@@ -664,7 +667,7 @@ It will then inherit the clustered resource pool as it was configured when creat
 </div>
 <div class="paragraph">
 <p>This option provides many benefits.
-The main benefit is it simplifies clustered configuration by allowing clustered resource pool configuration to be handled by one client, then all subsequent clients can inherit this configuration.
+The main benefit is that it simplifies clustered configuration by allowing clustered resource pool configuration to be handled by one client, then all subsequent clients can inherit this configuration.
 In addition, it also reduces clustered pool allocation configuration errors.
 More importantly, sizing calculations only need to be done by one person and updated in one location.
 Thus any programmer can use the cache without having to worry about creating the right size resource pool allocations.</p>
@@ -731,7 +734,7 @@ Cache&lt;Long, String&gt; cacheUnspecified = cacheManager2.createCache("my-dedic
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Create cache with the same name <code>my-dedicated-cache</code> and use the clustered <em>unspecified</em> cache configuration</td>
+<td>Create a cache with the same name <code>my-dedicated-cache</code> and use the clustered <em>unspecified</em> cache configuration</td>
 </tr>
 </table>
 </div>

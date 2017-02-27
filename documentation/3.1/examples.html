@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>Examples</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -202,11 +205,11 @@
 <div class="paragraph">
 <p>The <code>demo</code> directory in the Ehcache 3 sources includes a sample applications with two (2)
 implementations demonstrating Ehcache use.  Implemented as a simple
-browser-based web service, the sample application, Peeper, displays any messages (<em>peeps</em>)
-previously entered and accepts new peeps recording the peeps in a database.  The peeps
+browser-based web service, the sample application Peeper displays any messages (<em>peeps</em>)
+previously entered and accepts new peeps, recording the peeps in a database.  The peeps
 database, shared among implementations of the Peeper application, is located at
 $HOME/ehcache-demo-peeper.mv.db.  This file may be safely erased while the application
-is not running.  While running, information about the operation of Peeper application
+is not running.  While running, information about the operation of the Peeper application
 (database access, cache access, etc.) is written to the console.</p>
 </div>
 <div class="paragraph">
@@ -264,7 +267,7 @@ http://localhost:8080/ehcache-demos/00-NoCache/.</p>
 <h3 id="peeper-with-cache-aside-caching-01-cacheaside"><a class="anchor" href="#peeper-with-cache-aside-caching-01-cacheaside"></a>Peeper with Cache-aside Caching&#8201;&#8212;&#8201;01-CacheAside</h3>
 <div class="paragraph">
 <p>The second sample, located in demos/01-CacheAside, is a version of the Peeper application
-that makes use of Ehcache.  As each peep is being read from the database (for display in the web
+that makes use of Ehcache.  As each peep is read from the database (for display in the web
 page), it is written to an Ehcache instance.  If the Peeper web page is refreshed
 (without adding a new peep) or a new Peeper client connects, the peeps are read from
 the cache (instead of the database) to form the web page.  If a new peep is posted,

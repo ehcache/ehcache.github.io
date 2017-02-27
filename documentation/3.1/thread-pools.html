@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>Thread Pools</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -300,13 +303,13 @@ configured to make use of them.</p>
 </div>
 <div class="paragraph">
 <p>The different builders will make use of the right configuration class, you do not have to use those classes directly.
-For instance, calling <code>CacheManagerBuilder.withDefaultDiskStoreThreadPool(String threadPoolAlias)</code> actually is identical
+For instance, calling <code>CacheManagerBuilder.withDefaultDiskStoreThreadPool(String threadPoolAlias)</code> is actually identical
 to calling <code>CacheManagerBuilder.using(new OffHeapDiskStoreProviderConfiguration(threadPoolAlias))</code>.</p>
 </div>
 <div class="paragraph">
-<p>The thread pool can be assigned to a service with the builders by passing to the ad-hoc method a
-<code>threadPoolAlias</code> parameter. When a service isn&#8217;t told anything about what thread pool to use, the default thread pool
-is used.</p>
+<p>The thread pool can be assigned to a service with the builders by passing a
+<code>threadPoolAlias</code> parameter to the ad-hoc method. When a service isn&#8217;t told anything about what thread pool to use,
+the default thread pool is used.</p>
 </div>
 </div>
 </div>

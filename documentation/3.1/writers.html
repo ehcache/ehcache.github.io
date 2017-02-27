@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>Cache Writers</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -316,7 +319,7 @@ cacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>We register a sample <code>CacheLoaderWriter</code> who knows about the mapping <code>(41L &#8594; "zero")</code></td>
+<td>We register a sample <code>CacheLoaderWriter</code> that knows about the mapping <code>(41L &#8594; "zero")</code></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -366,7 +369,7 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Here we configure write behind or batching with a batch size of 3 and a maximum write delay of 1 second.</td>
+<td>Here we configure write-behind or batching with a batch size of 3 and a maximum write delay of 1 second.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>

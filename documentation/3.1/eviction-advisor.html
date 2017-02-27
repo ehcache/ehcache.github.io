@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>Eviction Advisor</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -212,8 +215,23 @@ This is an advanced topic/feature that will not be of interest to most users.
 <p>You can affect which elements are selected for eviction from the cache by providing a class that implements the
 <code>org.ehcache.config.EvictionAdvisor</code> interface.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Eviction advisors are not used for clustered storage tiers.
+For example, in a cache with a heap tier and clustered storage tier,
+the heap tier will use the eviction advisor but the clustered storage tier will evict independently, irrespective of the eviction advisor.
+The description below applies to using an eviction advisor for the cache tiers other than a clustered storage tier.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p><code>EvictionAdvisor</code> implementations are invoked when Ehcache is attempting to evict entries from the cache
+<p><code>EvictionAdvisor</code> implementations are invoked when Ehcache attempts to evict entries from the cache
 (in order to make room for new entries) in order to determine whether the given entry should not be considered
 a good candidate for eviction.  If the eviction is advised against, Ehcache will try to honor the preference of
 preserving that entry in the cache, though there is no full guarantee of such.</p>
@@ -247,8 +265,7 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>If you want to hint the eviction algorithm to advisor against the eviction of some mappings, you have to
-configure an instance of <code>EvictionAdvisor</code>.</td>
+<td>If you want to give the the eviction algorithm a hint to advise against the eviction of some mappings, you have to configure an instance of <code>EvictionAdvisor</code>.</td>
 </tr>
 </table>
 </div>
@@ -266,7 +283,7 @@ prime candidacy for eviction would have been advised against.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Eviction advise status is computed when a mapping is written to the cache.
+Eviction advisory status is computed when a mapping is written to the cache.
 This means that proper eviction advisor implementations are expected to be constant for a key-value pair.
 </td>
 </tr>

@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.2  current ">
+<div class="container-fluid ehcache-documentation v3.2   old  ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -187,7 +190,9 @@
         <h1 class="post-title">
             <span>Eviction Advisor</span>
             
-            <span class="current">CURRENT</span>
+            
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
+            
             
         </h1>
         <hr/>
@@ -209,6 +214,21 @@ This is an advanced topic/feature that will not be of interest to most users.
 <div class="paragraph">
 <p>You can affect which elements are selected for eviction from the cache by providing a class that implements the
 <code>org.ehcache.config.EvictionAdvisor</code> interface.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Eviction advisors are not used for clustered storage tiers.
+For example, in a cache with a heap tier and clustered storage tier,
+the heap tier will use the eviction advisor but the clustered storage tier will evict independently, irrespective of the eviction advisor.
+The description below applies to using an eviction advisor for the cache tiers other than a clustered storage tier.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p><code>EvictionAdvisor</code> implementations are invoked when Ehcache attempts to evict entries from the cache
@@ -245,8 +265,7 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>If you want to hint to the eviction algorithm to advise against the eviction of some mappings, you have to
-configure an instance of <code>EvictionAdvisor</code>.</td>
+<td>If you want to give the the eviction algorithm a hint to advise against the eviction of some mappings, you have to configure an instance of <code>EvictionAdvisor</code>.</td>
 </tr>
 </table>
 </div>

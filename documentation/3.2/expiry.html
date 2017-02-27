@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.2  current ">
+<div class="container-fluid ehcache-documentation v3.2   old  ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -187,7 +190,9 @@
         <h1 class="post-title">
             <span>Expiry</span>
             
-            <span class="current">CURRENT</span>
+            
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
+            
             
         </h1>
         <hr/>
@@ -459,6 +464,13 @@ some <code>Duration</code>
 <td>Simply pass the fully qualified class name of your custom expiry.</td>
 </tr>
 </table>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>There is a <a href="migration-guide.html#per-mapping-expiry"><em>migration guide</em></a> in place to demonstrate how to migrate the Ehcache 2.x per mapping expiry code to Ehcache 3.x.</p>
+</div>
+</div>
 </div>
 </div>
 </div>

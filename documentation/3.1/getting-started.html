@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>Ehcache 3.1 Documentation</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -253,48 +256,53 @@ cacheManager.close(); <i class="conum" data-value="10"></i><b>(10)</b></code></p
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Static method <code>org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder</code> that returns a new <code>org.ehcache.config.builders.CacheManagerBuilder</code>
-instance;</td>
+<td>The static method <code>org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder</code> returns a new <code>org.ehcache.config.builders.CacheManagerBuilder</code> instance.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Use the builder to register a pre-configured <code>Cache</code> to be created when we <code>.build()</code> the actual <code>CacheManager</code>.
-The first <code>String</code> argument is the alias used to interact with the <code>Cache</code> through the <code>CacheManager</code>; the second
-argument is <code>org.ehcache.config.CacheConfiguration</code> to configure the <code>Cache</code>. We use the static
-<code>.newCacheConfigurationBuilder()</code> method on <code>org.ehcache.config.builders.CacheConfigurationBuilder</code> to create a default config;</td>
+<td>Use the builder to define a <code>Cache</code> with alias "preConfigured". This cache will be created when <code>cacheManager.build()</code> is invoked on the actual <code>CacheManager</code> instance.
+The first <code>String</code> argument is the cache alias, which is used to retrieve the cache from the <code>CacheManager</code>.
+The second argument, <code>org.ehcache.config.CacheConfiguration</code>, is used to configure the <code>Cache</code>.
+We use the static <code>newCacheConfigurationBuilder()</code> method on <code>org.ehcache.config.builders.CacheConfigurationBuilder</code> to create a default configuration.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Finally, invoking <code>.build()</code> returns a fully instantiated, but uninitialized, <code>CacheManager</code> we can use;</td>
+<td>Finally, invoking <code>build()</code> returns a fully instantiated, but uninitialized, <code>CacheManager</code> we can use.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Before you start to use the <code>CacheManager</code> it needs to be <code>init()</code>, which can be done for you by the builder by passing
-<code>true</code> to <code>build(boolean)</code>;</td>
+<td>Before using the <code>CacheManager</code> it needs to be initialized, which can be done in 1 of 2 ways:
+Calling <code>CacheManager.init()</code> on the <code>CacheManager</code> instance, or calling the <code>CacheManagerBuilder.build(boolean init)</code> method with the boolean parameter set to true.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>We can retrieve the <code>preConfigured</code> aliased <code>Cache</code> we declared in step 2. For type-safety, we ask for both key and
-value types to be passed in. If these differ from the ones we expect, the <code>CacheManager</code> throws a <code>ClassCastException</code>
-early in the application&#8217;s lifecycle. It also guards the <code>Cache</code> from being polluted by random types.</td>
+<td>A cache is retrieved by passing its alias, key type and value type to the <code>CacheManager</code>.
+For instance, to obtain the cache declared in step 2 you need its alias=preConfigured, keyType=Long.class and valueType=String.class.
+For type-safety, we ask for both key and value types to be passed in.
+If these differ from the ones we expect, the <code>CacheManager</code> throws a <code>ClassCastException</code> early in the application&#8217;s lifecycle.
+This guards the <code>Cache</code> from being polluted by random types.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>The <code>CacheManager</code> can also be used to create new <code>Cache</code> as needed. Just as in step 2, it requires passing in an
+<td>The <code>CacheManager</code> can be used to create new <code>Cache</code> instances as needed. Just as in step 2, it requires passing in an
 alias as well as a <code>CacheConfiguration</code>. The instantiated and fully initialized <code>Cache</code> added will be returned and/or
 accessed through the <code>CacheManager.getCache</code> API.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>We can now use the newly added <code>Cache</code> to store and &#8230;&#8203;</td>
+<td>The newly added <code>Cache</code> can now be used to store entries, which are comprised of key value pairs.
+The put method&#8217;s first parameter is the key and the second parameter is the value.
+Remember the key and value types must be the same types as those defined in the <code>CacheConfiguration</code>.
+Additionally the key must be unique and is only associated with one value.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="8"></i><b>8</b></td>
-<td>&#8230;&#8203; retrieve data.</td>
+<td>A value is retrieved from a cache by calling the <code>cache.get(key)</code> method.
+It only takes one parameter which is the key, and returns the value associated with that key. If there is no value associated with that key then null is returned.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="9"></i><b>9</b></td>
-<td>We can also <code>CacheManager.removeCache(String)</code> a given <code>Cache</code>. The <code>CacheManager</code> will not only remove it&#8217;s reference to the
+<td>We can <code>CacheManager.removeCache(String)</code> a given <code>Cache</code>. The <code>CacheManager</code> will not only remove its reference to the
 <code>Cache</code>, but will also close it. The <code>Cache</code> releases all locally held transient resources (such as memory).
 References to this <code>Cache</code> become unusable.</td>
 </tr>
@@ -308,10 +316,10 @@ it manages, you have to invoke <code>CacheManager.close()</code>, which in turns
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-cache-manager-with-clustering-support"><a class="anchor" href="#creating-cache-manager-with-clustering-support"></a>Creating cache manager with clustering support</h3>
+<h3 id="creating-a-cache-manager-with-clustering-support"><a class="anchor" href="#creating-a-cache-manager-with-clustering-support"></a>Creating a cache manager with clustering support</h3>
 <div class="paragraph">
 <p>To enable Clustering with Terracotta, firstly you will have to <a href="clustered-cache.html#starting-terracotta-server">start the Terracotta server</a> configured with clustered storage.
-Further, for creating the cache manager with clustering support, you will need to provide the clustering service configuration:</p>
+In addition, for creating the cache manager with clustering support, you will need to provide the clustering service configuration:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -334,7 +342,7 @@ cacheManager.close(); <i class="conum" data-value="5"></i><b>(5)</b></code></pre
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>Use the <code>ClusteringServiceConfigurationBuilder</code>'s static method <code>.cluster(URI)</code> for connecting the cache manager to the clustering storage at the
 URI specified that returns the clustering service configuration builder instance.
-Sample URI provided in the example is pointing to the clustered storage with clustered storage identifier <strong>my-application</strong> on the Terracotta server (Assuming the server is running on localhost and port <strong>9510</strong>); the query-param <code>auto-create</code>
+The sample URI provided in the example points to the clustered storage with clustered storage identifier <strong>my-application</strong> on the Terracotta server (assuming the server is running on localhost and port <strong>9510</strong>); the query-param <code>auto-create</code>
 creates the clustered storage in the server if it doesn&#8217;t already exist.</td>
 </tr>
 <tr>
@@ -380,7 +388,7 @@ userManagedCache.close(); <i class="conum" data-value="4"></i><b>(4)</b></code><
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>A new feature of Ehcache 3 is the ability to create <code>UserManagedCache</code> instances, i.e. ones not managed by a <code>CacheManager</code>, again you can either have the builder <code>init()</code> it for you, passing true or</td>
+<td>A new feature of Ehcache 3 is the ability to create <code>UserManagedCache</code> instances, i.e. ones not managed by a <code>CacheManager</code>, again you can either have the builder <code>init()</code> it for you, passing true, or</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -418,8 +426,8 @@ See <a href="usermanaged.html">the user managed cache documentation</a> for more
 (which are generally more abundant).</p>
 </div>
 <div class="paragraph">
-<p>The idea is that resources related to faster storage are more rare, but are where the 'hottest' data is preferred to be.
-Thus less-hot (less frequently used) data is moved to the more abundant but slower tiers. Hotter data is faulted onto
+<p>The idea is that resources related to faster storage are more rare, but are located where the 'hottest' data is preferred to be.
+Thus less-hot (less frequently used) data is moved to the more abundant but slower tiers. Hotter data is moved onto
 the faster tiers.</p>
 </div>
 <div class="sect3">
@@ -479,7 +487,10 @@ location where data should be stored on disk to the <code>CacheManagerBuilder.pe
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>You define a resource pool for the disk.</td>
+<td>Defines a resource pool for the disk.
+The third parameter is a boolean value which is used to set whether the disk pool is persistent.
+When set to true, the pool is persistent, and when set to false, the pool is not persistent.
+When this method is used without the third boolean parameter then the pool is not persistent.</td>
 </tr>
 </table>
 </div>
@@ -491,11 +502,14 @@ You should thus favor disk for large amounts of data.</p>
 </div>
 <div class="paragraph">
 <p>Another reason to use disk storage is persistence across application restarts.
-Note that Ehcache 3 only offers persistence in case of clean shutdowns.</p>
+Note that Ehcache 3 only offers persistence in the case of clean shutdowns.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="three-tiers"><a class="anchor" href="#three-tiers"></a>Three tiers</h4>
+<div class="paragraph">
+<p>The example below illustrates how to use disk storage for a non-persistent <code>Cache</code> instance.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
@@ -529,7 +543,7 @@ location where data should be stored on disk to the <code>CacheManagerBuilder.pe
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>You define a resource pool for the disk.</td>
+<td>You define a non-persistent resource pool for the disk. Remember this pool is not persistent because we declared the disk pool using the method that does not use the boolean persistent parameter.</td>
 </tr>
 </table>
 </div>
@@ -591,15 +605,15 @@ cacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>You can also size the heap tier in bytes. This will limit the amount of heap used by that tier for
-storing key-value pairs. Note that there is a cost associated to sizing objects.</td>
+<td>You can also size the heap tier in bytes.
+This will limit the amount of memory used by the heap tier for storing key-value pairs.
+Note that there is a cost associated to sizing objects.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The sizing mechanism can be configured along two axis: The first one specifies the maximum number
-of objects to traverse while walking the object graph, the second defines the maximum size of a
-single object. If the sizing goes above any of these two limits, the mutative operation on the
-cache will be ignored.</td>
+<td>The sizing can also be further restrained by 2 additional configuration settings:
+The first one specifies the maximum number of objects to traverse while walking the object graph, the second defines the maximum size of a single object.
+If the sizing goes above any of these two limits, the mutative operation on the cache will be ignored.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -621,7 +635,7 @@ explicitly.</td>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Presently, <code>updateResourcePools()</code> only supports updating the heap tier and without changing the resource type.
+<code>updateResourcePools()</code> only allows you to change the heap tier sizing, not the pool type. Thus you can&#8217;t change the sizing of off-heap or disk tiers.
 </td>
 </tr>
 </table>
@@ -643,8 +657,8 @@ then be passed to the said method so as to trigger the update.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>To update capacity of <code>ResourcePools</code>, <code>updateResourcePools(ResourcePools)</code> method in <code>RuntimeConfiguration</code> can be of help.
-<code>ResourcePools</code> object created earlier can then be passed to this method so as to trigger the update.</td>
+<td>To update capacity of <code>ResourcePools</code>, the <code>updateResourcePools(ResourcePools)</code> method in <code>RuntimeConfiguration</code> can be of help.
+The <code>ResourcePools</code> object created earlier can then be passed to this method so as to trigger the update.</td>
 </tr>
 </table>
 </div>
@@ -683,10 +697,10 @@ The following illustrates how to configure a <em>time-to-live</em> expiry.</p>
 <div class="sect2">
 <h3 id="configuring-with-xml"><a class="anchor" href="#configuring-with-xml"></a>Configuring With XML</h3>
 <div class="paragraph">
-<p>&#8230;&#8203;It wouldn&#8217;t be Java without <em>some</em> XML</p>
+<p>&#8230;&#8203;It wouldn&#8217;t be Java without <em>some</em> XML.</p>
 </div>
 <div class="paragraph">
-<p>You can create a XML file to configure a <code>CacheManager</code>:</p>
+<p>You can create an XML file to configure a <code>CacheManager</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -731,7 +745,7 @@ The following illustrates how to configure a <em>time-to-live</em> expiry.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td><code>&lt;cache-template&gt;</code> elements let you create an abstract configuration that further <code>&lt;cache&gt;</code> configuration can then <em>extend</em></td>
+<td><code>&lt;cache-template&gt;</code> elements let you create an abstract configuration that further <code>&lt;cache&gt;</code> configurations can then <em>extend</em></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
@@ -739,7 +753,7 @@ The following illustrates how to configure a <em>time-to-live</em> expiry.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td><code>simpleCache</code> is another such a <code>Cache</code>.  It uses <code>myDefaults</code> configuration for its sole <code>CacheConfiguration</code>.</td>
+<td><code>simpleCache</code> is another such <code>Cache</code>.  It uses <code>myDefaults</code> configuration for its sole <code>CacheConfiguration</code>.</td>
 </tr>
 </table>
 </div>
@@ -780,7 +794,7 @@ create your <code>CacheManager</code> instance using the <code>Configuration</co
 <h2 id="current-development"><a class="anchor" href="#current-development"></a>Current development</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>For developer information, you might want to go check the <a href="https://github.com/ehcache/ehcache3/wiki">Ehcache 3 project wiki on GitHub</a>.</p>
+<p>For developer information, you might want to check the <a href="https://github.com/ehcache/ehcache3/wiki">Ehcache 3 project wiki on GitHub</a>.</p>
 </div>
 <div class="paragraph">
 <p>The next version, 3.2, will finalize <a href="http://terracotta.org">Terracotta clustering</a> support.

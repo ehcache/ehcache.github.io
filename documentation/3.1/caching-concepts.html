@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>Concepts Related to Caching</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -202,8 +205,8 @@
 <div class="sect2">
 <h3 id="data-freshness"><a class="anchor" href="#data-freshness"></a>Data Freshness</h3>
 <div class="paragraph">
-<p>Data <em>freshness</em> refers to aspect of a copy of data (e.g. in a cache) being up-to-date with the source version of the
-data (e.g. in the syste-of-record (SoR)).  A <em>stale</em> copy is considered to be out of sync (or likely to be out of
+<p>Data <em>freshness</em> refers to how up-to-date a copy of data (e.g. in a cache) is compared to the source version of the
+data (e.g. in the system-of-record (SoR)).  A <em>stale</em> copy is considered to be out of sync (or likely to be out of
 sync) with the SoR.</p>
 </div>
 <div class="paragraph">
@@ -219,7 +222,7 @@ components that have loaded data from the SoR have no direct way of ensuring tha
 entries after some amount of configured time. Once expired, the entry is automatically removed from the cache.</p>
 </div>
 <div class="paragraph">
-<p>For instance the cache could be configured to expire entries five seconds after they are put in - which is a
+<p>For instance the cache could be configured to expire entries five seconds after they are put into the cache - which is a
 time-to-live <em>TTL</em> setting.  Or to expire entries 17 seconds after the last time the entry was retrieved from the
 cache - which is a time-to-idle <em>TTI</em> setting.</p>
 </div>
@@ -234,8 +237,12 @@ and technical decision based upon the requirements and assumptions of your appli
 <h2 id="storage-tiers"><a class="anchor" href="#storage-tiers"></a>Storage Tiers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can configure Ehcache to use various data storage areas.  When a cache is configured to use more than one data
-store, they are referred to as tiers.</p>
+<p>You can configure Ehcache to use various data storage areas.
+When a cache is configured to use more than one storage area, those areas are arranged and managed as <code>tiers</code>.
+They are organized in a hierarchy, with the lowest tier being called the <code>authority</code> tier and the others being part of the <code>caching</code> tier.
+The caching tier can itself be composed of more than one storage area.
+The <em>hottest</em> data is kept in the caching tier, which is typically less abundant but faster than the authority tier.
+All the data is kept in the authority tier, which is slower but more abundant.</p>
 </div>
 <div class="paragraph">
 <p>Data stores supported by Ehcache include:</p>
@@ -243,19 +250,25 @@ store, they are referred to as tiers.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>On-Heap Store – Utilizes Java&#8217;s on-heap RAM memory to store cache entries. This tier utilizes the same heap memory as
+<p>On-Heap Store - Utilizes Java&#8217;s on-heap RAM memory to store cache entries. This tier utilizes the same heap memory as
 your Java application, all of which must be scanned by the JVM&#8217;s garbage collector.  The more heap space your JVM
-utilizes the more your application&#8217;s performance will be impacted by garbage collection pauses.  This store is
+utilizes, the more your application&#8217;s performance will be impacted by garbage collection pauses.  This store is
 extremely fast, but is typically your most limited storage resource.</p>
 </li>
 <li>
-<p>Off-Heap Store – Limited in size only by available RAM (tested to as much as 6TB on a single machine!). Not subject
-to Java garbage collection (GC). Is quite fast, yet slower than the On-Heap Store because data must be moved off and
-on the JVM&#8217;s heap as it is stored and re-accessed.</p>
+<p>Off-Heap Store - Limited in size only by available RAM.
+Not subject to Java garbage collection (GC).
+Is quite fast, yet slower than the On-Heap Store because data must be moved to and from the JVM&#8217;s heap as it is stored and re-accessed.</p>
 </li>
 <li>
-<p>Disk Store – Utilizes a disk (filesystem) to store cache entries.  This type of storage resource is typically very
-abundant but much slower than the RAM-based stores.</p>
+<p>Disk Store - Utilizes a disk (file system) to store cache entries.
+This type of storage resource is typically very abundant but much slower than the RAM-based stores.</p>
+</li>
+<li>
+<p>Clustered Store - This data store is a cache on a remote server.
+The remote server may optionally have a failover server providing improved high availability.
+Since clustered storage comes with performance penalties due to such factors as network latency as well as for establishing client/server consistency,
+this tier, by nature, is slower than local off-heap storage.</p>
 </li>
 </ul>
 </div>
@@ -263,11 +276,6 @@ abundant but much slower than the RAM-based stores.</p>
 <div class="content">
 <img src="images/EhcacheTerminology.png" alt="EhcacheTerminology">
 </div>
-</div>
-<div class="paragraph">
-<p>When a cache is configured to use more than one storage area, those areas are arranged and managed as tiers - where
-the <em>hottest</em> (most recently accessed) data is kept in the faster (and typically less abundant) tiers, and data that
-is less hot remains in the slower (and more abundant) tiers.</p>
 </div>
 </div>
 </div>
@@ -288,7 +296,7 @@ same application, then their caches are completely independent.</p>
 <p>The data is held in a remote server (or array of servers) with a subset of hot data held in each application node.
 This topology offers offers a selection of consistency options.
 A distributed topology is the recommended approach in a clustered or scaled-out application environment.
-It provides the highest level of performance, availability, and scalability.</p>
+It provides the best combination of performance, availability, and scalability.</p>
 </div>
 <div class="imageblock">
 <div class="content">

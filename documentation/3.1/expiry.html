@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>Expiry</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -275,7 +278,7 @@ time-to-live
 time-to-idle
 </td>
 <td class="hdlist2">
-<p>this means cache mappings will expire after a fixed duration following their last access time.</p>
+<p>this means cache mappings will expire after a fixed duration following the time they were last accessed.</p>
 </td>
 </tr>
 </table>
@@ -292,7 +295,7 @@ time-to-idle
 <h2 id="custom-expiry"><a class="anchor" href="#custom-expiry"></a>Custom expiry</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Support your own expiration scheme simply means implementing the <code>Expiry</code> interface:</p>
+<p>Supporting your own expiration scheme simply means implementing the <code>Expiry</code> interface:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -461,6 +464,13 @@ some <code>Duration</code>
 <td>Simply pass the fully qualified class name of your custom expiry.</td>
 </tr>
 </table>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>There is a <a href="migration-guide.html#per-mapping-expiry"><em>migration guide</em></a> in place to demonstrate how to migrate the Ehcache 2.x per mapping expiry code to Ehcache 3.x.</p>
+</div>
+</div>
 </div>
 </div>
 </div>

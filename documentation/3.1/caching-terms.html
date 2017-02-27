@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>Terms Related to Caching</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -211,7 +214,7 @@ resources.</p>
 <div class="sect2">
 <h3 id="cache-entry"><a class="anchor" href="#cache-entry"></a>Cache Entry</h3>
 <div class="paragraph">
-<p>A cache entry is a key and its mapped data value within the cache.</p>
+<p>A cache entry consists of a key and its mapped data value within the cache.</p>
 </div>
 </div>
 <div class="sect2">
@@ -239,14 +242,14 @@ other reliable long-term storage. It can also be a conceptual component such as 
 <div class="sect2">
 <h3 id="eviction"><a class="anchor" href="#eviction"></a>Eviction</h3>
 <div class="paragraph">
-<p>The removal of entries from the cache in order to make room for newer entries (typically when the cache has ran out of
+<p>The removal of entries from the cache in order to make room for newer entries (typically when the cache has run out of
 data storage capacity).</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="expiration"><a class="anchor" href="#expiration"></a>Expiration</h3>
 <div class="paragraph">
-<p>The removal of entries from the cache after the passing of some amount of time, typically as a strategy to avoid stale
+<p>The removal of entries from the cache after some amount of time has passed, typically as a strategy to avoid stale
 data in the cache.</p>
 </div>
 </div>
@@ -254,7 +257,7 @@ data in the cache.</p>
 <h3 id="hot-data"><a class="anchor" href="#hot-data"></a>Hot Data</h3>
 <div class="paragraph">
 <p>Data that has recently been used by an application is very likely to be accessed again soon.  Such data is considered
-<em>hot</em>.  A cache may attempt to keep the <em>most hot</em> data most quickly available, while attemping to choose the
+<em>hot</em>.  A cache may attempt to keep the <em>hottest</em> data most quickly available, while attemping to choose the
 <em>least hot</em> data for eviction.</p>
 </div>
 </div>

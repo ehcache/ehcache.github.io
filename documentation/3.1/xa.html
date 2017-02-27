@@ -153,6 +153,9 @@
           <li class="submenu"><a href="xml.html">XML Configuration</a></li>
           <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
+          
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          
           <li class="submenu"><a href="examples.html">Java Examples</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
@@ -188,7 +191,7 @@
             <span>XA transactional caches</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.2">3.2</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.3">3.3</a></span>
             
             
         </h1>
@@ -251,7 +254,7 @@ key or the value, default ones are automatically used instead. You cannot disabl
 transactional cache.</p>
 </li>
 <li>
-<p>Accessing a cache access outside of a JTA transaction context is forbidden.</p>
+<p>Accessing a cache outside of a JTA transaction context is forbidden.</p>
 </li>
 <li>
 <p>There is no protection against the ABA problem.</p>
@@ -314,7 +317,7 @@ during the cache manager initialization if BTM isn&#8217;t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the cache manager such as it can handle transactions by having a <code>TransactionManagerProvider</code> loaded and configured to use Bitronix.</td>
+<td>Configure the cache manager to handle transactions by having a <code>TransactionManagerProvider</code> loaded and configured to use Bitronix.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -326,7 +329,7 @@ during the cache manager initialization if BTM isn&#8217;t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Add a <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique
+<td>Add an <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique
 XAResource identifier as some transaction managers require this.</td>
 </tr>
 <tr>
@@ -348,10 +351,10 @@ those pending changes.</td>
 <div class="sect2">
 <h3 id="configuring-your-transaction-manager"><a class="anchor" href="#configuring-your-transaction-manager"></a>Configuring your transaction manager</h3>
 <div class="paragraph">
-<p>While only the Bitronix JTA implementation has been tested so far, plugging-in another one is possible.</p>
+<p>While only the Bitronix JTA implementation has been tested so far, plugging in another one is possible.</p>
 </div>
 <div class="paragraph">
-<p>You will need to implement a <code>org.ehcache.transactions.xa.txmgr.provider.TransactionManagerLookup</code>
+<p>You will need to implement an <code>org.ehcache.transactions.xa.txmgr.provider.TransactionManagerLookup</code>
 and make sure you understand its expected lifecycle as well as the one of the <code>org.ehcache.transactions.xa.txmgr.provider.LookupTransactionManagerProvider</code>.</p>
 </div>
 <div class="paragraph">
@@ -404,7 +407,7 @@ during the cache manager initialization if BTM isn&#8217;t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the cache manager such as it can handle transactions by having a <code>TransactionManagerProvider</code> loaded and configured to use Bitronix.</td>
+<td>Configure the cache manager to handle transactions by having a <code>TransactionManagerProvider</code> loaded and configured to use Bitronix.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -416,12 +419,12 @@ during the cache manager initialization if BTM isn&#8217;t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Add a <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique
+<td>Add an <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique
 XAResource identifier as some transaction managers require this.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Add a <code>CacheLoaderWriter</code> configuration. This one is a mocked SoR backed by a map for illustration purpose that
+<td>Add a <code>CacheLoaderWriter</code> configuration. This one is a mocked SoR backed by a map for illustration purposes that
 is filled with <code>1L</code>/<code>"eins"</code> key/value pair at startup.</td>
 </tr>
 <tr>
@@ -446,8 +449,8 @@ is filled with <code>1L</code>/<code>"eins"</code> key/value pair at startup.</t
 <div class="sect2">
 <h3 id="transactional-scope"><a class="anchor" href="#transactional-scope"></a>Transactional scope</h3>
 <div class="paragraph">
-<p>A XA cache can only be accessed within a JTA transaction&#8217;s context. Any attempt to access one outside of such context
-will result in <code>XACacheException</code> to be thrown.</p>
+<p>An XA cache can only be accessed within a JTA transaction&#8217;s context. Any attempt to access one outside of such a context
+will result in <code>XACacheException</code> being thrown.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -485,7 +488,7 @@ during the cache manager initialization if BTM isn&#8217;t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the cache manager such as it can handle transactions by having a <code>TransactionManagerProvider</code> loaded and configured to use Bitronix.</td>
+<td>Configure the cache manager to handle transactions by having a <code>TransactionManagerProvider</code> loaded and configured to use Bitronix.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -497,7 +500,7 @@ during the cache manager initialization if BTM isn&#8217;t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Add a <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique
+<td>Add an <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique
 XAResource identifier as some transaction managers require this.</td>
 </tr>
 <tr>
@@ -563,7 +566,7 @@ during the cache manager initialization if BTM isn&#8217;t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the cache manager such as it can handle transactions by having a <code>TransactionManagerProvider</code> loaded and configured to use Bitronix.</td>
+<td>Configure the cache manager to handle transactions by having a <code>TransactionManagerProvider</code> loaded and configured to use Bitronix.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -579,7 +582,7 @@ during the cache manager initialization if BTM isn&#8217;t started.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Add a <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique
+<td>Add an <code>XAStoreConfiguration</code> object to make the cache XA transactional. You must also give the cache a unique
 XAResource identifier as some transaction managers require this.</td>
 </tr>
 <tr>
@@ -603,7 +606,7 @@ XAResource identifier as some transaction managers require this.</td>
 <h2 id="configuring-it-with-xml"><a class="anchor" href="#configuring-it-with-xml"></a>Configuring it with XML</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can create a XML file to configure a <code>CacheManager</code>, lookup a specific transaction manager and configure
+<p>You can create an XML file to configure a <code>CacheManager</code>, look up a specific transaction manager and configure
 XA caches:</p>
 </div>
 <div class="listingblock">
@@ -624,7 +627,7 @@ XA caches:</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Declare a <code>TransactionManagerLookup</code> that will lookup your transaction manager.</td>
+<td>Declare a <code>TransactionManagerLookup</code> that will look up your transaction manager.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -665,7 +668,7 @@ XA caches:</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Instantiate a <code>XmlConfiguration</code> passing it the XML file&#8217;s <code>URL</code>.</td>
+<td>Instantiate an <code>XmlConfiguration</code> passing it the XML file&#8217;s <code>URL</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -700,7 +703,7 @@ create your <code>CacheManager</code> instance using the <code>Configuration</co
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The <code>TransactionManagerLookup</code> interface must be implemented and the offer a no-arg constructor.</td>
+<td>The <code>TransactionManagerLookup</code> interface must be implemented and offer a no-arg constructor.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -713,7 +716,7 @@ create your <code>CacheManager</code> instance using the <code>Configuration</co
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
 <td>The <code>TransactionManagerWrapper</code> class is constructed with both the <code>javax.transaction.TransactionManager</code>
-instance as well as a <code>XAResourceRegistry</code> instance. The latter is used to register the
+instance and an <code>XAResourceRegistry</code> instance. The latter is used to register the
 <code>javax.transaction.xa.XAResource</code> instances of the cache with the transaction manager using an
 implementation-specific mechanism. If your JTA implementation doesn&#8217;t require that, you can use the
 <code>NullXAResourceRegistry</code> instead.</td>
