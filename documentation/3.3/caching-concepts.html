@@ -150,17 +150,12 @@
         Basic topics:
         <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
-          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
-          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
-          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
-          
           <li class="submenu"><a href="tiering.html">Tiering options</a></li>
-          
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
-          
           <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
-          
         </ul>
 
         General topics:
@@ -172,17 +167,16 @@
 
         Advanced topics:
         <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
           <li class="submenu"><a href="expiry.html">Expiry</a></li>
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
           <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
-          
           <li class="submenu"><a href="class-loading.html">Class loading</a></li>
-          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
-          
         </ul>
     </div>
 
@@ -241,7 +235,7 @@ and technical decision based upon the requirements and assumptions of your appli
 <div class="paragraph">
 <p>You can configure Ehcache to use various data storage areas.
 When a cache is configured to use more than one storage area, those areas are arranged and managed as <code>tiers</code>.
-They are organized in a hierarchy, with the lowest tier being called the <code>authority</code> tier and the others being part of the <code>caching</code> tier.
+They are organized in a hierarchy, with the lowest tier (farther) being called the <code>authority</code> tier and the others being part of the <code>caching</code> tier (nearer, also called <code>near cache</code>) .
 The caching tier can itself be composed of more than one storage area.
 The <em>hottest</em> data is kept in the caching tier, which is typically less abundant but faster than the authority tier.
 All the data is kept in the authority tier, which is slower but more abundant.</p>
@@ -253,18 +247,19 @@ All the data is kept in the authority tier, which is slower but more abundant.</
 <ul>
 <li>
 <p>On-Heap Store - Utilizes Java&#8217;s on-heap RAM memory to store cache entries. This tier utilizes the same heap memory as
-your Java application, all of which must be scanned by the JVM&#8217;s garbage collector.  The more heap space your JVM
-utilizes, the more your application&#8217;s performance will be impacted by garbage collection pauses.  This store is
+your Java application, all of which must be scanned by the JVM garbage collector.  The more heap space your JVM
+utilizes, the more your application performance will be impacted by garbage collection pauses.  This store is
 extremely fast, but is typically your most limited storage resource.</p>
 </li>
 <li>
 <p>Off-Heap Store - Limited in size only by available RAM.
 Not subject to Java garbage collection (GC).
-Is quite fast, yet slower than the On-Heap Store because data must be moved to and from the JVM&#8217;s heap as it is stored and re-accessed.</p>
+Is quite fast, yet slower than the On-Heap Store because data must be moved to and from the JVM heap as it is stored and re-accessed.</p>
 </li>
 <li>
 <p>Disk Store - Utilizes a disk (file system) to store cache entries.
-This type of storage resource is typically very abundant but much slower than the RAM-based stores.</p>
+This type of storage resource is typically very abundant but much slower than the RAM-based stores. As for all application using disk
+storage, it is recommended to use a fast and dedicated disk to optimize the throughput.</p>
 </li>
 <li>
 <p>Clustered Store - This data store is a cache on a remote server.
@@ -334,6 +329,7 @@ multiple caches from a database.</p>
   </div>
 
 </div>
+z
 
       </div>
     </div>

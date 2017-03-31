@@ -150,13 +150,12 @@
         Basic topics:
         <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
-          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
-          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
-          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
           
           <li class="submenu"><a href="tiering.html">Tiering options</a></li>
           
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
           
           <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
@@ -172,16 +171,19 @@
 
         Advanced topics:
         <ul class="nav">
+          
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
+          
           <li class="submenu"><a href="expiry.html">Expiry</a></li>
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
           <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
           
           <li class="submenu"><a href="class-loading.html">Class loading</a></li>
-          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
           
         </ul>
     </div>
@@ -544,7 +546,7 @@ If it does not exist then the cache manager will fail to initialize.</td>
     .add(ClusteredStoreConfigurationBuilder.withConsistency(Consistency.STRONG))
     .build();
 
-Cache&lt;Long, String&gt; cache = cacheManager.createCache("clustered-cache", config);
+Cache&lt;Long, String&gt; cache = cacheManager.createCache("clustered-cache-tiered", config);
 cache.put(42L, "All you need to know!");</code></pre>
 </div>
 </div>
@@ -565,7 +567,7 @@ cache.put(42L, "All you need to know!");</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache alias="clustered-cache"&gt;
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache alias="clustered-cache-tiered"&gt;
   &lt;resources&gt;
     &lt;heap unit="MB"&gt;10&lt;/heap&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     &lt;tc:clustered-dedicated unit="MB"&gt;50&lt;/tc:clustered-dedicated&gt; <i class="conum" data-value="2"></i><b>(2)</b>
@@ -750,6 +752,7 @@ Cache&lt;Long, String&gt; cacheUnspecified = cacheManager2.createCache("my-dedic
   </div>
 
 </div>
+z
 
       </div>
     </div>

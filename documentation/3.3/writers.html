@@ -150,17 +150,12 @@
         Basic topics:
         <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
-          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
-          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
-          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
-          
           <li class="submenu"><a href="tiering.html">Tiering options</a></li>
-          
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
-          
           <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
-          
         </ul>
 
         General topics:
@@ -172,17 +167,16 @@
 
         Advanced topics:
         <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
           <li class="submenu"><a href="expiry.html">Expiry</a></li>
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
           <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
-          
           <li class="submenu"><a href="class-loading.html">Class loading</a></li>
-          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
-          
         </ul>
     </div>
 
@@ -201,7 +195,8 @@
         
       </header>
       <article class="post-content">
-        <div id="preamble">
+        <div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
@@ -250,8 +245,6 @@ This risks making it inconsistent with the underlying system of record.</p>
 <p>As for a <em>write-through</em> only cache, we lacked the imagination to find a valid use case for it.
 It remains possible by simply having no-op <code>load*</code> methods.</p>
 </div>
-</div>
-</div>
 <div class="sect2">
 <h3 id="write-behind"><a class="anchor" href="#write-behind"></a>Write-behind</h3>
 <div class="paragraph">
@@ -296,6 +289,8 @@ This means that the maximum number of in-flight writes becomes <code>concurrency
 After this time has elapsed, the batch is processed even if incomplete.</p>
 </dd>
 </dl>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -398,6 +393,7 @@ underlying system of record.</td>
   </div>
 
 </div>
+z
 
       </div>
     </div>

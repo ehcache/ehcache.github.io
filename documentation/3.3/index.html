@@ -150,17 +150,12 @@
         Basic topics:
         <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
-          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
-          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
-          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
-          
           <li class="submenu"><a href="tiering.html">Tiering options</a></li>
-          
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
-          
           <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
-          
         </ul>
 
         General topics:
@@ -172,17 +167,16 @@
 
         Advanced topics:
         <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
           <li class="submenu"><a href="expiry.html">Expiry</a></li>
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
           <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
-          
           <li class="submenu"><a href="class-loading.html">Class loading</a></li>
-          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
-          
         </ul>
     </div>
 
@@ -227,24 +221,20 @@ Each topic below corresponds to a menu item at the left.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Learn the essentials</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="xml.html">XML Configuration</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">How to configure Ehcache using XML</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="usermanaged.html">User Managed Caches</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Creating and making use of caches directly</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="107.html">JSR-107 Support</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Using Ehcache as a javax.cache aka JSR-107 provider</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="tiering.html">Tiering options</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Using resources other than heap memory, combining them or not</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="examples.html">Java Examples</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="examples.html">Examples</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Examples of using Ehcache APIs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="xml.html">XML Configuration</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">How to configure Ehcache using XML</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="107.html">JCache aka JSR-107</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Using Ehcache as a JCache (javax.cache) aka JSR-107 provider</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="xsds.html">Configuration XSD</a></p></td>
@@ -301,6 +291,10 @@ Each topic below corresponds to a menu item at the left.</p>
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="migration-guide.html">Migration Guide</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ehcache2 to Ehcache3 Migration Guide</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="expiry.html">Expiry</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Data freshness and expiration</p></td>
 </tr>
@@ -321,6 +315,10 @@ Each topic below corresponds to a menu item at the left.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Using cache writers (write-through and write-behind)</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="usermanaged.html">User Managed Caches</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Creating and making use of caches directly</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="cache-event-listeners.html">Cache Event Listeners</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Getting notified about events within the cache</p></td>
 </tr>
@@ -331,10 +329,6 @@ Each topic below corresponds to a menu item at the left.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="class-loading.html">Class loading</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Ehcache and <code>ClassLoader</code> interactions</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="migration-guide.html">Migration Guide</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ehcache2 to Ehcache3 Migration Guide</p></td>
 </tr>
 </tbody>
 </table>
@@ -347,6 +341,7 @@ Each topic below corresponds to a menu item at the left.</p>
   </div>
 
 </div>
+z
 
       </div>
     </div>

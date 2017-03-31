@@ -150,17 +150,12 @@
         Basic topics:
         <ul class="nav">
           <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
-          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
-          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
-          <li class="submenu"><a href="107.html">javax.cache aka JSR-107</a></li>
-          
           <li class="submenu"><a href="tiering.html">Tiering options</a></li>
-          
-          <li class="submenu"><a href="examples.html">Java Examples</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
           <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
-          
           <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
-          
         </ul>
 
         General topics:
@@ -172,17 +167,16 @@
 
         Advanced topics:
         <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
           <li class="submenu"><a href="expiry.html">Expiry</a></li>
           <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
           <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
           <li class="submenu"><a href="xa.html">Transactions Support</a></li>
           <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
           <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
           <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
-          
           <li class="submenu"><a href="class-loading.html">Class loading</a></li>
-          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
-          
         </ul>
     </div>
 
@@ -366,11 +360,11 @@ Here is a code sample that shows how to configure a cache manager with clusterin
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">final CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
     CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost:9510/my-application")) <i class="conum" data-value="2"></i><b>(2)</b>
             .autoCreate()); <i class="conum" data-value="3"></i><b>(3)</b>
-final PersistentCacheManager cacheManager = clusteredCacheManagerBuilder.build(true); <i class="conum" data-value="4"></i><b>(4)</b>
+PersistentCacheManager cacheManager = clusteredCacheManagerBuilder.build(true); <i class="conum" data-value="4"></i><b>(4)</b>
 
 cacheManager.close(); <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
 </div>
@@ -411,7 +405,7 @@ The sample URI provided in the example points to the clustered storage instance 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">final CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
+<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
     CacheManagerBuilder.newCacheManagerBuilder()
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost:9510/my-application")).autoCreate()
             .defaultServerResource("primary-server-resource") <i class="conum" data-value="1"></i><b>(1)</b>
@@ -426,7 +420,7 @@ The sample URI provided in the example points to the clustered storage instance 
         .withCache("shared-cache-2", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
             ResourcePoolsBuilder.newResourcePoolsBuilder()
                 .with(ClusteredResourcePoolBuilder.clusteredShared("resource-pool-a")))); <i class="conum" data-value="7"></i><b>(7)</b>
-final PersistentCacheManager cacheManager = clusteredCacheManagerBuilder.build(true); <i class="conum" data-value="8"></i><b>(8)</b>
+PersistentCacheManager cacheManager = clusteredCacheManagerBuilder.build(true); <i class="conum" data-value="8"></i><b>(8)</b>
 
 cacheManager.close();</code></pre>
 </div>
@@ -542,7 +536,7 @@ If it does not exist then the cache manager will fail to initialize.</td>
     .add(ClusteredStoreConfigurationBuilder.withConsistency(Consistency.STRONG))
     .build();
 
-Cache&lt;Long, String&gt; cache = cacheManager.createCache("clustered-cache", config);
+Cache&lt;Long, String&gt; cache = cacheManager.createCache("clustered-cache-tiered", config);
 cache.put(42L, "All you need to know!");</code></pre>
 </div>
 </div>
@@ -563,7 +557,7 @@ cache.put(42L, "All you need to know!");</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache alias="clustered-cache"&gt;
+<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache alias="clustered-cache-tiered"&gt;
   &lt;resources&gt;
     &lt;heap unit="MB"&gt;10&lt;/heap&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     &lt;tc:clustered-dedicated unit="MB"&gt;50&lt;/tc:clustered-dedicated&gt; <i class="conum" data-value="2"></i><b>(2)</b>
@@ -683,7 +677,7 @@ Thus any programmer can use the cache without having to worry about creating the
             .autoCreate()  <i class="conum" data-value="1"></i><b>(1)</b>
             .resourcePool("resource-pool", 32, MemoryUnit.MB, "primary-server-resource"));
 
-final PersistentCacheManager cacheManager1 = cacheManagerBuilderAutoCreate.build(false);
+PersistentCacheManager cacheManager1 = cacheManagerBuilderAutoCreate.build(false);
 cacheManager1.init();
 
 CacheConfiguration&lt;Long, String&gt; cacheConfigDedicated = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
@@ -699,7 +693,7 @@ CacheManagerBuilder&lt;PersistentCacheManager&gt; cacheManagerBuilderExpecting =
             .expecting()  <i class="conum" data-value="4"></i><b>(4)</b>
             .resourcePool("resource-pool", 32, MemoryUnit.MB, "primary-server-resource"));
 
-final PersistentCacheManager cacheManager2 = cacheManagerBuilderExpecting.build(false);
+PersistentCacheManager cacheManager2 = cacheManagerBuilderExpecting.build(false);
 cacheManager2.init();
 
 CacheConfiguration&lt;Long, String&gt; cacheConfigUnspecified = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
@@ -748,6 +742,7 @@ Cache&lt;Long, String&gt; cacheUnspecified = cacheManager2.createCache("my-dedic
   </div>
 
 </div>
+z
 
       </div>
     </div>
