@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?Fm Condition DITA-Comment Red NO_OVERRIDE show AsIs?>
+<?Fm Condition DITA-Prolog Red NO_OVERRIDE show AsIs?>
+<?Fm Condition DITA-Topicmeta Red NO_OVERRIDE show AsIs?>
+<?Fm Condition FM8_TRACK_CHANGES_ADDED Forest%20Green SINGLE_UNDERLINE hide AsIs?>
+<?Fm Condition FM8_TRACK_CHANGES_DELETED Red STRIKETHROUGH hide AsIs?>
+<?Fm Condition otherprops=hidden SAG%20Desert%20Orange NO_OVERRIDE show AsIs?>
+<?Fm Condition otherprops=online Red NO_OVERRIDE show AsIs?>
+<?Fm Condition otherprops=pdf Blue NO_OVERRIDE show AsIs?>
+<?Fm Condition status=changed AsIs CHANGEBAR show AsIs?>
+<?Fm Condition status=deleted AsIs STRIKETHROUGH show AsIs?>
+<?Fm Condition status=new AsIs CHANGEBAR show AsIs?>
+<?Fm Condition FM8_SYSTEM_HIDEELEMENT Dark%20Grey NO_OVERRIDE hide AsIs?>
+<?Fm Condition otherprops=ref-link SAG%20Laguna%20Blue NO_OVERRIDE show AsIs?>
+<?Fm Condition otherprops=ref-text SAG%20Vineyard%20Red NO_OVERRIDE show AsIs?>
+<?Fm BoolCondExpr "otherprops=ref-link"OR"otherprops=ref-text" State 0?>
+<?Fm TagBoolCondExpr Default%20Expression?>
+<?Fm TrackChange Off PreviewState PREVIEW_OFF_TRACK_CHANGE ?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
+<concept xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="d1e1" xml:lang="en-us" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic concept/concept ">
+<title class="- topic/title ">cache-as-sor</title>
+<conbody class="- topic/body  concept/conbody ">
+<p class="- topic/p ">
+<!--<draft-comment translate="no" class="- topic/draft-comment ">&lt;&lt;THIS TOPIC IS SHARED
+BY EHC, BMG, and BMM PRODUCT DOCS.&gt;&gt;</draft-comment>-->The cache-as-sor
+pattern implies using the cache as though it were the primary system-of-record
+(SOR). The pattern delegates SOR reading and writing activities
+to the cache, so that application code is absolved of this responsibility.</p>
+<p class="- topic/p ">To implement the cache-as-sor pattern, use
+a combination of the following read and write patterns:</p>
+<ul class="- topic/ul ">
+<li class="- topic/li ">read-through</li>
+<li class="- topic/li ">write-through or write-behind</li>
+</ul>
+<p class="- topic/p ">Advantages of using the cache-as-sor pattern
+are:</p>
+<ul class="- topic/ul ">
+<li class="- topic/li ">Less cluttered
+application code (improved maintainability)</li>
+<li class="- topic/li ">Choice of write-through or write-behind
+strategies on a per-cache basis (use only configuration)</li>
+<li class="- topic/li ">Allows the cache to solve the "thundering-herd"
+problem</li>
+</ul>
+<p class="- topic/p ">A disadvantage of using the cache-as-sor
+pattern is:</p>
+<ul class="- topic/ul ">
+<li class="- topic/li ">Less directly
+visible code-path</li>
+</ul>
+<section class="- topic/section ">
+<title class="- topic/title ">cache-as-sor
+example</title>
+<codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">public class MyDataAccessClass 
+{ 
+private final Ehcache cache; 
+public MyDataAccessClass(Ehcache cache) 
+{ 
+   cache.registerCacheWriter(new MyCacheWriter()); 
+   this.cache = new SelfPopulatingCache(cache); 
+} 
+/* read some data - notice the cache is treated as an SOR. 
+* the application code simply assumes the key will always be available 
+*/ 
+public V readSomeData(K key) 
+{ 
+   return cache.get(key); 
+} 
+/* write some data - notice the cache is treated as an SOR, it is 
+* the cache's responsibility to write the data to the SOR. 
+*/ 
+public void writeSomeData(K key, V value) 
+{ 
+   cache.put(new Element(key, value); 
+} 
+/** 
+* Implement the CacheEntryFactory that allows the cache to provide 
+* the read-through strategy 
+*/ 
+private class MyCacheEntryFactory implements CacheEntryFactory 
+{ 
+   public Object createEntry(Object key) throws Exception 
+   { 
+       return readDataFromDataStore(key); 
+   } 
+} 
+/** 
+* Implement the CacheWriter interface which allows the cache to provide 
+* the write-through or write-behind strategy. 
+*/ 
+private class MyCacheWriter implements CacheWriter 
+   public CacheWriter clone(Ehcache cache) throws CloneNotSupportedException; 
+   { 
+       throw new CloneNotSupportedException(); 
+   } 
+    public void init() { } 
+   void dispose() throws CacheException { } 
+    void write(Element element) throws CacheException; 
+   { 
+       writeDataToDataStore(element.getKey(), element.getValue()); 
+   } 
+    void writeAll(Collection&lt;Element&gt; elements) throws CacheException 
+   { 
+       for (Element element : elements) { 
+           write(element); 
+       } 
+   } 
+    void delete(CacheEntry entry) throws CacheException 
+   { 
+       deleteDataFromDataStore(element.getKey()); 
+   } 
+    void deleteAll(Collection&lt;CacheEntry&gt; entries) throws CacheException 
+   { 
+       for (Element element : elements) { 
+           delete(element); 
+       } 
+   } 
+} 
+}</codeblock>
+</section>
+</conbody>
+</concept>

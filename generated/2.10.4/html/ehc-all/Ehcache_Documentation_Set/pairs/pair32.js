@@ -1,0 +1,26 @@
+var pairs =
+{
+"shut":{"down":1}
+,"down":{"cachemanager":1,"code":1,"singleton":1}
+,"cachemanager":{"shut":1,"shut-down":1,"cachemanager.getinstance":1,"instance":1,"called":1}
+,"shut-down":{"hook":1}
+,"hook":{"best":1}
+,"best":{"practice":1}
+,"practice":{"shut":1}
+,"code":{"following":1}
+,"following":{"shuts":1}
+,"shuts":{"down":1}
+,"singleton":{"cachemanager":1}
+,"cachemanager.getinstance":{".shutdown":1}
+,".shutdown":{"following":1}
+,"instance":{"assuming":1}
+,"assuming":{"reference":1}
+,"reference":{"cachemanager":1}
+,"called":{"manager":1}
+,"manager":{"manager.shutdown":1}
+,"manager.shutdown":{"additional":1}
+,"additional":{"examples":1}
+,"examples":{"cachemanagertest.java":1}
+,"cachemanagertest.java":{"https:\u002F\u002Ffisheye.terracotta.org\u002Fbrowse\u002Fehcache\u002Fbranches\u002Fehcache-2.10.1\u002Fehcache-core\u002Fsrc\u002Ftest\u002Fjava\u002Fnet\u002Fsf\u002Fehcache\u002F":1}
+}
+;Search.control.loadWordPairs(pairs);
