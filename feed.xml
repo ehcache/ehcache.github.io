@@ -4,13 +4,168 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://www.ehcache.org/feed.xml" />
 <link rel="alternate" type="text/html" href="http://www.ehcache.org" />
-<updated>2017-04-25T03:31:45+00:00</updated>
+<updated>2017-04-25T14:01:55+00:00</updated>
 <id>http://www.ehcache.org/</id>
 <author>
   <name>Ehcache</name>
   <uri>http://www.ehcache.org/</uri>
   <email>tc-oss@softwareag.com</email>
 </author>
+
+    
+        
+        <entry>
+          <title type="html"><![CDATA[Prevent spontaneous cache creation]]></title>
+          <link rel="alternate" type="text/html" href="http://www.ehcache.org/blog/2017/03/15/spontaneous-cache-creation.html" />
+          <id>http://www.ehcache.org/blog/2017/03/15/spontaneous-cache-creation</id>
+          <published>2017-03-15T16:00:00+00:00</published>
+          <updated>2017-03-15T16:00:00+00:00</updated>
+          <author>
+            <name>Henri Tremblay</name>
+            <uri>http://www.ehcache.org</uri>
+          </author>
+          <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I played a lot with JCache connectors lately. To plug &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache 3&lt;/a&gt; to different things.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I noticed one really dangerous thing. Frameworks tend to spontaneously create caches that were not explicitly defined. I
+think it is coming from the JCache spirit that there should be a default cache configuration. It is nonetheless a bad idea.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Let&amp;#8217;s look at two examples&lt;/p&gt;
+&lt;/div&gt;
+&lt;h1 id=&quot;spring&quot; class=&quot;sect0&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#spring&quot;&gt;&lt;/a&gt;Spring&lt;/h1&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Caching in Spring is implemented by &lt;code&gt;spring-cache&lt;/code&gt;. To plug JCache to &lt;code&gt;spring-cache&lt;/code&gt; you use the &lt;code&gt;JCacheCacheManager&lt;/code&gt;. By default
+when a cache isn&amp;#8217;t available in the &lt;code&gt;CacheManager&lt;/code&gt;, Spring calls &lt;code&gt;JCacheCacheManager.getMissingCache&lt;/code&gt;. So far so good.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The default implementation for this method returns &lt;code&gt;null&lt;/code&gt; when a cache doesn&amp;#8217;t exist. This &lt;code&gt;null&lt;/code&gt; will then be handled at
+higher levels to throw a nice exception.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you want to explicitly support spontaneous cache creation, &lt;code&gt;getMissingCache&lt;/code&gt; is where you should put your creation code.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;However, watch out if you do that. You might lose track of all the existing caches. And please, &lt;strong&gt;never&lt;/strong&gt; do the following.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Override
+protected Cache getMissingCache(String name) {
+    Cache cache = super.getMissingCache(name);
+    if(cache == null) {
+        return new JCacheCache(cacheManager.createCache(name, new MutableConfiguration&amp;lt;&amp;gt;()));
+    }
+    return cache;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It returns a cache configured using default. It is &lt;strong&gt;never&lt;/strong&gt; what you want. I will repeat that because you might think I don&amp;#8217;t
+mean it. You might think defaults are cool. &lt;strong&gt;It is never what you want&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Then, as usual, Spring tries to be nice with us. So if you enable caching (&lt;code&gt;@EnableCaching&lt;/code&gt;), that the JSR-107 API is in
+the classpath and that you do not expose any &lt;code&gt;CacheManager&lt;/code&gt;, Spring will create one for you.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The &lt;code&gt;JCacheCacheConfiguration&lt;/code&gt; will get a default JSR-107 &lt;code&gt;CacheManager&lt;/code&gt; and add a list of caches taken from the cache property
+&lt;code&gt;spring.cache.cache-names&lt;/code&gt;. These caches are by default created using a &lt;code&gt;new MutableConfiguration&amp;lt;&amp;gt;()&lt;/code&gt;. As we said above, this
+is not a correctly configured cache.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The solution is to expose the wanted cache configuration in a bean.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Bean
+public javax.cache.configuration.Configuration&amp;lt;Object, Object&amp;gt; cacheConfiguration() {
+    CacheConfiguration&amp;lt;Object, Object&amp;gt; cacheConfiguration = CacheConfigurationBuilder
+        .newCacheConfigurationBuilder(Object.class, Object.class, ResourcePoolsBuilder
+            .newResourcePoolsBuilder().heap(100))
+        .build();
+    javax.cache.configuration.Configuration&amp;lt;Object, Object&amp;gt; configuration =
+        Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration);
+    return configuration;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This bean will be magically used as cache default. You should always do this and never let &lt;code&gt;`new MutableConfiguration&amp;lt;&amp;gt;()&lt;/code&gt;
+be used.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;An alternative (preferred in fact, thanks &lt;a href=&quot;https://twitter.com/snicoll&quot;&gt;Stéphane Nicoll&lt;/a&gt; for the tip), it to use a &lt;code&gt;JCacheManagerCustomizer&lt;/code&gt; instead
+of the &lt;code&gt;spring.cache.cache-names&lt;/code&gt; property. Like this:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Bean
+public JCacheManagerCustomizer cacheManagerCustomizer() {
+    return cm -&amp;gt; {
+        Configuration&amp;lt;Object, Object&amp;gt; cacheConfiguration = createCacheConfiguration();
+        cm.createCache(&quot;vets&quot;, cacheConfiguration);
+    };
+}
+
+private Configuration&amp;lt;Object, Object&amp;gt; createCacheConfiguration() {
+    return Eh107Configuration.fromEhcacheCacheConfiguration(CacheConfigurationBuilder
+        .newCacheConfigurationBuilder(Object.class, Object.class, ResourcePoolsBuilder
+            .newResourcePoolsBuilder().heap(100)));
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id=&quot;hibernate&quot; class=&quot;sect0&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#hibernate&quot;&gt;&lt;/a&gt;Hibernate&lt;/h1&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To use JCache with Hibernate we need to use the &lt;code&gt;JCacheRegionFactory&lt;/code&gt;. The problem with &lt;code&gt;JCacheRegionFactory&lt;/code&gt; is that by
+default if a cache is not found, it will spontaneously create a cache by passing &lt;code&gt;new MutableConfiguration()&lt;/code&gt;. This means
+that instead of using a properly configured cache, you end up with some random default configuration (infinite on heap for
+Ehcache).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is really bad because it is pretty hard to detect.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;What I recommend in this case is, again, to override the default. In the latest Hibernate versions (5.2.8+) (thanks to
+&lt;a href=&quot;https://github.com/hibernate/hibernate-orm/pull/1783&quot;&gt;HHH-1783&lt;/a&gt;, we can do the following&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Override
+protected Cache&amp;lt;Object, Object&amp;gt; createCache(String regionName, Properties properties, CacheDataDescription metadata) {
+    throw new IllegalArgumentException(&quot;Unknown hibernate cache: &quot; + regionName);
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In older versions, sadly, there is no straightforward cache creation method to override. The best we have is
+&lt;code&gt;newDefaultConfig&lt;/code&gt; which provides the default configuration. One sad thing is that you don&amp;#8217;t have the actual cache name
+here. You will need to debug to know it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;prettyprint highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Override
+protected Configuration&amp;lt;Object, Object&amp;gt; newDefaultConfig(Properties properties, CacheDataDescription metadata) {
+    throw new IllegalArgumentException(&quot;Unknown hibernate cache: &quot; + metadata);
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Again, an alternative solution would be to provide a meaningful default cache configuration in this method.&lt;/p&gt;
+&lt;/div&gt;
+&lt;h1 id=&quot;conclusion&quot; class=&quot;sect0&quot;&gt;&lt;a class=&quot;anchor&quot; href=&quot;#conclusion&quot;&gt;&lt;/a&gt;Conclusion&lt;/h1&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I do understand that frameworks do not like to fail with exceptions. This helps the feeling that they are working out of
+the box.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;But I still think silently not caching or providing random default configuration is dangerous. Using my two workarounds
+should prevent a lot of headaches.&lt;/p&gt;
+&lt;/div&gt;
+          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/blog/2017/03/15/spontaneous-cache-creation.html&quot;&gt;Prevent spontaneous cache creation&lt;/a&gt; was originally published by Henri Tremblay at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on March 15, 2017.&lt;/p&gt;</content>
+        </entry>
+    
 
     
         
