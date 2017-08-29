@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.3  current ">
+<div class="container-fluid ehcache-documentation v3.3   old  ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -188,7 +188,9 @@
         <h1 class="post-title">
             <span>Class loading</span>
             
-            <span class="current">CURRENT</span>
+            
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.4">3.4</a></span>
+            
             
         </h1>
         <hr/>
@@ -196,25 +198,23 @@
       </header>
       <article class="post-content">
         <div class="sect1">
-<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<h2 id="about"><a class="anchor" href="#about"></a>About class loading</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Since Ehcache is a library and supports user types both in configuration and in mapping keys or values,
 it must offer flexibility around class loading.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="cl-default"><a class="anchor" href="#cl-default"></a>Default <code>ClassLoader</code> in Ehcache</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="cl-default"><a class="anchor" href="#cl-default"></a>Default classLoader in Ehcache</h3>
 <div class="paragraph">
 <p>The default <code>ClassLoader</code> from Ehcache will first try to use the thread context class loader, through <code>Thread.currentThread().getContextClassLoader()</code>.
 In case this fails to load the requested resource, it will then use the <code>ClassLoader</code> that loaded the Ehcache internal classes.</p>
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="cl-user-types"><a class="anchor" href="#cl-user-types"></a>Handling User types</h2>
+<h2 id="cl-user-types"><a class="anchor" href="#cl-user-types"></a>Handling user types</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The way to configure a <code>ClassLoader</code> and the scope of its use differ between Java and XML based configurations.
@@ -238,7 +238,7 @@ These will be used <a href="#cl-runtime">at runtime</a>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="cl-cfg-xml"><a class="anchor" href="#cl-cfg-xml"></a>Xml configuration</h3>
+<h3 id="cl-cfg-xml"><a class="anchor" href="#cl-cfg-xml"></a>XML configuration</h3>
 <div class="paragraph">
 <p>When using XML to configure Ehcache, references to custom types are given through a fully qualified class name.
 This means that transforming these <code>String</code> names into the proper class representation may require a specific <code>ClassLoader</code>.</p>
@@ -250,22 +250,21 @@ This means that transforming these <code>String</code> names into the proper cla
 <dl>
 <dt class="hdlist1"><code>public XmlConfiguration(URL url)</code></dt>
 <dd>
-<p>to use only default <code>ClassLoader</code></p>
+<p>to use only default ClassLoader</p>
 </dd>
 <dt class="hdlist1"><code>public XmlConfiguration(URL url, final ClassLoader classLoader)</code></dt>
 <dd>
-<p>to use a specific <code>ClassLoader</code> at the <code>CacheManager</code> level</p>
+<p>to use a specific ClassLoader at the CacheManager level</p>
 </dd>
 <dt class="hdlist1"><code>public XmlConfiguration(URL url, final ClassLoader classLoader, final Map&lt;String, ClassLoader&gt; cacheClassLoaders)</code></dt>
 <dd>
-<p>to use a specific <code>ClassLoader</code> at the <code>CacheManager</code> level
-and a map of <code>&lt;String, ClassLoader&gt;</code> which will be used to link a specific <code>ClassLoader</code> to a <code>Cache</code> by its alias</p>
+<p>to use a specific <code>ClassLoader</code> at the <code>CacheManager</code> level and a map of <code>&lt;String, ClassLoader&gt;</code> which will be used to link a specific <code>ClassLoader</code> to a <code>Cache</code> by its alias</p>
 </dd>
 </dl>
 </div>
 <div class="paragraph">
 <p>In the same way as for the Java configuration, the <code>Cache</code> level configuration takes precedence over the <code>CacheManager</code> level one.
-If no class loaders are specified, the <a href="#cl-default">default class loader</a> from Ehcache will be used.</p>
+If no class loaders are specified, the default class loader from Ehcache will be used.</p>
 </div>
 </div>
 <div class="sect2">

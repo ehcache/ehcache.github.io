@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.3  current ">
+<div class="container-fluid ehcache-documentation v3.3   old  ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -188,7 +188,9 @@
         <h1 class="post-title">
             <span>Cache Writers</span>
             
-            <span class="current">CURRENT</span>
+            
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.4">3.4</a></span>
+            
             
         </h1>
         <hr/>
@@ -196,7 +198,7 @@
       </header>
       <article class="post-content">
         <div class="sect1">
-<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction to Cache Loaders and Writers</h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
@@ -205,17 +207,18 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Ehcache 3.1 added clustering support but this is not yet compatible with <em>cache-through</em>.
+Ehcache clustering is not yet compatible with <em>cache-through</em>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>This section documents the specifics behind the <a href="caching-patterns.html#cache-through">cache-through</a> implementation in Ehcache 3.
-Please read the linked section if you are not familiar with terms like <em>cache-through</em>, <em>read-through</em>, <em>write-through</em> or <em>system of record</em>.</p>
+<p>This section documents the specifics behind the cache-through implementation in Ehcache.
+Refer to the section <a href="caching-patterns.html">Cache Usage Patterns</a> if you are not familiar with terms
+like <em>cache-through</em>, <em>read-through</em>, <em>write-through</em> or <em>system of record</em>.</p>
 </div>
 <div class="paragraph">
-<p>The first thing is that Ehcache merged the concepts of +read-through_ and <em>write-through</em> behind a single interface, the <code>CacheLoaderWriter</code>.</p>
+<p>Ehcache merges the concepts of read-through and write-through behind a single interface, the <code>CacheLoaderWriter</code>.</p>
 </div>
 <div class="paragraph">
 <p>As indicated by its API, this interface provides methods with logical grouping:</p>
@@ -224,40 +227,44 @@ Please read the linked section if you are not familiar with terms like <em>cache
 <dl>
 <dt class="hdlist1">read-through</dt>
 <dd>
-<p>The <code>load(K)</code> and <code>loadAll(Iterable&lt;? super K&gt;)</code> methods cover the <em>read-through</em> part of cache-through.</p>
+<p>The <code>load(K)</code> and <code>loadAll(Iterable&lt;? super K&gt;)</code> methods cover the read-through part of cache-through.</p>
 </dd>
 <dt class="hdlist1">write-through</dt>
 <dd>
-<p>The <code>write(K, V)</code>, <code>writeAll(Iterable&lt;? extends Map.Entry&lt;? extends K, ? extends V&gt;&gt;)</code>, <code>delete(K)</code> and <code>deleteAll(Iterable&lt;? super K&gt;)</code> methods
-cover the <em>write-through</em> part of cache-through.</p>
+<p>The <code>write(K, V)</code>, <code>writeAll(Iterable&lt;? extends Map.Entry&lt;? extends K, ? extends V&gt;&gt;)</code>, <code>delete(K)</code> and
+<code>deleteAll(Iterable&lt;? super K&gt;)</code> methods cover the write-through part of cache-through.</p>
 </dd>
 </dl>
 </div>
 <div class="paragraph">
-<p>The reasoning behind having a unified interface is that as soon as you want a <em>read-through</em> only cache, you need to decide what to do about mutative method calls.
+<p>The reasoning behind having a unified interface is that if you want a read-through only cache,
+you need to decide what to do about mutative method calls.
 What happens if someone calls <code>put(K, V)</code> on the cache?
 This risks making it inconsistent with the underlying system of record.</p>
 </div>
 <div class="paragraph">
-<p>In this context, the unified interface forces you to make a choice: either no-op <code>write*</code> / <code>delete*</code> methods or throwing when mutation happens.</p>
+<p>In this context, the unified interface forces you to make a choice: either no-op <code>write</code><strong>/<code>delete</code></strong> methods or
+throwing when mutation happens.</p>
 </div>
 <div class="paragraph">
-<p>As for a <em>write-through</em> only cache, we lacked the imagination to find a valid use case for it.
-It remains possible by simply having no-op <code>load*</code> methods.</p>
+<p>For a write-through only cache, it remains possible by simply having no-op <code>load</code>* methods.</p>
 </div>
-<div class="sect2">
-<h3 id="write-behind"><a class="anchor" href="#write-behind"></a>Write-behind</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="write-behind"><a class="anchor" href="#write-behind"></a>Write-behind</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>An additional feature provided by Ehcache is <em>write-behind</em> where writes are made asynchronously to the backing system of record.
+<p>An additional feature provided by Ehcache is <em>write-behind</em>, where writes are made asynchronously to the backing system of record.
 The way this works in Ehcache is by simply telling the system to register a wrapper around your provided <code>CacheLoaderWriter</code> implementation.</p>
 </div>
 <div class="paragraph">
 <p>From there, you will have extra configuration options around batching and coalescing of writes.</p>
 </div>
 <div class="paragraph">
-<p>Ehcache 3 no longer supports retry of failed writes at the write-behind wrapper level.
-We believe, as the application developer and system of record owner, that you know better when a retry should happen and how.
-So if you need that, make it part of your <code>CacheLoaderWriter</code> implementation.</p>
+<p>Ehcache does not support retry of failed writes at the write-behind wrapper level.
+You, as the application developer and system of record owner, know better when a retry should happen and how.
+So if you need that functionality, make it part of your <code>CacheLoaderWriter</code> implementation.</p>
 </div>
 <div class="paragraph">
 <p>Write-behind introduces the following concepts:</p>
@@ -271,13 +278,13 @@ So if you need that, make it part of your <code>CacheLoaderWriter</code> impleme
 <dt class="hdlist1">concurrency level</dt>
 <dd>
 <p>Indicates how many parallel processing threads and queues there will be for write behind.
-Effectively the maximum number of in-flight writes is <code>concurrency level * queue size</code>.</p>
+Effectively the maximum number of in-flight writes is <em>concurrency level * queue size</em>.</p>
 </dd>
 <dt class="hdlist1">batching and batch size</dt>
 <dd>
-<p>Mutative operations will be grouped in <em>batch size</em> sets before reaching the <code>CacheLoaderWriter</code>.
+<p>Mutative operations will be grouped in batch size sets before reaching the <code>CacheLoaderWriter</code>.
 When batching, the queue size is effectively the number of pending batches there can be.
-This means that the maximum number of in-flight writes becomes <code>concurrency level * queue size * batch size</code>.</p>
+This means that the maximum number of in-flight writes becomes <em>concurrency level * queue size * batch size</em>.</p>
 </dd>
 <dt class="hdlist1">coalescing</dt>
 <dd>
@@ -292,13 +299,12 @@ After this time has elapsed, the batch is processed even if incomplete.</p>
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
-<h2 id="implementing-cache-through"><a class="anchor" href="#implementing-cache-through"></a>Implementing Cache-Through</h2>
+<h2 id="cache-through"><a class="anchor" href="#cache-through"></a>Implementing Cache-Through</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 
 Cache&lt;Long, String&gt; writeThroughCache = cacheManager.createCache("writeThroughCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
@@ -316,7 +322,7 @@ cacheManager.close();</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>We register a sample <code>CacheLoaderWriter</code> that knows about the mapping <code>(41L &#8594; "zero")</code></td>
+<td>We register a sample <code>CacheLoaderWriter</code> that knows about the mapping ("41L" maps to "zero").</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -333,7 +339,7 @@ The returned mapping will populate the cache and be returned to the caller.</td>
 <h3 id="adding-write-behind"><a class="anchor" href="#adding-write-behind"></a>Adding Write-Behind</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 
 Cache&lt;Long, String&gt; writeBehindCache = cacheManager.createCache("writeBehindCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
@@ -366,7 +372,7 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Here we configure write-behind or batching with a batch size of 3 and a maximum write delay of 1 second.</td>
+<td>Here we configure write behind or batching with a batch size of 3 and a maximum write delay of 1 second.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -375,12 +381,11 @@ cacheManager.close();</code></pre>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Define the concurrency level of write-behind queue(s).
-This indicates how many writer threads work in parallel to update the  underlying system of record asynchronously.</td>
+This indicates how many writer threads work in parallel to update the underlying system of record asynchronously.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Enable the write coalescing behavior, which ensures that only one update per key per batch hits the
-underlying system of record.</td>
+<td>Enable the write coalescing behavior, which ensures that only one update per key per batch reaches the underlying system of record.</td>
 </tr>
 </table>
 </div>

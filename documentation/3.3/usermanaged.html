@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.3  current ">
+<div class="container-fluid ehcache-documentation v3.3   old  ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -188,7 +188,9 @@
         <h1 class="post-title">
             <span>User managed caches</span>
             
-            <span class="current">CURRENT</span>
+            
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.4">3.4</a></span>
+            
             
         </h1>
         <hr/>
@@ -196,29 +198,35 @@
       </header>
       <article class="post-content">
         <div class="sect1">
-<h2 id="what-are-user-managed-caches-and-what-do-they-offer"><a class="anchor" href="#what-are-user-managed-caches-and-what-do-they-offer"></a>What are user managed caches and what do they offer?</h2>
+<h2 id="overview"><a class="anchor" href="#overview"></a>Overview of User Managed Caches</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>User managed caches is a new concept introduced in Ehcache 3.
-It offers the ability to create caches that are not managed by a <code>CacheManager</code>.
-Hence the name of <em>user managed</em> caches.</p>
-</div>
-<div class="paragraph">
-<p>The objective of this feature is to satisfy cache use cases where the added complexity of a cache manager is of no added value.
-Ideas are: method local caches, thread local caches or any other place where the lifecycle of the cache is shorter than the application lifecycle.</p>
-</div>
 <div class="sect2">
-<h3 id="limitations"><a class="anchor" href="#limitations"></a>Limitations</h3>
+<h3 id="what-are-user-managed-caches-and-what-do-they-offer"><a class="anchor" href="#what-are-user-managed-caches-and-what-do-they-offer"></a>What are user managed caches and what do they offer?</h3>
 <div class="paragraph">
-<p>As there is no longer a cache manager offering up services, the main limitation of user managed caches is that the user has to configure all required services by hand.
-Of course, if you find yourself requiring plenty of services, maybe the cache manager is a better option!</p>
+<p>A user managed cache gives you a simple way to configure a cache directly,
+without the complexity of setting up or using a CacheManager.
+The choice whether to use a <code>UserManagedCache</code> rather than a <code>CacheManager</code> usually depends on
+whether you need all of the built-in functionality of a <code>CacheManager</code>.
+In cases where your cache requirements are relatively straightforward,
+and you do not require the full range of features of a <code>CacheManager</code>, consider using a <code>UserManagedCache</code> instead.</p>
+</div>
+<div class="paragraph">
+<p>Typical scenarios for using a <code>UserManagedCache</code> are: method local caches, thread local caches or any other place
+where the lifecycle of the cache is shorter than the application lifecycle.</p>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="api-extensions"><a class="anchor" href="#api-extensions"></a>API Extensions</h2>
+<div class="sectionbody">
 <div class="sect2">
-<h3 id="api-extensions"><a class="anchor" href="#api-extensions"></a>API extensions</h3>
+<h3 id="user-managed-cache"><a class="anchor" href="#user-managed-cache"></a>User Managed Cache</h3>
 <div class="paragraph">
-<p>If you use a <code>UserManagedCache</code>, you need to configure all required services by hand.
-The <code>UserManagedCache</code> class extends the <code>Cache</code> class by offering additional methods:</p>
+<p>If you use a <code>UserManagedCache</code>, you need to configure all required services by hand.</p>
+</div>
+<div class="paragraph">
+<p>The <code>UserManagedCache</code> class extends the <code>Cache</code> class by offering additional methods:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -234,14 +242,15 @@ The <code>UserManagedCache</code> class extends the <code>Cache</code> class by 
 </ul>
 </div>
 <div class="paragraph">
-<p>The <code>init</code> and <code>close</code> methods deal with the lifecycle of the cache and need to be called explicitly, whereas these methods are hidden when the cache is inside a <code>CacheManager</code>.</p>
+<p>The <code>init</code> and <code>close</code> methods deal with the lifecycle of the cache and need to be called explicitly,
+whereas these methods are hidden when the cache is inside a <code>CacheManager</code>.</p>
 </div>
 <div class="paragraph">
 <p>The interface definition is shown in this code:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">package org.ehcache;
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">package org.ehcache;
 
 import java.io.Closeable;
 
@@ -293,17 +302,25 @@ public interface UserManagedCache&lt;K, V&gt; extends Cache&lt;K, V&gt;, Closeab
 <div class="sect2">
 <h3 id="user-managed-persistent-cache"><a class="anchor" href="#user-managed-persistent-cache"></a>User Managed Persistent Cache</h3>
 <div class="paragraph">
-<p>A user managed persistent cache holds cached data in a persistent store such as disk, so that the stored data can outlive the JVM in which your caching application runs.
-If you want to create a user managed persistent cache, there is an additional interface <code>PersistentUserManagedCache</code> that extends <code>UserManagedCache</code> and adds the <code>destroy</code> method.
-The <code>destroy</code> method deletes all data structures, including data stored persistently on disk, for a <code>PersistentUserManagedCache</code>.
-The <code>destroy</code> method deals with the lifecycle of the cache and needs to be called explicitly.</p>
+<p>A user managed persistent cache holds cached data in a persistent store such as disk,
+so that the stored data can outlive the JVM in which your caching application runs.</p>
+</div>
+<div class="paragraph">
+<p>If you want to create a user managed persistent cache,
+there is an additional interface <code>PersistentUserManagedCache</code> that extends <code>UserManagedCache</code> and adds the <code>destroy</code> method.</p>
+</div>
+<div class="paragraph">
+<p>The <code>destroy</code> method deletes all data structures, including data stored persistently on disk, for a <code>PersistentUserManagedCache</code>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>destroy</code> method deals with the lifecycle of the cache and needs to be called explicitly.</p>
 </div>
 <div class="paragraph">
 <p>The interface definition is shown in this code:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">package org.ehcache;
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">package org.ehcache;
 
 /**
  * A {@link UserManagedCache} that holds data that can outlive the JVM.
@@ -327,7 +344,7 @@ public interface PersistentUserManagedCache&lt;K, V&gt; extends UserManagedCache
 </div>
 </div>
 <div class="sect1">
-<h2 id="code-examples-for-user-managed-caches"><a class="anchor" href="#code-examples-for-user-managed-caches"></a>Code examples for User Managed Caches</h2>
+<h2 id="code-examples"><a class="anchor" href="#code-examples"></a>Code examples for User Managed Caches</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="example-of-a-basic-cache-lifecycle"><a class="anchor" href="#example-of-a-basic-cache-lifecycle"></a>Example of a basic cache lifecycle</h3>
@@ -336,7 +353,7 @@ public interface PersistentUserManagedCache&lt;K, V&gt; extends UserManagedCache
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; userManagedCache =
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; userManagedCache =
     UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
         .build(false); <i class="conum" data-value="1"></i><b>(1)</b>
 userManagedCache.init(); <i class="conum" data-value="2"></i><b>(2)</b>
@@ -350,25 +367,26 @@ userManagedCache.close(); <i class="conum" data-value="4"></i><b>(4)</b></code><
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Create a <code>UserManagedCache</code> instance. You can either pass "true" to have the builder <code>init()</code> it for you, or you can pass "false" and it is up to you to <code>init()</code> it prior to using it.</td>
+<td>Create a <code>UserManagedCache</code> instance. You can either pass <code>true</code> to have the builder <code>init()</code> it for you,
+or you can pass <code>false</code> and it is up to you to <code>init()</code> it prior to using it.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Since "false" was passed in step 1, you have to <code>init()</code> the <code>UserManagedCache</code> prior to using it.</td>
+<td>Since <code>false</code> was passed in, you have to <code>init()</code> the <code>UserManagedCache</code> prior to using it.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>You can use the cache exactly as a managed cache</td>
+<td>You can use the cache exactly as a managed cache.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
 <td>In the same vein, a <code>UserManagedCache</code> requires you to close it explicitly using <code>UserManagedCache.close()</code>.
-If you are also using managed caches simultaneously, the <code>CacheManager.close()</code> operation does not impact the user managed cache(s).</td>
+If you are also using managed caches simultaneously, the <code>CacheManager.close()</code> operation would not impact the user managed cache(s).</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>From this basic example, explore the API of <code>UserManagedCacheBuilder</code> to find all the directly available features.</p>
+<p>From this basic example, explore the API of <code>UserManagedCacheBuilder</code> in code or through Javadoc to discover all the directly available features.</p>
 </div>
 <div class="paragraph">
 <p>The following features apply in the exact same way to user managed caches:</p>
@@ -376,10 +394,10 @@ If you are also using managed caches simultaneously, the <code>CacheManager.clos
 <div class="ulist">
 <ul>
 <li>
-<p><a href="serializers-copiers.html">Serializers and copiers</a></p>
+<p><a href="serializers-copiers.html">Serializers and Copiers</a></p>
 </li>
 <li>
-<p><a href="eviction-advisor.html">Eviction advisor</a></p>
+<p><a href="eviction-advisor.html">Eviction Advisors</a></p>
 </li>
 </ul>
 </div>
@@ -387,17 +405,17 @@ If you are also using managed caches simultaneously, the <code>CacheManager.clos
 <p>Simply use the methods from <code>UserManagedCacheBuilder</code> which are equivalent to the ones from <code>CacheConfigurationBuilder</code>.</p>
 </div>
 <div class="paragraph">
-<p>Below we will describe some more advanced setup where there is a need to maintain a service instance in order to have a working user managed cache.</p>
+<p>Below we will describe a more advanced setup where you need to maintain a service instance in order to have a working user managed cache.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="example-with-disk-persistence-and-lifecycle"><a class="anchor" href="#example-with-disk-persistence-and-lifecycle"></a>Example with disk persistence and lifecycle</h3>
 <div class="paragraph">
-<p>If you want to use a disk persistent cache, you will need to create and lifecycle the persistence service.</p>
+<p>If you want to use disk persistent cache, you will need to create and lifecycle the persistence service:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">LocalPersistenceService persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(getStoragePath(), "myUserData"))); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">LocalPersistenceService persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(getStoragePath(), "myUserData"))); <i class="conum" data-value="1"></i><b>(1)</b>
 
 PersistentUserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
     .with(new UserManagedPersistenceContext&lt;Long, String&gt;("cache-name", persistenceService)) <i class="conum" data-value="2"></i><b>(2)</b>
@@ -420,15 +438,16 @@ persistenceService.stop(); <i class="conum" data-value="6"></i><b>(6)</b></code>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Create the persistence service to be used by the cache for storing data on disk</td>
+<td>Create the persistence service to be used by the cache for storing data on disk.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Pass the persistence service to the builder as well as a name for the cache. Note that this will make the builder produce a more specific type: <code>PersistentUserManagedCache</code></td>
+<td>Pass the persistence service to the builder as well as a name for the cache.
+Note that this will make the builder produce a more specific type: <code>PersistentUserManagedCache</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>As usual, indicate here if the data should outlive the cache</td>
+<td>As usual, indicate here if the data should outlive the cache.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -448,9 +467,9 @@ persistenceService.stop(); <i class="conum" data-value="6"></i><b>(6)</b></code>
 <div class="sect2">
 <h3 id="example-with-cache-event-listeners"><a class="anchor" href="#example-with-cache-event-listeners"></a>Example with cache event listeners</h3>
 <div class="paragraph">
-<p>Cache event listeners require executor services to work.
-You will have to provide either a <code>CacheEventDispatcher</code> implementation
-or make use of the default one by providing two executor services: one for ordered events and one for unordered ones.</p>
+<p>Cache event listeners require executor services in order to work.
+You will have to provide either a <code>CacheEventDispatcher</code> implementation or make use of the default one
+by providing two executor services: one for ordered events and one for unordered ones.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -465,11 +484,11 @@ The ordered events executor must be single threaded to guarantee ordering.
 </table>
 </div>
 <div class="paragraph">
-<p>For more information on cache event listeners, see <a href="cache-event-listeners.html">the section dedicated to them</a>.</p>
+<p>For more information on cache event listeners, see the section <a href="cache-event-listeners.html">Cache Event Listeners</a>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
     .withEventExecutors(Executors.newSingleThreadExecutor(), Executors.newFixedThreadPool(5)) <i class="conum" data-value="1"></i><b>(1)</b>
     .withEventListeners(CacheEventListenerConfigurationBuilder
         .newEventListenerConfiguration(ListenerObject.class, EventType.CREATED, EventType.UPDATED)
@@ -493,7 +512,7 @@ cache.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Provide listener configuration using <code>CacheEventListenerConfigurationBuilder</code>.</td>
+<td>Provide a listener configuration using <code>CacheEventListenerConfigurationBuilder</code>.</td>
 </tr>
 </table>
 </div>

@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.3  current ">
+<div class="container-fluid ehcache-documentation v3.3   old  ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -188,7 +188,9 @@
         <h1 class="post-title">
             <span>Thread Pools</span>
             
-            <span class="current">CURRENT</span>
+            
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.4">3.4</a></span>
+            
             
         </h1>
         <hr/>
@@ -196,17 +198,15 @@
       </header>
       <article class="post-content">
         <div class="sect1">
-<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction to Thread Pools</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Some services work asynchronously, hence they require thread pools to perform their tasks. All thread pooling
-facilities are centralized behind the <code>ExecutionService</code> interface.</p>
+<p>Some services work asynchronously, hence they require thread pools to perform their tasks.
+All thread pooling facilities are centralized behind the <code>ExecutionService</code> interface.</p>
 </div>
+<div class="paragraph">
+<p>Let&#8217;s start with a bit of theory.</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="let-s-start-with-a-bit-of-theory"><a class="anchor" href="#let-s-start-with-a-bit-of-theory"></a>Let&#8217;s start with a bit of theory</h2>
-<div class="sectionbody">
 <div class="sect2">
 <h3 id="what-code-executionservice-code-provides"><a class="anchor" href="#what-code-executionservice-code-provides"></a>What <code>ExecutionService</code> provides</h3>
 <div class="paragraph">
@@ -215,15 +215,13 @@ facilities are centralized behind the <code>ExecutionService</code> interface.</
 <div class="ulist">
 <ul>
 <li>
-<p><code>ScheduledExecutorService</code> to schedule tasks, i.e.: tasks that happen repeatedly after a configurable
-delay.</p>
+<p><code>ScheduledExecutorService</code> to schedule tasks, i.e.: tasks that happen repeatedly after a configurable delay.</p>
 </li>
 <li>
 <p>Unordered <code>ExecutorService</code> to execute tasks as soon as a thread is available.</p>
 </li>
 <li>
-<p>Ordered <code>ExecutorService</code> to execute tasks as soon as a thread is available, with the guarantee that tasks
-are going to be executed in the order they were submitted.</p>
+<p>Ordered <code>ExecutorService</code> to execute tasks as soon as a thread is available, with the guarantee that tasks are going to be executed in the order they were submitted.</p>
 </li>
 </ul>
 </div>
@@ -240,8 +238,8 @@ are going to be executed in the order they were submitted.</p>
 This implementation is the default one and requires no configuration at all.</p>
 </li>
 <li>
-<p><code>PooledExecutionService</code> keeps a configurable set of thread pools and divides them to handle all executor service
-requests. This implementation must be configured with a <code>PooledExecutionServiceConfiguration</code> when used.</p>
+<p><code>PooledExecutionService</code> keeps a configurable set of thread pools and divides them to handle all executor service requests.
+This implementation must be configured with a <code>PooledExecutionServiceConfiguration</code> when used.</p>
 </li>
 </ul>
 </div>
@@ -249,13 +247,12 @@ requests. This implementation must be configured with a <code>PooledExecutionSer
 <div class="sect2">
 <h3 id="configuring-code-pooledexecutionservice-code"><a class="anchor" href="#configuring-code-pooledexecutionservice-code"></a>Configuring <code>PooledExecutionService</code></h3>
 <div class="paragraph">
-<p>When you want total control of the threads used by a cache manager and its caches, you have to use a
-<code>PooledExecutionService</code> that itself must be configured as it does not have any defaults.</p>
+<p>When you want total control of the threads used by a cache manager and its caches, you have to use a <code>PooledExecutionService</code>
+that itself must be configured as it does not have any defaults.</p>
 </div>
 <div class="paragraph">
-<p>The <code>PooledExecutionServiceConfigurationBuilder</code> can be used for this purpose, and the resulting configuration it builds
-can simply be added to a <code>CacheManagerBuilder</code> to switch the <code>ExecutionService</code> implementation to a
-<code>PooledExecutionService</code>.</p>
+<p>The <code>PooledExecutionServiceConfigurationBuilder</code> can be used for this purpose, and the resulting configuration it builds can simply be added
+to a <code>CacheManagerBuilder</code> to switch the <code>ExecutionService</code> implementation to a <code>PooledExecutionService</code>.</p>
 </div>
 <div class="paragraph">
 <p>The builder has two interesting methods:</p>
@@ -267,8 +264,8 @@ can simply be added to a <code>CacheManagerBuilder</code> to switch the <code>Ex
 and if thread-using services do not specify a thread pool, this is the one that will be used.</p>
 </li>
 <li>
-<p><code>pool</code> that is used to add a thread pool. There can be as many pools as you wish but services must explicitly be
-configured to make use of them.</p>
+<p><code>pool</code> that is used to add a thread pool.
+There can be as many pools as you wish but services must explicitly be configured to make use of them.</p>
 </li>
 </ul>
 </div>
@@ -281,83 +278,85 @@ configured to make use of them.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Disk store: disk writes are performed asynchronously.
-<code>OffHeapDiskStoreConfiguration</code> is used to configure what thread pool to use at the cache level, while
-<code>OffHeapDiskStoreProviderConfiguration</code> is used to configure what thread pool to use at the cache manager level.</p>
+<p>Disk store: disk writes are performed asynchronously.</p>
+<div class="paragraph">
+<p><code>OffHeapDiskStoreConfiguration</code> is used to configure what thread pool to use at the cache level,
+while <code>OffHeapDiskStoreProviderConfiguration</code> is used to configure what thread pool to use at the cache manager level.</p>
+</div>
 </li>
 <li>
-<p>Write Behind: <code>CacheLoaderWriter</code> write tasks happen asynchronously.
-<code>DefaultWriteBehindConfiguration</code> is used to configure what thread pool to use at the cache level, while
-<code>WriteBehindProviderConfiguration</code> is used to configure what thread pool to use at the cache manager level.</p>
+<p>Write Behind: CacheLoaderWriter write tasks happen asynchronously.</p>
+<div class="paragraph">
+<p><code>DefaultWriteBehindConfiguration</code> is used to configure what thread pool to use at the cache level,
+while <code>WriteBehindProviderConfiguration</code> is used to configure what thread pool to use at the cache manager level.</p>
+</div>
 </li>
 <li>
-<p>Eventing: produced events are queued and sent to the listeners by a thread pool.
-<code>DefaultCacheEventDispatcherConfiguration</code> is used to configure what thread pool to use at the cache level, while
-<code>CacheEventDispatcherFactoryConfiguration</code> is used to configure what thread pool to use at the cache manager level.</p>
+<p>Eventing: produced events are queued and sent to the listeners by a thread pool.</p>
+<div class="paragraph">
+<p><code>DefaultCacheEventDispatcherConfiguration</code> is used to configure what thread pool to use at the cache level,
+while <code>CacheEventDispatcherFactoryConfiguration</code> is used to configure what thread pool to use at the cache manager level.</p>
+</div>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p>The different builders will make use of the right configuration class, you do not have to use those classes directly.
-For instance, calling <code>CacheManagerBuilder.withDefaultDiskStoreThreadPool(String threadPoolAlias)</code> is actually identical
+For instance, calling <code>CacheManagerBuilder.withDefaultDiskStoreThreadPool(String threadPoolAlias)</code> actually is identical
 to calling <code>CacheManagerBuilder.using(new OffHeapDiskStoreProviderConfiguration(threadPoolAlias))</code>.</p>
 </div>
 <div class="paragraph">
-<p>The thread pool can be assigned to a service with the builders by passing a
-<code>threadPoolAlias</code> parameter to the ad-hoc method. When a service isn&#8217;t told anything about what thread pool to use,
-the default thread pool is used.</p>
+<p>The thread pool to use can be configured on a service through the builders by using the methods carrying a <code>ThreadPool</code> related name.
+When a service is not told anything about which thread pool to use, the default thread pool is used.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="in-practice"><a class="anchor" href="#in-practice"></a>In practice</h2>
+<h2 id="using-code"><a class="anchor" href="#using-code"></a>Configuring Thread Pools with Code</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Following are examples of describing how to configure the thread pools the different services will use.</p>
 </div>
 <div class="sect2">
-<h3 id="configuring-with-code"><a class="anchor" href="#configuring-with-code"></a>Configuring with code</h3>
-<div class="sect3">
-<h4 id="disk-store"><a class="anchor" href="#disk-store"></a>Disk store</h4>
+<h3 id="disk-store"><a class="anchor" href="#disk-store"></a>Disk store</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
-    = CacheManagerBuilder.newCacheManagerBuilder()
-    .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
-        .defaultPool("dflt", 0, 10)
-        .pool("defaultDiskPool", 1, 3)
-        .pool("cache2Pool", 2, 2)
-        .build())
-    .with(new CacheManagerPersistenceConfiguration(new File(getStoragePath(), "myData")))
-    .withDefaultDiskStoreThreadPool("defaultDiskPool") <i class="conum" data-value="2"></i><b>(2)</b>
-    .withCache("cache1",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
-            ResourcePoolsBuilder.newResourcePoolsBuilder()
-                .heap(10, EntryUnit.ENTRIES)
-                .disk(10L, MemoryUnit.MB)))
-    .withCache("cache2",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
-            ResourcePoolsBuilder.newResourcePoolsBuilder()
-                .heap(10, EntryUnit.ENTRIES)
-                .disk(10L, MemoryUnit.MB))
-            .withDiskStoreThreadPool("cache2Pool", 2)) <i class="conum" data-value="3"></i><b>(3)</b>
-    .build(true);
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">    CacheManager cacheManager
+        = CacheManagerBuilder.newCacheManagerBuilder()
+        .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+            .defaultPool("dflt", 0, 10)
+            .pool("defaultDiskPool", 1, 3)
+            .pool("cache2Pool", 2, 2)
+            .build())
+        .with(new CacheManagerPersistenceConfiguration(new File(getStoragePath(), "myData")))
+        .withDefaultDiskStoreThreadPool("defaultDiskPool") <i class="conum" data-value="2"></i><b>(2)</b>
+        .withCache("cache1",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                ResourcePoolsBuilder.newResourcePoolsBuilder()
+                    .heap(10, EntryUnit.ENTRIES)
+                    .disk(10L, MemoryUnit.MB)))
+        .withCache("cache2",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                ResourcePoolsBuilder.newResourcePoolsBuilder()
+                    .heap(10, EntryUnit.ENTRIES)
+                    .disk(10L, MemoryUnit.MB))
+                .withDiskStoreThreadPool("cache2Pool", 2)) <i class="conum" data-value="3"></i><b>(3)</b>
+        .build(true);
 
-Cache&lt;Long, String&gt; cache1 =
-    cacheManager.getCache("cache1", Long.class, String.class);
-Cache&lt;Long, String&gt; cache2 =
-    cacheManager.getCache("cache2", Long.class, String.class);
+    Cache&lt;Long, String&gt; cache1 =
+        cacheManager.getCache("cache1", Long.class, String.class);
+    Cache&lt;Long, String&gt; cache2 =
+        cacheManager.getCache("cache2", Long.class, String.class);
 
-cacheManager.close();</code></pre>
+    cacheManager.close();</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure the thread pools. Note that the default one (<code>dflt</code>) is required for the events even when no event
-listener is configured.</td>
+<td>Configure the thread pools. Note that the default one (<code>dflt</code>) is required for the events even when no event listener is configured.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -370,56 +369,54 @@ listener is configured.</td>
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="write-behind"><a class="anchor" href="#write-behind"></a>Write Behind</h4>
+<div class="sect2">
+<h3 id="write-behind"><a class="anchor" href="#write-behind"></a>Write Behind</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
-    = CacheManagerBuilder.newCacheManagerBuilder()
-    .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
-        .defaultPool("dflt", 0, 10)
-        .pool("defaultWriteBehindPool", 1, 3)
-        .pool("cache2Pool", 2, 2)
-        .build())
-    .withDefaultWriteBehindThreadPool("defaultWriteBehindPool") <i class="conum" data-value="2"></i><b>(2)</b>
-    .withCache("cache1",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
-                                      ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
-            .withLoaderWriter(new SampleLoaderWriter&lt;Long, String&gt;(singletonMap(41L, "zero")))
-            .add(WriteBehindConfigurationBuilder
-                .newBatchedWriteBehindConfiguration(1, TimeUnit.SECONDS, 3)
-                .queueSize(3)
-                .concurrencyLevel(1)))
-    .withCache("cache2",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
-                                      ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
-            .withLoaderWriter(new SampleLoaderWriter&lt;Long, String&gt;(singletonMap(41L, "zero")))
-            .add(WriteBehindConfigurationBuilder
-                .newBatchedWriteBehindConfiguration(1, TimeUnit.SECONDS, 3)
-                .useThreadPool("cache2Pool") <i class="conum" data-value="3"></i><b>(3)</b>
-                .queueSize(3)
-                .concurrencyLevel(2)))
-    .build(true);
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">    CacheManager cacheManager
+        = CacheManagerBuilder.newCacheManagerBuilder()
+        .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+            .defaultPool("dflt", 0, 10)
+            .pool("defaultWriteBehindPool", 1, 3)
+            .pool("cache2Pool", 2, 2)
+            .build())
+        .withDefaultWriteBehindThreadPool("defaultWriteBehindPool") <i class="conum" data-value="2"></i><b>(2)</b>
+        .withCache("cache1",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                          ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+                .withLoaderWriter(new SampleLoaderWriter&lt;Long, String&gt;(singletonMap(41L, "zero")))
+                .add(WriteBehindConfigurationBuilder
+                    .newBatchedWriteBehindConfiguration(1, TimeUnit.SECONDS, 3)
+                    .queueSize(3)
+                    .concurrencyLevel(1)))
+        .withCache("cache2",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                          ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+                .withLoaderWriter(new SampleLoaderWriter&lt;Long, String&gt;(singletonMap(41L, "zero")))
+                .add(WriteBehindConfigurationBuilder
+                    .newBatchedWriteBehindConfiguration(1, TimeUnit.SECONDS, 3)
+                    .useThreadPool("cache2Pool") <i class="conum" data-value="3"></i><b>(3)</b>
+                    .queueSize(3)
+                    .concurrencyLevel(2)))
+        .build(true);
 
-Cache&lt;Long, String&gt; cache1 =
-    cacheManager.getCache("cache1", Long.class, String.class);
-Cache&lt;Long, String&gt; cache2 =
-    cacheManager.getCache("cache2", Long.class, String.class);
+    Cache&lt;Long, String&gt; cache1 =
+        cacheManager.getCache("cache1", Long.class, String.class);
+    Cache&lt;Long, String&gt; cache2 =
+        cacheManager.getCache("cache2", Long.class, String.class);
 
-cacheManager.close();</code></pre>
+    cacheManager.close();</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure the thread pools. Note that the default one (<code>dflt</code>) is required for the events even when no event
-listener is configured.</td>
+<td>Configure the thread pools. Note that the default one (<code>dflt</code>) is required for the events even when no event listener is configured.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Tell the <code>CacheManagerBuilder</code> to use a default thread pool for all write-behind caches that don&#8217;t explicitly
-specify one.</td>
+<td>Tell the <code>CacheManagerBuilder</code> to use a default thread pool for all write-behind caches that don&#8217;t explicitly specify one.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -428,49 +425,47 @@ specify one.</td>
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="events"><a class="anchor" href="#events"></a>Events</h4>
+<div class="sect2">
+<h3 id="events"><a class="anchor" href="#events"></a>Events</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
-    = CacheManagerBuilder.newCacheManagerBuilder()
-    .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
-        .pool("defaultEventPool", 1, 3)
-        .pool("cache2Pool", 2, 2)
-        .build())
-    .withDefaultEventListenersThreadPool("defaultEventPool") <i class="conum" data-value="2"></i><b>(2)</b>
-    .withCache("cache1",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
-                                      ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
-            .add(CacheEventListenerConfigurationBuilder
-                .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED)))
-    .withCache("cache2",
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
-                                      ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
-            .add(CacheEventListenerConfigurationBuilder
-                .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED))
-            .withEventListenersThreadPool("cache2Pool")) <i class="conum" data-value="3"></i><b>(3)</b>
-    .build(true);
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">    CacheManager cacheManager
+        = CacheManagerBuilder.newCacheManagerBuilder()
+        .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+            .pool("defaultEventPool", 1, 3)
+            .pool("cache2Pool", 2, 2)
+            .build())
+        .withDefaultEventListenersThreadPool("defaultEventPool") <i class="conum" data-value="2"></i><b>(2)</b>
+        .withCache("cache1",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                          ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+                .add(CacheEventListenerConfigurationBuilder
+                    .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED)))
+        .withCache("cache2",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                          ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+                .add(CacheEventListenerConfigurationBuilder
+                    .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED))
+                .withEventListenersThreadPool("cache2Pool")) <i class="conum" data-value="3"></i><b>(3)</b>
+        .build(true);
 
-Cache&lt;Long, String&gt; cache1 =
-    cacheManager.getCache("cache1", Long.class, String.class);
-Cache&lt;Long, String&gt; cache2 =
-    cacheManager.getCache("cache2", Long.class, String.class);
+    Cache&lt;Long, String&gt; cache1 =
+        cacheManager.getCache("cache1", Long.class, String.class);
+    Cache&lt;Long, String&gt; cache2 =
+        cacheManager.getCache("cache2", Long.class, String.class);
 
-cacheManager.close();</code></pre>
+    cacheManager.close();</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configure the thread pools. Note that there is no default one so all thread-using services must be configured
-with explicit defaults.</td>
+<td>Configure the thread pools. Note that there is no default one so all thread-using services must be configured with explicit defaults.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Tell the <code>CacheManagerBuilder</code> to use a default thread pool to manage events of all caches that don&#8217;t explicitly
-specify one.</td>
+<td>Tell the <code>CacheManagerBuilder</code> to use a default thread pool to manage events of all caches that don&#8217;t explicitly specify one.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -480,11 +475,16 @@ specify one.</td>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="configuring-with-xml"><a class="anchor" href="#configuring-with-xml"></a>Configuring with XML</h3>
+</div>
+<div class="sect1">
+<h2 id="using-xml"><a class="anchor" href="#using-xml"></a>Configuring Thread Pools with XML</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Following is an example describing how to configure the thread pools the different services will use:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">  &lt;thread-pools&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight nowrap"><code class="language-xml" data-lang="xml">  &lt;thread-pools&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     &lt;thread-pool alias="defaultDiskPool" min-size="1" max-size="3"/&gt;
     &lt;thread-pool alias="defaultWriteBehindPool" min-size="1" max-size="3"/&gt;
     &lt;thread-pool alias="cache2Pool" min-size="2" max-size="2"/&gt;
@@ -556,7 +556,6 @@ specify one.</td>
 <td>Configure a specific thread pool for this cache&#8217;s disk store.</td>
 </tr>
 </table>
-</div>
 </div>
 </div>
 </div>

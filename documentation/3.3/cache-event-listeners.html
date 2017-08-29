@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.3  current ">
+<div class="container-fluid ehcache-documentation v3.3   old  ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -188,7 +188,9 @@
         <h1 class="post-title">
             <span>Cache Event Listeners</span>
             
-            <span class="current">CURRENT</span>
+            
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.4">3.4</a></span>
+            
             
         </h1>
         <hr/>
@@ -204,7 +206,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Ehcache 3.1 added clustering support but this is not yet compatible with event listeners.
+Clustering is not yet compatible with event listeners.
 </td>
 </tr>
 </table>
@@ -218,12 +220,11 @@ Ehcache 3.1 added clustering support but this is not yet compatible with event l
 <p>Cache listeners allow implementers to register callback methods that will be executed when a cache event occurs.</p>
 </div>
 <div class="paragraph">
-<p>Listeners are registered at the cache level - and therefore only receive events for caches that they have been
-registered with.</p>
+<p>Listeners are registered at the cache level - and therefore only receive events for caches that they have been registered with.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheEventListenerConfigurationBuilder cacheEventListenerConfiguration = CacheEventListenerConfigurationBuilder
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheEventListenerConfigurationBuilder cacheEventListenerConfiguration = CacheEventListenerConfigurationBuilder
     .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED) <i class="conum" data-value="1"></i><b>(1)</b>
     .unordered().asynchronous(); <i class="conum" data-value="2"></i><b>(2)</b>
 
@@ -281,10 +282,10 @@ Eviction and expiration events can be triggered by both internal processes and b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-center valign-top">input</th>
-<th class="tableblock halign-left valign-top">operation</th>
-<th class="tableblock halign-center valign-top">output</th>
-<th class="tableblock halign-left valign-top">event {key, old-value, new-value}</th>
+<th class="tableblock halign-center valign-top">Initial value</th>
+<th class="tableblock halign-left valign-top">Operation</th>
+<th class="tableblock halign-center valign-top">New value</th>
+<th class="tableblock halign-left valign-top">Event {key, old-value, new-value}</th>
 </tr>
 </thead>
 <tbody>
@@ -363,7 +364,7 @@ Eviction and expiration events can be triggered by both internal processes and b
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Ehcache provides an abstract class <code>CacheEventAdapter</code> for convenient implementation of event listeners when you are interested only in specific events.
+Ehcache provides an abstract class <code>CacheEventAdapter</code> for convenient implementation of event listeners when you are interested only on specific events.
 </td>
 </tr>
 </table>
@@ -371,14 +372,14 @@ Ehcache provides an abstract class <code>CacheEventAdapter</code> for convenient
 </div>
 </div>
 <div class="sect1">
-<h2 id="registering-event-listeners-during-runtime"><a class="anchor" href="#registering-event-listeners-during-runtime"></a>Registering Event Listeners during runtime</h2>
+<h2 id="registering-during-runtime"><a class="anchor" href="#registering-during-runtime"></a>Registering Event Listeners during runtime</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Cache event listeners may also be added and removed while the cache is being used.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">ListenerObject listener = new ListenerObject(); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">ListenerObject listener = new ListenerObject(); <i class="conum" data-value="1"></i><b>(1)</b>
 cache.getRuntimeConfiguration().registerCacheEventListener(listener, EventOrdering.ORDERED,
     EventFiring.ASYNCHRONOUS, EnumSet.of(EventType.CREATED, EventType.REMOVED)); <i class="conum" data-value="2"></i><b>(2)</b>
 
@@ -414,19 +415,30 @@ The following <code>put()</code> and <code>remove()</code> cache calls will have
 </div>
 </div>
 <div class="sect1">
-<h2 id="event-processing-queues"><a class="anchor" href="#event-processing-queues"></a>Event Processing Queues</h2>
+<h2 id="queues"><a class="anchor" href="#queues"></a>Event Processing Queues</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Advanced users may want to tune the level of concurrency which may be used for delivery of events.</p>
+<p>Advanced users may want to tune the level of concurrency which may be used for delivery of events:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
                                                                                       ResourcePoolsBuilder.heap(5L))
     .withDispatcherConcurrency(10) <i class="conum" data-value="1"></i><b>(1)</b>
     .withEventListenersThreadPool("listeners-pool")
     .build();</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Indicate the level of concurrency desired</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This will enable parallel processing of events at the cost of more threads being required by the system.</p>
 </div>
 </div>
 </div>

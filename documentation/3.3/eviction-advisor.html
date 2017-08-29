@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.3  current ">
+<div class="container-fluid ehcache-documentation v3.3   old  ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -188,7 +188,9 @@
         <h1 class="post-title">
             <span>Eviction Advisor</span>
             
-            <span class="current">CURRENT</span>
+            
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.4">3.4</a></span>
+            
             
         </h1>
         <hr/>
@@ -208,8 +210,7 @@ This is an advanced topic/feature that will not be of interest to most users.
 </table>
 </div>
 <div class="paragraph">
-<p>You can affect which elements are selected for eviction from the cache by providing a class that implements the
-<code>org.ehcache.config.EvictionAdvisor</code> interface.</p>
+<p>You can affect which elements are selected for eviction from the cache by providing a class that implements the <code>org.ehcache.config.EvictionAdvisor</code> interface.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -218,23 +219,23 @@ This is an advanced topic/feature that will not be of interest to most users.
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Eviction advisors are not used for clustered storage tiers.
-For example, in a cache with a heap tier and clustered storage tier,
-the heap tier will use the eviction advisor but the clustered storage tier will evict independently, irrespective of the eviction advisor.
-The description below applies to using an eviction advisor for the cache tiers other than a clustered storage tier.
+<div class="paragraph">
+<p>Eviction advisors are not used for clustered storage tiers.
+For example, in a cache with a heap tier and clustered storage tier, the heap tier will use the eviction advisor but the clustered storage tier will evict independently, irrespective of the eviction advisor.
+The description below applies to using an eviction advisor for the cache tiers other than a clustered storage tier.</p>
+</div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p><code>EvictionAdvisor</code> implementations are invoked when Ehcache attempts to evict entries from the cache
-(in order to make room for new entries) in order to determine whether the given entry should not be considered
-a good candidate for eviction.  If the eviction is advised against, Ehcache will try to honor the preference of
-preserving that entry in the cache, though there is no full guarantee of such.</p>
+<p><code>EvictionAdvisor</code> implementations are invoked when Ehcache is attempting to evict entries from the cache
+(in order to make room for new entries) in order to determine whether the given entry should not be considered a good candidate for eviction.
+If the eviction is advised against, Ehcache will try to honor the preference of preserving that entry in the cache, though there is no full guarantee of such.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
                                                                                     ResourcePoolsBuilder.heap(2L)) <i class="conum" data-value="1"></i><b>(1)</b>
     .withEvictionAdvisor(new OddKeysEvictionAdvisor&lt;Long, String&gt;()) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();
@@ -261,16 +262,14 @@ cacheManager.close();</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>If you want to give the the eviction algorithm a hint to advise against the eviction of some mappings, you have to configure an instance of <code>EvictionAdvisor</code>.</td>
+<td>If you want to give the eviction algorithm a hint to advise against the eviction of some mappings, you have to configure an instance of <code>EvictionAdvisor</code>.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
 <p>In this particular example, the <code>OddKeysEvictionAdvisor</code> class will advise against eviction of any key that is an odd number.
-The cache is constrained to only be allowed to contain two entries, however the code has put three entries
-into the cache - which will trigger capacity eviction.
-By the time the cache manager gets closed, only mappings with odd keys should be left in the cache as their
-prime candidacy for eviction would have been advised against.</p>
+The cache is constrained to only be allowed to contain two entries, however the code has put three entries into the cache - which will trigger capacity eviction.
+By the time the cache manager gets closed, only mappings with odd keys should be left in the cache as their prime candidacy for eviction would have been advised against.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -279,8 +278,10 @@ prime candidacy for eviction would have been advised against.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Eviction advisory status is computed when a mapping is written to the cache.
-This means that proper eviction advisor implementations are expected to be constant for a key-value pair.
+<div class="paragraph">
+<p>Eviction advisor may only be invoked when a mapping is written to the cache.
+This means that proper eviction advisor implementations are expected to be constant for a key-value pair.</p>
+</div>
 </td>
 </tr>
 </table>
@@ -292,10 +293,10 @@ This means that proper eviction advisor implementations are expected to be const
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Please keep in mind that configuring an eviction advisor can slow down eviction: the more often you advise against
-eviction, the harder the cache has to work to evict an element when room is required. After a certain time, if a cache
-determines that the configured eviction advisor rejected too many eviction candidates, the cache can decide to completely
-bypass the eviction advisor and evict anything it sees fit.
+<div class="paragraph">
+<p>Please keep in mind that configuring an eviction advisor can slow down eviction: the more often you advise against eviction, the harder the cache has to work to evict an element when room is required.
+After a certain time, if a cache determines that the configured eviction advisor rejected too many eviction candidates, the cache can decide to completely bypass the eviction advisor and evict anything it sees fit.</p>
+</div>
 </td>
 </tr>
 </table>

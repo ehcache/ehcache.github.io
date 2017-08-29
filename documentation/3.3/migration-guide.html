@@ -136,7 +136,7 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.3  current ">
+<div class="container-fluid ehcache-documentation v3.3   old  ">
 
 
   <div class="row row-offcanvas row-offcanvas-left">
@@ -188,15 +188,16 @@
         <h1 class="post-title">
             <span>Migration Guide</span>
             
-            <span class="current">CURRENT</span>
+            
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.4">3.4</a></span>
+            
             
         </h1>
         <hr/>
         
       </header>
       <article class="post-content">
-        <div class="sect1">
-<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+        <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>This guide provides sample code snippets to help migrate Ehcache 2.x code to Ehcache 3.x code.</p>
@@ -210,14 +211,16 @@
 <p>Per mapping expiry covers use cases where a subset of mappings have different expiration settings than the ones configured at the cache level.</p>
 </div>
 <div class="sect2">
-<h3 id="ehcache-2-x-code-snippet"><a class="anchor" href="#ehcache-2-x-code-snippet"></a>Ehcache 2.x Code snippet</h3>
+<h3 id="ehcache-2-x-code"><a class="anchor" href="#ehcache-2-x-code"></a>Ehcache 2.x Code</h3>
 <div class="paragraph">
-<p>Here we are creating a cache manager having a default time-to-live (TTL) expiry.<br>
-Before adding we verify the expiry and set it on the Element only when different than the Cache one.</p>
+<p>Here we are creating a cache manager that has a default time-to-live (TTL) expiry.</p>
+</div>
+<div class="paragraph">
+<p>Before adding, we verify the expiry and set it on the <code>Element</code> only when different than the <code>Cache</code> expiry.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">int defaultCacheTTLInSeconds = 20;
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">int defaultCacheTTLInSeconds = 20;
 
 CacheManager cacheManager = initCacheManager();
 CacheConfiguration cacheConfiguration = new CacheConfiguration().name("cache")
@@ -251,11 +254,11 @@ System.out.println(cacheManager.getCache("cache").get(10L));</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Compute the mapping expiry using helper method getTimeToLiveInSeconds.</td>
+<td>Compute the mapping expiry using the helper method <code>getTimeToLiveInSeconds</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Only setting the computed expiry on element, if other than default expiry.</td>
+<td>Only setting the computed expiry on element if other than default expiry.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -265,13 +268,14 @@ System.out.println(cacheManager.getCache("cache").get(10L));</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="corresponding-ehcache-3-x-code-snippet"><a class="anchor" href="#corresponding-ehcache-3-x-code-snippet"></a>Corresponding Ehcache 3.x Code Snippet</h3>
+<h3 id="corresponding-ehcache-3-x-code"><a class="anchor" href="#corresponding-ehcache-3-x-code"></a>Corresponding Ehcache 3.x Code</h3>
 <div class="paragraph">
-<p>Here we are creating a cache manager with a cache configuration having custom expiry, having methods to be called during the lifecycle of added mappings.</p>
+<p>Here we are creating a cache manager with a cache configuration specifying a custom expiry,
+having dedicated logic in the methods called during the lifecycle of added and updated mappings.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = initCacheManager();
+<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManager cacheManager = initCacheManager();
 CacheConfigurationBuilder&lt;Long, String&gt; configuration =
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder
         .heap(100))
@@ -308,11 +312,11 @@ System.out.println(cache.get(10L));</code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Defining Custom Expiry to be called during the lifecycle of added mappings.</td>
+<td>Defining custom expiry to be called during the lifecycle of added mappings.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>During mapping creation, defining expiry duration using the helper method getTimeToLiveDuration.</td>
+<td>During mapping creation, defining expiry duration using the helper method <code>getTimeToLiveDuration</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -320,12 +324,9 @@ System.out.println(cache.get(10L));</code></pre>
 </tr>
 </table>
 </div>
-<div class="sidebarblock">
-<div class="content">
 <div class="paragraph">
-<p>So to migrate the Ehcache 2.x per mapping expiry code to Ehcache 3.x, move expiry computation logic to getExpiryForCreation method of Custom Expiry.</p>
-</div>
-</div>
+<p>So to migrate the former Ehcache per mapping expiry code to the current version of Ehcache,
+move the expiry computation logic to the <code>getExpiryForCreation</code> method of the created custom expiry.</p>
 </div>
 </div>
 </div>
