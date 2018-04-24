@@ -1,0 +1,38 @@
+<!DOCTYPE html ><html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8"><meta http-equiv="Content-Style-Type" content="text/css"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Cache Event Listeners</title><link rel="Prev" href="co-cmlst_implementing_cachemanager_listener.html" title="Previous"><link rel="Next" href="co-clst_about_cache_listeners.html" title="Next"><link rel="StyleSheet" href="css/aaa_ehcache_all.css" type="text/css" media="all"><link rel="StyleSheet" href="css/skin.css" type="text/css" media="all"><link rel="StyleSheet" href="css/social.css" type="text/css" media="all"><link rel="StyleSheet" href="css/webworks.css" type="text/css" media="all"><!--[if IE 7]><link rel="StyleSheet" href="css/aaa_ehcache_all_IE7.css" type="text/css" media="all"><![endif]--><link rel="StyleSheet" href="css/print.css" type="text/css" media="print"><script type="text/javascript">
+    'use strict';
+
+    var redirect_url, page_hash;
+
+    if (window === window.top) {
+        // Redirect
+        //
+        redirect_url = "../index.html#page/Ehcache_Documentation_Set/to-clst_cache_event_listeners.html";
+        if (window.document.location.hash.length > 1) {
+            // Sanitize and append it
+            //
+            page_hash = window.document.location.hash.substring(1);
+            page_hash = page_hash.replace(/[\\><:;"]|%5C|%3C|%3E|%3A|%3B|%22/gi, '');
+            redirect_url += '#' + page_hash;
+        }
+        window.document.location.replace(redirect_url);
+    }
+</script><script type="text/javascript" src="scripts/common.js"></script><script type="text/javascript" src="scripts/page.js"></script><script type="text/javascript" src="scripts/search-client.js"></script><script type="text/javascript" src="scripts/unidata.js"></script><script type="text/javascript" src="scripts/unibreak.js"></script></head><body id="pVFaH9X_002fY8nEPCJ9BnWS_002bhg" class="ww_skin_page_body" onload="Page.OnLoad('../index.html#page/Ehcache_Documentation_Set/to-clst_cache_event_listeners.html');"><header id="wwconnect_header"><!-- Produkt Name und Version in Breadcrumbs SQ --><div class="ww_skin_breadcrumbs"><span>Ehcache</span>&nbsp;<span>2.10.5</span> |
+        <span class="ww_skin_breadcrumbs_parent"><a href="../Ehcache_Documentation_Set/to-title_product_documentation.html#wwconnect_header">Product Documentation</a></span><span class="ww_skin_breadcrumbs_divider"> | </span><span class="ww_skin_breadcrumbs_parent"><a href="../Ehcache_Documentation_Set/to-title_ehcache_developer_guide.html#wwconnect_header">Ehcache Developer Guide</a></span><span class="ww_skin_breadcrumbs_divider"> | </span><span class="ww_skin_breadcrumbs_current">Cache Event Listeners</span></div><div class="ww_skin_page_toolbar"><a class="ww_behavior_print ww_skin ww_skin_print" title="Print" href="#">&nbsp;</a></div></header><div id="ww3_13_8_27_1" class="Chapter">Cache Event Listeners</div><div class="WebWorks_MiniTOC"><div class="WebWorks_MiniTOC_Heading">&nbsp;</div><dl class="WebWorks_MiniTOC_List"><dd><div class="WebWorks_MiniTOC_Entry"><a class="WebWorks_MiniTOC_Link" href="../Ehcache_Documentation_Set/co-clst_about_cache_listeners.html#wwconnect_header">About Cache Event Listeners</a></div></dd><dd><div class="WebWorks_MiniTOC_Entry"><a class="WebWorks_MiniTOC_Link" href="../Ehcache_Documentation_Set/co-clst_configuring_cache_listener.html#wwconnect_header">Configuring a Cache Event Listener</a></div></dd><dd><div class="WebWorks_MiniTOC_Entry"><a class="WebWorks_MiniTOC_Link" href="../Ehcache_Documentation_Set/co-clst_implementing_listener_factory.html#wwconnect_header">Implementing a Cache Event Listener Factory and Cache Event Listener</a></div></dd><dd><div class="WebWorks_MiniTOC_Entry"><a class="WebWorks_MiniTOC_Link" href="../Ehcache_Documentation_Set/co-clst_adding_listener_programatically.html#wwconnect_header">Adding a Listener Programmatically</a></div></dd></dl></div><footer><!-- Related Topics --><!--                --><!--      <!-\- Back to Top -\->
+      <!-\-             -\->
+      <div wwpage:condition="back-to-top-enabled" id="back_to_top" class="ww_skin_page_back_to_top">
+        <wwexsldoc:NoBreak>
+
+        <a class="ww_behavior_back_to_top" href="#" title="To top" wwpage:attribute-title="back-to-top-title" wwpage:content="back-to-top-title">To top</a>
+      </div>--><!-- Disqus --><!--        --><!-- Google Translation --><!--                    --><br></footer><div><hr style="border:1px solid; border-color: #0899cc; "><div style="font-family: 'Roboto', Sans-Serif; font-size: 10px; margin-top: 6px; margin-bottom: 6px; text-align: center;"><a href="http://www.softwareag.com/licenses">Copyright © <span>2010</span><span>-2018</span><span></span><span></span> | Software AG, Darmstadt, Germany and/or Software AG USA, Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.</a><br>Innovation Release</div></div><!--	 <div style="font-family: 'Roboto', Sans-Serif; font-size: 11px; margin-top: 20px; margin-bottom: 20px;"><span class="xref"><a href="http://softwareag.com/licenses/" target="external_window">Copyright &#169; <span wwpage:content="copyright-first">First cpyr from map</span><span wwpage:content="copyright-last">Last cpyr from map</span><span wwpage:content="copyright-first-b">First cpyr from book</span><span wwpage:content="copyright-last-b">Last cpyr from book</span> Software AG, Darmstadt, Germany</a></span>.</div>
+     <hr/>
+    </div>
+	<div style="font-family: 'Roboto', Sans-Serif; font-size: 13px; font-weight: bold; margin-top: 20px;">
+     <span>	   
+	   <img style="vertical-align:middle" src="../connect/product_online.png" alt="Product Logo">
+	   <a href="https://empower.softwareag.com/ContactSupport/default.asp" target="_blank" >Contact&#160;Support</a>
+         &#160;&#160;|&#160;&#160;
+       <a href="http://www.softwareag.com/corporate/community/default.asp" target="_blank" >Community</a>
+         &#160;&#160;|&#160;&#160;
+       <a href="mailto://documentation@softwareag.com" target="_blank" >Feedback&#160;&#160;</a>
+	 </span>	 
+	</div> --></body></html>

@@ -1,0 +1,19 @@
+var pairs =
+{
+"junit":{"tests":1,"test":1}
+,"tests":{"ehcache":1,"code":1,"https:\u002F\u002Ffisheye.terracotta.org\u002Fbrowse\u002Fehcache\u002Fbranches\u002Fehcache-2.10.1\u002Fehcache-core\u002Fsrc\u002Ftest\u002Fjava\u002Fnet\u002Fsf\u002Fehcache\u002Fsearch":1,"available":1}
+,"ehcache":{"comes":1,"api":1,"tarball":1}
+,"comes":{"comprehensive":1}
+,"comprehensive":{"junit":1}
+,"test":{"suite":1}
+,"suite":{"tests":1}
+,"code":{"shows":1}
+,"shows":{"ehcache":1}
+,"api":{"browse":1}
+,"browse":{"available":1}
+,"available":{"tests":1,"src.zip":1}
+,"https:\u002F\u002Ffisheye.terracotta.org\u002Fbrowse\u002Fehcache\u002Fbranches\u002Fehcache-2.10.1\u002Fehcache-core\u002Fsrc\u002Ftest\u002Fjava\u002Fnet\u002Fsf\u002Fehcache\u002Fsearch":{"unit":1}
+,"unit":{"tests":1}
+,"src.zip":{"ehcache":1}
+}
+;Search.control.loadWordPairs(pairs);

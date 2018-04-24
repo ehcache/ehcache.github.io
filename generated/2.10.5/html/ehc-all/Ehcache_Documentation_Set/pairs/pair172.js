@@ -1,0 +1,22 @@
+var pairs =
+{
+"shutdown":{"ehcache":1,"hook":1}
+,"ehcache":{"shut":1,"api":1,"cachemanager":1,"call":1,"shutdownlistener":1}
+,"shut":{"down":1}
+,"down":{"ehcache":1}
+,"api":{"note":1}
+,"note":{"hibernate":1}
+,"hibernate":{"automatically":1}
+,"automatically":{"shuts":1}
+,"shuts":{"down":1}
+,"cachemanager":{"recommended":1}
+,"recommended":{"shutdown":1,"register":1}
+,"call":{"cachemanager.shutdown":1}
+,"cachemanager.shutdown":{"web":1}
+,"web":{"app":1}
+,"app":{"register":1}
+,"register":{"ehcache":1,"jvm":1}
+,"shutdownlistener":{"recommended":1}
+,"jvm":{"shutdown":1}
+}
+;Search.control.loadWordPairs(pairs);
