@@ -11,6 +11,7 @@ steps:
   persistCredentials: 'true'
   clean: 'true'
 - bash: |
+    set -x
     git config --local user.name "autogen"
     git config --local user.email "autogen-noreply@no-reply.softwareag.com"
     cat .git/config
@@ -19,7 +20,9 @@ steps:
     date > akom.was.here
     git add akom.was.here
     git commit -m 'test commit'
-    git push https://github.com/ehcache/ehcache.org-site gh-pages
+    git remote set-url origin https://github.com/ehcache/ehcache.org-site
+    git remote set-url --push origin https://github.com/ehcache/ehcache.org-site
+    git push
   displayName: 'Test commit capability'
 - task: Docker@0
   displayName: 'Run Jekyll'
