@@ -20,3 +20,7 @@ steps:
       $(build.binariesDirectory):/srv/jekyll/_site
     containerCommand: 'bundle install ; jekyll build"'
     detached: false
+- bash: |
+    ls -ltr
+    git checkout gh-pages
+    ls -ltr
