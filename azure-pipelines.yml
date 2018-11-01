@@ -10,9 +10,17 @@ steps:
 - checkout: self
   persistCredentials: 'true'
   clean: 'true'
+- bash: |
+    git config --local user.name "autogen"
+    git config --local user.email "autogen-noreply@no-reply.softwareag.com"
+    git checkout gh-pages
+    date > akom.was.here
+    git add akom.was.here
+    git commit -m 'test commit'
+    git push
 - task: Docker@0
   displayName: 'Run Jekyll'
- inputs:
+  inputs:
     containerRegistryType: 'Container Registry'
     action: 'Run an image'
     imageName: 'jekyll/builder:latest'
