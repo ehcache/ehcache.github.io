@@ -8,11 +8,11 @@ pool:
 
 steps:
 - checkout: self
-  persistCredentials: true
-  clean: true
+  persistCredentials: 'true'
+  clean: 'true'
 - task: Docker@0
   displayName: 'Run Jekyll'
-  inputs:
+ inputs:
     containerRegistryType: 'Container Registry'
     action: 'Run an image'
     imageName: 'jekyll/builder:latest'
@@ -22,8 +22,8 @@ steps:
     containerCommand: 'sh -x -c "bundle install -V ; JEKYLL_ENV=production jekyll build -V"'
     detached: false
 - bash: |
-    #git config --local user.name "autogen"
-    #git config --local user.email "autogen-noreply@no-reply.softwareag.com"
+    git config --local user.name "autogen"
+    git config --local user.email "autogen-noreply@no-reply.softwareag.com"
     set -x
     ls -ltr
     pwd 
