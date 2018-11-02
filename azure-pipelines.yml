@@ -13,7 +13,7 @@ steps:
 - task: YodLabs.VariableTasks.SetVariablesWithCredentials.SetVariablesWithCredentials@0
   displayName: 'Set user to variable with name U and password to variable with name P'
   inputs:
-    ConnectionName: akomtestconnection
+    ConnectionName: gh-push-tc-org
     userNameVarName: U
     passwordVarName: P  
 - bash: |
@@ -28,9 +28,9 @@ steps:
     date > akom.was.here
     git add akom.was.here
     git commit -m 'test commit'
-    git remote set-url origin https://github.com/ehcache/ehcache.org-site
-    git remote set-url --push origin https://github.com/ehcache/ehcache.org-site
-    git push
+    #git remote set-url origin https://github.com/ehcache/ehcache.org-site
+    #git remote set-url --push origin https://github.com/ehcache/ehcache.org-site
+    git push https://$U:$P@github.com/ehcache/ehcache.org-site
   displayName: 'Test commit capability'
 - task: Docker@0
   displayName: 'Run Jekyll'
