@@ -11,11 +11,17 @@ steps:
   persistCredentials: 'true'
   clean: 'true'
 - task: YodLabs.VariableTasks.SetVariablesWithCredentials.SetVariablesWithCredentials@0
-  displayName: 'Set user to variable with name U and password to variable with name P'
+  displayName: 'Github auth'
   inputs:
     ConnectionName: gh-push-tc-org
     userNameVarName: U
     passwordVarName: P  
+- task: YodLabs.VariableTasks.SetVariablesWithCredentials.SetVariablesWithCredentials@0
+  displayName: 'Netlify auth'
+  inputs:
+    ConnectionName: netlify-ehcache
+    userNameVarName: NETLIFY_SITE_ID
+    passwordVarName: NETLIFY_AUTH_TOKEN  
 - task: Docker@0
   displayName: 'Run Jekyll'
   inputs:
@@ -28,6 +34,11 @@ steps:
     containerCommand: 'sh -x -c "bundle install -V ; JEKYLL_ENV=production jekyll build -V"'
     detached: false
 - bash: |
+    npm install netlify-cli
+    $(npm bin)/netlify deploy -d $BUILD_BINARIESDIRECTORY
+  displayName: 'Netlify Publish'
+- bash: |
+    return # don't do this right now
     git config --local user.name "autogen"
     git config --local user.email "autogen-noreply@no-reply.softwareag.com"
     echo Will push as $U
