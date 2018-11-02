@@ -10,9 +10,6 @@ steps:
 - checkout: self
   persistCredentials: 'true'
   clean: 'true'
-- bash: |
-    bash -e get-deps.sh
-  displayName: 'Get Deps'
 - task: YodLabs.VariableTasks.SetVariablesWithCredentials.SetVariablesWithCredentials@0
   displayName: 'Github auth'
   inputs:
@@ -34,16 +31,13 @@ steps:
     volumes: |
       $(build.sourcesDirectory):/srv/jekyll
       $(build.binariesDirectory):/srv/jekyll/_site
-    containerCommand: 'sh -x -c "bundle install -V ; JEKYLL_ENV=production jekyll build -V"'
+    containerCommand: 'sh -x -c "bundle install -V && bash -e get-deps.sh && JEKYLL_ENV=production jekyll build -V && bundle exec htmlproofer --only-4xx --empty-alt-ignore --check-html --checks-to-ignore ImageCheck --file-ignore \"/apidocs/,/generated/\" --log-level debug _site"'
     detached: false
 - bash: |
     echo disabled ; exit
     npm install netlify-cli
     $(npm bin)/netlify deploy -d $BUILD_BINARIESDIRECTORY
-  displayName: 'Netlify Publish'
-- bash: |
-    bundle exec htmlproofer --extension .html $BUILD_BINARIESDIRECTORY
-  displayName: 'HTML Proofer'
+  displayName: 'Netlify Publish (disabled)'
 - bash: |
     git config --local user.name "autogen"
     git config --local user.email "autogen-noreply@no-reply.softwareag.com"
