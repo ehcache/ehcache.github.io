@@ -31,8 +31,8 @@ steps:
     volumes: |
       $(build.sourcesDirectory):/srv/jekyll
       $(build.binariesDirectory):/srv/jekyll/_site
-    #containerCommand: 'sh -x -c "bundle install -V && bash -e get-deps.sh && JEKYLL_ENV=production jekyll build -V && bundle exec htmlproofer --only-4xx --empty-alt-ignore --check-html --checks-to-ignore ImageCheck --file-ignore \"/apidocs/,/generated/\" --log-level debug _site"'
-    containerCommand: 'sh -x -c "bundle install -V && bash -e get-deps.sh && JEKYLL_ENV=production jekyll build -V "'
+    #containerCommand: 'sh -x -c "bundle install && bash -e get-deps.sh && JEKYLL_ENV=production jekyll build && bundle exec htmlproofer --only-4xx --empty-alt-ignore --check-html --checks-to-ignore ImageCheck --file-ignore \"/apidocs/,/generated/\" --log-level debug _site"'
+    containerCommand: 'sh -x -c "bundle install && bash -e get-deps.sh && JEKYLL_ENV=production jekyll build"'
     detached: false
 - bash: |
     set -e
@@ -43,14 +43,11 @@ steps:
     cd remote-site
     echo "Target dir:"
     ls -l
-    echo "Events in target:" ; ls -l events
     echo "Generated dir:"
     ls -l $BUILD_BINARIESDIRECTORY
-    echo "Events in generated:" ; ls -l $BUILD_BINARIESDIRECTORY/events
     rsync -a --delete --exclude .git --exclude CNAME $BUILD_BINARIESDIRECTORY/ .
     echo "Result:"
     ls -l 
-    echo "Events in result:" ; ls -l events
     git config --local user.name "autogen"
     git config --local user.email "autogen-noreply@no-reply.softwareag.com"
     echo Will push as $U
