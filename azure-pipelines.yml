@@ -43,11 +43,14 @@ steps:
     cd remote-site
     echo "Target dir:"
     ls -l
+    echo "Events in target:" ; ls -l events
     echo "Generated dir:"
     ls -l $BUILD_BINARIESDIRECTORY
+    echo "Events in generated:" ; ls -l $BUILD_BINARIESDIRECTORY/events
     rsync -a --delete --exclude .git --exclude CNAME $BUILD_BINARIESDIRECTORY/ .
     echo "Result:"
     ls -l 
+    echo "Events in result:" ; ls -l events
     git config --local user.name "autogen"
     git config --local user.email "autogen-noreply@no-reply.softwareag.com"
     echo Will push as $U
