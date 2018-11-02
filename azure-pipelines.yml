@@ -10,8 +10,16 @@ steps:
 - checkout: self
   persistCredentials: 'true'
   clean: 'true'
+- task: YodLabs.VariableTasks.SetVariablesWithCredentials.SetVariablesWithCredentials@0
+  displayName: 'Set user to variable with name U and password to variable with name P'
+  inputs:
+    ConnectionName: akomtestconnection
+    userNameVarName: U
+    passwordVarName: P  
 - bash: |
     set -x
+    echo $U
+    env
     git config --local user.name "autogen"
     git config --local user.email "autogen-noreply@no-reply.softwareag.com"
     cat .git/config
