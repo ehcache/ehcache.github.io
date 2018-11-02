@@ -45,7 +45,7 @@ steps:
     ls -l
     echo "Generated dir:"
     ls -l $BUILD_BINARIESDIRECTORY
-    rsync -a --delete --exclude .git --exclude CNAME $BUILD_BINARIESDIRECTORY/* .
+    rsync -a --delete --exclude .git --exclude CNAME $BUILD_BINARIESDIRECTORY/ .
     echo "Result:"
     ls -l 
     git config --local user.name "autogen"
