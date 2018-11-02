@@ -41,8 +41,9 @@ steps:
     COMMIT=$(git rev-parse HEAD)
     git checkout gh-pages
     ls -l 
-    chmod -R a+rw .
-    find . -type d -exec chmod -R a+rxw {} \;
+    sudo chown -R $(id -u):$(id -g) .
+    #chmod -R a+rw .
+    #find . -type d -exec chmod -R a+rxw {} \;
     rsync -a --delete --exclude .git --exclude CNAME $BUILD_BINARIESDIRECTORY/* "${BUILD_SOURCESDIRECTORY}/"
     git add -A .
     git status
