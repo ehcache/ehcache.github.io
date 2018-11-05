@@ -314,7 +314,10 @@ The allowed values are:</p>
 <p>The default value is off.
 Enabling a cache for <code class="highlighter-rouge">xa_strict</code> transactions is shown in the following example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="xaCache"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="xaCache"
    maxEntriesLocalHeap="500"
    eternal="false"
    timeToIdleSeconds="300"
@@ -323,7 +326,9 @@ Enabling a cache for <code class="highlighter-rouge">xa_strict</code> transactio
    transactionalMode="xa_strict"&gt;
    &lt;persistence strategy="none"/&gt;
  &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="transactional-caches-with-spring">Transactional Caches with Spring</h3>
@@ -382,7 +387,10 @@ JTA from within Spring or EJB where the container rather than managing it themse
 on.
 The following snippet from our SimpleTX servlet shows a complete transaction.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Ehcache cache = cacheManager.getEhcache("xaCache");
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Ehcache cache = cacheManager.getEhcache("xaCache");
 UserTransaction ut = getUserTransaction();
 printLine(servletResponse, "Hello...");
 try {
@@ -400,7 +408,9 @@ try {
    "/&gt;
    rollbackTransaction(ut);
 "/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The source code for the demo can be checked out from the <a href="http://svn.terracotta.org/svn/forge/projects/ehcache-jta-sample/trunk">Terracotta Forge</a>. A README.txt explains how to get the JTA Sample app going.</p>
@@ -443,19 +453,29 @@ The first found is used.</p>
 and specify it in place of
 the <code class="highlighter-rouge">DefaultTransactionManagerLookup</code> in <code class="highlighter-rouge">ehcache.xml</code>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;transactionManagerLookup
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;transactionManagerLookup
   class= "com.mycompany.transaction.manager.MyTransactionManagerLookupClass"
   properties="" propertySeparator=":"/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Another option is to provide a different location for the JNDI lookup by passing the jndiName property to the DefaultTransactionManagerLookup.
 The example below provides the proper location for the TransactionManager in GlassFish v3:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;transactionManagerLookup
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;transactionManagerLookup
   class="net.sf.ehcache.transaction.manager.DefaultTransactionManagerLookup"
   properties="jndiName=java:appserver/TransactionManager" propertySeparator=";"/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="local-transactions">Local Transactions</h2>
@@ -489,11 +509,16 @@ Local Transactions has it’s own exceptions that can be thrown, which are all s
 <h3 id="configuration-1">Configuration</h3>
 <p>Local transactions are configured as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="sampleCache"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="sampleCache"
    ...
    transactionalMode="local"
  &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="isolation-level">Isolation Level</h3>
@@ -506,22 +531,35 @@ Because <code class="highlighter-rouge">TransactionController</code> is at the l
 across all caches in a CacheManager. If not set, it is 15 seconds.
 To change the defaultTimeout:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>transactionController.setDefaultTransactionTimeout(int defaultTransactionTimeoutSeconds)
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>transactionController.setDefaultTransactionTimeout(int defaultTransactionTimeoutSeconds)
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The countdown starts straight after <code class="highlighter-rouge">begin()</code> is called. You might have another local transaction on a JDBC connection and you may
 be making multiple changes. If you think it could take longer than 15 seconds for an individual transaction, you can override the
 default when you begin the transaction with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>transactionController.begin(int transactionTimeoutSeconds) {
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>transactionController.begin(int transactionTimeoutSeconds) {
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="sample-code">Sample Code</h3>
 <p>This example shows a transaction which performs multiple operations across two caches.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CacheManager cacheManager = CacheManager.getInstance();
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>CacheManager cacheManager = CacheManager.getInstance();
 try {
    cacheManager.getTransactionController().begin();
     cache1.put(new Element(1, "one"));
@@ -531,7 +569,9 @@ try {
 } catch (CacheException e) {
    cacheManager.getTransactionController().rollback()
 "/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="what-can-go-wrong">What can go wrong</h3>
@@ -607,14 +647,19 @@ has support for Hibernate entities configured with &lt;cache usage=”transactio
 start the Transaction on each XAResource in parallel. As we need transaction work to be performed on the same Thread, you will have
 to turn this optimization off by setting <code class="highlighter-rouge">parallel-xa-enabled</code> option to <code class="highlighter-rouge">false</code> in your domain configuration :</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;jta&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;jta&gt;
   ...
   &lt;checkpoint-interval-seconds&gt;300&lt;/checkpoint-interval-seconds&gt;
   &lt;parallel-xa-enabled&gt;false&lt;/parallel-xa-enabled&gt;
   &lt;unregister-resource-grace-period&gt;30&lt;/unregister-resource-grace-period&gt;
 ...
 &lt;/jta&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="how-do-i-make-atomikos-work-with-ehcache-jtas-xa-mode">How do I make Atomikos work with Ehcache JTA’s <code class="highlighter-rouge">xa</code> mode?</h3>
@@ -622,8 +667,13 @@ to turn this optimization off by setting <code class="highlighter-rouge">paralle
 There is an alternative termination mechanism built in that transaction mode that is automatically enabled when <code class="highlighter-rouge">net.sf.ehcache.transaction.xa.alternativeTerminationMode</code> is set to true or when Atomikos is detected as the controlling transaction manager.
 This alternative termination mode has strict requirement on the way threads are used by the transaction manager and Atomikos’s default settings won’t work. You have to configure this property to make it work:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>com.atomikos.icatch.threaded_2pc=false
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>com.atomikos.icatch.threaded_2pc=false
+</code>
+      </pre>
+   </div>
 </div>
 
       </article>

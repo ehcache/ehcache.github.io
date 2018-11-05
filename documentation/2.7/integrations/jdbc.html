@@ -237,9 +237,14 @@ to add caching.  To add caching, follow these steps:</p>
 
 <p>Example methods that are commonly cacheable:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="n">V</span> <span class="nf">getById</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">id</span><span class="o">);</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">public</span> <span class="n">V</span> <span class="nf">getById</span><span class="o">(</span><span class="kd">final</span> <span class="n">K</span> <span class="n">id</span><span class="o">);</span>
 <span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="nf">findXXX</span><span class="o">(...);</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="instantiate-a-cache-and-add-a-member-variable">Instantiate a cache and add a member variable</h3>
@@ -292,17 +297,25 @@ will be available shortly.</p>
 <h4 id="cachewrapperjava">CacheWrapper.java</h4>
 <p>Simple get/put wrapper interface.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
   <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">value</span><span class="o">);</span>
   <span class="n">V</span> <span class="nf">get</span><span class="o">(</span><span class="n">K</span> <span class="n">key</span><span class="o">);</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="ehcachewrapperjava">EhcacheWrapper.java</h4>
 <p>The wrapper implementation.  Holds the name so caches can be named.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EhCacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EhCacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">CacheWrapper</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
   <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">;</span>
   <span class="kd">private</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">;</span>
   <span class="kd">public</span> <span class="nf">EhCacheWrapper</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="kd">final</span> <span class="n">CacheManager</span> <span class="n">cacheManager</span><span class="o">)</span> <span class="o">{</span>
@@ -325,13 +338,18 @@ will be available shortly.</p>
     <span class="k">return</span> <span class="n">cacheManager</span><span class="o">.</span><span class="na">getEhcache</span><span class="o">(</span><span class="n">cacheName</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="genericdaojava">GenericDao.java</h4>
 <p>The Generic Dao.  It implements most of the work.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">GenericDao</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span> <span class="kd">extends</span> <span class="n">BaseEntity</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Dao</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">GenericDao</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span> <span class="kd">extends</span> <span class="n">BaseEntity</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Dao</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
   <span class="kd">protected</span> <span class="n">DataSource</span> <span class="n">datasource</span><span class="o">;</span>
   <span class="kd">protected</span> <span class="n">SimpleJdbcTemplate</span> <span class="n">jdbcTemplate</span><span class="o">;</span>
   <span class="cm">/* Here is the cache reference */</span>
@@ -361,7 +379,9 @@ will be available shortly.</p>
   <span class="cm">/** ... **/</span>
   <span class="cm">/** ... **/</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="petdaoimpljava">PetDaoImpl.java</h4>
@@ -369,10 +389,15 @@ will be available shortly.</p>
 <p>The Pet Dao implementation, really it doesn’t need to do anything unless
 specific methods not available via GenericDao are cacheable.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PetDaoImpl</span> <span class="kd">extends</span> <span class="n">GenericDao</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Pet</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">PetDao</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PetDaoImpl</span> <span class="kd">extends</span> <span class="n">GenericDao</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Pet</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">PetDao</span> <span class="o">{</span>
   <span class="cm">/** ... **/</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>We need to configure the JdbcTemplate, Datasource, CacheManager, PetDao, 
@@ -382,7 +407,10 @@ and the Pet cache using the spring configuration file.</p>
 
 <p>The Spring configuration file.</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- datasource and friends --&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="c">&lt;!-- datasource and friends --&gt;</span>
 <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"dataSource"</span> <span class="na">class=</span><span class="s">"org.springframework.jdbc.datasource.FasterLazyConnectionDataSourceProxy"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"targetDataSource"</span> <span class="na">ref=</span><span class="s">"dataSourceTarget"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/bean&gt;</span>
@@ -417,7 +445,9 @@ and the Pet cache using the spring configuration file.</p>
   <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"jdbcTemplate"</span> <span class="na">ref=</span><span class="s">"jdbcTemplate"</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"datasource"</span> <span class="na">ref=</span><span class="s">"dataSource"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/bean&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
       </article>

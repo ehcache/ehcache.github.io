@@ -231,7 +231,10 @@
 
 <p>In code, checking for intentional nulls versus non-existent cache entries may look like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>// cache an explicit null value:
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>// cache an explicit null value:
 
 cache.put(new Element("key", null));
 
@@ -258,19 +261,26 @@ if (element == null) {
     "/&gt;
 
 "/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>And the ehcache.xml file may look like this (making sure to set the maximum time to live setting:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache
     name="some.cache.name"
     maxEntriesLocalHeap="10000"
     eternal="false"
     timeToIdleSeconds="300"
     timeToLiveSeconds="600"
 /&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
       </article>

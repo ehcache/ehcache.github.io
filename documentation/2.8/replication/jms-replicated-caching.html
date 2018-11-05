@@ -329,7 +329,10 @@ Valid properties are:
 
 <p>This configuration works with Active MQ out of the box.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerProviderFactory
        class="net.sf.ehcache.distribution.jms.JMSCacheManagerPeerProviderFactory"
        properties="initialContextFactoryName=ExampleActiveMQInitialContextFactory,
            providerURL=tcp://localhost:61616,
@@ -337,13 +340,18 @@ Valid properties are:
            topicBindingName=ehcache"
        propertySeparator=","
        /&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>You need to provide your own ActiveMQInitialContextFactory for the initialContextFactoryName.
 An example which should work for most purposes is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public class ExampleActiveMQInitialContextFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>public class ExampleActiveMQInitialContextFactory
   extends ActiveMQInitialContextFactory {
     /**
      * {@inheritDoc"/&gt;
@@ -371,13 +379,18 @@ An example which should work for most purposes is:</p>
 	  return createContext(environment, data);
     "/&gt;
 }  
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h6 id="configuring-the-jmscachemanagerpeerproviderfactory-for-open-mq">Configuring the JMSCacheManagerPeerProviderFactory for {Open MQ”/&gt;</h6>
 <p>This configuration works with an out of the box Open MQ.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerProviderFactory
   class="net.sf.ehcache.distribution.jms.JMSCacheManagerPeerProviderFactory"
   properties="initialContextFactoryName=com.sun.jndi.fscontext.RefFSContextFactory,
            providerURL=file:///tmp,
@@ -385,7 +398,9 @@ An example which should work for most purposes is:</p>
            topicBindingName=ehcache"
        propertySeparator=","
        /&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>To set up the Open MQ file system initial context to work with this example use the
@@ -405,7 +420,10 @@ imqobjmgr add -t t -l 'ehcache' -o 'imqDestinationName=EhcacheTopicDest'
 
 <p>See the following example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="sampleCacheAsync"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="sampleCacheAsync"
  maxEntriesLocalHeap="1000"
  eternal="false"
  timeToIdleSeconds="1000"
@@ -421,7 +439,9 @@ imqobjmgr add -t t -l 'ehcache' -o 'imqDestinationName=EhcacheTopicDest'
                   asynchronousReplicationIntervalMillis=1000"
       propertySeparator=","/&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="external-jms-publishers">External JMS Publishers</h3>
@@ -480,7 +500,10 @@ Ehcache’s own JMS integration tests. See the test source for more details.</p>
 
 <p>All samples get a Topic Connection using the following method:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>private TopicConnection getMQConnection() throws JMSException {
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>private TopicConnection getMQConnection() throws JMSException {
   com.sun.messaging.ConnectionFactory factory =
     new com.sun.messaging.ConnectionFactory();
   factory.setProperty(ConnectionConfiguration.imqAddressList, "localhost:7676");
@@ -488,12 +511,17 @@ Ehcache’s own JMS integration tests. See the test source for more details.</p>
   TopicConnection myConnection = factory.createTopicConnection();
   return myConnection;
 "/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="put-a-java-object-into-an-ehcache-cluster">PUT a Java Object into an Ehcache Cluster</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>String payload = "this is an object";
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>String payload = "this is an object";
 TopicConnection connection = getMQConnection();
 connection.start();
 TopicSession publisherSession =
@@ -513,14 +541,19 @@ TopicPublisher publisher = publisherSession.createPublisher(topic);
 publisher.send(message);
 
 connection.stop();
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Ehcache will create an Element in cache “sampleCacheAsync” with key “1234” and a Java class String value of “this is an object”.</p>
 
 <h4 id="put-xml-into-an-ehcache-cluster">PUT XML into an Ehcache Cluster</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>TopicConnection connection = getMQConnection();
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>TopicConnection connection = getMQConnection();
 connection.start();
 TopicSession publisherSession = connection.createTopicSession(false,
   Session.AUTO_ACKNOWLEDGE);
@@ -545,7 +578,9 @@ TopicPublisher publisher = publisherSession.createPublisher(topic);
 publisher.send(message);
 
 connection.stop();
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Ehcache will create an Element in cache “sampleCacheAsync” with key “1234” and a value of type MimeTypeByteArray.</p>
@@ -557,7 +592,10 @@ encoded in bytes, using the platform’s default charset.</p>
 
 <h4 id="put-arbitrary-bytes-into-an-ehcache-cluster">PUT arbitrary bytes into an Ehcache Cluster</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>byte[] bytes = new byte[]{0x34, (byte) 0xe3, (byte) 0x88};
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>byte[] bytes = new byte[]{0x34, (byte) 0xe3, (byte) 0x88};
 TopicConnection connection = getMQConnection();
 connection.start();
 
@@ -574,7 +612,9 @@ message.setStringProperty(KEY_PROPERTY, "1234");
 Topic topic = publisherSession.createTopic("EhcacheTopicDest");
 TopicPublisher publisher = publisherSession.createPublisher(topic);
 publisher.send(message);
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Ehcache will create an Element in cache “sampleCacheAsync” with key “1234” in and a value of type MimeTypeByteArray.</p>
@@ -586,7 +626,10 @@ bytes.</p>
 
 <h4 id="remove">REMOVE</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>TopicConnection connection = getMQConnection();
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>TopicConnection connection = getMQConnection();
 connection.start();
 
 TopicSession publisherSession = connection.createTopicSession(false,
@@ -600,14 +643,19 @@ message.setStringProperty(KEY_PROPERTY, "1234");
 Topic topic = publisherSession.createTopic("EhcacheTopicDest");
 TopicPublisher publisher = publisherSession.createPublisher(topic);
 publisher.send(message);
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Ehcache will remove the Element with key “1234”  from cache “sampleCacheAsync” from the cluster.</p>
 
 <h4 id="remove_all">REMOVE_ALL</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>TopicConnection connection = getMQConnection();
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>TopicConnection connection = getMQConnection();
 connection.start();
 
 TopicSession publisherSession = connection.createTopicSession(false,
@@ -622,7 +670,9 @@ TopicPublisher publisher = publisherSession.createPublisher(topic);
 publisher.send(message);
 
 connection.stop();
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Ehcache will remove all Elements from cache “sampleCacheAsync” in the cluster.</p>
@@ -646,7 +696,10 @@ examples using ActiveMQ and Open Message Queue.</p>
 
 <p>It is configured as per the following example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheLoaderFactory class="net.sf.ehcache.distribution.jms.JMSCacheLoaderFactory"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheLoaderFactory class="net.sf.ehcache.distribution.jms.JMSCacheLoaderFactory"
   properties="initialContextFactoryName=com.sun.jndi.fscontext.RefFSContextFactory,
   providerURL=file:///tmp,
   replicationTopicConnectionFactoryBindingName=MyConnectionFactory,
@@ -655,7 +708,9 @@ examples using ActiveMQ and Open Message Queue.</p>
   getQueueBindingName=ehcacheGetQueue,
   timeoutMillis=20000
   defaultLoaderArgument=/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Valid properties are:</p>
@@ -679,7 +734,10 @@ this default value will be used. The argument is passed in the JMS request as a 
 
 <h3 id="example-configuration-using-active-mq">Example Configuration Using Active MQ</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="sampleCacheNorep"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="sampleCacheNorep"
   maxEntriesLocalHeap="1000"
   eternal="false"
   timeToIdleSeconds="1000"
@@ -702,12 +760,17 @@ this default value will be used. The argument is passed in the JMS request as a 
        getQueueBindingName=ehcacheGetQueue,
        timeoutMillis=10000"/&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="example-configuration-using-open-mq">Example Configuration Using Open MQ</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="sampleCacheNorep"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="sampleCacheNorep"
   maxEntriesLocalHeap="1000"
   eternal="false"
   timeToIdleSeconds="100000"
@@ -731,7 +794,9 @@ this default value will be used. The argument is passed in the JMS request as a 
                 userName=test,
                 password=test"/&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="configuring-clients-for-message-queue-reliability">Configuring Clients for Message Queue Reliability</h2>

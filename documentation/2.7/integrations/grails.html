@@ -238,7 +238,10 @@ For production use you often want to customise the cache configuration. To do so
 to the <code class="highlighter-rouge">conf</code> directory (the same directory that contains <code class="highlighter-rouge">DataSource.groovy</code>).
 A sample ehcache.xml which works with the Book demo app and is good as a starter configuration for Grails is shown below:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;ehcache</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
     <span class="na">xsi:noNamespaceSchemaLocation=</span><span class="s">"ehcache.xsd"</span> <span class="nt">&gt;</span>
 	<span class="nt">&lt;diskStore</span> <span class="na">path=</span><span class="s">"/path/to/store/data"</span><span class="nt">/&gt;</span>
@@ -262,7 +265,9 @@ A sample ehcache.xml which works with the Book demo app and is good as a starter
       <span class="na">timeToIdleSeconds=</span><span class="s">"300"</span>
        <span class="nt">/&gt;</span>
 <span class="nt">&lt;/ehcache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="springcache-plugin">Springcache Plugin</h2>

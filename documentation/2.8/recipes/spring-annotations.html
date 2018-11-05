@@ -251,11 +251,16 @@
 
 <p>Add the Annotation to methods you would like to cache. Lets assume you are using the Dog getDog(String name) method from above:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">cacheName</span><span class="o">=</span><span class="s">"getDog"</span><span class="o">)</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">cacheName</span><span class="o">=</span><span class="s">"getDog"</span><span class="o">)</span>
 <span class="n">Dog</span> <span class="nf">getDog</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
   <span class="o">....</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>
@@ -264,8 +269,13 @@
 
 <p>Configure Spring. You must add the following to your Spring configuration file in the beans declaration section:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache:annotation-driven</span> <span class="na">cache-manager=</span><span class="s">"ehCacheManager"</span> <span class="nt">/&gt;</span>
-</code></pre>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;ehcache:annotation-driven</span> <span class="na">cache-manager=</span><span class="s">"ehCacheManager"</span> <span class="nt">/&gt;</span>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>More details can be found at:</p>

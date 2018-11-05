@@ -235,11 +235,16 @@ in order. If a loader returns null, the next in chain is called.</p>
  can be added, in which case the loaders form a chain which are executed in order. If a
  loader returns null, the next in chain is called.</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="err">...</span><span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="err">...</span><span class="nt">&gt;</span>
  <span class="nt">&lt;cacheLoaderFactory</span> <span class="na">class=</span><span class="s">"com.example.ExampleCacheLoaderFactory"</span>
                              <span class="na">properties=</span><span class="s">"type=int,startCounter=10"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="implementing-a-cacheloaderfactory-and-cacheloader-">Implementing a CacheLoaderFactory and CacheLoader <a name="CacheLoaderFactory" id="CacheLoaderFactory"></a></h2>
@@ -249,7 +254,10 @@ ehcache.xml
 The factory class needs to be a concrete subclass of the abstract
 factory class CacheLoaderFactory, which is reproduced below:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * An abstract factory for creating cache loaders. Implementers should provide their own
  * concrete factory extending this factory.
  *
@@ -292,7 +300,9 @@ factory class CacheLoaderFactory, which is reproduced below:</p>
 	 */</span>
 	<span class="kd">public</span> <span class="kd">abstract</span> <span class="n">CacheLoader</span> <span class="nf">createCacheLoader</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="n">Properties</span> <span class="n">properties</span><span class="o">);</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The factory creates a concrete implementation of the CacheLoader
@@ -300,7 +310,10 @@ interface, which is reproduced below.
 A CacheLoader is bound to the lifecycle of a cache, so that <code class="highlighter-rouge">init()</code> is called
 during cache initialization, and <code class="highlighter-rouge">dispose()</code> is called on disposal of a cache.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * Extends JCache CacheLoader with load methods that take an argument in addition to a key
  * @author Greg Luck
  * @version $Id: cache_loaders.apt 4369 2011-07-15 19:59:14Z ilevy $
@@ -376,7 +389,9 @@ during cache initialization, and <code class="highlighter-rouge">dispose()</code
 	 */</span>
 	<span class="kd">public</span> <span class="n">Status</span> <span class="nf">getStatus</span><span class="o">();</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The implementations need to be placed in the classpath accessible to ehcache.
@@ -387,7 +402,10 @@ of these classes will be done.</p>
 <p>The following methods on <code class="highlighter-rouge">Cache</code> allow runtime interrogation, registration and unregistration
 of loaders:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * Register a {@link CacheLoader} with the cache. It will then be tied into the cache
  *   lifecycle.
  *
@@ -415,7 +433,9 @@ of loaders:</p>
 <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">CacheLoader</span><span class="o">&gt;</span> <span class="nf">getRegisteredCacheLoaders</span><span class="o">()</span> <span class="o">{</span>
 	<span class="k">return</span> <span class="n">registeredCacheLoaders</span><span class="o">;</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
       </article>

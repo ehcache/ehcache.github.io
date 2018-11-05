@@ -231,8 +231,13 @@ is doing.</p>
 <p>One CacheManagerEventListenerFactory and hence one CacheManagerEventListener can be specified per CacheManager instance.
 The factory is configured as below:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cacheManagerEventListenerFactory</span> <span class="na">class=</span><span class="s">""</span> <span class="na">properties=</span><span class="s">""</span><span class="nt">/&gt;</span>
-</code></pre>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cacheManagerEventListenerFactory</span> <span class="na">class=</span><span class="s">""</span> <span class="na">properties=</span><span class="s">""</span><span class="nt">/&gt;</span>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The entry specifies a CacheManagerEventListenerFactory which will be used to
@@ -265,7 +270,10 @@ ehcache.xml.
 The factory class needs to be a concrete subclass of the abstract
 factory CacheManagerEventListenerFactory, which is reproduced below:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * An abstract factory for creating {@link CacheManagerEventListener}s. Implementers should
  * provide their own concrete factory extending this factory. It can then be configured in
  * ehcache.xml
@@ -285,12 +293,17 @@ factory CacheManagerEventListenerFactory, which is reproduced below:</p>
     <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">CacheManagerEventListener</span>
            <span class="nf">createCacheManagerEventListener</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">);</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The factory creates a concrete implementation of CacheManagerEventListener, which is reproduced below:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * Allows implementers to register callback methods that will be executed when a
  * &lt;code&gt;CacheManager&lt;/code&gt; event occurs.
  * The events include:
@@ -344,7 +357,9 @@ factory CacheManagerEventListenerFactory, which is reproduced below:</p>
      */</span>
     <span class="kt">void</span> <span class="nf">notifyCacheRemoved</span><span class="o">(</span><span class="n">String</span> <span class="n">cacheName</span><span class="o">);</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The implementations need to be placed in the classpath accessible to

@@ -286,20 +286,30 @@
 <p>Note that the <code class="highlighter-rouge">eternal</code> attribute, when set to “true”, overrides <code class="highlighter-rouge">timeToLive</code> and <code class="highlighter-rouge">timeToIdle</code> so that no expiration can take place.
 This example shows how to dynamically modify the cache configuration of a running cache:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Cache cache = manager.getCache("sampleCache");
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Cache cache = manager.getCache("sampleCache");
 CacheConfiguration config = cache.getCacheConfiguration();
 config.setTimeToIdleSeconds(60);
 config.setTimeToLiveSeconds(120);
 config.setmaxEntriesLocalHeap(10000);
 config.setmaxEntriesLocalDisk(1000000);
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Dynamic cache configurations can also be frozen to prevent future changes:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Cache cache = manager.getCache("sampleCache");
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Cache cache = manager.getCache("sampleCache");
 cache.disableDynamicFeatures();
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>In <code class="highlighter-rouge">ehcache.xml</code>, you can disable dynamic configuration by setting the <code class="highlighter-rouge">&lt;ehcache&gt;</code> element’s <code class="highlighter-rouge">dynamicConfig</code> attribute to “false”.</p>
@@ -322,8 +332,13 @@ cache.disableDynamicFeatures();
 
 <p>Replicated caches provide a bootstrap mechanism that populates them. For example, the following is the JGroups bootstrap cache loader:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsBootstrapCacheLoaderFactory" properties="bootstrapAsynchronously=true"/&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsBootstrapCacheLoaderFactory" properties="bootstrapAsynchronously=true"/&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="copyonread-and-copyonwrite-cache-configuration">copyOnRead and copyOnWrite cache configuration</h2>
@@ -331,9 +346,14 @@ cache.disableDynamicFeatures();
 <p>A cache can be configured to copy the data, rather than return reference to it on get or put. This is configured using the
 <code class="highlighter-rouge">copyOnRead</code> and <code class="highlighter-rouge">copyOnWrite</code> attributes of cache and defaultCache elements in your configuration or programmatically as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CacheConfiguration config = new CacheConfiguration("copyCache", 1000).copyOnRead(true).copyOnWrite(true);
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>CacheConfiguration config = new CacheConfiguration("copyCache", 1000).copyOnRead(true).copyOnWrite(true);
 Cache copyCache = new Cache(config);
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The default configuration is false for both options.</p>
@@ -341,7 +361,10 @@ Cache copyCache = new Cache(config);
 <p>To copy elements on put()-like and/or get()-like operations, a CopyStrategy is used. The default implementation uses serialization to copy elements. You can provide your own implementation of <code class="highlighter-rouge">net.sf.ehcache.store.compound.CopyStrategy</code> like
 this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="copyCache"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="copyCache"
     maxEntriesLocalHeap="10"
     eternal="false"
     timeToIdleSeconds="5"
@@ -351,20 +374,27 @@ this:</p>
   &lt;persistence strategy="none"/&gt;
   &lt;copyStrategy class="com.company.ehcache.MyCopyStrategy"/&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Per cache, a single instance of your <code class="highlighter-rouge">CopyStrategy</code> is used. Therefore, in your implementation of <code class="highlighter-rouge">CopyStrategy.copy(T)</code>, T has to be thread-safe.</p>
 
 <p>A copy strategy can be added programmatically in the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CacheConfiguration cacheConfiguration = new CacheConfiguration("copyCache", 10);
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>CacheConfiguration cacheConfiguration = new CacheConfiguration("copyCache", 10);
 
 CopyStrategyConfiguration copyStrategyConfiguration = new CopyStrategyConfiguration();
 copyStrategyConfiguration.setClass("com.company.ehcache.MyCopyStrategy");
 
 cacheConfiguration.addCopyStrategy(copyStrategyConfiguration);
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="special-system-properties">Special System Properties</h2>
@@ -397,7 +427,10 @@ get started before they create their own <code class="highlighter-rouge">ehcache
 <p>If the default configuration is used, Ehcache will emit a warning to remind the user to set up a proper configuration.
 The meaning of the elements and attributes are explained in the section on <code class="highlighter-rouge">ehcache.xml</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;ehcache&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;ehcache&gt;
   &lt;diskStore path="java.io.tmpdir"/&gt;
   &lt;defaultCache
      maxEntriesLocalHeap="10000"
@@ -410,7 +443,9 @@ The meaning of the elements and attributes are explained in the section on <code
      &lt;persistence strategy="localTempSwap"/&gt;
   /&gt;
 &lt;/ehcache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="update-checker">Update Checker</h2>
@@ -421,8 +456,13 @@ To disable the check, do one of the following:</p>
 
 <h3 id="by-system-property">By System Property</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>-Dnet.sf.ehcache.skipUpdateCheck=true
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>-Dnet.sf.ehcache.skipUpdateCheck=true
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="by-configuration">By Configuration</h3>
@@ -430,11 +470,16 @@ To disable the check, do one of the following:</p>
 <p>The outer <code class="highlighter-rouge">ehcache</code> element takes an <code class="highlighter-rouge">updateCheck</code> attribute, which is set to false as in the
 following example.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="ehcache.xsd"
     updateCheck="false" monitoring="autodetect"
     dynamicConfig="true"&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="ehcache.xml-and-other-configuration-files">ehcache.xml and Other Configuration Files</h2>

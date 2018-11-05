@@ -136,68 +136,14 @@
         <BR/>
         <br/>
 
-<div class="container-fluid ehcache-documentation v3.4   old  ">
+<div class="container">
 
+  <header class="post-header">
+    <h1 class="post-title">Examples</h1>
+  </header>
 
-  <div class="row row-offcanvas row-offcanvas-left">
-
-    <!-- sidebar -->
-    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-        <ul class="nav">
-          <li class="submenu"><a href="index.html">Docs Overview</a></li>
-        </ul>
-
-        Basic topics:
-        <ul class="nav">
-          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
-          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
-          <li class="submenu"><a href="examples.html">Examples</a></li>
-          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
-          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
-          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
-          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
-        </ul>
-
-        General topics:
-        <ul class="nav">
-          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
-          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
-          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
-        </ul>
-
-        Advanced topics:
-        <ul class="nav">
-          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
-          <li class="submenu"><a href="expiry.html">Expiry</a></li>
-          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
-          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
-          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
-          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
-          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
-          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
-          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
-          <li class="submenu"><a href="class-loading.html">Class loading</a></li>
-        </ul>
-    </div>
-
-    <!-- main area -->
-
-    <div class="col-xs-12 col-sm-9">
-      <header class="post-header">
-        
-        <h1 class="post-title">
-            <span>Examples</span>
-            
-            
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.6">3.6</a></span>
-            
-            
-        </h1>
-        <hr/>
-        
-      </header>
-      <article class="post-content">
-        <div class="sect1">
+  <article class="post-content">
+    <div class="sect1">
 <h2 id="peeper-a-simple-message-board"><a class="anchor" href="#peeper-a-simple-message-board"></a>Peeper - a simple message board</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -223,7 +169,7 @@ git clone https://github.com/ehcache/ehcache3.git</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="peeper-without-caching-00-nocache"><a class="anchor" href="#peeper-without-caching-00-nocache"></a>Peeper without Caching&#8201;&#8212;&#8201;00-NoCache</h3>
+<h3 id="peeper-without-caching00-nocache"><a class="anchor" href="#peeper-without-caching00-nocache"></a>Peeper without Caching&#8201;&#8212;&#8201;00-NoCache</h3>
 <div class="paragraph">
 <p>The first sample, located in demos/00-NoCache, is a base Peeper application that
 does <strong>not</strong> use caching.  Each peep is stored in the database and all peeps are read
@@ -262,7 +208,7 @@ http://localhost:8080/ehcache-demos/00-NoCache/.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="peeper-with-cache-aside-caching-01-cacheaside"><a class="anchor" href="#peeper-with-cache-aside-caching-01-cacheaside"></a>Peeper with Cache-aside Caching&#8201;&#8212;&#8201;01-CacheAside</h3>
+<h3 id="peeper-with-cache-aside-caching01-cacheaside"><a class="anchor" href="#peeper-with-cache-aside-caching01-cacheaside"></a>Peeper with Cache-aside Caching&#8201;&#8212;&#8201;01-CacheAside</h3>
 <div class="paragraph">
 <p>The second sample, located in demos/01-CacheAside, is a version of the Peeper application
 that makes use of Ehcache.  As each peep is read from the database (for display in the web
@@ -429,13 +375,9 @@ http://localhost:8080/ehcache-demos/01-CacheAside/.</p>
 </div>
 </div>
 </div>
-      </article>
-    </div>
-
-  </div>
+  </article>
 
 </div>
-z
 
       </div>
     </div>

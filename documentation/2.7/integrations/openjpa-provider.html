@@ -226,10 +226,15 @@
 <h2 id="installation">Installation</h2>
 <p>To use OpenJPA, add a Maven dependency for ehcache-openjpa.</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;groupId&gt;</span>net.sf.ehcache<span class="nt">&lt;/groupId&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;groupId&gt;</span>net.sf.ehcache<span class="nt">&lt;/groupId&gt;</span>
 <span class="nt">&lt;artifactId&gt;</span>ehcache-openjpa<span class="nt">&lt;/artifactId&gt;</span>
 <span class="nt">&lt;version&gt;</span>0.1<span class="nt">&lt;/version&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Or, download from <a href="http://ehcache.org/downloads/catalog">Downloads</a>.</p>
@@ -237,17 +242,25 @@
 <h2 id="configuration">Configuration</h2>
 <p>For enabling Ehcache as second level cache, the persistence.xml file should include the following configurations:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"openjpa.Log"</span> <span class="na">value=</span><span class="s">"SQL=TRACE"</span> <span class="nt">/&gt;</span> 
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"openjpa.Log"</span> <span class="na">value=</span><span class="s">"SQL=TRACE"</span> <span class="nt">/&gt;</span> 
 <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"openjpa.QueryCache"</span> <span class="na">value=</span><span class="s">"ehcache"</span> <span class="nt">/&gt;</span> 
 <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"openjpa.DataCache"</span> <span class="na">value=</span><span class="s">"true"</span><span class="nt">/&gt;</span> 
 <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"openjpa.RemoteCommitProvider"</span> <span class="na">value=</span><span class="s">"sjvm"</span><span class="nt">/&gt;</span> 
 <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"openjpa.DataCacheManager"</span> <span class="na">value=</span><span class="s">"ehcache"</span> <span class="nt">/&gt;</span> 
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The ehcache.xml file can be configured like this example:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="na">xsi:noNamespaceSchemaLocation=</span><span class="s">"ehcache.xsd"</span> <span class="na">updateCheck=</span><span class="s">"false"</span> <span class="na">monitoring=</span><span class="s">"autodetect"</span> 
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;ehcache</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="na">xsi:noNamespaceSchemaLocation=</span><span class="s">"ehcache.xsd"</span> <span class="na">updateCheck=</span><span class="s">"false"</span> <span class="na">monitoring=</span><span class="s">"autodetect"</span> 
  	<span class="na">dynamicConfig=</span><span class="s">"true"</span> <span class="na">name=</span><span class="s">"TestCache"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;diskStore</span> <span class="na">path=</span><span class="s">"/path/to/store/data"</span><span class="nt">/&gt;</span>
 
@@ -284,7 +297,9 @@
       <span class="na">class=</span><span class="s">"org.terracotta.ehcachedx.monitor.probe.ProbePeerListenerFactory"</span>
       <span class="na">properties=</span><span class="s">"monitorAddress=localhost, monitorPort=9889, memoryMeasurement=true"</span> <span class="nt">/&gt;</span>
 <span class="nt">&lt;/ehcache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="default-cache">Default Cache</h2>

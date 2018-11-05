@@ -372,8 +372,13 @@ serialized and their type. It has been found in the ElementTest that:</p>
 <p>Files are created in the directory specified by the <code class="highlighter-rouge">&lt;diskStore&gt;</code>
 configuration element. The <code class="highlighter-rouge">&lt;diskStore&gt;</code> element has one attribute called <code class="highlighter-rouge">path</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;diskStore path="/path/to/store/data"/&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;diskStore path="/path/to/store/data"/&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Legal values for the path attibute are legal file-system paths. For example, for Unix:</p>
@@ -400,7 +405,10 @@ user.dir/one
 
 <p>To programmatically set a DiskStore path:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>DiskStoreConfiguration diskStoreConfiguration = new DiskStoreConfiguration();
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>DiskStoreConfiguration diskStoreConfiguration = new DiskStoreConfiguration();
 
 diskStoreConfiguration.setPath("/my/path/dir");
 
@@ -408,7 +416,9 @@ diskStoreConfiguration.setPath("/my/path/dir");
 configuration.addDiskStore(diskStoreConfiguration);
 
 CacheManager mgr = new CacheManager(configuration);
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p><strong>Note</strong>: A CacheManager’s DiskStore path cannot be changed once it is set in configuration. If the DiskStore path is changed, the CacheManager must be recycled for the new path to take effect.</p>

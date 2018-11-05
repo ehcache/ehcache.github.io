@@ -227,12 +227,17 @@ or even a CacheManagerEventListener, all from within a CacheExtension, creating 
 <p>Cache extension are configured per cache. Each cache can have zero or more.
 A CacheExtension is configured by adding a cacheExceptionHandlerFactory element as shown in the following example:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="err">...</span><span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="err">...</span><span class="nt">&gt;</span>
     <span class="nt">&lt;cacheExtensionFactory</span> <span class="na">class=</span><span class="s">"com.example.FileWatchingCacheRefresherExtensionFactory"</span>
-    <span class="na">properties=</span><span class="s">"refreshIntervalMillis=18000,</span> <span class="na">loaderTimeout=</span><span class="s">3000,</span>
-        <span class="na">flushPeriod=</span><span class="s">whatever,</span> <span class="na">someOtherProperty=</span><span class="s">someValue</span> <span class="err">..."</span><span class="nt">/&gt;</span>
+    <span class="na">properties=</span><span class="s">"refreshIntervalMillis=18000, loaderTimeout=3000,
+        flushPeriod=whatever, someOtherProperty=someValue ..."</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="implementing-a-cacheextensionfactory-and-cacheextension-">Implementing a CacheExtensionFactory and CacheExtension <a name="CacheExtensionFactory" id="CacheExtensionFactory"></a></h2>
@@ -243,7 +248,10 @@ ehcache.xml
 The factory class needs to be a concrete subclass of the abstract
 factory class CacheExtensionFactory, which is reproduced below:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * An abstract factory for creating &lt;code&gt;CacheExtension&lt;/code&gt;s. Implementers should
  * provide their own * concrete factory extending this factory. It can then be configured
  * in ehcache.xml.
@@ -260,13 +268,18 @@ factory class CacheExtensionFactory, which is reproduced below:</p>
 	 */</span>
 	<span class="kd">public</span> <span class="kd">abstract</span> <span class="n">CacheExtension</span> <span class="nf">createCacheExtension</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">,</span> <span class="n">Properties</span> <span class="n">properties</span><span class="o">);</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The factory creates a concrete implementation of the CacheExtension
 interface, which is reproduced below:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * This is a general purpose mechanism to allow generic extensions to a Cache.
  *
  * CacheExtensions are tied into the Cache lifecycle. For that reason this interface has the
@@ -328,7 +341,9 @@ interface, which is reproduced below:</p>
 	 */</span>
 	<span class="kd">public</span> <span class="n">Status</span> <span class="nf">getStatus</span><span class="o">();</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The implementations need to be placed in the classpath accessible to ehcache.
@@ -338,10 +353,15 @@ loading of these classes will be done.</p>
 <h2 id="programmatic-configuration">Programmatic Configuration</h2>
 <p>Cache Extensions may also be programmatically added to a Cache as shown.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">TestCacheExtension</span> <span class="n">testCacheExtension</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TestCacheExtension</span><span class="o">(</span><span class="n">cache</span><span class="o">,</span> <span class="o">...);</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">TestCacheExtension</span> <span class="n">testCacheExtension</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TestCacheExtension</span><span class="o">(</span><span class="n">cache</span><span class="o">,</span> <span class="o">...);</span>
 <span class="n">testCacheExtension</span><span class="o">.</span><span class="na">init</span><span class="o">();</span>
 <span class="n">cache</span><span class="o">.</span><span class="na">registerCacheExtension</span><span class="o">(</span><span class="n">testCacheExtension</span><span class="o">);</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
       </article>

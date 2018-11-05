@@ -245,9 +245,14 @@
 or summary values (Aggregators) can all be returned.
  Here is a simple example: Search for 32-year-old males and return the element values.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Results results = cache.createQuery().includeValues()
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Results results = cache.createQuery().includeValues()
   .addCriteria(age.eq(32).and(gender.eq("male"))).execute();
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="what-is-searchable">What is Searchable?</h4>
@@ -261,23 +266,33 @@ or summary values (Aggregators) can all be returned.
 
 <p>Caches are made searchable by adding a <code class="highlighter-rouge">&lt;searchable/&gt;</code> tag to the ehcache.xml.</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cache2"</span> <span class="na">maxBytesLocalHeap=</span><span class="s">"16M"</span> <span class="na">eternal=</span><span class="s">"true"</span> <span class="na">maxBytesLocalOffHeap=</span><span class="s">"256M"</span><span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cache2"</span> <span class="na">maxBytesLocalHeap=</span><span class="s">"16M"</span> <span class="na">eternal=</span><span class="s">"true"</span> <span class="na">maxBytesLocalOffHeap=</span><span class="s">"256M"</span><span class="nt">&gt;</span>
 	<span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"localRestartable"</span><span class="nt">/&gt;</span>
 	<span class="nt">&lt;searchable/&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>This configuration will scan keys and values and, if they are of supported search types, add them as
 attributes called “key” and “value” respectively. If you do not want automatic indexing of keys and values,
 you can disable it with:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cacheName"</span> <span class="err">...</span><span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cacheName"</span> <span class="err">...</span><span class="nt">&gt;</span>
 	<span class="nt">&lt;searchable</span> <span class="na">keys=</span><span class="s">"false"</span> <span class="na">values=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
 	   ...
 	<span class="nt">&lt;/searchable&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>You might want to do this if you have a mix of types for your keys or values. The automatic indexing will throw
@@ -285,32 +300,45 @@ an exception if types are mixed.</p>
 
 <p>If you think that you will want to add search attributes after the cache is initialized, you can explicitly indicate the dynamic search configuration. Set the <code class="highlighter-rouge">allowDynamicIndexing</code> attribute to “true” to enable use of the dynamic attributes extractor (described in the <a href="/documentation/2.8/apis/search.html#defining-attributes">Defining Attributes</a> section below):</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cacheName"</span> <span class="err">...</span><span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cacheName"</span> <span class="err">...</span><span class="nt">&gt;</span>
 	<span class="nt">&lt;searchable</span> <span class="na">allowDynamicIndexing=</span><span class="s">"true"</span><span class="nt">&gt;</span>
 	   ...
 	<span class="nt">&lt;/searchable&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Often keys or values will not be directly searchable and instead you will need to extract searchable attributes out of them.
 The following example shows this more typical case.  Attribute Extractors are explained in more detail in the following section.</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cache3"</span> <span class="na">maxEntriesLocalHeap=</span><span class="s">"10000"</span> <span class="na">eternal=</span><span class="s">"true"</span> <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span><span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cache3"</span> <span class="na">maxEntriesLocalHeap=</span><span class="s">"10000"</span> <span class="na">eternal=</span><span class="s">"true"</span> <span class="na">maxBytesLocalOffHeap=</span><span class="s">"10G"</span><span class="nt">&gt;</span>
 	<span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"localRestartable"</span><span class="nt">/&gt;</span>
 	<span class="nt">&lt;searchable&gt;</span>
    		<span class="nt">&lt;searchAttribute</span> <span class="na">name=</span><span class="s">"age"</span> <span class="na">class=</span><span class="s">"net.sf.ehcache.search.TestAttributeExtractor"</span><span class="nt">/&gt;</span>
    		<span class="nt">&lt;searchAttribute</span> <span class="na">name=</span><span class="s">"gender"</span> <span class="na">expression=</span><span class="s">"value.getGender()"</span><span class="nt">/&gt;</span>
 	<span class="nt">&lt;/searchable&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="programmatically">Programmatically</h4>
 
 <p>The following example shows how to programmatically create the cache configuration, with search attributes.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Configuration</span> <span class="n">cacheManagerConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Configuration</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Configuration</span> <span class="n">cacheManagerConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Configuration</span><span class="o">();</span>
 <span class="n">CacheConfiguration</span> <span class="n">cacheConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CacheConfiguration</span><span class="o">(</span><span class="s">"myCache"</span><span class="o">,</span> <span class="mi">0</span><span class="o">).</span><span class="na">eternal</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 <span class="n">Searchable</span> <span class="n">searchable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Searchable</span><span class="o">();</span>
 <span class="n">cacheConfig</span><span class="o">.</span><span class="na">addSearchable</span><span class="o">(</span><span class="n">searchable</span><span class="o">);</span>
@@ -327,7 +355,9 @@ The following example shows this more typical case.  Attribute Extractors are ex
 <span class="n">Ehcache</span> <span class="n">myCache</span> <span class="o">=</span> <span class="n">cacheManager</span><span class="o">.</span><span class="na">getEhcache</span><span class="o">(</span><span class="s">"myCache"</span><span class="o">);</span>
 <span class="c1">// Now create the attributes and queries, then execute.</span>
 <span class="o">...</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>To learn more about the Ehcache Search API, see the <code class="highlighter-rouge">net.sf.ehcache.search*</code> packages in this <a href="/apidocs/2.8.5/index.html">Javadoc</a>.</p>
@@ -385,17 +415,25 @@ recommended to statically import so that, in this example, you would just use <c
 
 <p>The ReflectionAttributeExtractor is a built-in search attribute extractor which uses JavaBean conventions and also understands a simple form of expression. Where a JavaBean property is available and it is of a searchable type, it can be simply declared:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache&gt;</span>
   <span class="nt">&lt;searchable&gt;</span>
     <span class="nt">&lt;searchAttribute</span> <span class="na">name=</span><span class="s">"age"</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;/searchable&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The expression language of the ReflectionAttributeExtractor also uses method/value dotted expression chains. The expression chain must start with one of either “key”, “value”, or “element”. From the starting object a chain of either method calls or field names follows. Method calls and field names can be freely mixed in the chain. Some more examples:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache&gt;</span>
   <span class="nt">&lt;searchable&gt;</span>
     <span class="nt">&lt;searchAttribute</span> <span class="na">name=</span><span class="s">"age"</span> <span class="na">expression=</span><span class="s">"value.person.getAge()"</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;/searchable&gt;</span>
@@ -405,7 +443,9 @@ recommended to statically import so that, in this example, you would just use <c
     <span class="nt">&lt;searchAttribute</span> <span class="na">name=</span><span class="s">"name"</span> <span class="na">expression=</span><span class="s">"element.toString()"</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;/searchable&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p><em>Note</em>: The method and field name portions of the expression are case sensitive.</p>
@@ -414,25 +454,35 @@ recommended to statically import so that, in this example, you would just use <c
 
 <p>In more complex situations, you can create your own attribute extractor by implementing the AttributeExtractor interface. Provide your extractor class, as shown in the following example:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cache2"</span> <span class="na">maxEntriesLocalHeap=</span><span class="s">"0"</span> <span class="na">eternal=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cache2"</span> <span class="na">maxEntriesLocalHeap=</span><span class="s">"0"</span> <span class="na">eternal=</span><span class="s">"true"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;persistence</span> <span class="na">strategy=</span><span class="s">"none"</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;searchable&gt;</span>
     <span class="nt">&lt;searchAttribute</span> <span class="na">name=</span><span class="s">"age"</span> <span class="na">class=</span><span class="s">"net.sf.ehcache.search.TestAttributeExtractor"</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;/searchable&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>If you need to pass state to your custom extractor, you may do so with properties, as shown in the following example:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache&gt;</span>
   <span class="nt">&lt;searchable&gt;</span>
     <span class="nt">&lt;searchAttribute</span> <span class="na">name=</span><span class="s">"age"</span>
         <span class="na">class=</span><span class="s">"net.sf.ehcache.search.TestAttributeExtractor"</span>
         <span class="na">properties=</span><span class="s">"foo=this,bar=that,etc=12"</span> <span class="nt">/&gt;</span>
   <span class="nt">&lt;/searchable&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>If properties are provided, then the attribute extractor implementation must have a public constructor that accepts a single <code class="highlighter-rouge">java.util.Properties</code> instance.</p>
@@ -443,7 +493,10 @@ recommended to statically import so that, in this example, you would just use <c
 
 <p>Assuming that we have previously created Person objects containing attributes such as name, age, and gender, the following example shows how to create a dynamically searchable cache and register the <code class="highlighter-rouge">DynamicAttributesExtractor</code>:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Configuration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Configuration</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Configuration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Configuration</span><span class="o">();</span>
 <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"default"</span><span class="o">);</span>
 <span class="n">CacheConfiguration</span> <span class="n">cacheCfg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CacheConfiguration</span><span class="o">(</span><span class="err">“</span><span class="n">PersonCache</span><span class="err">”</span><span class="o">);</span>
 <span class="n">cacheCfg</span><span class="o">.</span><span class="na">setEternal</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
@@ -469,7 +522,9 @@ recommended to statically import so that, in this example, you would just use <c
 <span class="o">});</span>
 <span class="c1">// Now add some data to the cache</span>
 <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="err">“</span><span class="n">John</span> <span class="n">Doe</span><span class="err">”</span><span class="o">,</span> <span class="mi">34</span><span class="o">,</span> <span class="n">Person</span><span class="o">.</span><span class="na">Gender</span><span class="o">.</span><span class="na">MALE</span><span class="o">)));</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Given the code above, the newly put element would be indexed on values of name and age fields, but not gender. If, at a later time, you would like to start indexing the element data on gender, you would need to create a new <code class="highlighter-rouge">DynamicAttributesExtractor</code> instance that extracts that field for indexing.</p>
@@ -501,29 +556,49 @@ recommended to statically import so that, in this example, you would just use <c
 <p>Ehcache Search uses a fluent, object-oriented Query API, following DSL principles, which should feel familiar and natural to Java programmers.
 Here is a simple example:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">().</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">age</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">35</span><span class="o">)).</span><span class="na">includeKeys</span><span class="o">().</span><span class="na">end</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">().</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">age</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">35</span><span class="o">)).</span><span class="na">includeKeys</span><span class="o">().</span><span class="na">end</span><span class="o">();</span>
 <span class="n">Results</span> <span class="n">results</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="using-attributes-in-queries">Using Attributes in Queries</h3>
 <p>If declared and available, the well-known attributes are referenced by their names or the convenience attributes are used
   directly, as shown in this example:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Results</span> <span class="n">results</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">().</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">Query</span><span class="o">.</span><span class="na">KEY</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">35</span><span class="o">)).</span><span class="na">execute</span><span class="o">();</span>
-</code></pre>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Results</span> <span class="n">results</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">().</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">Query</span><span class="o">.</span><span class="na">KEY</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">35</span><span class="o">)).</span><span class="na">execute</span><span class="o">();</span>
+</code>
+      </pre>
+   </div>
 </div>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Results</span> <span class="n">results</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">().</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">Query</span><span class="o">.</span><span class="na">VALUE</span><span class="o">.</span><span class="na">lt</span><span class="o">(</span><span class="mi">10</span><span class="o">)).</span><span class="na">execute</span><span class="o">();</span>
-</code></pre>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Results</span> <span class="n">results</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">().</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">Query</span><span class="o">.</span><span class="na">VALUE</span><span class="o">.</span><span class="na">lt</span><span class="o">(</span><span class="mi">10</span><span class="o">)).</span><span class="na">execute</span><span class="o">();</span>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Other attributes are referenced by the names given them in the configuration. For example:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Attribute</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">age</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getSearchAttribute</span><span class="o">(</span><span class="s">"age"</span><span class="o">);</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Attribute</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">age</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getSearchAttribute</span><span class="o">(</span><span class="s">"age"</span><span class="o">);</span>
 <span class="n">Attribute</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">gender</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getSearchAttribute</span><span class="o">(</span><span class="s">"gender"</span><span class="o">);</span>
 <span class="n">Attribute</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">name</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getSearchAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">);</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="expressions">Expressions</h3>
@@ -531,17 +606,27 @@ Here is a simple example:</p>
 <p>A Query is built up using Expressions. Expressions may include logical operators such as &lt;and&gt; and &lt;or&gt;, and comparison operators such as &lt;ge&gt; (&gt;=), &lt;between&gt;, and &lt;like&gt;.
 The configuration <code class="highlighter-rouge">addCriteria(...)</code> is used to add a clause to a query. Adding a further clause automatically “&lt;and&gt;s” the clauses.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">query</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">().</span><span class="na">includeKeys</span><span class="o">().</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">age</span><span class="o">.</span><span class="na">le</span><span class="o">(</span><span class="mi">65</span><span class="o">)).</span><span class="na">add</span><span class="o">(</span><span class="n">gender</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">"male"</span><span class="o">)).</span><span class="na">end</span><span class="o">();</span>
-</code></pre>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">query</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">().</span><span class="na">includeKeys</span><span class="o">().</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">age</span><span class="o">.</span><span class="na">le</span><span class="o">(</span><span class="mi">65</span><span class="o">)).</span><span class="na">add</span><span class="o">(</span><span class="n">gender</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">"male"</span><span class="o">)).</span><span class="na">end</span><span class="o">();</span>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Both logical and comparison operators implement the <code class="highlighter-rouge">Criteria</code> interface.
 To add a criteria with a different logical operator, explicitly nest it within a new logical operator Criteria Object. For example, to check for age = 35 or gender = female, do the following:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">query</span><span class="o">.</span><span class="na">addCriteria</span><span class="o">(</span><span class="k">new</span> <span class="n">Or</span><span class="o">(</span><span class="n">age</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">35</span><span class="o">),</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">query</span><span class="o">.</span><span class="na">addCriteria</span><span class="o">(</span><span class="k">new</span> <span class="n">Or</span><span class="o">(</span><span class="n">age</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">35</span><span class="o">),</span>
                          <span class="n">gender</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Gender</span><span class="o">.</span><span class="na">FEMALE</span><span class="o">))</span>
 <span class="o">);</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>More complex compound expressions can be further created with extra nesting.
@@ -659,8 +744,13 @@ aggregators are – in this case, there will be exactly one <code class="highlig
 <p>Aggregators are added with <code class="highlighter-rouge">query.includeAggregator(\&lt;attribute\&gt;.\&lt;aggregator\&gt;)</code>.
 For example, to find the sum of the age attribute:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">query</span><span class="o">.</span><span class="na">includeAggregator</span><span class="o">(</span><span class="n">age</span><span class="o">.</span><span class="na">sum</span><span class="o">());</span>
-</code></pre>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">query</span><span class="o">.</span><span class="na">includeAggregator</span><span class="o">(</span><span class="n">age</span><span class="o">.</span><span class="na">sum</span><span class="o">());</span>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>For a complete list of aggregators, refer to the <a href="/apidocs/2.8.5/net/sf/ehcache/search/aggregator/package-frame.html">Aggregators JavaDoc</a>.</p>
@@ -669,14 +759,22 @@ For example, to find the sum of the age attribute:</p>
 <p>Query results may be ordered in ascending or descending order by adding an <code class="highlighter-rouge">addOrderBy</code> clause to the query, which takes
 as parameters the attribute to order by and the ordering direction. For example, to order the results by ages in ascending order:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">query</span><span class="o">.</span><span class="na">addOrderBy</span><span class="o">(</span><span class="n">age</span><span class="o">,</span> <span class="n">Direction</span><span class="o">.</span><span class="na">ASCENDING</span><span class="o">);</span>
-</code></pre>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">query</span><span class="o">.</span><span class="na">addOrderBy</span><span class="o">(</span><span class="n">age</span><span class="o">,</span> <span class="n">Direction</span><span class="o">.</span><span class="na">ASCENDING</span><span class="o">);</span>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="grouping-results">Grouping Results</h3>
 <p>With Ehcache 2.6 and higher, query results may be grouped similarly to using an SQL GROUP BY statement. The Ehcache GroupBy feature provides the option to group results according to specified attributes by adding an <code class="highlighter-rouge">addGroupBy</code> clause to the query, which takes as parameters the attributes to group by. For example, you can group results by department and location like this:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Query</span> <span class="n">q</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Query</span> <span class="n">q</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
 <span class="n">Attribute</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">dept</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getSearchAttribute</span><span class="o">(</span><span class="err">“</span><span class="n">dept</span><span class="err">”</span><span class="o">);</span>
 <span class="n">Attribute</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getSearchAttribute</span><span class="o">(</span><span class="err">“</span><span class="n">location</span><span class="err">”</span><span class="o">);</span>
 <span class="n">q</span><span class="o">.</span><span class="na">includeAttribute</span><span class="o">(</span><span class="n">dept</span><span class="o">);</span>
@@ -684,14 +782,21 @@ as parameters the attribute to order by and the ordering direction. For example,
 <span class="n">q</span><span class="o">.</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">cache</span><span class="o">.</span><span class="na">getSearchAttribute</span><span class="o">(</span><span class="err">“</span><span class="n">salary</span><span class="err">”</span><span class="o">).</span><span class="na">gt</span><span class="o">(</span><span class="mi">100000</span><span class="o">));</span>
 <span class="n">q</span><span class="o">.</span><span class="na">includeAggregator</span><span class="o">(</span><span class="n">Aggregators</span><span class="o">.</span><span class="na">count</span><span class="o">());</span>
 <span class="n">q</span><span class="o">.</span><span class="na">addGroupBy</span><span class="o">(</span><span class="n">dept</span><span class="o">,</span> <span class="n">loc</span><span class="o">);</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The GroupBy clause groups the results from <code class="highlighter-rouge">includeAttribute()</code> and allows aggregate functions to be performed on the grouped attributes. To retrieve the attributes that are associated with the aggregator results, you can use:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">String</span> <span class="n">dept</span> <span class="o">=</span> <span class="n">singleResult</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="n">dept</span><span class="o">);</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">String</span> <span class="n">dept</span> <span class="o">=</span> <span class="n">singleResult</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="n">dept</span><span class="o">);</span>
 <span class="n">String</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">singleResult</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="n">loc</span><span class="o">);</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="groupby-rules">GroupBy Rules</h4>
@@ -711,21 +816,31 @@ as parameters the attribute to order by and the ordering direction. For example,
 <p>By default a query will return an unlimited number of results. For example the following
 query will return all keys in the cache.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
 <span class="n">query</span><span class="o">.</span><span class="na">includeKeys</span><span class="o">();</span>
 <span class="n">query</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>If too many results are returned, it could cause an OutOfMemoryError
 The <code class="highlighter-rouge">maxResults</code> clause is used to limit the size of the results.
 For example, to limit the above query to the first 100 elements found:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
 <span class="n">query</span><span class="o">.</span><span class="na">includeKeys</span><span class="o">();</span>
 <span class="n">query</span><span class="o">.</span><span class="na">maxResults</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
 <span class="n">query</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p><strong>Note</strong>: When maxResults is used with GroupBy, it limits the number of groups.</p>
@@ -746,8 +861,13 @@ In the distributed implementation with Terracotta, resources may be used to hold
 <h2 id="sample-application">Sample Application</h2>
 <p>We have created <a href="http://github.com/sharrissf/Ehcache-Search-Sample/downloads/">a simple standalone sample application</a> with few dependencies for you to easily get started with Ehcache Search. You can also check out the source:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git clone git://github.com/sharrissf/Ehcache-Search-Sample.git
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>git clone git://github.com/sharrissf/Ehcache-Search-Sample.git
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The <a href="https://fisheye.terracotta.org/browse/Ehcache/branches/ehcache-2.8.x/ehcache-core/src/test/java/net/sf/ehcache/search">Ehcache Test Sources</a> page has further examples
@@ -756,7 +876,10 @@ on how to use each Ehcache Search feature.</p>
 <h2 id="scripting-environments">Scripting Environments</h2>
 <p>Ehcache Search is readily amenable to scripting. The following example shows how to use it with BeanShell:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Interpreter</span> <span class="n">i</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Interpreter</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Interpreter</span> <span class="n">i</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Interpreter</span><span class="o">();</span>
 <span class="c1">//Auto discover the search attributes and add them to the interpreter's context</span>
 <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">SearchAttribute</span><span class="o">&gt;</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getCacheConfiguration</span><span class="o">().</span><span class="na">getSearchAttributes</span><span class="o">();</span>
 <span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">SearchAttribute</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">attributes</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
@@ -779,7 +902,9 @@ on how to use each Ehcache Search feature.</p>
 <span class="k">for</span> <span class="o">(</span><span class="n">Result</span> <span class="n">result</span> <span class="o">:</span> <span class="n">results</span><span class="o">.</span><span class="na">all</span><span class="o">())</span> <span class="o">{</span>
   <span class="n">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">""</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="na">getKey</span><span class="o">());</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="implementation-and-performance">Implementation and Performance</h2>
@@ -806,37 +931,67 @@ Performance is excellent but can be improved simply by adding more servers to th
 
 <p>When using standalone Ehcache without BigMemory for production, it is recommended to search only caches that are less than 1 million elements. Performance of different <code class="highlighter-rouge">Criteria</code> vary. For example, here are some queries and their execute times on a 200,000 element cache. (Note that these results are all faster than the times given above because they execute a single Criteria).</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">final</span> <span class="n">Query</span> <span class="n">intQuery</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">final</span> <span class="n">Query</span> <span class="n">intQuery</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
 <span class="n">intQuery</span><span class="o">.</span><span class="na">includeKeys</span><span class="o">();</span>
 <span class="n">intQuery</span><span class="o">.</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">age</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">35</span><span class="o">));</span>
 <span class="n">intQuery</span><span class="o">.</span><span class="na">end</span><span class="o">();</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Execute Time: 62ms
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Execute Time: 62ms
+</code>
+      </pre>
+   </div>
 </div>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">final</span> <span class="n">Query</span> <span class="n">stringQuery</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">final</span> <span class="n">Query</span> <span class="n">stringQuery</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
 <span class="n">stringQuery</span><span class="o">.</span><span class="na">includeKeys</span><span class="o">();</span>
 <span class="n">stringQuery</span><span class="o">.</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">state</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">"CA"</span><span class="o">));</span>
 <span class="n">stringQuery</span><span class="o">.</span><span class="na">end</span><span class="o">();</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Execute Time: 125ms
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Execute Time: 125ms
+</code>
+      </pre>
+   </div>
 </div>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">final</span> <span class="n">Query</span> <span class="n">iLikeQuery</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">final</span> <span class="n">Query</span> <span class="n">iLikeQuery</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">createQuery</span><span class="o">();</span>
 <span class="n">iLikeQuery</span><span class="o">.</span><span class="na">includeKeys</span><span class="o">();</span>
 <span class="n">iLikeQuery</span><span class="o">.</span><span class="na">addCriteria</span><span class="o">(</span><span class="n">name</span><span class="o">.</span><span class="na">ilike</span><span class="o">(</span><span class="s">"H*"</span><span class="o">));</span>
 <span class="n">iLikeQuery</span><span class="o">.</span><span class="na">end</span><span class="o">();</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Execute Time: 180ms
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Execute Time: 180ms
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="best-practices-for-optimizing-searches">Best Practices for Optimizing Searches</h2>
@@ -856,12 +1011,17 @@ Performance is excellent but can be improved simply by adding more servers to th
   <li>Searchable keys and values are automatically indexed by default. If you will not be including them in your query, turn off automatic indexing with the following:</li>
 </ol>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cacheName"</span> <span class="err">...</span><span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"cacheName"</span> <span class="err">...</span><span class="nt">&gt;</span>
   <span class="nt">&lt;searchable</span> <span class="na">keys=</span><span class="s">"false"</span> <span class="na">values=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
     ...
   <span class="nt">&lt;/searchable&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <ol>

@@ -242,11 +242,16 @@ multiple listeners.
 Each listener is configured by adding a
 cacheEventListenerFactory element as follows:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="err">...</span><span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="err">...</span><span class="nt">&gt;</span>
   <span class="nt">&lt;cacheEventListenerFactory</span> <span class="na">class=</span><span class="s">""</span> <span class="na">properties=</span><span class="s">""</span> <span class="na">listenFor=</span><span class="s">""</span><span class="nt">/&gt;</span>
   ...
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The entry specifies a CacheEventListenerFactory which is used to
@@ -280,7 +285,10 @@ cache event listeners. Implementers should provide their own concrete
 factory, extending this abstract factory. It can then be configured in <code class="highlighter-rouge">ehcache.xml</code>.
 The following example demonstrates how to create an abstract CacheEventListenerFactory:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * An abstract factory for creating listeners. Implementers should provide their own
  * concrete factory extending this factory. It can then be configured in ehcache.xml
  *
@@ -297,13 +305,18 @@ The following example demonstrates how to create an abstract CacheEventListenerF
    */</span>
   <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">CacheEventListener</span> <span class="nf">createCacheEventListener</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">);</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The following example demonstrates how to create a concrete implementation of the CacheEventListener
 interface:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * Allows implementers to register callback methods that will be executed when a cache event
  *  occurs.
  * The events include:
@@ -418,7 +431,9 @@ interface:</p>
    */</span>
   <span class="kd">public</span> <span class="n">Object</span> <span class="nf">clone</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">CloneNotSupportedException</span><span class="o">;</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Two other methods are also available:</p>
@@ -443,8 +458,13 @@ of these classes will be done.</p>
 
 <p>To add a listener programmatically, follow this example:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">cache</span><span class="o">.</span><span class="na">getCacheEventNotificationService</span><span class="o">().</span><span class="na">registerListener</span><span class="o">(</span><span class="n">myListener</span><span class="o">);</span>
-</code></pre>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">cache</span><span class="o">.</span><span class="na">getCacheEventNotificationService</span><span class="o">().</span><span class="na">registerListener</span><span class="o">(</span><span class="n">myListener</span><span class="o">);</span>
+</code>
+      </pre>
+   </div>
 </div>
 
       </article>

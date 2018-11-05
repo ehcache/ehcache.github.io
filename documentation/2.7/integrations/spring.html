@@ -221,17 +221,27 @@ It has caching support for classes and methods using two annotations:</p>
 <p>Cache a method call.
 In the following example, the value is the return type, a Manual. The key is extracted from the ISBN argument using the id.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">"manual"</span><span class="o">,</span> <span class="n">key</span><span class="o">=</span><span class="s">"#isbn.id"</span><span class="o">)</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">"manual"</span><span class="o">,</span> <span class="n">key</span><span class="o">=</span><span class="s">"#isbn.id"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="n">Manual</span> <span class="nf">findManual</span><span class="o">(</span><span class="n">ISBN</span> <span class="n">isbn</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">checkWarehouse</span><span class="o">)</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="cacheevict">@CacheEvict</h3>
 <p>Clears the cache when called.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@CacheEvict</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"manuals"</span><span class="o">,</span> <span class="n">allEntries</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nd">@CacheEvict</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"manuals"</span><span class="o">,</span> <span class="n">allEntries</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">loadManuals</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">batch</span><span class="o">)</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>For an excellent blog post covering SpEL expressions, see <a href="http://blog.springsource.com/2011/02/23/spring-3-1-m1-caching/">http://blog.springsource.com/2011/02/23/spring-3-1-m1-caching/</a>.</p>
@@ -244,19 +254,29 @@ can use it with 3.1.</p>
 <p>As with Spring 3.1 it uses an @Cacheable annotation to cache a method. In this example calls to findMessage are stored in a cache
 named “messageCache”. The values are of type <code class="highlighter-rouge">Message</code>. The id for each entry is the <code class="highlighter-rouge">id</code> argument given.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">cacheName</span> <span class="o">=</span> <span class="s">"messageCache"</span><span class="o">)</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">cacheName</span> <span class="o">=</span> <span class="s">"messageCache"</span><span class="o">)</span>
 <span class="kd">public</span> <span class="n">Message</span> <span class="nf">findMessage</span><span class="o">(</span><span class="kt">long</span> <span class="n">id</span><span class="o">)</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="triggersremove">@TriggersRemove</h3>
 <p>And for cache invalidation, there is the @TriggersRemove annotation.
 In this example, <code class="highlighter-rouge">cache.removeAll()</code> is called after the method is invoked.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@TriggersRemove</span><span class="o">(</span><span class="n">cacheName</span> <span class="o">=</span> <span class="s">"messagesCache"</span><span class="o">,</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nd">@TriggersRemove</span><span class="o">(</span><span class="n">cacheName</span> <span class="o">=</span> <span class="s">"messagesCache"</span><span class="o">,</span>
 <span class="n">when</span> <span class="o">=</span> <span class="n">When</span><span class="o">.</span><span class="na">AFTER_METHOD_INVOCATION</span><span class="o">,</span> <span class="n">removeAll</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addMessage</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">)</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>See <a href="http://blog.goyello.com/2010/07/29/quick-start-with-ehcache-annotations-for-spring/">http://blog.goyello.com/2010/07/29/quick-start-with-ehcache-annotations-for-spring/</a> for a blog post explaining its use
@@ -290,11 +310,16 @@ and providing further links.</p>
 
 <p>Add the Annotation to methods you would like to cache. Lets assume you are using the Dog getDog(String name) method from above:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"getDog"</span><span class="o">)</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nd">@Cacheable</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"getDog"</span><span class="o">)</span>
 <span class="n">Dog</span> <span class="nf">getDog</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
   <span class="o">....</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>
@@ -303,8 +328,13 @@ and providing further links.</p>
 
 <p>Configure Spring. You must add the following to your Spring configuration file in the beans declaration section:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;ehcache:annotation-driven</span> <span class="na">cache-manager=</span><span class="s">"ehCacheManager"</span> <span class="nt">/&gt;</span>
-</code></pre>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;ehcache:annotation-driven</span> <span class="na">cache-manager=</span><span class="s">"ehCacheManager"</span> <span class="nt">/&gt;</span>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>More details can be found at:</p>

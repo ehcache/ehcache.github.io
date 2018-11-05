@@ -266,7 +266,7 @@ for access by end users and for scripted connection from Operations tools for da
   <li>
     <p>Add the ehcache-probe-<version>.jar to your application classpath (or war file). Do this in the same way you added the core ehcache jar to your application. If you are Maven based, the probe module is in the Terracotta public repository for easy integration.</version></p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;repository&gt;
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;repository&gt;
    &lt;id&gt;terracotta-releases&lt;/id&gt;
    &lt;url&gt;http://www.terracotta.org/download/reflector/releases&lt;/url&gt;
  &lt;/repository&gt;
@@ -275,17 +275,15 @@ for access by end users and for scripted connection from Operations tools for da
    &lt;artifactId&gt;ehcache-probe&lt;/artifactId&gt;
    &lt;version&gt;[version]&lt;/version&gt;
  &lt;/dependency&gt;
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
   <li>
     <p>Configure Ehcache to communicate with the probe by specifying the class name of the probe, the address (or hostname), the port that the monitor will be running on and whether to do memory measurement. This is done by adding the following to ehcache.xml:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;cacheManagerPeerListenerFactory
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;cacheManagerPeerListenerFactory
  class="org.terracotta.ehcachedx.monitor.probe.ProbePeerListenerFactory"
  properties="monitorAddress=localhost, monitorPort=9889, memoryMeasurement=true" /&gt;
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
   <li>
     <p>Include required SLF4J logging jars.</p>
@@ -301,15 +299,14 @@ for access by end users and for scripted connection from Operations tools for da
     <p>Ensure that statistics capture in each cache is turned on for the probe to gather statistics.
 Statistics were turned off by default from Ehcache 2.1 onwards.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> &lt;cache name="sampleCache2"
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;cache name="sampleCache2"
    maxEntriesLocalHeap="1000"
    eternal="true"
    overflowToDisk="false"
    memoryStoreEvictionPolicy="FIFO"
    statistics="true"
    /&gt;
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
 </ol>
 
@@ -338,7 +335,10 @@ the credentials are stored in clear-text.</p>
 <p>A more comprehensive security solution can be achieved by configuring the Jetty Server with one ore more <code class="highlighter-rouge">UserRealm</code>s as described by <a href="http://docs.codehaus.org/display/JETTY/JAAS">Jetty and JAAS</a>. Simply edit <code class="highlighter-rouge">etc/jetty.xml</code> to use the appropriate <code class="highlighter-rouge">UserRealm</code> implementation for your needs. To configure the Monitor to authenticate against an existing LDAP server, first ensure that you have
 defined and properly registered a <code class="highlighter-rouge">LoginConfig</code>, such as the following example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>MyExistingLDAPLoginConfig {
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>MyExistingLDAPLoginConfig {
   com.sun.security.auth.module.LdapLoginModule REQUIRED
   java.naming.security.authentication="simple"
   userProvider="ldap://ldap-host:389"
@@ -349,7 +349,9 @@ defined and properly registered a <code class="highlighter-rouge">LoginConfig</c
   bindAuthenticationType="simple"
   debug=true;
 };
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Note: the <code class="highlighter-rouge">LdapLoginModule</code> is new with JDK 1.6.</p>
@@ -358,7 +360,10 @@ defined and properly registered a <code class="highlighter-rouge">LoginConfig</c
 
 <p>Next, edit <code class="highlighter-rouge">etc/jetty.xml</code>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
 <span class="cp">&lt;!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN"
  "http://jetty.mortbay.org/configure.dtd"&gt;</span>
 <span class="nt">&lt;Configure</span> <span class="na">id=</span><span class="s">"Server"</span> <span class="na">class=</span><span class="s">"org.terracotta.ehcachedx.org.mortbay.jetty.Server"</span><span class="nt">&gt;</span>
@@ -373,7 +378,9 @@ defined and properly registered a <code class="highlighter-rouge">LoginConfig</c
     <span class="nt">&lt;/Array&gt;</span>
   <span class="nt">&lt;/Set&gt;</span>
 <span class="nt">&lt;/Configure&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The <code class="highlighter-rouge">LoginModuleName</code> you specify as the second constructor parameter to the <code class="highlighter-rouge">JAASUserRealm</code> class must exactly match the name of your <code class="highlighter-rouge">LoginModule</code>. The realm name specified as the first constructor parameter can be an arbitrary value.</p>
@@ -434,8 +441,13 @@ frameworks, commands such as <code class="highlighter-rouge">curl</code> or <cod
 For example, on a Linux system, to query the list of probes that a local monitor on the default port is currently aware of, and return
 the data in XML format, the following command could be used:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ curl http://localhost:9889/monitor/listProbes?format=xml
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>$ curl http://localhost:9889/monitor/listProbes?format=xml
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="licensing-">Licensing <a name="Licensing" id="Licensing"></a></h2>

@@ -218,7 +218,10 @@ Since ehcache-1.2, all classloading is done in a standard way in one utility cla
 
 <p>Ehcache allows plugins for events and distribution. These are loaded and created as follows:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * Creates a new class instance. Logs errors along the way. Classes are loaded
  * using the Ehcache standard classloader.
  *
@@ -273,7 +276,9 @@ Since ehcache-1.2, all classloading is done in a standard way in one utility cla
 <span class="kd">public</span> <span class="kd">static</span> <span class="n">ClassLoader</span> <span class="nf">getFallbackClassLoader</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">ClassLoaderUtil</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">();</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>If this does not work for some reason a CacheException is thrown with a

@@ -249,8 +249,13 @@
 
 <p>Entire caches can be pinned using the <code class="highlighter-rouge">pinning</code> element in cache configuration. This element has a required attribute (<code class="highlighter-rouge">store</code>) to specify which data tiers the cache should be pinned to:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;pinning store="localMemory" /&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;pinning store="localMemory" /&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The <code class="highlighter-rouge">store</code> attribute can have one of the following values:</p>
@@ -262,18 +267,28 @@
 
 <p>For example, the following cache is configured to pin its entries:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="Cache1" ... &gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="Cache1" ... &gt;
      &lt;pinning store="inCache" /&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The following cache is configured to pin its entries to heap only:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="Cache2" ... &gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="Cache2" ... &gt;
      &lt;pinning store="localMemory" /&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="scope-of-pinning">Scope of Pinning</h3>
@@ -287,11 +302,16 @@
 <h2 id="how-configuration-affects-element-flushing-and-eviction-">How Configuration Affects Element Flushing and Eviction <a name="30343" id="30343"></a></h2>
 <p>The following example shows a cache with certain expiration settings:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="myCache"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="myCache"
       maxEntriesLocalDisk="10000" eternal="false" timeToIdleSeconds="3600"
       timeToLiveSeconds="0" memoryStoreEvictionPolicy="LFU"&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Note the following about the myCache configuration:</p>
@@ -306,12 +326,17 @@
 <h3 id="pinning-overrides-cache-sizing">Pinning Overrides Cache Sizing</h3>
 <p>Pinning takes priority over configured cache sizes. For example, in the following cache  pinning configuration overrides the <code class="highlighter-rouge">maxEntriesOnHeap</code> setting:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="myCache"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="myCache"
      maxEntriesLocalHeap="10000"
      ... &gt;
     &lt;pinning store="localHeap" /&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>While expired cache entries (even ones that have been pinned) can always be flushed and eventually evicted from the cluster, most non-expired elements can as well if resource limitations are reached. However, elements resident in a pinned cache cannot be evicted if they haven’t expired.</p>

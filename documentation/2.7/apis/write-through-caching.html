@@ -368,7 +368,10 @@ for durability and HA. The data is still kept in the originating node for perfor
 <p>There are many configuration options. See the <code class="highlighter-rouge">CacheWriterConfiguration</code> for properties that may be set and their effect.
 Below is an example of how to configure the cache writer in XML:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeThroughCache1"</span> <span class="err">...</span> <span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeThroughCache1"</span> <span class="err">...</span> <span class="nt">&gt;</span>
   <span class="nt">&lt;cacheWriter</span> <span class="na">writeMode=</span><span class="s">"write-behind"</span> <span class="na">maxWriteDelay=</span><span class="s">"8"</span> <span class="na">rateLimitPerSecond=</span><span class="s">"5"</span>
           <span class="na">writeCoalescing=</span><span class="s">"true"</span> <span class="na">writeBatching=</span><span class="s">"true"</span> <span class="na">writeBatchSize=</span><span class="s">"20"</span>
           <span class="na">retryAttempts=</span><span class="s">"2"</span> <span class="na">retryAttemptDelaySeconds=</span><span class="s">"2"</span><span class="nt">&gt;</span>
@@ -376,12 +379,17 @@ Below is an example of how to configure the cache writer in XML:</p>
                      <span class="na">properties=</span><span class="s">"just.some.property=test; another.property=test2"</span> <span class="na">propertySeparator=</span><span class="s">";"</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;/cacheWriter&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Further examples:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeThroughCache2"</span> <span class="err">...</span> <span class="nt">&gt;</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeThroughCache2"</span> <span class="err">...</span> <span class="nt">&gt;</span>
  <span class="nt">&lt;cacheWriter/&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
 <span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"writeThroughCache3"</span> <span class="err">...</span> <span class="nt">&gt;</span>
@@ -404,12 +412,17 @@ Below is an example of how to configure the cache writer in XML:</p>
                  <span class="na">properties=</span><span class="s">"just.some.property=test; another.property=test2"</span> <span class="na">propertySeparator=</span><span class="s">";"</span><span class="nt">/&gt;</span>
  <span class="nt">&lt;/cacheWriter&gt;</span>
 <span class="nt">&lt;/cache&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>This configuration can also be achieved through the <code class="highlighter-rouge">Cache</code> constructor in Java:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Cache</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cache</span><span class="o">(</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Cache</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Cache</span><span class="o">(</span>
 <span class="k">new</span> <span class="nf">CacheConfiguration</span><span class="o">(</span><span class="s">"cacheName"</span><span class="o">,</span> <span class="mi">10</span><span class="o">)</span>
 <span class="o">.</span><span class="na">cacheWriter</span><span class="o">(</span><span class="k">new</span> <span class="n">CacheWriterConfiguration</span><span class="o">()</span>
 <span class="o">.</span><span class="na">writeMode</span><span class="o">(</span><span class="n">CacheWriterConfiguration</span><span class="o">.</span><span class="na">WriteMode</span><span class="o">.</span><span class="na">WRITE</span><span class="o">-</span><span class="n">BEHIND</span><span class="o">)</span>
@@ -424,17 +437,24 @@ Below is an example of how to configure the cache writer in XML:</p>
    <span class="o">.</span><span class="na">className</span><span class="o">(</span><span class="s">"com.company.MyCacheWriterFactory"</span><span class="o">)</span>
    <span class="o">.</span><span class="na">properties</span><span class="o">(</span><span class="s">"just.some.property=test; another.property=test2"</span><span class="o">)</span>
    <span class="o">.</span><span class="na">propertySeparator</span><span class="o">(</span><span class="s">";"</span><span class="o">))));</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Instead of relying on a <code class="highlighter-rouge">CacheWriterFactoryConfiguration</code> to create a <code class="highlighter-rouge">CacheWriter</code>, it’s also possible to explicitly
 register a <code class="highlighter-rouge">CacheWriter</code> instance from within Java code. This allows you to refer to local resources like database
 connections or file handles.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code>  <span class="n">Cache</span> <span class="n">cache</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="na">getCache</span><span class="o">(</span><span class="s">"cacheName"</span><span class="o">);</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>  <span class="n">Cache</span> <span class="n">cache</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="na">getCache</span><span class="o">(</span><span class="s">"cacheName"</span><span class="o">);</span>
   <span class="n">MyCacheWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyCacheWriter</span><span class="o">(</span><span class="n">jdbcConnection</span><span class="o">);</span>
   <span class="n">cache</span><span class="o">.</span><span class="na">registerCacheWriter</span><span class="o">(</span><span class="n">writer</span><span class="o">);</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="configuration-attributes">Configuration Attributes</h3>
@@ -480,7 +500,10 @@ connections or file handles.</p>
 <code class="highlighter-rouge">cache.putWithWriter(...)</code> and <code class="highlighter-rouge">cache.removeWithWriter(...)</code> methods.
 For example, following is the method signature for <code class="highlighter-rouge">cache.putWithWriter(...)</code>.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * Put an element in the cache writing through a CacheWriter. If no CacheWriter has been
  * set for the cache, then this method has the same effect as cache.put().
  *
@@ -501,7 +524,9 @@ For example, following is the method signature for <code class="highlighter-roug
  * @throws CacheException
  */</span>
 <span class="kt">void</span> <span class="nf">putWithWriter</span><span class="o">(</span><span class="n">Element</span> <span class="n">element</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IllegalArgumentException</span><span class="o">,</span> <span class="n">IllegalStateException</span><span class="o">,</span> <span class="n">CacheException</span><span class="o">;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>See the Cache JavaDoc for the complete API.</p>
@@ -510,7 +535,10 @@ For example, following is the method signature for <code class="highlighter-roug
 <p>The Ehcache write-through SPI is the <code class="highlighter-rouge">CacheWriter</code> interface. Implementers perform writes to the underlying resource
 in their implementation.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * A CacheWriter is an interface used for write-through and write-behind caching to a
  * underlying resource.
  * &lt;p/&gt;
@@ -634,7 +662,9 @@ in their implementation.</p>
   <span class="kt">void</span> <span class="nf">throwAway</span><span class="o">(</span><span class="n">Element</span> <span class="n">element</span><span class="o">,</span> <span class="n">SingleOperationType</span> <span class="n">operationType</span><span class="o">,</span> <span class="n">RuntimeException</span> <span class="n">e</span><span class="o">);</span>
 
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="faq">FAQ</h2>

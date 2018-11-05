@@ -226,8 +226,13 @@ become noticeable.</p>
 <p>The clearest way to see if this is happening is to run <code class="highlighter-rouge">jstat</code>. The following command will produce a log of garbage collection statistics, updated
 every ten seconds.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>jstat -gcutil &lt;pid&gt; 10 1000000
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>jstat -gcutil &lt;pid&gt; 10 1000000
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The thing to watch for is the Full Garbage Collection Time. The difference between the total time for each reading is the amount of time the system was
@@ -237,9 +242,14 @@ paused. A jump of more than a few seconds will not be acceptable in most applica
 
 <p>The Sun core garbage collection team has offered the following tuning suggestion for virtual machines with large heaps using caching:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>java ... -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>java ... -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC
 -XX:NewSize=&lt;1/4 of total heap size&gt; -XX:SurvivorRatio=16
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Note that it is better to use <code class="highlighter-rouge">-XX:+DisableExplicitGC</code>, instead of calling <code class="highlighter-rouge">System.gc()</code>. It also helps to use the low pause collector <code class="highlighter-rouge">-XX:+UseConcMarkSweepGC</code>.</p>
@@ -251,9 +261,14 @@ around by increasing the interval for garbage collection. The effect RMI has is 
 each minute. The setting above disables explicit GC calls, but it does not disable the full GC initiated by RMI.
 The default in JDK6 was increased to 1 hour. The following system properties control the interval.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>-Dsun.rmi.dgc.client.gcInterval=60000
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>-Dsun.rmi.dgc.client.gcInterval=60000
 -Dsun.rmi.dgc.server.gcInterval=60000
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Increase the interval as required in your application.</p>

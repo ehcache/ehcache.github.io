@@ -308,9 +308,8 @@ robots do not accept gzip encoding.</p>
   <li>
     <p>Whether the user agent has advertised its acceptance of gzip encoding. This is on a per request basis. If they will accept a gzip response to their request they must include the following in the HTTP request header:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>  Accept-Encoding: gzip
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Accept-Encoding: gzip
+</code></pre></div>    </div>
   </li>
 </ul>
 
@@ -339,12 +338,11 @@ So why would you ever want to use SimplePageCachingFilter, which does not set th
   <li>
     <p><code class="highlighter-rouge">varyHeader</code>  - set to true to set Vary:Accept-Encoding in the response when doing Gzip. This header is needed to support HTTP proxies however it is off by default.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>  &lt;init-param&gt;
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;init-param&gt;
     &lt;param-name&gt;varyHeader&lt;/param-name&gt;
     &lt;param-value&gt;true&lt;/param-value&gt;
   &lt;/init-param&gt;
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
 </ul>
 
@@ -361,7 +359,10 @@ that is only applicable to the entire page.</p>
 
 <h2 id="example-web.xml-configuration">Example web.xml configuration</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 version="2.5"&gt;
@@ -431,12 +432,17 @@ version="2.5"&gt;
 &lt;filter-name&gt;SimpleCachingHeadersPageCachingFilter&lt;/filter-name&gt;
 &lt;url-pattern&gt;/CachedPage2.jsp&lt;/url-pattern&gt;
  &lt;/filter-mapping&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>An ehcache.xml configuration file, matching the above would then be:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;Ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;Ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd"&gt;
 &lt;diskStore path="auto/default/path"/&gt;
  &lt;defaultCache
@@ -475,7 +481,9 @@ xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd"&gt;
   &lt;persistence strategy="localTempSwap"/&gt;
 &lt;/cache&gt;
 &lt;/ehcache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="cachingfilter-exceptions">CachingFilter Exceptions</h2>

@@ -224,8 +224,13 @@ It can be used directly via its own API, or as a Rails caching provider.</p>
 <h3 id="installation-for-jruby">Installation for JRuby</h3>
 <p>Ehcache JRuby integration is provided by the jruby-ehcache gem.  To install it, simply execute:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>jgem install jruby-ehcache
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>jgem install jruby-ehcache
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Note that you may need to use “sudo” to install gems on your system.</p>
@@ -234,9 +239,14 @@ It can be used directly via its own API, or as a Rails caching provider.</p>
 
 <p>If you want Rails caching support, you should also install the correct gem for your Rails version:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>jgem install jruby-ehcache-rails2 # for Rails 2
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>jgem install jruby-ehcache-rails2 # for Rails 2
 jgem install jruby-ehcache-rails3 # for Rails 3
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>An alternative installation is to simply add the appropriate jruby-ehcache-rails dependency to your Gemfile, and then run a Bundle Install. This will pull in the latest jruby-ehcache gem.</p>
@@ -265,8 +275,13 @@ jgem install jruby-ehcache-rails3 # for Rails 3
 <h3 id="basic-operations">Basic Operations</h3>
 <p>To make Ehcache available to JRuby:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>require 'ehcache'
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>require 'ehcache'
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Note that, because jruby-ehcache is provided as a Ruby Gem, you must
@@ -444,73 +459,63 @@ config.action_controller.cache_store = :ehcache_store</code>
   <li>
     <p>For this example, we will create a new Rails application with the custom template from JRuby.org. The following command creates a “rails-bigmemory” application:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> jruby -S rails new rails-bigmemory -m http://jruby.org/rails3.rb
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jruby -S rails new rails-bigmemory -m http://jruby.org/rails3.rb
+</code></pre></div>    </div>
   </li>
   <li>
     <p>The example application will be a simple address book. Generate a scaffold for the address book application, which will create contacts including a first name, last name, and email address.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> jruby -S rails generate scaffold Contact first_name: string last_name: string email_address: string
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jruby -S rails generate scaffold Contact first_name: string last_name: string email_address: string
+</code></pre></div>    </div>
   </li>
   <li>
     <p>Add support for caching with Ehcache. There are several ways to do this, but for this example, we will use the Action Controller caching mechanism. Open the ContactsController.rb. Add a call to the Action method to tell it to cache the results of our index and show pages.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> caches_action :index, :show
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> caches_action :index, :show
+</code></pre></div>    </div>
 
     <p>To expire items from the cache as appropriate, add calls to expire the results of the caching calls.</p>
 
     <p>Under create, add the following:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> expire_action :action =&gt; 'index'
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> expire_action :action =&gt; 'index'
+</code></pre></div>    </div>
 
     <p>Under update, add the following:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>  expire_action :action =&gt; 'show', :id =&gt; params[:id]
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  expire_action :action =&gt; 'show', :id =&gt; params[:id]
   expire_action :action =&gt; 'index'
-</code></pre>
-    </div>
+</code></pre></div>    </div>
 
     <p>Under destroy, add the following:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>   expire_action :action =&gt; 'index'
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   expire_action :action =&gt; 'index'
+</code></pre></div>    </div>
   </li>
   <li>
     <p>Now that the application is configured to support caching, specify Ehcache as its caching provider. Open the Gemfile and declare a dependency on the ehcache-jruby gem. Add the following line:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>  gem 'ehcache-jruby-rails3'
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  gem 'ehcache-jruby-rails3'
+</code></pre></div>    </div>
   </li>
   <li>
     <p>In the development.rb file, enable caching for the Rails Action Controller mechanism, which is disabled by default in developement mode. (Note that caching must be configured for each environment in which you want to use it.) This file also needs a specification for using Ehcache as the cache store provider. Add the following two lines to the .rb file:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>  config.action_controller.perform_caching = true
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  config.action_controller.perform_caching = true
   config.cache_store = :ehcache_store
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
   <li>
     <p>Run the Bundle Install command.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>  jruby -S bundle install
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  jruby -S bundle install
+</code></pre></div>    </div>
   </li>
   <li>
     <p>Run the Rake command to create the database and populate the initial schema.</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>  jruby -S rake db:create db:migrate
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  jruby -S rake db:create db:migrate
+</code></pre></div>    </div>
   </li>
   <li>
     <p>(Optional) Set up the Ehcache monitor. This involves the following four steps:</p>
@@ -521,11 +526,10 @@ config.action_controller.cache_store = :ehcache_store</code>
       <li>
         <p>Create an ehcache.xml file in the Rails application config directory. In the ehcache.xml file, add the following:</p>
 
-        <div class="highlighter-rouge"><pre class="highlight"><code>  &lt;cacheManagerPeerListenerFactory
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;cacheManagerPeerListenerFactory
       class="org.terracotta.ehcachedx.monitor.probe.ProbePeerListenerFactory"
       properties="monitorAddress=localhost, monitorPort=9889, memoryMeasurement=true"/&gt;
-</code></pre>
-        </div>
+</code></pre></div>        </div>
       </li>
     </ul>
   </li>
@@ -533,20 +537,35 @@ config.action_controller.cache_store = :ehcache_store</code>
 
 <p>Now you are ready to start the application with the following command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>jruby -S rails server
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>jruby -S rails server
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Once the application is started, populate the cache by adding, editing, and deleting contacts. To see the Contacts address book, enter the following in your browser:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>http://localhost:3000/contacts
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>http://localhost:3000/contacts
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>To view cache activity and statistics in the Ehcache monitor, enter the following in your browser:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>http://localhost:9889/monitor
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>http://localhost:9889/monitor
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>For more information about how to use the monitor, refer to the <a href="/documentation/2.7/operations/monitor">Ehcache Monitor</a> page.</p>
@@ -561,10 +580,9 @@ config.action_controller.cache_store = :ehcache_store</code>
   <li>
     <p>Modify the ehcache.xml file (in the config directory of your Rails application) by adding the following to each cache where you want to enable BigMemory:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> overflowToOffHeap="true"
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> overflowToOffHeap="true"
  maxBytesLocalOffHeap="1G"
-</code></pre>
-    </div>
+</code></pre></div>    </div>
 
     <p>When <code class="highlighter-rouge">overflowToOffHeap</code> is set to true, it enables the cache to utilize off-heap memory storage to improve performance. Off-heap memory is not subject to Java GC cycles and has a size limit set by the Java property MaxDirectMemorySize.</p>
 
@@ -576,9 +594,8 @@ config.action_controller.cache_store = :ehcache_store</code>
   <li>
     <p>Now that your application is configured to use BigMemory, start it with the following commands:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> jruby -J-Dcom.tc.productkey.path=/path/to/key -J-XX:MaxDirectMemorySize=2G -S rails server
-</code></pre>
-    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jruby -J-Dcom.tc.productkey.path=/path/to/key -J-XX:MaxDirectMemorySize=2G -S rails server
+</code></pre></div>    </div>
 
     <p>This will configure a system property that points to the location of the license key, and it will set the direct memory size. The <code class="highlighter-rouge">maxDirectMemorySize</code> must be at least 256M larger than total off-heap memory (the unused portion will still be available for other uses).</p>
   </li>

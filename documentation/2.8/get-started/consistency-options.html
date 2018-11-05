@@ -310,12 +310,17 @@ Substituting the terms of R + W &gt; N, we get 1 + 2 &gt; 2, which is clearly tr
 <h3 id="strong-consistency">Strong Consistency</h3>
 <p>In the distributed cache, strong consistency is configured as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="sampleCache1"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="sampleCache1"
 ...
  /&gt;
    &lt;terracotta consistency="strong" /&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>We will walk through how a write is done and show that it is strongly consistent.</p>

@@ -233,10 +233,15 @@
 
 <p>Cache persistence on disk is configured by adding the <code class="highlighter-rouge">&lt;persistence&gt;</code> sub-element to a cache configuration. The <code class="highlighter-rouge">&lt;persistence&gt;</code> sub-element includes two attributes: <code class="highlighter-rouge">strategy</code> and <code class="highlighter-rouge">synchronousWrites</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache&gt;
    &lt;persistence strategy=”localRestartable|localTempSwap|none|distributed” synchronousWrites=”false|true”/&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="strategy-options">Strategy Options</h3>
@@ -287,13 +292,18 @@
 
 <p>The “localTempSwap” persistence strategy allows the cache to use the local disk during cache operation. The disk storage is temporary and is cleared after a restart.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;ehcache&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;ehcache&gt;
   &lt;diskStore path="/auto/default/path"/&gt;
   &lt;cache&gt;
     &lt;persistence strategy=”localTempSwap”/&gt;
   &lt;/cache&gt;
 &lt;/ehcache&gt;  
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p><strong>Note</strong>: With the “localTempSwap” strategy, you can use <code class="highlighter-rouge">maxEntriesLocalDisk</code> or <code class="highlighter-rouge">maxBytesLocalDisk</code> at either the Cache or CacheManager level to control the size of the disk tier.</p>
@@ -301,16 +311,24 @@
 <h3 id="in-memory-only-cache">In-memory Only Cache</h3>
 <p>When the persistence strategy is “none”, all cache stays in memory (with no overflow to disk nor persistence on disk).</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache&gt;
   &lt;persistence strategy=”none”/&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="programmatic-configuration-example">Programmatic Configuration Example</h3>
 <p>The following is an example of how to programmatically configure cache persistence on disk:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Configuration cacheManagerConfig = new Configuration()
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Configuration cacheManagerConfig = new Configuration()
     .diskStore(new DiskStoreConfiguration()
     .path("/path/to/store/data"));
 CacheConfiguration cacheConfig = new CacheConfiguration()
@@ -323,7 +341,9 @@ cacheManagerConfig.addCache(cacheConfig);
 
 CacheManager cacheManager = new CacheManager(cacheManagerConfig);
 Ehcache myCache = cacheManager.getEhcache("my-cache");
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="compatibility-with-previous-versions">Compatibility with Previous Versions</h2>

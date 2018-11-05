@@ -285,7 +285,10 @@ that an Element in the lowest quartile of use is evicted 99% of the time.</p>
 any Element metadata which makes possible some very interesting approaches. For example, evict
 an Element if it has been hit more than 10 times.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * Sets the eviction policy strategy. The Cache will use a policy at startup.
  * There are three policies which can be configured: LRU, LFU and FIFO. However
  * many other policies are possible. That the policy has access to the whole element
@@ -300,12 +303,17 @@ an Element if it has been hit more than 10 times.</p>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMemoryStoreEvictionPolicy</span><span class="o">(</span><span class="n">Policy</span> <span class="n">policy</span><span class="o">)</span> <span class="o">{</span>
   <span class="n">memoryStore</span><span class="o">.</span><span class="na">setEvictionPolicy</span><span class="o">(</span><span class="n">policy</span><span class="o">);</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>A Policy must implement the following interface:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Policy</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Policy</span> <span class="o">{</span>
   <span class="cm">/**
    * @return the name of the Policy. Inbuilt examples are LRU, LFU and FIFO.
    */</span>
@@ -333,7 +341,9 @@ an Element if it has been hit more than 10 times.</p>
    */</span>
   <span class="kt">boolean</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Element</span> <span class="n">element1</span><span class="o">,</span> <span class="n">Element</span> <span class="n">element2</span><span class="o">);</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="diskstore-eviction-algorithms">DiskStore Eviction Algorithms</h2>

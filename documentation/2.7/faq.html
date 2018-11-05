@@ -267,26 +267,39 @@ they are mandatory. See the <a href="/documentation/2.7/configuration/configurat
 <h4 id="what-is-the-minimum-configuration-to-get-replicated-caching-going">What is the minimum configuration to get replicated caching going?</h4>
 <p>The minimum configuration you need to get replicated caching going is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerProviderFactory
    class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
    properties="peerDiscovery=automatic,
                multicastGroupAddress=230.0.0.1,
                multicastGroupPort=4446"/&gt;
 &lt;cacheManagerPeerListenerFactory
    class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>and then at least one cache declaration with</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheEventListenerFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheEventListenerFactory
    class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/`&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>in it. An example cache is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="sampleDistributedCache1"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="sampleDistributedCache1"
       maxEntriesLocalHeap="10"
       eternal="false"
       timeToIdleSeconds="100"
@@ -294,7 +307,9 @@ they are mandatory. See the <a href="/documentation/2.7/configuration/configurat
    &lt;cacheEventListenerFactory
       class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Each peer server can have the same configuration.</p>
@@ -304,8 +319,13 @@ they are mandatory. See the <a href="/documentation/2.7/configuration/configurat
 <p>The cache event listening works but it does not get plumbed into the peering mechanism. The current API does not have a CacheManager event for cache configuration change. You can however make it work
 by calling the notifyCacheAdded event.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>getCache().getCacheManager().getCacheManagerEventListenerRegistry().notifyCacheAdded("cacheName");
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>getCache().getCacheManager().getCacheManagerEventListenerRegistry().notifyCacheAdded("cacheName");
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="distributed-caching">Distributed Caching</h3>
@@ -328,8 +348,13 @@ can be further configured with the <code class="highlighter-rouge">tc-config.xml
 
 <p>You can externalize the value of the <code class="highlighter-rouge">terracottaConfig url</code> from the ehcache.xml file by using a system property for the <code class="highlighter-rouge">url</code> attribute. Add this in your ehcache.xml config file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;terracottaConfig url="${my.terracotta.server.url}"/&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;terracottaConfig url="${my.terracotta.server.url}"/&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>and define my.terracotta.server.url as a system property.</p>
@@ -349,8 +374,13 @@ will be mapped to consistency=eventual.</p>
 
 <h4 id="should-i-use-the-following-directive-when-doing-distributed-caching">Should I use the following directive when doing distributed caching?</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  &lt;cacheManagerEventListenerFactory class="" properties=""/&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>  &lt;cacheManagerEventListenerFactory class="" properties=""/&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>No, it is unrelated. It is for listening to changes in your local CacheManager.</p>
@@ -583,10 +613,9 @@ TerracottaCacheEventReplicationFactory event listener is registered for the cach
   <li>
     <p>Create a new cache:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> Cache cache = new Cache("test2", 1, true, true, 0, 0, true, 120, ...);
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Cache cache = new Cache("test2", 1, true, true, 0, 0, true, 120, ...);
  cacheManager.addCache(cache);
-</code></pre>
-    </div>
+</code></pre></div>    </div>
 
     <p>See the JavaDoc for the full parameters.</p>
   </li>
@@ -682,10 +711,15 @@ Note that existing threads doing I/O against the TC server (whether for data or 
 <h4 id="i-have-created-a-new-cache-and-its-status-is-status_uninitialised-how-do-i-initialise-it">I have created a new cache and its status is STATUS_UNINITIALISED. How do I initialise it?</h4>
 <p>You need to add a newly created cache to a CacheManager before it gets initialised. Use code like the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CacheManager manager = CacheManager.create();
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>CacheManager manager = CacheManager.create();
 Cache myCache = new Cache("testDiskOnly", 0, true, false, 5, 2);
 manager.addCache(myCache);
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="why-does-ehcache-16-use-more-memory-than-15">Why does Ehcache 1.6 use more memory than 1.5?</h4>
@@ -814,12 +848,17 @@ the size of the elements being replicated.
 The configuration that controls this is the <code class="highlighter-rouge">socketTimeoutMillis</code> setting in <code class="highlighter-rouge">cacheManagerPeerListenerFactory</code>.
 120000 seems to work well for most scenarios.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerListenerFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerListenerFactory
        class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
        properties="hostName=fully_qualified_hostname_or_ip,
                    port=40001,
                    socketTimeoutMillis=120000"/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="distributed-caching-5">Distributed Caching</h3>

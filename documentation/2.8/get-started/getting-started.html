@@ -254,7 +254,10 @@ system-of-record, store the data in the cache, and then return it.</p>
 <p>When data is written, the cache must be updated with the system-of-record.
 This results in code that often looks like the following pseudo-code:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyDataAccessClass</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyDataAccessClass</span>
 <span class="o">{</span>
   <span class="kd">private</span> <span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">;</span>
   <span class="kd">public</span> <span class="nf">MyDataAccessClass</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">)</span>
@@ -282,7 +285,9 @@ This results in code that often looks like the following pseudo-code:</p>
      <span class="n">writeDataToDataStore</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
      <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="k">new</span> <span class="n">Element</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
   <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="cache-as-sor">cache-as-sor</h3>
@@ -356,7 +361,10 @@ Guide chapter on <a href="/documentation/2.8/apis/write-through-caching.html">Wr
 
 <h3 id="cache-as-sor-example">cache-as-sor example</h3>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyDataAccessClass</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyDataAccessClass</span> <span class="o">{</span>
   <span class="kd">private</span> <span class="kd">final</span> <span class="n">Ehcache</span> <span class="n">cache</span><span class="o">;</span>
 
   <span class="kd">public</span> <span class="nf">MyDataAccessClass</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">cache</span><span class="o">)</span>
@@ -426,7 +434,9 @@ Guide chapter on <a href="/documentation/2.8/apis/write-through-caching.html">Wr
      <span class="o">}</span>
   <span class="o">}</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="copy-cache">Copy Cache</h3>

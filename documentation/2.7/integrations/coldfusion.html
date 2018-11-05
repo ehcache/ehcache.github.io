@@ -212,7 +212,10 @@ For more in-depth analysis, see <a href="http://www.brooks-bilson.com/blogs/rob/
 <p>The following code demonstrates how to call Ehcache from ColdFusion.
 It will cache a CF object in Ehcache and the set expiration time to 30 seconds. If you refresh the page many times within 30 seconds, you will see the data from cache. After 30 seconds, you will see a cache miss, then the code will generate a new object and put in cache again.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;CFOBJECT type="JAVA" class="net.sf.ehcache.CacheManager" name="cacheManager"&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;CFOBJECT type="JAVA" class="net.sf.ehcache.CacheManager" name="cacheManager"&gt;
 &lt;cfset cache=cacheManager.getInstance().getCache("MyBookCache")&gt;
 &lt;cfset myBookElement=#cache.get("myBook")#&gt;
 &lt;cfif IsDefined("myBookElement")&gt;
@@ -244,7 +247,9 @@ Title: #myBook["title"]#&lt;br /&gt;
 Author: #myBook["author"]#&lt;br /&gt;
 ISBN: #myBook["ISBN"]#
 &lt;/cfoutput&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 

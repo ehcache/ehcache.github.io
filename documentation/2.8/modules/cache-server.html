@@ -407,13 +407,21 @@ in a cache cluster i.e. it will be Serializable.</p>
 <h5 id="options">OPTIONS</h5>
 <p>This example shows how calling OPTIONS causes Ehcache server to respond with the WADL for that resource</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>curl --request OPTIONS http://localhost:8080/ehcache/rest/sampleCache2/2
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>curl --request OPTIONS http://localhost:8080/ehcache/rest/sampleCache2/2
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The server responds with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;</span>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;</span>
 <span class="nt">&lt;application</span> <span class="na">xmlns=</span><span class="s">"https://wadl.java.net/wadl200610-rddl.xhtml"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;resources</span> <span class="na">base=</span><span class="s">"http://localhost:8080/ehcache/rest/"</span><span class="nt">&gt;</span>
     <span class="nt">&lt;resource</span> <span class="na">path=</span><span class="s">"sampleCache2/2"</span><span class="nt">&gt;</span>
@@ -422,18 +430,28 @@ in a cache cluster i.e. it will be Serializable.</p>
     <span class="err">&lt;/resource</span><span class="nt">&gt;</span>
   <span class="nt">&lt;/resources&gt;</span>
 <span class="nt">&lt;/application&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h5 id="head">HEAD</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>curl --head  http://localhost:8080/ehcache/rest/sampleCache2/2
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>curl --head  http://localhost:8080/ehcache/rest/sampleCache2/2
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The server responds with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>HTTP/1.1 200 OK
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>HTTP/1.1 200 OK
 X-Powered-By: Servlet/2.5
 Server: GlassFish/v3
 Last-Modified: Sun, 27 Jul 2008 08:08:49 GMT
@@ -441,51 +459,76 @@ ETag: "1217146129490"
 Content-Type: text/plain; charset=iso-8859-1
 Content-Length: 157
 Date: Sun, 27 Jul 2008 08:17:09 GMT
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h5 id="put">PUT</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>echo "Hello World" |  curl -S -T -  http://localhost:8080/ehcache/rest/sampleCache2/3
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>echo "Hello World" |  curl -S -T -  http://localhost:8080/ehcache/rest/sampleCache2/3
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The server will put <code class="highlighter-rouge">Hello World</code> into <code class="highlighter-rouge">sampleCache2</code> using key <code class="highlighter-rouge">3</code>.</p>
 
 <h5 id="get">GET</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>curl http://localhost:8080/ehcache/rest/sampleCache2/2
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>curl http://localhost:8080/ehcache/rest/sampleCache2/2
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The server responds with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
 <span class="nt">&lt;oldjoke&gt;</span>
 <span class="nt">&lt;burns&gt;</span>Say <span class="nt">&lt;quote&gt;</span>goodnight<span class="nt">&lt;/quote&gt;</span>,
 Gracie.<span class="nt">&lt;/burns&gt;</span>
 <span class="nt">&lt;allen&gt;&lt;quote&gt;</span>Goodnight,
 Gracie.<span class="nt">&lt;/quote&gt;&lt;/allen&gt;</span>
 <span class="nt">&lt;applause/&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="ruby-code-samples">Ruby Code Samples</h4>
 
 <h5 id="get-1">GET</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>require 'rubygems'
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>require 'rubygems'
 require 'open-uri'
 require 'rexml/document'
 response = open('http://localhost:8080/ehcache/rest/sampleCache2/2')
 xml = response.read
 puts xml
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The server responds with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
 <span class="nt">&lt;oldjoke&gt;</span>
 <span class="nt">&lt;burns&gt;</span>Say <span class="nt">&lt;quote&gt;</span>goodnight<span class="nt">&lt;/quote&gt;</span>,
 Gracie.<span class="nt">&lt;/burns&gt;</span>
@@ -493,22 +536,32 @@ Gracie.<span class="nt">&lt;/burns&gt;</span>
 Gracie.<span class="nt">&lt;/quote&gt;&lt;/allen&gt;</span>
 <span class="nt">&lt;applause/&gt;</span>
 <span class="nt">&lt;/oldjoke&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="python-code-samples">Python Code Samples</h4>
 
 <h5 id="get-2">GET</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import urllib2
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>import urllib2
 f = urllib2.urlopen('http://localhost:8080/ehcache/rest/sampleCache2/2')
 print f.read()
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The server responds with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
 <span class="nt">&lt;oldjoke&gt;</span>
 <span class="nt">&lt;burns&gt;</span>Say <span class="nt">&lt;quote&gt;</span>goodnight<span class="nt">&lt;/quote&gt;</span>,
 Gracie.<span class="nt">&lt;/burns&gt;</span>
@@ -516,7 +569,9 @@ Gracie.<span class="nt">&lt;/burns&gt;</span>
 Gracie.<span class="nt">&lt;/quote&gt;&lt;/allen&gt;</span>
 <span class="nt">&lt;applause/&gt;</span>
 <span class="nt">&lt;/oldjoke&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="java-code-samples">Java Code Samples</h4>
@@ -647,45 +702,68 @@ fromInputStream(url.openStream).getLines.foreach(print)
 
 <p>Run it with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>scala -e ExampleScalaGet
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>scala -e ExampleScalaGet
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The program outputs:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
 <span class="nt">&lt;oldjoke&gt;</span>
 <span class="nt">&lt;burns&gt;</span>Say <span class="nt">&lt;quote&gt;</span>goodnight<span class="nt">&lt;/quote&gt;</span>,
 Gracie.<span class="nt">&lt;/burns&gt;</span>
 <span class="nt">&lt;allen&gt;&lt;quote&gt;</span>Goodnight,
 Gracie.<span class="nt">&lt;/quote&gt;&lt;/allen&gt;</span>
 <span class="nt">&lt;applause/&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="php-code-samples">PHP Code Samples</h4>
 
 <h5 id="get-4">GET</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  &lt;?php
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>  &lt;?php
 $ch = curl_init();
 curl_setopt ($ch, CURLOPT_URL, "http://localhost:8080/ehcache/rest/sampleCache2/3");
   curl_setopt ($ch, CURLOPT_HEADER, 0);
 curl_exec ($ch);
 curl_close ($ch);
   ?&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The server responds with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Hello Ingo
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Hello Ingo
+</code>
+      </pre>
+   </div>
 </div>
 
 <h5 id="put-1">PUT</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  &lt;?php
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>  &lt;?php
 $url = "http://localhost:8080/ehcache/rest/sampleCache2/3";
 $localfile = "localfile.txt";
 $fp = fopen ($localfile, "r");
@@ -707,12 +785,17 @@ if ($error) {
   print "&lt;br /&gt;&lt;br /&gt;$error";
 "/&gt;
 ?&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The server responds with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>## About to connect() to localhost port 8080 (#0)
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>## About to connect() to localhost port 8080 (#0)
 
 ## Trying ::1... * connected
 
@@ -732,7 +815,9 @@ Expect: 100-continue
 ## Connection #0 to host localhost left intact
 
 ## Closing connection #0
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>
@@ -795,9 +880,14 @@ Put each Ehcache cluster behind VIPs on a load balancer.</p>
 So, you could optionally skip the client-side hashing to achieve partitioning in the load balancer itself.
 For example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/ehcache/rest/sampleCache1/[a-h]* =&gt; cluster1
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>/ehcache/rest/sampleCache1/[a-h]* =&gt; cluster1
 /ehcache/rest/sampleCache1/[i-z]* =&gt; cluster2
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Things get much more sophisticated with F5 load balancers, which let you create iRules in the TCL language.
@@ -919,26 +1009,36 @@ There are two tarball archives in tar.gz format:</p>
 <h3 id="maven">Maven</h3>
 <p>The Ehcache Server is in the central Maven repository packaged as type <em>war</em>. Use the following Maven pom snippet:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  &lt;dependency&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>  &lt;dependency&gt;
    &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
    &lt;artifactId&gt;ehcache-server&lt;/artifactId&gt;
    &lt;version&gt;enter_version_here&lt;/version&gt;
    &lt;type&gt;war&lt;/type&gt;
   &lt;/dependency&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>It is also available as a jaronly version, which makes it easier to embed. This version excludes all META-INF
 and WEB-INF configuration files, and also excludes the ehcache.xml. You need to provide these in your maven project.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;dependency&gt;
    &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
    &lt;artifactId&gt;ehcache-server&lt;/artifactId&gt;
    &lt;version&gt;enter_version_here&lt;/version&gt;
    &lt;type&gt;jar&lt;/type&gt;
    &lt;classifier&gt;jaronly&lt;/classifier&gt;
   &lt;/dependency&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="installation">Installation</h2>

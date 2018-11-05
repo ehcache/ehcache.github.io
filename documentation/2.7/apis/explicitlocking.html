@@ -231,7 +231,10 @@ API.</p>
 <h2 id="the-api">The API</h2>
 <p>The following methods are available on <code class="highlighter-rouge">Cache</code> and <code class="highlighter-rouge">Ehcache</code>.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * Acquires the proper read lock for a given cache key
  *
  * @param key - The key that retrieves a value that you want to protect via locking
@@ -312,13 +315,18 @@ API.</p>
  * @return true if a write lock for the key is held by the current thread
  */</span>
 <span class="kt">boolean</span> <span class="nf">isWriteLockedByCurrentThread</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">);</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="example">Example</h2>
 <p>Here is a brief example:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">String</span> <span class="n">key</span> <span class="o">=</span> <span class="s">"123"</span><span class="o">;</span>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">String</span> <span class="n">key</span> <span class="o">=</span> <span class="s">"123"</span><span class="o">;</span>
 <span class="n">Foo</span> <span class="n">val</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Foo</span><span class="o">();</span>
 <span class="n">cache</span><span class="o">.</span><span class="na">acquireWriteLockOnKey</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
 <span class="k">try</span> <span class="o">{</span>
@@ -336,7 +344,9 @@ API.</p>
 <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
    <span class="n">cache</span><span class="o">.</span><span class="na">releaseWriteLockOnKey</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="supported-topologies">Supported Topologies</h2>

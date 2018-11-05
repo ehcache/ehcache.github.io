@@ -287,13 +287,18 @@ stacks and options available in JGroups can be set.</p>
 sampleCache11 and sampleCache12 and you wish to use UDP multicast as the underlying mechanism.
 The configuration for server1 and server2 are identical and will look like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerProviderFactory
 class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"
 properties="connect=UDP(mcast_addr=231.12.21.132;mcast_port=45566;):PING:
 MERGE2:FD_SOCK:VERIFY_SUSPECT:pbcast.NAKACK:UNICAST:pbcast.STABLE:FRAG:pbcast.GMS"
 propertySeparator="::"
 /&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="example-configuration-using-tcp-unicast">Example configuration using TCP Unicast</h2>
@@ -302,7 +307,10 @@ propertySeparator="::"
 
 <p>Suppose you have 2 servers host1 and host2, then the configuration is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerProviderFactory
 class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"
 properties="connect=TCP(start_port=7800):
    TCPPING(initial_hosts=host1[7800],host2[7800];port_range=10;timeout=3000;
@@ -312,7 +320,9 @@ properties="connect=TCP(start_port=7800):
    pbcast.GMS(join_timeout=5000;join_retry_timeout=2000;shun=false;
    print_local_addr=false;down_thread=true;up_thread=true)"
 propertySeparator="::" /&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="protocol-considerations.">Protocol considerations.</h2>
@@ -332,7 +342,10 @@ done by adding a cacheEventListenerFactory element to each cache’s
 configuration. The properties are identical to the one used for RMI replication.
 The listener factory <em>must</em> be of type <code class="highlighter-rouge">JGroupsCacheReplicatorFactory</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;!-- Sample cache named sampleCache2. --&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;!-- Sample cache named sampleCache2. --&gt;
 &lt;cache name="sampleCache2"
   maxEntriesLocalHeap="10"
   eternal="false"
@@ -344,7 +357,9 @@ The listener factory <em>must</em> be of type <code class="highlighter-rouge">JG
   properties="replicateAsynchronously=true, replicatePuts=true,
   replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true" /&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The configuration options are explained below:</p>
@@ -370,7 +385,10 @@ The listener factory <em>must</em> be of type <code class="highlighter-rouge">JG
 
 <p>A typical complete configuration for one replicated cache configured for UDP will look like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;Ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;Ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../main/config/ehcache.xsd"&gt;
   &lt;diskStore path="java.io.tmpdir/one"/&gt;
   &lt;cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.jgroups
@@ -401,7 +419,9 @@ The listener factory <em>must</em> be of type <code class="highlighter-rouge">JG
       replicateRemovals=true" /&gt;
   &lt;/cache&gt;
 &lt;/ehcache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="common-problems">Common Problems</h2>
@@ -409,7 +429,10 @@ The listener factory <em>must</em> be of type <code class="highlighter-rouge">JG
 <p>If replication using JGroups doesn’t work the way you have it configured try this configuration which
 has been extensively tested:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"/&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"/&gt;
 &lt;cache name="sampleCacheAsync"
   maxEntriesLocalHeap="1000"
   eternal="false"
@@ -422,7 +445,9 @@ has been extensively tested:</p>
       replicateUpdates=true, replicateUpdatesViaCopy=false,
       replicateRemovals=true" /&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>If this fails to replicate, see the example programs in the <a href="http://www.jgroups.org/manual/html/ch02.html">JGroups documentation</a>.</p>

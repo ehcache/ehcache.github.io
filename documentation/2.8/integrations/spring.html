@@ -290,18 +290,28 @@ and providing further links.</p>
 
 <p>Add the Annotation to methods you would like to cache. Lets assume you are using the Dog getDog(String name) method from above:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>@Cacheable(name="getDog")
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>@Cacheable(name="getDog")
 Dog getDog(String name)
 {
     ....
 "/&gt; **Step 3:**
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Configure Spring. You must add the following to your Spring configuration file in the beans declaration section:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;ehcache:annotation-driven cache-manager="ehCacheManager" /&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;ehcache:annotation-driven cache-manager="ehCacheManager" /&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>More details can be found at:</p>

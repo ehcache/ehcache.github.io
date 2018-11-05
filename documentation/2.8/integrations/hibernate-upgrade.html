@@ -238,9 +238,14 @@ overhead is avoided.</p>
 <h2 id="unification-with-terracotta’s-hibernate-3.2-provider">Unification with Terracotta’s Hibernate 3.2 Provider</h2>
 <p>In September 2009 Terracotta released its Hibernate Caching Provider which was set as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.provider_class"&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;property name="hibernate.cache.provider_class"&gt;
 org.terracotta.hibernate.TerracottaHibernateCacheProvider&lt;/property&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>It features high performance clustered Hibernate caching using the Terracotta Server Array.

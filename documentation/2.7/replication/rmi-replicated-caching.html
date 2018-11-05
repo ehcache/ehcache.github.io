@@ -313,11 +313,16 @@ hostName=<em>the hostname or IP of the interface to be used for sending and rece
 sampleCache11 and sampleCache12. The configuration
 required for each server is identical, so the configuration for both server1 and server2 is the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerProviderFactory
 class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
 properties="peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,
 multicastGroupPort=4446, timeToLive=32"/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="manual-peer-discovery-">Manual Peer Discovery <a name="Manual Peer Discovery" id="Manual Peer Discovery"></a></h3>
@@ -345,20 +350,30 @@ configured. Do not include the server being configured in the list.</p>
 sampleCache11 and sampleCache12. The following is the configuration
 required for server1:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerProviderFactory
 class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
 properties="peerDiscovery=manual,
 rmiUrls=//server2:40001/sampleCache11|//server2:40001/sampleCache12"/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The following is the configuration required for server2:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerProviderFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerProviderFactory
 class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
 properties="peerDiscovery=manual,
 rmiUrls=//server1:40001/sampleCache11|//server1:40001/sampleCache12"/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="configuring-the-cachemanagerpeerlistener">Configuring the CacheManagerPeerListener</h2>
@@ -382,11 +397,16 @@ listener component is RMICacheManagerPeerListener which is configured
 using RMICacheManagerPeerListenerFactory. It is configured as per the
 following example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cacheManagerPeerListenerFactory
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cacheManagerPeerListenerFactory
 class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
 properties="hostName=localhost, port=40001,
 socketTimeoutMillis=2000"/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Valid properties are:</p>
@@ -416,7 +436,10 @@ which then replicates messages to the other CacheManager peers. This is
 done by adding a cacheEventListenerFactory element to each cache’s
 configuration.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;!-- Sample cache named sampleCache2. --&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;!-- Sample cache named sampleCache2. --&gt;
 &lt;cache name="sampleCache2"
   maxEntriesLocalHeap="10"
   eternal="false"
@@ -428,7 +451,9 @@ class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
 properties="replicateAsynchronously=true, replicatePuts=true, replicateUpdates=true,
 replicateUpdatesViaCopy=false, replicateRemovals=true "/&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>class - use net.sf.ehcache.distribution.RMICacheReplicatorFactory</p>
@@ -450,7 +475,10 @@ replicateUpdatesViaCopy=false, replicateRemovals=true "/&gt;
 <p>To reduce typing if you want default behaviour, which is replicate everything in asynchronous mode, you can leave off
 the <code class="highlighter-rouge">RMICacheReplicatorFactory</code> properties as per the following example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;!-- Sample cache named sampleCache4. All missing RMICacheReplicatorFactory properties
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;!-- Sample cache named sampleCache4. All missing RMICacheReplicatorFactory properties
     default to true --&gt;
 &lt;cache name="sampleCache4"
       maxEntriesLocalHeap="10"
@@ -460,7 +488,9 @@ the <code class="highlighter-rouge">RMICacheReplicatorFactory</code> properties 
    &lt;cacheEventListenerFactory
        class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/&gt;
 &lt;/cache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="configuring-bootstrap-from-a-cache-peer">Configuring Bootstrap from a Cache Peer</h2>

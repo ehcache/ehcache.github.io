@@ -225,8 +225,13 @@ continue to be tested against Ehcache. Accordingly, Tomcat is tier one for Ehcac
 <p>If I restart/reload a web application in Tomcat that has a CacheManager that is part of a cluster, the CacheManager is unable to rejoin the cluster.
 If I set logging for <code class="highlighter-rouge">net.sf.ehcache.distribution</code> to FINE I see the following exception:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>FINE: Unable to lookup remote cache peer for .... Removing from peer list. Cause was: error unmarshalling return; nested exception is: java.io.EOFException.
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>FINE: Unable to lookup remote cache peer for .... Removing from peer list. Cause was: error unmarshalling return; nested exception is: java.io.EOFException.
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The Tomcat and RMI class loaders do not get along that well. Move ehcache.jar to <code class="highlighter-rouge">$TOMCAT_HOME/common/lib</code>. This fixes the problem. This issue happens with anything that uses RMI, not just Ehcache.</p>
@@ -238,8 +243,13 @@ There are lots of causes of memory leaks on redeploy. Moving Ehcache out of the 
 <h2 id="rmi-cacheexception---problem-starting-listener-for-rmicachepeer">RMI CacheException - problem starting listener for RMICachePeer</h2>
 <p>I get the following error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>net.sf.ehcache.CacheException: Problem starting listener for RMICachePeer ... java.rmi.UnmarshalException: error unmarshalling arguments; nested exception is: java.net.MalformedURLException: no protocol: Files/Apache. 
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>net.sf.ehcache.CacheException: Problem starting listener for RMICachePeer ... java.rmi.UnmarshalException: error unmarshalling arguments; nested exception is: java.net.MalformedURLException: no protocol: Files/Apache. 
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>What is going on?

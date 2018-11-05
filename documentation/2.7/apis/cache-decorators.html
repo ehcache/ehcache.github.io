@@ -226,8 +226,13 @@ Note that, for backward compatibility, <code class="highlighter-rouge">CacheMana
 
 <p>Cache decorators are created as follows:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">BlockingCache</span> <span class="n">newBlockingCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BlockingCache</span><span class="o">(</span><span class="n">cache</span><span class="o">);</span>
-</code></pre>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">BlockingCache</span> <span class="n">newBlockingCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BlockingCache</span><span class="o">(</span><span class="n">cache</span><span class="o">);</span>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The class must implement Ehcache.</p>
@@ -243,10 +248,15 @@ Note that, for backward compatibility, <code class="highlighter-rouge">CacheMana
 
 <p>It is configured as per the following example:</p>
 
-<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;cacheDecoratorFactory</span>
+<div class="language-xml highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="nt">&lt;cacheDecoratorFactory</span>
     <span class="na">class=</span><span class="s">"com.company.SomethingCacheDecoratorFactory"</span>
     <span class="na">properties=</span><span class="s">"property1=36 ..."</span> <span class="nt">/&gt;</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Note that from version 2.2, decorators can be configured against the <code class="highlighter-rouge">defaultCache</code>. This is very useful for frameworks
@@ -262,11 +272,16 @@ Note that decorators created via configuration in ehcache.xml have already been 
 <p>A built-in way is to replace the Cache in CacheManager with the decorated one. This is achieved as in the following
 example:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">cacheManager</span><span class="o">.</span><span class="na">replaceCacheWithDecoratedCache</span><span class="o">(</span><span class="n">cache</span><span class="o">,</span> <span class="n">newBlockingCache</span><span class="o">);</span>
-</code></pre>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">cacheManager</span><span class="o">.</span><span class="na">replaceCacheWithDecoratedCache</span><span class="o">(</span><span class="n">cache</span><span class="o">,</span> <span class="n">newBlockingCache</span><span class="o">);</span>
+</code>
+      </pre>
+   </div>
 </div>
 
-<p>The <code class="highlighter-rouge">CacheManager</code> <code class="highlighter-rouge"><span class="p">{</span><span class="err">replaceCacheWithDecoratedCache</span><span class="p">}</span></code> method requires that the decorated cache be built from
+<p>The <code class="highlighter-rouge">CacheManager</code> <code class="highlighter-rouge">{replaceCacheWithDecoratedCache}</code> method requires that the decorated cache be built from
  the underlying cache from the same name.</p>
 
 <p>Note that any overwridden Ehcache methods will take on new behaviours without casting, as per the normal rules
@@ -278,7 +293,10 @@ example:</p>
 attempt to use it. All threads must be referencing the same decorated cache. An example of a suitable init method is
 found in <code class="highlighter-rouge">CachingFilter</code>:</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * The cache holding the web pages. Ensure that all threads for a given cache name
  * are using the same instance of this.
  */</span>
@@ -304,11 +322,18 @@ found in <code class="highlighter-rouge">CachingFilter</code>:</p>
     <span class="o">}</span>
   <span class="o">}</span>
 <span class="o">}</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="n">Ehcache</span> <span class="n">blockingCache</span> <span class="o">=</span> <span class="n">singletonManager</span><span class="o">.</span><span class="na">getEhcache</span><span class="o">(</span><span class="s">"sampleCache1"</span><span class="o">);</span>
-</code></pre>
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="n">Ehcache</span> <span class="n">blockingCache</span> <span class="o">=</span> <span class="n">singletonManager</span><span class="o">.</span><span class="na">getEhcache</span><span class="o">(</span><span class="s">"sampleCache1"</span><span class="o">);</span>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The returned cache will exhibit the decorations.</p>
@@ -320,7 +345,10 @@ found in <code class="highlighter-rouge">CachingFilter</code>:</p>
 <p>The way to do this is to create a decorated cache and then call <code class="highlighter-rouge">cache.setName(new_name)</code> and then add it to <code class="highlighter-rouge">CacheManager</code>
 with <code class="highlighter-rouge">CacheManager.addDecoratedCache()</code>.</p>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+<div class="language-java highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code><span class="cm">/**
  * Adds a decorated {@link Ehcache} to the CacheManager. This method neither creates
  * the memory/disk store nor initializes the cache. It only adds the cache reference
  * to the map of caches held by this cacheManager.
@@ -346,7 +374,9 @@ with <code class="highlighter-rouge">CacheManager.addDecoratedCache()</code>.</p
  *             if another cache with the same name already exists.
  */</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addDecoratedCache</span><span class="o">(</span><span class="n">Ehcache</span> <span class="n">decoratedCache</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ObjectExistsException</span> <span class="o">{</span>
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="built-in-decorators">Built-in Decorators</h2>

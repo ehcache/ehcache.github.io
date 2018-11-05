@@ -229,10 +229,15 @@ To receive notification events, this class must be configured in the deployment
 descriptor for the web application.
 To do so, add the following to web.xml in your web application:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;listener&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;listener&gt;
   &lt;listener-class&gt;net.sf.ehcache.constructs.web.ShutdownListener&lt;/listener-class&gt;
 &lt;/listener&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="the-shutdown-hook">The Shutdown Hook</h2>

@@ -267,8 +267,13 @@ I am not exactly sure how this in done in Glassfish. For a number of reasons we 
 without the Security Manager, and we do not have any issues.
 In domain.xml ensure that the following is <strong>not</strong> included.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;jvm-options&gt;-Djava.security.manager&lt;/jvm-options&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;jvm-options&gt;-Djava.security.manager&lt;/jvm-options&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="ehcache-throws-an-illegalstateexception-in-glassfish">Ehcache throws an IllegalStateException in Glassfish</h3>

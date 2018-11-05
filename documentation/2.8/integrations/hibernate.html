@@ -283,44 +283,64 @@ documentation.</p>
 to contain compatible artifacts, find the artifact versions you need by downloading a kit.
 Configure or add the following repository to your build (pom.xml):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;repository&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;repository&gt;
    &lt;id&gt;terracotta-releases&lt;/id&gt;
    &lt;url&gt;http://www.terracotta.org/download/reflector/releases&lt;/url&gt;
    &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
    &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
 &lt;/repository&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Configure or add the the Ehcache core module defined
 by the following dependency to your build (pom.xml):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;dependency&gt;
    &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
    &lt;artifactId&gt;ehcache-core&lt;/artifactId&gt;
    &lt;version&gt;${ehcacheVersion}&lt;/version&gt;
 &lt;/dependency&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>For the Hibernate-Ehcache integration, add the following dependency:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;dependency&gt;
   &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
   &lt;artifactId&gt;hibernate-ehcache&lt;/artifactId&gt;
   &lt;version&gt;${hibernateVersion}&lt;/version&gt;
 &lt;/dependency&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>For example, the Hibernate-Ehcache integration dependency for Hibernate 4.0.0 is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;dependency&gt;
   &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
   &lt;artifactId&gt;hibernate-ehcache&lt;/artifactId&gt;
   &lt;version&gt;4.0.0&lt;/version&gt;
 &lt;/dependency&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p><strong>NOTE:</strong> Some versions of hibernate-ehcache may have a dependency on a specific version of Ehcache. Check the hibernate-ehcache POM for more information.</p>
@@ -337,16 +357,26 @@ hibernate.properties or Spring. The format given is for hibernate.cfg.xml.</p>
 
 <p>For instance creation:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.region.factory_class"&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;property name="hibernate.cache.region.factory_class"&gt;
          net.sf.ehcache.hibernate.EhCacheRegionFactory&lt;/property&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>To force Hibernate to use a singleton of Ehcache CacheManager:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.region.factory_class"&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;property name="hibernate.cache.region.factory_class"&gt;
          net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory&lt;/property&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="hibernate-4x">Hibernate 4.x</h3>
@@ -359,15 +389,25 @@ you will need to turn on the second-level cache (by default it is
 configured to off - ‘false’ - by Hibernate). This is done by
 setting the following property in your hibernate config:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>You may also want to turn on the Hibernate query cache.  This is done
 by setting the following property in your hibernate config:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.use_query_cache"&gt;true&lt;/property&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;property name="hibernate.cache.use_query_cache"&gt;true&lt;/property&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <h2 id="optional">Optional</h2>
@@ -384,8 +424,13 @@ When using multiple Hibernate instances it is therefore recommended
 to use multiple non-singleton providers or region factories, each
 with a dedicated Ehcache configuration resource.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>net.sf.ehcache.configurationResourceName=/name_of_ehcache.xml
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>net.sf.ehcache.configurationResourceName=/name_of_ehcache.xml
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="set-the-hibernate-cache-provider-programmatically-">Set the Hibernate cache provider programmatically <a name="Set-the-Hibernate-cache-provider-programmatically" id="Set-the-Hibernate-cache-provider-programmatically"></a></h3>
@@ -393,9 +438,14 @@ with a dedicated Ehcache configuration resource.</p>
 necessary Hibernate property settings to the configuration before creating
 the SessionFactory:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Configuration.setProperty("hibernate.cache.region.factory_class",
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>Configuration.setProperty("hibernate.cache.region.factory_class",
                      "net.sf.ehcache.hibernate.EhCacheRegionFactory")
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>For Hibernate 4, use <code class="highlighter-rouge">org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code class="highlighter-rouge">net.sf.ehcache.hibernate.EhCacheRegionFactory</code>.</p>
@@ -405,18 +455,28 @@ the SessionFactory:</p>
 and query caching, then your hibernate config file should contain the
 following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
 &lt;property name="hibernate.cache.use_query_cache"&gt;true&lt;/property&gt;
 &lt;property name="hibernate.cache.region.factory_class"&gt;net.sf.ehcache.hibernate.EhCacheRegionFactory&lt;/property&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>An equivalent Spring configuration file would contain:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;prop key="hibernate.cache.use_second_level_cache"&gt;true&lt;/prop&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;prop key="hibernate.cache.use_second_level_cache"&gt;true&lt;/prop&gt;
 &lt;prop key="hibernate.cache.use_query_cache"&gt;true&lt;/prop&gt;
 &lt;prop key="hibernate.cache.region.factory_class"&gt;net.sf.ehcache.hibernate.EhCacheRegionFactory&lt;/prop&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>For Hibernate 4, use <code class="highlighter-rouge">org.hibernate.cache.ehcache.EhCacheRegionFactory</code> instead of <code class="highlighter-rouge">net.sf.ehcache.hibernate.EhCacheRegionFactory</code>.</p>
@@ -427,7 +487,10 @@ For example, to enable cache entries for the domain object
 com.somecompany.someproject.domain.Country there would be a mapping file
 something like the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;hibernate-mapping&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;hibernate-mapping&gt;
 &lt;class
 name="com.somecompany.someproject.domain.Country"
 table="ut_Countries"
@@ -437,18 +500,28 @@ dynamic-insert="false"
 ...
 &lt;/class&gt;
 &lt;/hibernate-mapping&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>To enable caching, add the following element.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache usage="read-write|nonstrict-read-write|read-only" /&gt;
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache usage="read-write|nonstrict-read-write|read-only" /&gt;
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>For example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;hibernate-mapping&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;hibernate-mapping&gt;
 &lt;class
 name="com.somecompany.someproject.domain.Country"
 table="ut_Countries"
@@ -459,17 +532,24 @@ dynamic-insert="false"
 ...
 &lt;/class&gt;
 &lt;/hibernate-mapping&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>This can also be achieved using the @Cache annotation, e.g.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>@Entity
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>@Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Country {
 ...
 "/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h3 id="definition-of-the-different-cache-strategies">Definition of the different cache strategies</h3>
@@ -507,7 +587,10 @@ Objects.
 So, for example to create a cache for com.somecompany.someproject.domain.Country create a cache configuration
 entry similar to the following in ehcache.xml.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;ehcache&gt;
  &lt;cache
 	name="com.somecompany.someproject.domain.Country"
@@ -518,7 +601,9 @@ entry similar to the following in ehcache.xml.</p>
     &lt;persistence strategy="localTempSwap"/&gt;
  /&gt;
 &lt;/ehcache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="hibernate-cacheconcurrencystrategy">Hibernate CacheConcurrencyStrategy</h4>
@@ -533,7 +618,10 @@ For example, a Country domain object has a set of
 advancedSearchFacilities. The Hibernate doclet for the accessor
 looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>/**
 * Returns the advanced search facilities that should appear for this country.
 * @hibernate.set cascade="all" inverse="true"
 * @hibernate.collection-key column="COUNTRY_ID"
@@ -543,12 +631,17 @@ looks like:</p>
 public Set getAdvancedSearchFacilities() {
 return advancedSearchFacilities;
 "/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>You need an additional cache configured for the set. The ehcache.xml configuration looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;ehcache&gt;
  &lt;cache name="com.somecompany.someproject.domain.Country"
 	maxEntriesLocalHeap="50"
@@ -564,7 +657,9 @@ name="com.somecompany.someproject.domain.Country.advancedSearchFacilities"
     &lt;persistence strategy="localTempSwap"/&gt;
 /&gt;
 &lt;/ehcache&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="hibernate-cacheconcurrencystrategy-1">Hibernate CacheConcurrencyStrategy</h4>
@@ -578,14 +673,19 @@ Object collections.</p>
 <p>This cache is used if you use a query cache without setting a
 name. A typical ehcache.xml configuration is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache
 name="org.hibernate.cache.StandardQueryCache"
 maxEntriesLocalHeap="5"
 eternal="false"
 timeToLiveSeconds="120"
 &lt;persistence strategy="localTempSwap"/&gt;
 /&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="updatetimestampscache">UpdateTimestampsCache</h4>
@@ -596,13 +696,18 @@ query caches. In fact, it is recommend that the the underlying cache
 not be configured for expiry at all.
 A typical ehcache.xml configuration is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache
 name="org.hibernate.cache.UpdateTimestampsCache"
 maxEntriesLocalHeap="5000"
 eternal="true"
 &lt;persistence strategy="localTempSwap"/&gt;
 /&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="named-query-caches">Named Query Caches</h4>
@@ -613,13 +718,18 @@ whatever you want, but by convention you should use “query.” followed
 by a descriptive name.
 E.g.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;cache name="query.AdministrativeAreasPerCountry"
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;cache name="query.AdministrativeAreasPerCountry"
 maxEntriesLocalHeap="5"
 eternal="false"
 timeToLiveSeconds="86400"
 &lt;persistence strategy="localTempSwap"/&gt;
 /&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <h4 id="using-query-caches">Using Query Caches</h4>
@@ -627,7 +737,10 @@ timeToLiveSeconds="86400"
 Country Domain.
 Code to use a query cache follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public List getStreetTypes(final Country country) throws HibernateException {
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>public List getStreetTypes(final Country country) throws HibernateException {
 final Session session = createSession();
 try {
    final Query query = session.createQuery(
@@ -643,7 +756,9 @@ try {
    session.close();
 "/&gt;
 "/&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>The <code class="highlighter-rouge">query.setCacheable(true)</code> line caches the query.

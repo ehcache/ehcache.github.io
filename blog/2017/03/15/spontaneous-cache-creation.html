@@ -158,7 +158,7 @@
         Senior Software Engineer at Terracotta
       </div>
 
-      <div class="section entry-date date published"><time datetime="2017-03-15T16:00:00+00:00"><i class="fa fa-calendar-o"></i> March 15, 2017</time></div>
+      <div class="section entry-date date published"><time datetime="2017-03-15T11:00:00-05:00"><i class="fa fa-calendar-o"></i> March 15, 2017</time></div>
 
       
 
@@ -208,7 +208,9 @@ think it is coming from the JCache spirit that there should be a default cache c
 <div class="paragraph">
 <p>Let&#8217;s look at two examples</p>
 </div>
-<h1 id="spring" class="sect0"><a class="anchor" href="#spring"></a>Spring</h1>
+<div class="sect1">
+<h2 id="spring"><a class="anchor" href="#spring"></a>Spring</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Caching in Spring is implemented by <code>spring-cache</code>. To plug JCache to <code>spring-cache</code> you use the <code>JCacheCacheManager</code>. By default
 when a cache isn&#8217;t available in the <code>CacheManager</code>, Spring calls <code>JCacheCacheManager.getMissingCache</code>. So far so good.</p>
@@ -290,7 +292,11 @@ private Configuration&lt;Object, Object&gt; createCacheConfiguration() {
 }</code></pre>
 </div>
 </div>
-<h1 id="hibernate" class="sect0"><a class="anchor" href="#hibernate"></a>Hibernate</h1>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hibernate"><a class="anchor" href="#hibernate"></a>Hibernate</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>To use JCache with Hibernate we need to use the <code>JCacheRegionFactory</code>. The problem with <code>JCacheRegionFactory</code> is that by
 default if a cache is not found, it will spontaneously create a cache by passing <code>new MutableConfiguration()</code>. This means
@@ -328,7 +334,11 @@ protected Configuration&lt;Object, Object&gt; newDefaultConfig(Properties proper
 <div class="paragraph">
 <p>Again, an alternative solution would be to provide a meaningful default cache configuration in this method.</p>
 </div>
-<h1 id="conclusion" class="sect0"><a class="anchor" href="#conclusion"></a>Conclusion</h1>
+</div>
+</div>
+<div class="sect1">
+<h2 id="conclusion"><a class="anchor" href="#conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>I do understand that frameworks do not like to fail with exceptions. This helps the feeling that they are working out of
 the box.</p>
@@ -336,6 +346,8 @@ the box.</p>
 <div class="paragraph">
 <p>But I still think silently not caching or providing random default configuration is dangerous. Using my two workarounds
 should prevent a lot of headaches.</p>
+</div>
+</div>
 </div>
 
             

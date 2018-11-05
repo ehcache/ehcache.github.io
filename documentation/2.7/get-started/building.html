@@ -260,20 +260,28 @@ which provides a choice of concrete logging implementation. See the page on <a h
 
 <p>To include Ehcache in your project, use:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;dependency&gt;
   &lt;groupId&gt;net.sf.ehcache&lt;/groupId&gt;
   &lt;artifactId&gt;ehcache&lt;/artifactId&gt;
   &lt;version&gt;2.3.1&lt;/version&gt;
   &lt;type&gt;pom&lt;/type&gt;
 &lt;/dependency&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Note: Be sure to substitute the version number above with the version number of Ehcache that you want to use.</p>
 
 <p>If using Terracotta Distributed Ehcache, also add:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;dependency&gt;
   &lt;groupId&gt;org.terracotta&lt;/groupId&gt;
   &lt;artifactId&gt;terracotta-toolkit-1.4-runtime&lt;/artifactId&gt;
   &lt;version&gt;4.0.0&lt;/version&gt;
@@ -288,7 +296,9 @@ which provides a choice of concrete logging implementation. See the page on <a h
     &lt;/releases&gt;
   &lt;/repository&gt;
 &lt;/repositories&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Be sure to check the dependency versions for compatibility. Versions released in a single kit are guaranteed compatible.</p>
@@ -302,7 +312,10 @@ There are plugins for Maven and Ant to simplify and automate this process.</p>
 
 <h4 id="setting-up-for-integration-testing">Setting up for Integration Testing</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;pluginRepositories&gt;
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>&lt;pluginRepositories&gt;
    &lt;pluginRepository&gt;
        &lt;id&gt;terracotta-snapshots&lt;/id&gt;
        &lt;url&gt;http://www.terracotta.org/download/reflector/maven2&lt;/url&gt;
@@ -335,7 +348,9 @@ There are plugins for Maven and Ant to simplify and automate this process.</p>
        &lt;/execution&gt;
    &lt;/executions&gt;
 &lt;/plugin&gt;
-</code></pre>
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>Note: Be sure to substitute the version number above with the current version number.</p>
@@ -343,14 +358,24 @@ There are plugins for Maven and Ant to simplify and automate this process.</p>
 <h4 id="interactive-testing">Interactive Testing</h4>
 <p>To start Terracotta:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mvn tc:start
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>mvn tc:start
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>To stop Terracotta:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mvn tc:stop
-</code></pre>
+<div class="highlighter-rouge">
+   <div class="highlight">
+      <pre class="highlight">
+         <code>mvn tc:stop
+</code>
+      </pre>
+   </div>
 </div>
 
 <p>See the <a href="http://forge.terracotta.org/releases/projects/tc-maven-plugin/">Terracotta Forge</a> for a complete reference.</p>
