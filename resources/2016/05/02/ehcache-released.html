@@ -10,11 +10,11 @@
   <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-  <title>Ehcache</title>
+  <title>Ehcache 3.0 Released with Revamped API and Off-Heap Storage</title>
 
-  <meta name="description" content="Java's most widely used cache.">
+  <meta name="description" content="An article about the Ehcache 3 release on InfoQ by Matt Raible">
 
-  <link rel="canonical" href="http://www.ehcache.org/documentation/3.1/menu.html">
+  <link rel="canonical" href="http://www.ehcache.org/resources/2016/05/02/ehcache-released.html">
   <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
 
 
@@ -130,102 +130,107 @@
 
     <div class="container-fluid">
       <div id="contentTitle">
-        <h1></h1>
+        <h1>Ehcache 3.0 Released with Revamped API and Off-Heap Storage</h1>
       </div>
       <div>
-        <BR/>
         <br/>
 
-<div class="container">
 
-  <header class="post-header">
-    <h1 class="post-title"></h1>
-  </header>
 
-  <article class="post-content">
-    <div class="dlist">
-<dl>
-<dt class="hdlist1"><a href="./index.html">Home</a></dt>
-<dt class="hdlist1">User documentation</dt>
-<dd>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="./getting-started.html">Getting started</a></p>
-</li>
-<li>
-<p><a href="./xml.html">XML Configuration</a></p>
-</li>
-<li>
-<p><a href="./usermanaged.html">User managed caches</a></p>
-</li>
-<li>
-<p><a href="./107.html">javax.cache aka jsr-107</a></p>
-</li>
-<li>
-<p><a href="./tiering.html">Tiering options</a></p>
-</li>
-<li>
-<p><a href="./expiry.html">Expiry</a></p>
-</li>
-<li>
-<p><a href="./thread-pools.html">Thread Pools</a></p>
-</li>
-<li>
-<p><a href="./serializers-copiers.html">Serializers and Copiers</a></p>
-</li>
-<li>
-<p><a href="./management.html">Management and Monitoring</a></p>
-</li>
-<li>
-<p><a href="./xa.html">Transactions support</a></p>
-</li>
-<li>
-<p><a href="./writers.html">Cache Writers</a></p>
-</li>
-<li>
-<p><a href="./cache-event-listeners.html">Cache Event Listeners</a></p>
-</li>
-<li>
-<p><a href="./eviction-advisor.html">Eviction Advisor</a></p>
-</li>
-<li>
-<p><a href="./class-loading.html">Class loading in Ehcache</a></p>
-</li>
-<li>
-<p><a href="./clustered-cache.html">Clustering with Terracotta</a></p>
-</li>
-</ul>
+<div class="container-fluid">
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+      
+
+      
+      <div class="section">By <span class="fn"></span></div>
+      
+
+      <div class="section">
+        
+      </div>
+
+      <div class="section entry-date date published"><time datetime="2016-05-02T00:00:00+00:00"><i class="fa fa-calendar-o"></i> May 02, 2016</time></div>
+
+      
+
+      <div class="section entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Leave a comment</a></div>
+
+      
+
+      <div class="section"><div class="social-share twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=&amp;text=Ehcache%203.0%20Released%20with%20Revamped%20API%20and%20Off-Heap%20Storage&amp;url=http://www.ehcache.org/resources/2016/05/02/ehcache-released.html" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
 </div>
-</dd>
-</dl>
+<div class="social-share facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.ehcache.org/resources/2016/05/02/ehcache-released.html" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
 </div>
-<div class="paragraph">
-<p>General topics:
-- <a href="./caching-terms.html">Caching Terms</a>
-- <a href="./caching-concepts.html">Caching Concepts</a>
-- <a href="./caching-patterns.html">Caching Patterns</a></p>
+<div class="social-share googleplus">
+  <a href="https://plus.google.com/share?url=http://www.ehcache.org/resources/2016/05/02/ehcache-released.html" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Resources</dt>
-<dd>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="./examples.html">Java examples</a></p>
-</li>
-<li>
-<p><a href="./xsds.html">Configuration XSD</a></p>
-</li>
-</ul>
 </div>
-</dd>
-</dl>
+
+      <div class="section">Tags: </div>
+
+    </div>
+
+    <!-- main area -->
+    <div class="col-xs-12 col-sm-9">
+
+      <header class="post-header">
+        <h1 class="post-title">Ehcache 3.0 Released with Revamped API and Off-Heap Storage</h1>
+      </header>
+
+      <article class="post-content">
+
+        <div class="entry-wrapper">
+          <header class="entry-header">
+            <h2 class="entry-title">Ehcache 3.0 Released with Revamped API and Off-Heap Storage, by Matt Raible</h2>
+          </header>
+
+          <div class="entry-content">
+            <div class="paragraph">
+<p>An <a href="https://www.infoq.com/news/2016/05/ehcache-3.0">article about the Ehcache 3 release</a> on InfoQ by <a href="https://twitter.com/mraible">Matt Raible</a></p>
 </div>
-  </article>
+
+            
+            <div id="disqus_thread"></div>
+            
+          </div>
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
 
 </div>
+
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ehcache'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
 
       </div>
     </div>
