@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://www.ehcache.org/feed.xml" />
 <link rel="alternate" type="text/html" href="http://www.ehcache.org" />
-<updated>2018-11-08T13:03:06+00:00</updated>
+<updated>2018-11-11T12:59:15+00:00</updated>
 <id>http://www.ehcache.org/</id>
 <author>
   <name>Ehcache</name>
@@ -765,7 +765,7 @@ If you have any questions please feel free to send them to me at &lt;a href=&quo
     
         
         <entry>
-          <title type="html"><![CDATA[Ehcache 3 Custom Serializers]]></title>
+          <title type="html"><![CDATA[Custom Serializers]]></title>
           <link rel="alternate" type="text/html" href="http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html" />
           <id>http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers</id>
           <published>2016-05-12T15:45:00+00:00</published>
@@ -1603,7 +1603,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html&quot;&gt;Ehcache 3 Custom Serializers&lt;/a&gt; was originally published by Albin Suresh at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 12, 2016.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html&quot;&gt;Custom Serializers&lt;/a&gt; was originally published by Albin Suresh at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 12, 2016.&lt;/p&gt;</content>
         </entry>
     
 
