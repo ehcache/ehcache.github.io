@@ -1,1 +1,1 @@
-Sitemap: http://www.ehcache.org/sitemap.xml
+Sitemap: https://www.ehcache.org/sitemap.xml

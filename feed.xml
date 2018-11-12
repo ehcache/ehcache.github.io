@@ -2,13 +2,13 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
 <title type="text">Ehcache</title>
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
-<link rel="self" type="application/atom+xml" href="http://www.ehcache.org/feed.xml" />
-<link rel="alternate" type="text/html" href="http://www.ehcache.org" />
-<updated>2018-11-11T12:59:15+00:00</updated>
-<id>http://www.ehcache.org/</id>
+<link rel="self" type="application/atom+xml" href="https://www.ehcache.org/feed.xml" />
+<link rel="alternate" type="text/html" href="https://www.ehcache.org" />
+<updated>2018-11-12T16:09:46+00:00</updated>
+<id>https://www.ehcache.org/</id>
 <author>
   <name>Ehcache</name>
-  <uri>http://www.ehcache.org/</uri>
+  <uri>https://www.ehcache.org/</uri>
   <email>tc-oss@softwareag.com</email>
 </author>
 
@@ -16,13 +16,13 @@
         
         <entry>
           <title type="html"><![CDATA[Prevent spontaneous cache creation]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/blog/2017/03/15/spontaneous-cache-creation.html" />
-          <id>http://www.ehcache.org/blog/2017/03/15/spontaneous-cache-creation</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/blog/2017/03/15/spontaneous-cache-creation.html" />
+          <id>https://www.ehcache.org/blog/2017/03/15/spontaneous-cache-creation</id>
           <published>2017-03-15T16:00:00+00:00</published>
           <updated>2017-03-15T16:00:00+00:00</updated>
           <author>
             <name>Henri Tremblay</name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;I played a lot with JCache connectors lately. To plug &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache 3&lt;/a&gt; to different things.&lt;/p&gt;
@@ -175,7 +175,7 @@ should prevent a lot of headaches.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/blog/2017/03/15/spontaneous-cache-creation.html&quot;&gt;Prevent spontaneous cache creation&lt;/a&gt; was originally published by Henri Tremblay at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on March 15, 2017.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/blog/2017/03/15/spontaneous-cache-creation.html&quot;&gt;Prevent spontaneous cache creation&lt;/a&gt; was originally published by Henri Tremblay at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on March 15, 2017.&lt;/p&gt;</content>
         </entry>
     
 
@@ -183,13 +183,13 @@ should prevent a lot of headaches.&lt;/p&gt;
         
         <entry>
           <title type="html"><![CDATA[Ehcache out of his Element]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2016/06/23/ehcache-out-element.html" />
-          <id>http://www.ehcache.org/resources/2016/06/23/ehcache-out-element</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2016/06/23/ehcache-out-element.html" />
+          <id>https://www.ehcache.org/resources/2016/06/23/ehcache-out-element</id>
           <published>2016-06-23T00:00:00+00:00</published>
           <updated>2016-06-23T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;ulist&quot;&gt;
 &lt;ul&gt;
@@ -201,7 +201,7 @@ should prevent a lot of headaches.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2016/06/23/ehcache-out-element.html&quot;&gt;Ehcache out of his Element&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on June 23, 2016.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2016/06/23/ehcache-out-element.html&quot;&gt;Ehcache out of his Element&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on June 23, 2016.&lt;/p&gt;</content>
         </entry>
     
 
@@ -209,13 +209,13 @@ should prevent a lot of headaches.&lt;/p&gt;
         
         <entry>
           <title type="html"><![CDATA[Caching 101: Caching on the JVM (and beyond)]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2016/06/10/caching-101.html" />
-          <id>http://www.ehcache.org/resources/2016/06/10/caching-101</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2016/06/10/caching-101.html" />
+          <id>https://www.ehcache.org/resources/2016/06/10/caching-101</id>
           <published>2016-06-10T00:00:00+00:00</published>
           <updated>2016-06-10T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This session, while similar to the previous one with the same title, has been improved based on feedback and experience.&lt;/p&gt;
@@ -230,7 +230,7 @@ should prevent a lot of headaches.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2016/06/10/caching-101.html&quot;&gt;Caching 101: Caching on the JVM (and beyond)&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on June 10, 2016.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2016/06/10/caching-101.html&quot;&gt;Caching 101: Caching on the JVM (and beyond)&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on June 10, 2016.&lt;/p&gt;</content>
         </entry>
     
 
@@ -238,13 +238,13 @@ should prevent a lot of headaches.&lt;/p&gt;
         
         <entry>
           <title type="html"><![CDATA[Ehcache 3, JSR-107 and Spring 4.2]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/blog/2016/05/18/ehcache3_jsr107_spring.html" />
-          <id>http://www.ehcache.org/blog/2016/05/18/ehcache3_jsr107_spring</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/blog/2016/05/18/ehcache3_jsr107_spring.html" />
+          <id>https://www.ehcache.org/blog/2016/05/18/ehcache3_jsr107_spring</id>
           <published>2016-05-18T05:30:00+00:00</published>
           <updated>2016-05-18T05:30:00+00:00</updated>
           <author>
             <name>Geoff Gibson</name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;In this post I would like to demonstrate how to use &lt;a href=&quot;https://github.com/ehcache/ehcache3&quot;&gt;Ehcache 3.0&lt;/a&gt; as Spring&amp;#8217;s caching implementation.
@@ -758,7 +758,7 @@ If you have any questions please feel free to send them to me at &lt;a href=&quo
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/blog/2016/05/18/ehcache3_jsr107_spring.html&quot;&gt;Ehcache 3, JSR-107 and Spring 4.2&lt;/a&gt; was originally published by Geoff Gibson at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 18, 2016.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/blog/2016/05/18/ehcache3_jsr107_spring.html&quot;&gt;Ehcache 3, JSR-107 and Spring 4.2&lt;/a&gt; was originally published by Geoff Gibson at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 18, 2016.&lt;/p&gt;</content>
         </entry>
     
 
@@ -766,13 +766,13 @@ If you have any questions please feel free to send them to me at &lt;a href=&quo
         
         <entry>
           <title type="html"><![CDATA[Custom Serializers]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html" />
-          <id>http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html" />
+          <id>https://www.ehcache.org/blog/2016/05/12/ehcache3-serializers</id>
           <published>2016-05-12T15:45:00+00:00</published>
           <updated>2016-05-12T15:45:00+00:00</updated>
           <author>
             <name>Albin Suresh</name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
@@ -1603,7 +1603,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html&quot;&gt;Custom Serializers&lt;/a&gt; was originally published by Albin Suresh at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 12, 2016.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html&quot;&gt;Custom Serializers&lt;/a&gt; was originally published by Albin Suresh at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 12, 2016.&lt;/p&gt;</content>
         </entry>
     
 
@@ -1615,18 +1615,18 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
         
         <entry>
           <title type="html"><![CDATA[Ehcache 3.0 Released with Revamped API and Off-Heap Storage]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2016/05/02/ehcache-released.html" />
-          <id>http://www.ehcache.org/resources/2016/05/02/ehcache-released</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2016/05/02/ehcache-released.html" />
+          <id>https://www.ehcache.org/resources/2016/05/02/ehcache-released</id>
           <published>2016-05-02T00:00:00+00:00</published>
           <updated>2016-05-02T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;An &lt;a href=&quot;https://www.infoq.com/news/2016/05/ehcache-3.0&quot;&gt;article about the Ehcache 3 release&lt;/a&gt; on InfoQ by &lt;a href=&quot;https://twitter.com/mraible&quot;&gt;Matt Raible&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2016/05/02/ehcache-released.html&quot;&gt;Ehcache 3.0 Released with Revamped API and Off-Heap Storage&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 02, 2016.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2016/05/02/ehcache-released.html&quot;&gt;Ehcache 3.0 Released with Revamped API and Off-Heap Storage&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on May 02, 2016.&lt;/p&gt;</content>
         </entry>
     
 
@@ -1634,13 +1634,13 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
         
         <entry>
           <title type="html"><![CDATA[Terracotta Off-Heap pour les nuls]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2016/04/22/terracotta-offheap.html" />
-          <id>http://www.ehcache.org/resources/2016/04/22/terracotta-offheap</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2016/04/22/terracotta-offheap.html" />
+          <id>https://www.ehcache.org/resources/2016/04/22/terracotta-offheap</id>
           <published>2016-04-22T00:00:00+00:00</published>
           <updated>2016-04-22T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This content is in French.&lt;/p&gt;
@@ -1655,7 +1655,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2016/04/22/terracotta-offheap.html&quot;&gt;Terracotta Off-Heap pour les nuls&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on April 22, 2016.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2016/04/22/terracotta-offheap.html&quot;&gt;Terracotta Off-Heap pour les nuls&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on April 22, 2016.&lt;/p&gt;</content>
         </entry>
     
 
@@ -1663,13 +1663,13 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
         
         <entry>
           <title type="html"><![CDATA[Ehcache hors de son Element]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2016/04/21/ehcache-element.html" />
-          <id>http://www.ehcache.org/resources/2016/04/21/ehcache-element</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2016/04/21/ehcache-element.html" />
+          <id>https://www.ehcache.org/resources/2016/04/21/ehcache-element</id>
           <published>2016-04-21T00:00:00+00:00</published>
           <updated>2016-04-21T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This content is in French.&lt;/p&gt;
@@ -1684,7 +1684,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2016/04/21/ehcache-element.html&quot;&gt;Ehcache hors de son Element&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on April 21, 2016.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2016/04/21/ehcache-element.html&quot;&gt;Ehcache hors de son Element&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on April 21, 2016.&lt;/p&gt;</content>
         </entry>
     
 
@@ -1692,13 +1692,13 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
         
         <entry>
           <title type="html"><![CDATA[Ehcache 3: JSR-107 on steroids]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2015/11/18/ehcache3-jsr107.html" />
-          <id>http://www.ehcache.org/resources/2015/11/18/ehcache3-jsr107</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2015/11/18/ehcache3-jsr107.html" />
+          <id>https://www.ehcache.org/resources/2015/11/18/ehcache3-jsr107</id>
           <published>2015-11-18T00:00:00+00:00</published>
           <updated>2015-11-18T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;ulist&quot;&gt;
 &lt;ul&gt;
@@ -1710,7 +1710,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2015/11/18/ehcache3-jsr107.html&quot;&gt;Ehcache 3: JSR-107 on steroids&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on November 18, 2015.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2015/11/18/ehcache3-jsr107.html&quot;&gt;Ehcache 3: JSR-107 on steroids&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on November 18, 2015.&lt;/p&gt;</content>
         </entry>
     
 
@@ -1718,13 +1718,13 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
         
         <entry>
           <title type="html"><![CDATA[Terracotta’s OffHeap Explained]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2015/11/13/terracotta-offHeap.html" />
-          <id>http://www.ehcache.org/resources/2015/11/13/terracotta-offHeap</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2015/11/13/terracotta-offHeap.html" />
+          <id>https://www.ehcache.org/resources/2015/11/13/terracotta-offHeap</id>
           <published>2015-11-13T00:00:00+00:00</published>
           <updated>2015-11-13T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;ulist&quot;&gt;
 &lt;ul&gt;
@@ -1739,7 +1739,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2015/11/13/terracotta-offHeap.html&quot;&gt;Terracotta’s OffHeap Explained&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on November 13, 2015.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2015/11/13/terracotta-offHeap.html&quot;&gt;Terracotta’s OffHeap Explained&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on November 13, 2015.&lt;/p&gt;</content>
         </entry>
     
 
@@ -1747,13 +1747,13 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
         
         <entry>
           <title type="html"><![CDATA[Caching 101: Caching on the JVM (and beyond)]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2015/11/09/caching-101.html" />
-          <id>http://www.ehcache.org/resources/2015/11/09/caching-101</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2015/11/09/caching-101.html" />
+          <id>https://www.ehcache.org/resources/2015/11/09/caching-101</id>
           <published>2015-11-09T00:00:00+00:00</published>
           <updated>2015-11-09T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;ulist&quot;&gt;
 &lt;ul&gt;
@@ -1765,7 +1765,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2015/11/09/caching-101.html&quot;&gt;Caching 101: Caching on the JVM (and beyond)&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on November 09, 2015.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2015/11/09/caching-101.html&quot;&gt;Caching 101: Caching on the JVM (and beyond)&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on November 09, 2015.&lt;/p&gt;</content>
         </entry>
     
 
@@ -1773,13 +1773,13 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
         
         <entry>
           <title type="html"><![CDATA[Bringing javax.cache'ing to your application]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2015/10/19/javax-cache-to-your-app.html" />
-          <id>http://www.ehcache.org/resources/2015/10/19/javax-cache-to-your-app</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2015/10/19/javax-cache-to-your-app.html" />
+          <id>https://www.ehcache.org/resources/2015/10/19/javax-cache-to-your-app</id>
           <published>2015-10-19T00:00:00+00:00</published>
           <updated>2015-10-19T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;ulist&quot;&gt;
 &lt;ul&gt;
@@ -1794,7 +1794,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2015/10/19/javax-cache-to-your-app.html&quot;&gt;Bringing javax.cache'ing to your application&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on October 19, 2015.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2015/10/19/javax-cache-to-your-app.html&quot;&gt;Bringing javax.cache'ing to your application&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on October 19, 2015.&lt;/p&gt;</content>
         </entry>
     
 
@@ -1802,13 +1802,13 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
         
         <entry>
           <title type="html"><![CDATA[Caching reboot: javax.cache & Ehcache 3]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2015/06/22/caching-reboot.html" />
-          <id>http://www.ehcache.org/resources/2015/06/22/caching-reboot</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2015/06/22/caching-reboot.html" />
+          <id>https://www.ehcache.org/resources/2015/06/22/caching-reboot</id>
           <published>2015-06-22T00:00:00+00:00</published>
           <updated>2015-06-22T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;ulist&quot;&gt;
 &lt;ul&gt;
@@ -1823,7 +1823,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2015/06/22/caching-reboot.html&quot;&gt;Caching reboot: javax.cache & Ehcache 3&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on June 22, 2015.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2015/06/22/caching-reboot.html&quot;&gt;Caching reboot: javax.cache & Ehcache 3&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on June 22, 2015.&lt;/p&gt;</content>
         </entry>
     
 
@@ -1831,13 +1831,13 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
         
         <entry>
           <title type="html"><![CDATA[Caching reboot: javax.cache & Ehcache 3]]></title>
-          <link rel="alternate" type="text/html" href="http://www.ehcache.org/resources/2015/04/09/caching-reboot.html" />
-          <id>http://www.ehcache.org/resources/2015/04/09/caching-reboot</id>
+          <link rel="alternate" type="text/html" href="https://www.ehcache.org/resources/2015/04/09/caching-reboot.html" />
+          <id>https://www.ehcache.org/resources/2015/04/09/caching-reboot</id>
           <published>2015-04-09T00:00:00+00:00</published>
           <updated>2015-04-09T00:00:00+00:00</updated>
           <author>
             <name></name>
-            <uri>http://www.ehcache.org</uri>
+            <uri>https://www.ehcache.org</uri>
           </author>
           <content type="html">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This content is in French.&lt;/p&gt;
@@ -1855,7 +1855,7 @@ assertThat(employeeCache.get(1L), is(emp));&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-          &lt;p&gt;&lt;a href=&quot;http://www.ehcache.org/resources/2015/04/09/caching-reboot.html&quot;&gt;Caching reboot: javax.cache & Ehcache 3&lt;/a&gt; was originally published by  at &lt;a href=&quot;http://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on April 09, 2015.&lt;/p&gt;</content>
+          &lt;p&gt;&lt;a href=&quot;https://www.ehcache.org/resources/2015/04/09/caching-reboot.html&quot;&gt;Caching reboot: javax.cache & Ehcache 3&lt;/a&gt; was originally published by  at &lt;a href=&quot;https://www.ehcache.org&quot;&gt;Ehcache&lt;/a&gt; on April 09, 2015.&lt;/p&gt;</content>
         </entry>
     
 
