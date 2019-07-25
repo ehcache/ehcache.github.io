@@ -210,7 +210,8 @@ resources.</p>
 <div class="sect2">
 <h3 id="cache-entry"><a class="anchor" href="#cache-entry"></a>Cache Entry</h3>
 <div class="paragraph">
-<p>A cache entry consists of a key and its mapped data value within the cache.</p>
+<p>A cache entry consists of a key and its mapped data value within the cache. This is also sometimes referred to as a
+<em>cache mapping</em>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -225,6 +226,27 @@ resources.</p>
 <div class="paragraph">
 <p>When a data entry is requested from cache and the entry does not exist for the given key, it is referred to as a cache
 miss (or simply, a <em>miss</em>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-access"><a class="anchor" href="#cache-access"></a>Cache Access</h3>
+<div class="paragraph">
+<p>Any time a data entry is requested from cache, the cache is <em>accessed</em> no matter if the outcome was a <em>hit</em> or a <em>miss</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="hit-ratio"><a class="anchor" href="#hit-ratio"></a>Hit Ratio</h3>
+<div class="paragraph">
+<p>It is the ratio of cache hits over cache accesses, or <em>hits</em> / <em>accesses</em>. For instance, a cache accessed 100 times
+that hit 90 times has a hit ratio of: <em>90</em> / <em>100</em> or <em>0.9</em> or <em>90%</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="miss-ratio"><a class="anchor" href="#miss-ratio"></a>Miss Ratio</h3>
+<div class="paragraph">
+<p>It is the ratio of cache misses over cache accesses, or <em>misses</em> / <em>accesses</em>. For instance, a cache accessed 100 times
+that missed 30 times has a miss ratio of: <em>30</em> / <em>100</em> or <em>0.3</em> or <em>30%</em>. It is the corollary of <em>hit ratio</em> as
+<em>hit ratio</em> + <em>miss ratio</em> is always <em>1.0</em> or <em>100%</em>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -250,11 +272,32 @@ data in the cache.</p>
 </div>
 </div>
 <div class="sect2">
+<h3 id="off-heap"><a class="anchor" href="#off-heap"></a>Off-Heap</h3>
+<div class="paragraph">
+<p>When large caches put too much pressure on the GC, a common resort is to store the caches' contents <em>off-heap</em>, i.e:
+still in the memory of the JVM process but out of reach of the garbage collector. The off-heap implementation Ehcache
+uses is <a href="https://github.com/Terracotta-OSS/offheap-store/">Terracotta&#8217;s port</a> of
+<a href="http://gee.cs.oswego.edu/dl/html/malloc.html">dlmalloc</a> to Java backed by NIO direct <code>ByteBuffer</code>s.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="hot-data"><a class="anchor" href="#hot-data"></a>Hot Data</h3>
 <div class="paragraph">
 <p>Data that has recently been used by an application is very likely to be accessed again soon.  Such data is considered
 <em>hot</em>.  A cache may attempt to keep the <em>hottest</em> data most quickly available, while attemping to choose the
-<em>least hot</em> data for eviction.</p>
+<em>least hot</em> data for eviction. Following the Pareto Distribution, you ideally want all your hot data to fit into your
+caches.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="pareto-distribution"><a class="anchor" href="#pareto-distribution"></a>Pareto Distribution</h3>
+<div class="paragraph">
+<p>According to <a href="https://www.statisticshowto.datasciencecentral.com/pareto-distribution/">Data Science Central</a>, <em>the Pareto
+distribution is a skewed distribution with heavy, or “slowly decaying” tails (i.e. much of the data is in the tails)</em>.
+This is more commonly known as the 80% / 20% rule.
+The entire concept of caching is based on the Pareto Distribution, as caches are only effective when their hit ratio
+reaches a certain level, i.e.: as a general rule of thumb 80% of your transactions should be served with cached data and
+the remaining 20% by data coming from other, more expensive means.</p>
 </div>
 </div>
 </div>

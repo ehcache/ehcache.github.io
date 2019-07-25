@@ -225,7 +225,7 @@ However, always do your own benchmark.</p>
 <h2 id="stores"><a class="anchor" href="#stores"></a>Stores</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We probably know that the faster store is on-heap.
+<p>We probably know that the fastest store is on-heap.
 Until you overwhelm the garbage collector.</p>
 </div>
 <div class="paragraph">
@@ -243,12 +243,13 @@ Use a remote drive or even an HDD at your own risk.</p>
 The answer depends on what you do with it.
 Having two tiers is a bit slower on writing.
 It is also a bit slower on reading when the data is not found in the caching tier (on-heap).
-However, it will be faster for an entry that is indeed found there.</p>
+However, it will be faster for an entry that is indeed found in a higher tier.</p>
 </div>
 <div class="paragraph">
 <p>So again, it depends.
 The more you follow the caching hypothesis that the same data is always reused (and so in the caching
-tier), the more interesting having two tiers will be.</p>
+tier), the more interesting having two or more tiers will be. As a general rule of thumb, a tier that has a
+hit ratio of 50% or less is going to slow down the cache. Either enlarge such tier or completely get rid of it.</p>
 </div>
 </div>
 </div>
@@ -272,10 +273,12 @@ Make sure of what is used to confirm you can&#8217;t use a faster way on your pl
 <div class="sectionbody">
 <div class="paragraph">
 <p>Off-heap, disk and clustering need to serialize keys and values before storing them.
-By default, the Java serialization is used.
+By default, custom super-fast serializers are used for <code>Long</code>, <code>Integer</code>, <code>Character</code>, <code>Double</code>, <code>Float</code>, <code>byte[]</code> and
+<code>String</code> objects.
+A slightly faster, customized Java serialization is used for other object types.
 It is well-known for not being the fastest thing around.
 Ehcache uses it because it is supported out of the box.
-However, you can increase performances by provoding your own serializers.</p>
+However, you can increase performance by providing your own serializers.</p>
 </div>
 </div>
 </div>
@@ -285,6 +288,8 @@ However, you can increase performances by provoding your own serializers.</p>
 <div class="paragraph">
 <p>By default, on-heap storage stores the entries by reference.
 You might want to use a copier to store entries by value for whatever reason.
+Out of the box, Ehcache bundles a copier that makes use of its serialization mechanism:
+<code>org.ehcache.impl.copy.SerializingCopier</code>.
 This can be much slower so watch out.</p>
 </div>
 </div>
@@ -317,7 +322,7 @@ This is because the expiration time of an entry is calculated and updated ony wh
 But it still requires an expiration check at access time.</p>
 </div>
 <div class="paragraph">
-<p>So you can expect a 2% drop in performance when using TTL. Not bad.</p>
+<p>So you can expect a 2% drop in performance when using TTL.</p>
 </div>
 </div>
 <div class="sect2">
@@ -341,7 +346,7 @@ When using a custom policy, you are on your own.</p>
 <h2 id="allocation-rate"><a class="anchor" href="#allocation-rate"></a>Allocation rate</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Ehcache won&#8217;t allocate any object during a simple <code>get()</code>.
+<p>Ehcache won&#8217;t allocate any object during a simple on-heap <code>get()</code>.
 However, keep in mind that your configuration might do so.</p>
 </div>
 <div class="paragraph">
