@@ -281,7 +281,7 @@ If you configure your cache manager as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withSerializer(Employee.class,
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withSerializer(Employee.class,
   EmployeeSerializer.class).withSerializer(Person.class, PersonSerializer.class)</code></pre>
 </div>
 </div>
@@ -380,7 +380,7 @@ the class of the serialized object MUST be retained after deserialization, that 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">object.getClass().equals(mySerializer.read(mySerializer.serialize(object)).getClass())</code></pre>
+<pre class="prettyprint highlight nowrap"><code data-lang="java">object.getClass().equals(mySerializer.read(mySerializer.serialize(object)).getClass())</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -401,7 +401,7 @@ the class of the serialized object MUST be retained after deserialization, that 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">/**
+<pre class="prettyprint highlight nowrap"><code data-lang="java">/**
  * Defines the contract used to transform type instances to and from a serial form.
  * &lt;p&gt;
  * Implementations must be thread-safe.
@@ -484,7 +484,7 @@ Such class loader must be used to access the classes of the serialized types as 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">public MySerializer(ClassLoader classLoader) {
+<pre class="prettyprint highlight nowrap"><code data-lang="java">public MySerializer(ClassLoader classLoader) {
 }</code></pre>
 </div>
 </div>
@@ -511,7 +511,7 @@ When configured on a persistent cache, the state of such serializers needs to be
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">public void init(StateRepository repository) {
+<pre class="prettyprint highlight nowrap"><code data-lang="java">public void init(StateRepository repository) {
 }</code></pre>
 </div>
 </div>
@@ -617,7 +617,7 @@ If you configure your cache manager as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withCopier(Employee.class,
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withCopier(Employee.class,
   EmployeeCopier.class).withCopier(Person.class, PersonCopier.class)</code></pre>
 </div>
 </div>
@@ -679,7 +679,7 @@ If the <code>Copier</code> implements <code>java.io.Closeable</code> then <code>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">/**
+<pre class="prettyprint highlight nowrap"><code data-lang="java">/**
  * Defines the contract used to copy type instances.
  * &lt;p&gt;
  * The copied object's class must be preserved.  The following must always be true:

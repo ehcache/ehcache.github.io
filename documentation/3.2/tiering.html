@@ -268,7 +268,7 @@ That means you can have caches with data only in <em>offheap</em> or only <em>cl
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, <i class="conum" data-value="1"></i><b>(1)</b>
   ResourcePoolsBuilder.newResourcePoolsBuilder().offheap(2, MemoryUnit.GB)).build(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
@@ -286,7 +286,7 @@ That means you can have caches with data only in <em>offheap</em> or only <em>cl
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, <i class="conum" data-value="1"></i><b>(1)</b>
   ResourcePoolsBuilder.newResourcePoolsBuilder()
     .with(ClusteredResourcePoolBuilder.clusteredDedicated(2, MemoryUnit.GB))); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
@@ -401,7 +401,7 @@ It requires a clean shutdown of the cache manager through the invocation of <cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight"><code data-lang="java">CacheManagerBuilder.newCacheManagerBuilder()
   .with(CacheManagerBuilder.persistence(getFilePath())) <i class="conum" data-value="1"></i><b>(1)</b>
   .withCache("myCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,

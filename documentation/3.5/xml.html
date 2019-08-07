@@ -353,7 +353,7 @@ If the system property does not exist, this will make the configuration parsing 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;persistence directory="${user.home}/cache-data"/&gt; <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;persistence directory="${user.home}/cache-data"/&gt; <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -384,7 +384,7 @@ If you are obtaining your <code>CacheManager</code> through the JSR-107 API, wha
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">final URL myUrl = getClass().getResource("/configs/docs/getting-started.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">final URL myUrl = getClass().getResource("/configs/docs/getting-started.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
 XmlConfiguration xmlConfig = new XmlConfiguration(myUrl); <i class="conum" data-value="2"></i><b>(2)</b>
 CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <i class="conum" data-value="3"></i><b>(3)</b>
 myCacheManager.init();  <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
@@ -417,7 +417,7 @@ to use a <code>&lt;cache-template&gt;</code> element from an XML file, e.g. the 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache-template name="example"&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;cache-template name="example"&gt;
   &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
   &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
   &lt;heap unit="entries"&gt;200&lt;/heap&gt;
@@ -429,7 +429,7 @@ to use a <code>&lt;cache-template&gt;</code> element from an XML file, e.g. the 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">XmlConfiguration xmlConfiguration = new XmlConfiguration(getClass().getResource("/configs/docs/template-sample.xml"));
+<pre class="prettyprint highlight"><code data-lang="java">XmlConfiguration xmlConfiguration = new XmlConfiguration(getClass().getResource("/configs/docs/template-sample.xml"));
 CacheConfigurationBuilder&lt;Long, String&gt; configurationBuilder = xmlConfiguration.newCacheConfigurationBuilderFromTemplate("example", Long.class, String.class); <i class="conum" data-value="1"></i><b>(1)</b>
 configurationBuilder = configurationBuilder.withResourcePools(ResourcePoolsBuilder.heap(1000)); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>

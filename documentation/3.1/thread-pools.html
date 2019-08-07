@@ -331,7 +331,7 @@ the default thread pool is used.</p>
 <h4 id="disk-store"><a class="anchor" href="#disk-store"></a>Disk store</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager
     = CacheManagerBuilder.newCacheManagerBuilder()
     .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
         .defaultPool("dflt", 0, 10)
@@ -383,7 +383,7 @@ listener is configured.</td>
 <h4 id="write-behind"><a class="anchor" href="#write-behind"></a>Write Behind</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager
     = CacheManagerBuilder.newCacheManagerBuilder()
     .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
         .defaultPool("dflt", 0, 10)
@@ -441,7 +441,7 @@ specify one.</td>
 <h4 id="events"><a class="anchor" href="#events"></a>Events</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager
     = CacheManagerBuilder.newCacheManagerBuilder()
     .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
         .pool("defaultEventPool", 1, 3)
@@ -493,7 +493,7 @@ specify one.</td>
 <h3 id="configuring-with-xml"><a class="anchor" href="#configuring-with-xml"></a>Configuring with XML</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">  &lt;thread-pools&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="xml">  &lt;thread-pools&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     &lt;thread-pool alias="defaultDiskPool" min-size="1" max-size="3"/&gt;
     &lt;thread-pool alias="defaultWriteBehindPool" min-size="1" max-size="3"/&gt;
     &lt;thread-pool alias="cache2Pool" min-size="2" max-size="2"/&gt;

@@ -226,7 +226,7 @@ Before adding we verify the expiry and set it on the Element only when different
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">int defaultCacheTTLInSeconds = 20;
+<pre class="prettyprint highlight"><code data-lang="java">int defaultCacheTTLInSeconds = 20;
 
 CacheManager cacheManager = initCacheManager();
 CacheConfiguration cacheConfiguration = new CacheConfiguration().name("cache")
@@ -280,7 +280,7 @@ System.out.println(cacheManager.getCache("cache").get(10L));</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = initCacheManager();
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager = initCacheManager();
 CacheConfigurationBuilder&lt;Long, String&gt; configuration =
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder
         .heap(100))

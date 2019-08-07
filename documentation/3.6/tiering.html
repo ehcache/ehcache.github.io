@@ -264,7 +264,7 @@ For example, you can have caches with data only in <em>offheap</em> or only <em>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, <i class="conum" data-value="1"></i><b>(1)</b>
   ResourcePoolsBuilder.newResourcePoolsBuilder().offheap(2, MemoryUnit.GB)).build(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
@@ -292,7 +292,7 @@ You can optionally use copiers (see the section <a href="serializers-copiers.htm
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight nowrap"><code data-lang="java">ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES); <i class="conum" data-value="1"></i><b>(1)</b>
 // or
 ResourcePoolsBuilder.heap(10); <i class="conum" data-value="2"></i><b>(2)</b>
 // or
@@ -338,7 +338,7 @@ Byte sizing has a runtime performance impact that depends on the size and graph 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; usesConfiguredInCacheConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; usesConfiguredInCacheConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
   ResourcePoolsBuilder.newResourcePoolsBuilder()
     .heap(10, MemoryUnit.KB) <i class="conum" data-value="1"></i><b>(1)</b>
     .offheap(10, MemoryUnit.MB)) <i class="conum" data-value="2"></i><b>(2)</b>
@@ -393,7 +393,7 @@ If the sizing goes above any of these two limits, the entry won&#8217;t be store
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">ResourcePoolsBuilder.newResourcePoolsBuilder().offheap(10, MemoryUnit.MB); <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+<pre class="prettyprint highlight nowrap"><code data-lang="java">ResourcePoolsBuilder.newResourcePoolsBuilder().offheap(10, MemoryUnit.MB); <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -427,7 +427,7 @@ The faster and more dedicated the disk is, the faster accessing the data will be
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight nowrap"><code data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
   .with(CacheManagerBuilder.persistence(new File(getStoragePath(), "myData"))) <i class="conum" data-value="2"></i><b>(2)</b>
   .withCache("persistent-cache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
     ResourcePoolsBuilder.newResourcePoolsBuilder().disk(10, MemoryUnit.MB, true)) <i class="conum" data-value="3"></i><b>(3)</b>
@@ -519,7 +519,7 @@ In some cases, you might want to reduce the concurrency and save resources by re
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">String storagePath = getStoragePath();
+<pre class="prettyprint highlight nowrap"><code data-lang="java">String storagePath = getStoragePath();
 PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
   .with(CacheManagerBuilder.persistence(new File(storagePath, "myData")))
   .withCache("less-segments",
@@ -627,7 +627,7 @@ While Ehcache cannot verify at configuration time that a count-based sizing for 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight nowrap"><code data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
   .with(cluster(CLUSTER_URI).autoCreate()) <i class="conum" data-value="1"></i><b>(1)</b>
   .withCache("threeTierCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
@@ -673,7 +673,7 @@ Let&#8217;s revisit an example used earlier:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight nowrap"><code data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
   .with(CacheManagerBuilder.persistence(new File(getStoragePath(), "myData")))
   .withCache("threeTieredCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
@@ -698,7 +698,7 @@ Consider for instance this code:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">ResourcePools pool = ResourcePoolsBuilder.heap(10).build();
+<pre class="prettyprint highlight nowrap"><code data-lang="java">ResourcePools pool = ResourcePoolsBuilder.heap(10).build();
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
   .withCache("test-cache1", CacheConfigurationBuilder.newCacheConfigurationBuilder(Integer.class, String.class, pool))
@@ -732,7 +732,7 @@ Thus you can&#8217;t change the sizing of off-heap or disk tiers.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">ResourcePools pools = ResourcePoolsBuilder.newResourcePoolsBuilder().heap(20L, EntryUnit.ENTRIES).build(); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight nowrap"><code data-lang="java">ResourcePools pools = ResourcePoolsBuilder.newResourcePoolsBuilder().heap(20L, EntryUnit.ENTRIES).build(); <i class="conum" data-value="1"></i><b>(1)</b>
 cache.getRuntimeConfiguration().updateResourcePools(pools); <i class="conum" data-value="2"></i><b>(2)</b>
 assertThat(cache.getRuntimeConfiguration().getResourcePools()
   .getPoolForResource(ResourceType.Core.HEAP).getSize(), is(20L));</code></pre>

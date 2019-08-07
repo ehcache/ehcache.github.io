@@ -275,7 +275,7 @@ Similarly a <code>CachingProvider</code> is required to get/access a <code>Cache
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CachingProvider provider = Caching.getCachingProvider();  <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CachingProvider provider = Caching.getCachingProvider();  <i class="conum" data-value="1"></i><b>(1)</b>
 CacheManager cacheManager = provider.getCacheManager();   <i class="conum" data-value="2"></i><b>(2)</b>
 MutableConfiguration&lt;Long, String&gt; configuration =
     new MutableConfiguration&lt;Long, String&gt;()  <i class="conum" data-value="3"></i><b>(3)</b>
@@ -350,7 +350,7 @@ you can still get to the underlying Ehcache <code>CacheRuntimeConfiguration</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">MutableConfiguration&lt;Long, String&gt; configuration = new MutableConfiguration&lt;&gt;();
+<pre class="prettyprint highlight nowrap"><code data-lang="java">MutableConfiguration&lt;Long, String&gt; configuration = new MutableConfiguration&lt;&gt;();
 configuration.setTypes(Long.class, String.class);
 Cache&lt;Long, String&gt; cache = cacheManager.createCache("someCache", configuration); <i class="conum" data-value="1"></i><b>(1)</b>
 
@@ -394,7 +394,7 @@ CacheRuntimeConfiguration&lt;Long, String&gt; runtimeConfiguration = eh107Config
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CachingProvider cachingProvider = Caching.getCachingProvider();
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CachingProvider cachingProvider = Caching.getCachingProvider();
 EhcacheCachingProvider ehcacheProvider = (EhcacheCachingProvider) cachingProvider; <i class="conum" data-value="1"></i><b>(1)</b>
 
 DefaultConfiguration configuration = new DefaultConfiguration(ehcacheProvider.getDefaultClassLoader(),
@@ -428,7 +428,7 @@ When using this mechanism, no JCache <code>CompleteConfiguration</code> is used 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
     ResourcePoolsBuilder.heap(10)).build(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 Cache&lt;Long, String&gt; cache = cacheManager.createCache("myCache",
@@ -485,7 +485,7 @@ See <a href="xml.html">the XML documentation</a> for more details on configuring
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-xml" data-lang="xml">&lt;config
+<pre class="prettyprint highlight nowrap"><code data-lang="xml">&lt;config
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.ehcache.org/v3'
     xsi:schemaLocation="
@@ -508,7 +508,7 @@ See <a href="xml.html">the XML documentation</a> for more details on configuring
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CachingProvider cachingProvider = Caching.getCachingProvider();
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CachingProvider cachingProvider = Caching.getCachingProvider();
 CacheManager manager = cachingProvider.getCacheManager( <i class="conum" data-value="1"></i><b>(1)</b>
     getClass().getResource("/org/ehcache/docs/ehcache-jsr107-config.xml").toURI(), <i class="conum" data-value="2"></i><b>(2)</b>
     getClass().getClassLoader()); <i class="conum" data-value="3"></i><b>(3)</b>
@@ -575,7 +575,7 @@ This gives you control over the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-xml" data-lang="xml">&lt;config
+<pre class="prettyprint highlight nowrap"><code data-lang="xml">&lt;config
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.ehcache.org/v3'
     xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
@@ -654,7 +654,7 @@ To do this, add a <code>jsr107</code> service in your XML configuration file:</p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-xml" data-lang="xml">&lt;config
+<pre class="prettyprint highlight nowrap"><code data-lang="xml">&lt;config
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.ehcache.org/v3'
     xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
@@ -751,7 +751,7 @@ The XSD schema definitions that describe the syntax used for the Ehcache XML con
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">MutableConfiguration&lt;Long, Client&gt; mutableConfiguration = new MutableConfiguration&lt;&gt;();
+<pre class="prettyprint highlight nowrap"><code data-lang="java">MutableConfiguration&lt;Long, Client&gt; mutableConfiguration = new MutableConfiguration&lt;&gt;();
 mutableConfiguration.setTypes(Long.class, Client.class); <i class="conum" data-value="1"></i><b>(1)</b>
 
 Cache&lt;Long, Client&gt; anyCache = manager.createCache("anyCache", mutableConfiguration); <i class="conum" data-value="2"></i><b>(2)</b>
@@ -910,7 +910,7 @@ This enables the <code>putIfAbsent(K, V)</code> in cache-through to behave as an
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-xml" data-lang="xml">&lt;service&gt;
+<pre class="prettyprint highlight nowrap"><code data-lang="xml">&lt;service&gt;
   &lt;jsr107:defaults jsr-107-compliant-atomics="true"/&gt;
 &lt;/service&gt;</code></pre>
 </div>

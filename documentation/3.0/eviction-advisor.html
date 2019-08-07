@@ -220,7 +220,7 @@ preserving that entry in the cache, though there is no full guarantee of such.</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
                                                                                     ResourcePoolsBuilder.heap(2L)) <i class="conum" data-value="1"></i><b>(1)</b>
     .withEvictionAdvisor(new OddKeysEvictionAdvisor&lt;Long, String&gt;()) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();

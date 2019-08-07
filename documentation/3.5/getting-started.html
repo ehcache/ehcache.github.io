@@ -227,7 +227,7 @@ If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you sho
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
     .withCache("preConfigured",
         CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))) <i class="conum" data-value="2"></i><b>(2)</b>
     .build(); <i class="conum" data-value="3"></i><b>(3)</b>
@@ -313,7 +313,7 @@ it manages, you have to invoke <code>CacheManager.close()</code>, which in turns
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">try(CacheManager cacheManager = newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">try(CacheManager cacheManager = newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
   .withCache("preConfigured", newCacheConfigurationBuilder(Long.class, String.class, heap(10))) <i class="conum" data-value="2"></i><b>(2)</b>
   .build(true)) { <i class="conum" data-value="3"></i><b>(3)</b>
 
@@ -346,7 +346,7 @@ A <code>CacheManager</code> must be closed cleanly. In a <code>finally</code> bl
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;config
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;config
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.ehcache.org/v3'
     xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core.xsd"&gt;
@@ -415,7 +415,7 @@ A <code>CacheManager</code> must be closed cleanly. In a <code>finally</code> bl
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">URL myUrl = getClass().getResource("/my-config.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">URL myUrl = getClass().getResource("/my-config.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
 Configuration xmlConfig = new XmlConfiguration(myUrl); <i class="conum" data-value="2"></i><b>(2)</b>
 CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
@@ -446,7 +446,7 @@ In addition, for creating the cache manager with clustering support, you will ne
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
+<pre class="prettyprint highlight"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
     CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application")) <i class="conum" data-value="2"></i><b>(2)</b>
             .autoCreate()); <i class="conum" data-value="3"></i><b>(3)</b>
@@ -513,7 +513,7 @@ the faster tiers.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight"><code data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .with(CacheManagerBuilder.persistence(new File(getStoragePath(), "myData"))) <i class="conum" data-value="1"></i><b>(1)</b>
     .withCache("threeTieredCache",
         CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
@@ -568,7 +568,7 @@ The following illustrates how to configure a <em>time-to-live</em> expiry.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.heap(100)) <i class="conum" data-value="1"></i><b>(1)</b>
     .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(20))) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();</code></pre>

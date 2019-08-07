@@ -234,7 +234,7 @@ If the eviction is advised against, Ehcache will try to honor the preference of 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
                                                                                     ResourcePoolsBuilder.heap(2L)) <i class="conum" data-value="1"></i><b>(1)</b>
     .withEvictionAdvisor(new OddKeysEvictionAdvisor&lt;Long, String&gt;()) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();

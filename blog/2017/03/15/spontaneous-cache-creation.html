@@ -226,7 +226,7 @@ higher levels to throw a nice exception.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">@Override
+<pre class="prettyprint highlight"><code data-lang="java">@Override
 protected Cache getMissingCache(String name) {
     Cache cache = super.getMissingCache(name);
     if(cache == null) {
@@ -254,7 +254,7 @@ is not a correctly configured cache.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">@Bean
+<pre class="prettyprint highlight"><code data-lang="java">@Bean
 public javax.cache.configuration.Configuration&lt;Object, Object&gt; cacheConfiguration() {
     CacheConfiguration&lt;Object, Object&gt; cacheConfiguration = CacheConfigurationBuilder
         .newCacheConfigurationBuilder(Object.class, Object.class, ResourcePoolsBuilder
@@ -276,7 +276,7 @@ of the <code>spring.cache.cache-names</code> property. Like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">@Bean
+<pre class="prettyprint highlight"><code data-lang="java">@Bean
 public JCacheManagerCustomizer cacheManagerCustomizer() {
     return cm -&gt; {
         Configuration&lt;Object, Object&gt; cacheConfiguration = createCacheConfiguration();
@@ -311,7 +311,7 @@ Ehcache).</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">@Override
+<pre class="prettyprint highlight"><code data-lang="java">@Override
 protected Cache&lt;Object, Object&gt; createCache(String regionName, Properties properties, CacheDataDescription metadata) {
     throw new IllegalArgumentException("Unknown hibernate cache: " + regionName);
 }</code></pre>
@@ -324,7 +324,7 @@ here. You will need to debug to know it.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">@Override
+<pre class="prettyprint highlight"><code data-lang="java">@Override
 protected Configuration&lt;Object, Object&gt; newDefaultConfig(Properties properties, CacheDataDescription metadata) {
     throw new IllegalArgumentException("Unknown hibernate cache: " + metadata);
 }</code></pre>

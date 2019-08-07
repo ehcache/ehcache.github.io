@@ -212,7 +212,7 @@ In Ehcache 3 this is addressed with the <code>ExpiryPolicy</code> interface and 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.heap(100)) <i class="conum" data-value="1"></i><b>(1)</b>
     .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(20))) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();</code></pre>
@@ -232,7 +232,7 @@ In Ehcache 3 this is addressed with the <code>ExpiryPolicy</code> interface and 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache alias="withExpiry"&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;cache alias="withExpiry"&gt;
   &lt;expiry&gt;
     &lt;ttl unit="seconds"&gt;20&lt;/ttl&gt; <i class="conum" data-value="1"></i><b>(1)</b>
   &lt;/expiry&gt;
@@ -295,7 +295,7 @@ time-to-idle
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">/**
+<pre class="prettyprint highlight"><code data-lang="java">/**
  * A policy object that governs expiration for mappings in a {@link org.ehcache.Cache Cache}.
  * &lt;p&gt;
  * Previous values are not accessible directly but are rather available through a value {@code Supplier}
@@ -447,7 +447,7 @@ some <code>Duration</code>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.heap(100))
     .withExpiry(new CustomExpiry()) <i class="conum" data-value="1"></i><b>(1)</b>
     .build();</code></pre>
@@ -466,7 +466,7 @@ some <code>Duration</code>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache alias="withCustomExpiry"&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;cache alias="withCustomExpiry"&gt;
   &lt;expiry&gt;
     &lt;class&gt;com.pany.ehcache.MyExpiry&lt;/class&gt; <i class="conum" data-value="1"></i><b>(1)</b>
   &lt;/expiry&gt;

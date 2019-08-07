@@ -294,7 +294,7 @@ Your disk storage might, rarely, unless you used a network drive. But then, you 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
   CacheManagerBuilder.newCacheManagerBuilder()
     .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application"))
       .timeouts(TimeoutsBuilder.timeouts() <i class="conum" data-value="1"></i><b>(1)</b>

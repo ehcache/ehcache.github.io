@@ -289,7 +289,7 @@ And here is the serializer implementation that I came up with:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class SimpleTransientStringSerializer implements Serializer&lt;String&gt; {
+<pre class="prettyprint highlight"><code data-lang="java">public class SimpleTransientStringSerializer implements Serializer&lt;String&gt; {
 
   protected Map&lt;Integer, String&gt; idStringMap = new HashMap&lt;Integer, String&gt;();
   protected Map&lt;String, Integer&gt; stringIdMap = new HashMap&lt;String, Integer&gt;();
@@ -351,7 +351,7 @@ simpler.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 CacheConfiguration&lt;Long, String&gt; cacheConfig =
     CacheConfigurationBuilder.newCacheConfigurationBuilder(
         Long.class, String.class, ResourcePoolsBuilder.heap(10).offheap(5, MemoryUnit.MB))  <i class="conum" data-value="1"></i><b>(1)</b>
@@ -396,7 +396,7 @@ But there is a serious problem. The following piece of code would demonstrate th
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfig =
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfig =
     CacheConfigurationBuilder.newCacheConfigurationBuilder(
         Long.class, String.class,
         ResourcePoolsBuilder.heap(10).disk(10, MemoryUnit.MB, true))  <i class="conum" data-value="1"></i><b>(1)</b>
@@ -511,7 +511,7 @@ It is just an extension of the same old transient serializer with the persistent
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class SimplePersistentStringSerializer extends SimpleTransientStringSerializer implements Closeable {
+<pre class="prettyprint highlight"><code data-lang="java">public class SimplePersistentStringSerializer extends SimpleTransientStringSerializer implements Closeable {
 
   private final File stateFile;
 
@@ -570,7 +570,7 @@ And have a look at the sample from the previous section modified to use our pers
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfig =
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfig =
     CacheConfigurationBuilder.newCacheConfigurationBuilder(
         Long.class, String.class,
         ResourcePoolsBuilder.newResourcePoolsBuilder()
@@ -626,7 +626,7 @@ These are the structures that we have used:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class Description {
+<pre class="prettyprint highlight"><code data-lang="java">public class Description {
 
   String alias;
   int id;
@@ -666,7 +666,7 @@ These are the structures that we have used:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class Person {
+<pre class="prettyprint highlight"><code data-lang="java">public class Person {
 
   String name;
   int age;
@@ -710,7 +710,7 @@ These are the structures that we have used:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class Employee extends Person {
+<pre class="prettyprint highlight"><code data-lang="java">public class Employee extends Person {
 
   long employeeId;
 
@@ -762,7 +762,7 @@ a no-arg constructor and these classes meet that requirement.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class KryoSerializer implements Serializer&lt;Employee&gt; {
+<pre class="prettyprint highlight"><code data-lang="java">public class KryoSerializer implements Serializer&lt;Employee&gt; {
 
   private static final Kryo kryo = new Kryo();
 
@@ -797,7 +797,7 @@ Here is the sample code that uses the same:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 CacheConfiguration&lt;Long, Employee&gt; cacheConfig =
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Employee.class, ResourcePoolsBuilder.heap(10))
         .withValueSerializer(KryoSerializer.class)  <i class="conum" data-value="1"></i><b>(1)</b>
@@ -825,7 +825,7 @@ assertThat(employeeCache.get(1L), is(emp));</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class TransientKryoSerializer implements Serializer&lt;Employee&gt;, Closeable{
+<pre class="prettyprint highlight"><code data-lang="java">public class TransientKryoSerializer implements Serializer&lt;Employee&gt;, Closeable{
 
   protected static final Kryo kryo = new Kryo();
 
@@ -906,7 +906,7 @@ known custom class types associated with the object to be serialized(the employe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 CacheConfiguration&lt;Long, Employee&gt; cacheConfig =
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, Employee.class, ResourcePoolsBuilder.heap(10))
         .withValueSerializer(TransientKryoSerializer.class)
@@ -926,7 +926,7 @@ assertThat(employeeCache.get(1L), is(emp));</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class PersistentKryoSerializer extends TransientKryoSerializer {
+<pre class="prettyprint highlight"><code data-lang="java">public class PersistentKryoSerializer extends TransientKryoSerializer {
 
   private final File stateFile;
 
@@ -998,7 +998,7 @@ deserialized as they are persisted with these integer values in their headers.</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, Employee&gt; cacheConfig =
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, Employee&gt; cacheConfig =
     CacheConfigurationBuilder.newCacheConfigurationBuilder(
         Long.class, Employee.class,
         ResourcePoolsBuilder.newResourcePoolsBuilder()

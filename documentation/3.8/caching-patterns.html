@@ -242,7 +242,7 @@ When data is written, the cache must be updated along with the system-of-record.
 <h3 id="pseudocode-for-reading-values"><a class="anchor" href="#pseudocode-for-reading-values"></a>Pseudocode for reading values</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">v = cache.get(k)
+<pre class="prettyprint highlight nowrap"><code data-lang="java">v = cache.get(k)
 if (v == null) {
   v = sor.get(k)
   cache.put(k, v)
@@ -254,7 +254,7 @@ if (v == null) {
 <h3 id="pseudocode-for-writing-values"><a class="anchor" href="#pseudocode-for-writing-values"></a>Pseudocode for writing values</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">v = newV
+<pre class="prettyprint highlight nowrap"><code data-lang="java">v = newV
 sor.put(k, v)
 cache.put(k, v)</code></pre>
 </div>

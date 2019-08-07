@@ -228,7 +228,7 @@ If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you sho
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager
     = CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
     .withCache("preConfigured",
         CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))) <i class="conum" data-value="2"></i><b>(2)</b>
@@ -313,7 +313,7 @@ it manages, you have to invoke <code>CacheManager.close()</code>, which in turns
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; userManagedCache =
+<pre class="prettyprint highlight"><code data-lang="java">UserManagedCache&lt;Long, String&gt; userManagedCache =
     UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
         .build(false); <i class="conum" data-value="1"></i><b>(1)</b>
 userManagedCache.init(); <i class="conum" data-value="2"></i><b>(2)</b>
@@ -373,7 +373,7 @@ the faster tiers.</p>
 <h4 id="off-heap"><a class="anchor" href="#off-heap"></a>Off-heap</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().withCache("tieredCache",
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().withCache("tieredCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.newResourcePoolsBuilder()
             .heap(10, EntryUnit.ENTRIES)
@@ -405,7 +405,7 @@ You should thus favor off-heap for large amounts of data where on-heap would hav
 <h4 id="disk-persistence"><a class="anchor" href="#disk-persistence"></a>Disk persistence</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight"><code data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .with(CacheManagerBuilder.persistence(getStoragePath() + File.separator + "myData")) <i class="conum" data-value="1"></i><b>(1)</b>
     .withCache("persistent-cache", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.newResourcePoolsBuilder()
@@ -445,7 +445,7 @@ Note that Ehcache 3 only offers persistence in case of clean shutdowns.</p>
 <h4 id="three-tiers"><a class="anchor" href="#three-tiers"></a>Three tiers</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight"><code data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
     .with(CacheManagerBuilder.persistence(getStoragePath() + File.separator + "myData")) <i class="conum" data-value="1"></i><b>(1)</b>
     .withCache("threeTieredCache",
         CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
@@ -500,7 +500,7 @@ Byte sizing has a runtime performance impact that depends on the size and graph 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; usesConfiguredInCacheConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; usesConfiguredInCacheConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.newResourcePoolsBuilder()
             .heap(10, MemoryUnit.KB) <i class="conum" data-value="1"></i><b>(1)</b>
             .offheap(10, MemoryUnit.MB))
@@ -575,7 +575,7 @@ Presently, <code>updateResourcePools()</code> only supports updating the heap ti
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">ResourcePools pools = ResourcePoolsBuilder.newResourcePoolsBuilder().heap(20L, EntryUnit.ENTRIES).build(); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">ResourcePools pools = ResourcePoolsBuilder.newResourcePoolsBuilder().heap(20L, EntryUnit.ENTRIES).build(); <i class="conum" data-value="1"></i><b>(1)</b>
 cache.getRuntimeConfiguration().updateResourcePools(pools); <i class="conum" data-value="2"></i><b>(2)</b>
 assertThat(cache.getRuntimeConfiguration().getResourcePools()
     .getPoolForResource(ResourceType.Core.HEAP).getSize(), is(20L));</code></pre>
@@ -605,7 +605,7 @@ The following illustrates how to configure a <em>time-to-live</em> expiry.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.heap(100)) <i class="conum" data-value="1"></i><b>(1)</b>
     .withExpiry(Expirations.timeToLiveExpiration(Duration.of(20, TimeUnit.SECONDS))) <i class="conum" data-value="2"></i><b>(2)</b>
     .build();</code></pre>
@@ -637,7 +637,7 @@ The following illustrates how to configure a <em>time-to-live</em> expiry.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">  &lt;cache alias="foo"&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="xml">  &lt;cache alias="foo"&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     &lt;key-type&gt;java.lang.String&lt;/key-type&gt; <i class="conum" data-value="2"></i><b>(2)</b>
     &lt;resources&gt;
       &lt;heap unit="entries"&gt;2000&lt;/heap&gt; <i class="conum" data-value="3"></i><b>(3)</b>
@@ -698,7 +698,7 @@ The following illustrates how to configure a <em>time-to-live</em> expiry.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">final URL myUrl = this.getClass().getResource("/my-config.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">final URL myUrl = this.getClass().getResource("/my-config.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
 Configuration xmlConfig = new XmlConfiguration(myUrl); <i class="conum" data-value="2"></i><b>(2)</b>
 CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>

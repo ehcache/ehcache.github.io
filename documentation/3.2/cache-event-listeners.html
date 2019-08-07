@@ -232,7 +232,7 @@ registered with.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheEventListenerConfigurationBuilder cacheEventListenerConfiguration = CacheEventListenerConfigurationBuilder
+<pre class="prettyprint highlight"><code data-lang="java">CacheEventListenerConfigurationBuilder cacheEventListenerConfiguration = CacheEventListenerConfigurationBuilder
     .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED) <i class="conum" data-value="1"></i><b>(1)</b>
     .unordered().asynchronous(); <i class="conum" data-value="2"></i><b>(2)</b>
 
@@ -387,7 +387,7 @@ Ehcache provides an abstract class <code>CacheEventAdapter</code> for convenient
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">ListenerObject listener = new ListenerObject(); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">ListenerObject listener = new ListenerObject(); <i class="conum" data-value="1"></i><b>(1)</b>
 cache.getRuntimeConfiguration().registerCacheEventListener(listener, EventOrdering.ORDERED,
     EventFiring.ASYNCHRONOUS, EnumSet.of(EventType.CREATED, EventType.REMOVED)); <i class="conum" data-value="2"></i><b>(2)</b>
 
@@ -430,7 +430,7 @@ The following <code>put()</code> and <code>remove()</code> cache calls will have
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
                                                                                       ResourcePoolsBuilder.heap(5L))
     .withDispatcherConcurrency(10) <i class="conum" data-value="1"></i><b>(1)</b>
     .withEventListenersThreadPool("listeners-pool")

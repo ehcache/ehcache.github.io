@@ -364,7 +364,7 @@ If the system property does not exist, this will make the configuration parsing 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;persistence directory="${user.home}/cache-data"/&gt; <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;persistence directory="${user.home}/cache-data"/&gt; <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -395,7 +395,7 @@ If you are obtaining your <code>CacheManager</code> through the JSR-107 API, wha
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">final URL myUrl = getClass().getResource("/configs/docs/getting-started.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">final URL myUrl = getClass().getResource("/configs/docs/getting-started.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
 XmlConfiguration xmlConfig = new XmlConfiguration(myUrl); <i class="conum" data-value="2"></i><b>(2)</b>
 CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <i class="conum" data-value="3"></i><b>(3)</b>
 myCacheManager.init();  <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
@@ -428,7 +428,7 @@ to use a <code>&lt;cache-template&gt;</code> element from an XML file, e.g. the 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;cache-template name="example"&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;cache-template name="example"&gt;
   &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
   &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
   &lt;heap unit="entries"&gt;200&lt;/heap&gt;
@@ -440,7 +440,7 @@ to use a <code>&lt;cache-template&gt;</code> element from an XML file, e.g. the 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">XmlConfiguration xmlConfiguration = new XmlConfiguration(getClass().getResource("/configs/docs/template-sample.xml"));
+<pre class="prettyprint highlight"><code data-lang="java">XmlConfiguration xmlConfiguration = new XmlConfiguration(getClass().getResource("/configs/docs/template-sample.xml"));
 CacheConfigurationBuilder&lt;Long, String&gt; configurationBuilder = xmlConfiguration.newCacheConfigurationBuilderFromTemplate("example", Long.class, String.class); <i class="conum" data-value="1"></i><b>(1)</b>
 configurationBuilder = configurationBuilder.withResourcePools(ResourcePoolsBuilder.heap(1000)); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
@@ -469,7 +469,7 @@ and the string representation of that object will give you the XML equivalent of
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">XmlConfiguration xmlConfiguration = new XmlConfiguration(getClass().getResource("/configs/docs/template-sample.xml"));
+<pre class="prettyprint highlight"><code data-lang="java">XmlConfiguration xmlConfiguration = new XmlConfiguration(getClass().getResource("/configs/docs/template-sample.xml"));
 CacheConfigurationBuilder&lt;Long, String&gt; configurationBuilder = xmlConfiguration.newCacheConfigurationBuilderFromTemplate("example", Long.class, String.class); <i class="conum" data-value="1"></i><b>(1)</b>
 configurationBuilder = configurationBuilder.withResourcePools(ResourcePoolsBuilder.heap(1000)); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
@@ -488,7 +488,7 @@ configurationBuilder = configurationBuilder.withResourcePools(ResourcePoolsBuild
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
   .with(CacheManagerBuilder.persistence(tmpDir.newFile("myData")))
   .withCache("threeTieredCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
@@ -569,7 +569,7 @@ file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;multi:configurations
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;multi:configurations
   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
   xmlns='http://www.ehcache.org/v3'
   xmlns:multi='http://www.ehcache.org/v3/multi'
@@ -621,7 +621,7 @@ file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">XmlMultiConfiguration multipleConfiguration = XmlMultiConfiguration
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration multipleConfiguration = XmlMultiConfiguration
   .from(getClass().getResource("/configs/docs/multi/multiple-managers.xml")) <i class="conum" data-value="1"></i><b>(1)</b>
   .build(); <i class="conum" data-value="2"></i><b>(2)</b>
 
@@ -653,7 +653,7 @@ with a required <code>type</code> attribute:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;multi:configuration identity="foo-manager"&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;multi:configuration identity="foo-manager"&gt;
   &lt;multi:variant type="heap"&gt;
     &lt;config&gt;
       &lt;cache alias="foo"&gt;
@@ -685,7 +685,7 @@ with a required <code>type</code> attribute:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">XmlMultiConfiguration variantConfiguration = XmlMultiConfiguration
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration variantConfiguration = XmlMultiConfiguration
   .from(getClass().getResource("/configs/docs/multi/multiple-variants.xml"))
   .build();
 
@@ -719,7 +719,7 @@ configuration for all requested variants.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Map&lt;String, Configuration&gt; allConfigurations = multipleConfiguration.identities().stream() <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">Map&lt;String, Configuration&gt; allConfigurations = multipleConfiguration.identities().stream() <i class="conum" data-value="1"></i><b>(1)</b>
   .collect(Collectors.toMap(i -&gt; i, i -&gt; multipleConfiguration.configuration(i))); <i class="conum" data-value="2"></i><b>(2)</b>
 Map&lt;String, Configuration&gt; offheapConfigurations = variantConfiguration.identities().stream()
   .collect(Collectors.toMap(i -&gt; i, i -&gt; variantConfiguration.configuration(i, "offheap"))); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
@@ -753,7 +753,7 @@ of parsing XML multi-configuration documents are all just simple invocations of 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">XmlMultiConfiguration multiConfiguration = XmlMultiConfiguration.fromNothing() <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration multiConfiguration = XmlMultiConfiguration.fromNothing() <i class="conum" data-value="1"></i><b>(1)</b>
   .withManager("bar", barConfiguration) <i class="conum" data-value="2"></i><b>(2)</b>
   .withManager("foo").variant("heap", heapConfiguration).variant("offheap", offheapConfiguration) <i class="conum" data-value="3"></i><b>(3)</b>
   .build(); <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
@@ -784,7 +784,7 @@ of parsing XML multi-configuration documents are all just simple invocations of 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">XmlMultiConfiguration modified = XmlMultiConfiguration.from(multiConfiguration) <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration modified = XmlMultiConfiguration.from(multiConfiguration) <i class="conum" data-value="1"></i><b>(1)</b>
   .withManager("foo") <i class="conum" data-value="2"></i><b>(2)</b>
   .build();</code></pre>
 </div>
@@ -806,7 +806,7 @@ of parsing XML multi-configuration documents are all just simple invocations of 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">String xmlString = multiConfiguration.asRenderedDocument(); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">String xmlString = multiConfiguration.asRenderedDocument(); <i class="conum" data-value="1"></i><b>(1)</b>
 Document xmlDocument = multiConfiguration.asDocument(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>

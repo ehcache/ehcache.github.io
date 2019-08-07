@@ -269,28 +269,9 @@ this tier, by nature, is slower than local off-heap storage.</p>
 </li>
 </ul>
 </div>
-<div class="literalblock">
+<div class="imageblock">
 <div class="content">
-<pre> +-----------------------------------+
- |cBE7        Application            |
- |                                   |
- | +-------------------------------+ |
- | |c7DE     Cache Manager         | |  Applications may have one or
- | |                               | |  more Cache Managers
- | |  +-------------------------+  | |
- | |  |c7AE      Cache          |  | |  A Cache Manager can manage
- | |  |+-----------------------+|  | |  many Caches
- | |  ||cFA4   Heap Tier       ||  | |
- | |  |+-----------------------+|  | |
- | |  ||                       ||  | |  Caches are configured to utilize
- | |  ||cFA4 Off Heap Tier     ||  | |  one or more Tiers for storing
- | |  ||                       ||  | |  cache entries
- | |  |+-----------------------+|  | |
- | |  ||cA8D   Disk Tier       ||  | |  Ehcache keeps the hotter data
- | |  |+-----------------------+|  | |  in faster tiers
- | |  +-------------------------+  | |
- | +-------------------------------+ |
- +-----------------------------------+</pre>
+<img src="images/diag-cc830e8ffd9359d57922580a03ac369e.png" alt="diag cc830e8ffd9359d57922580a03ac369e" width="760" height="336">
 </div>
 </div>
 </div>
@@ -314,42 +295,9 @@ This topology offers offers a selection of consistency options.
 A distributed topology is the recommended approach in a clustered or scaled-out application environment.
 It provides the best combination of performance, availability, and scalability.</p>
 </div>
-<div class="literalblock">
+<div class="imageblock">
 <div class="content">
-<pre>+------------------------------+            +------------------------------+
-|          Application         |            |          Application         |
-|                          cBE7|            |                          cBE7|
-|+----------------------------+|            |+----------------------------+|
-||        Cache Manager   c7DE||            ||        Cache Manager   c7DE||
-||+--------------------------+||            ||+--------------------------+||
-|||           Cache      c7AE|||            |||           Cache      c7AE|||
-|||+------------------------+|||            |||+------------------------+|||
-||||    Heap Tier       cFA4||||            ||||        Heap Tier   cFA4||||
-|||+------------------------+|||            |||+------------------------+|||
-||||                        ||||            ||||                        ||||
-||||      Off Heap Tier     ||||            ||||      Off Heap Tier     ||||
-||||                    cFA4||||            ||||                    cFA4||||
-|||+------------------------+|||            |||+------------------------+|||
-||||     Clustered Tier cA8D||||&lt;--+    +--&gt;||||     Clustered Tier cA8D||||
-|||+------------------------+|||   |    |   |||+------------------------+|||
-||+--------------------------+||   |    |   ||+--------------------------+||
-|+----------------------------+|   |    |   |+----------------------------+|
-+------------------------------+   |    |   +------------------------------+
-                                   |    |
-                                   V    V
-                      +------------------------------+
-                      |       Terracotta Server      |
-                      |                          c7AE|
-                      |+----------------------------+|
-                      ||       Cache Clustered      ||
-                      ||        Tier Manager    cF55||
-                      |+----------------------------+|
-                      ||                            ||
-                      ||          Off Heap          ||
-                      ||        Data Storage        ||
-                      ||                        cFA4||
-                      |+----------------------------+|
-                      +------------------------------+</pre>
+<img src="images/diag-023dc90b3469ccf84002e716bfe382de.png" alt="diag 023dc90b3469ccf84002e716bfe382de" width="800" height="532">
 </div>
 </div>
 <div class="ulist">

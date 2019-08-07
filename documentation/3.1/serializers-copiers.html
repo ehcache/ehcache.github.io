@@ -287,7 +287,7 @@ If such a search fails, all the registered serializers will be tried in the adde
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withSerializer(Employee.class, EmployeeSerializer.class).withSerializer(Person.class, PersonSerializer.class)</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withSerializer(Employee.class, EmployeeSerializer.class).withSerializer(Person.class, PersonSerializer.class)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -384,7 +384,7 @@ So if you&#8217;re planning to write your own implementation you have to keep in
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">object.getClass().equals( mySerializer.read(mySerializer.serialize(object)).getClass() )</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">object.getClass().equals( mySerializer.read(mySerializer.serialize(object)).getClass() )</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -406,7 +406,7 @@ e.g. a serializer of type <code>com.pany.MyInterface</code> should</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">/**
+<pre class="prettyprint highlight"><code data-lang="java">/**
  * Defines the contract used to transform type instances to and from a serial form.
  * &lt;P&gt;
  *   Implementations must be thread-safe.
@@ -500,7 +500,7 @@ To address these requirement you have to implement a constructor with the follow
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public MySerializer(ClassLoader classLoader, StateRepository stateRepository) {
+<pre class="prettyprint highlight"><code data-lang="java">public MySerializer(ClassLoader classLoader, StateRepository stateRepository) {
 }</code></pre>
 </div>
 </div>
@@ -529,7 +529,7 @@ will work, but the responsibility of persisting and restoring the serializer&#82
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public MySerializer(ClassLoader classLoader) {
+<pre class="prettyprint highlight"><code data-lang="java">public MySerializer(ClassLoader classLoader) {
 }</code></pre>
 </div>
 </div>
@@ -631,7 +631,7 @@ search fails, all the registered copiers will be tried in the added order to fin
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withCopier(Employee.class, EmployeeCopier.class).withCopier(Person.class, PersonCopier.class)</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withCopier(Employee.class, EmployeeCopier.class).withCopier(Person.class, PersonCopier.class)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -692,7 +692,7 @@ If the <code>Copier</code> implements <code>java.io.Closeable</code> then <code>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">/**
+<pre class="prettyprint highlight"><code data-lang="java">/**
  * Defines the contract used to copy type instances.
  * &lt;p&gt;
  *   The copied object's class must be preserved.  The following must always be true:

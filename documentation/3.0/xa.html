@@ -244,7 +244,7 @@ transactional cache.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">BitronixTransactionManager transactionManager =
+<pre class="prettyprint highlight"><code data-lang="java">BitronixTransactionManager transactionManager =
     TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
@@ -330,7 +330,7 @@ transaction context. Nothing special needs to be configured for this to happen, 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">BitronixTransactionManager transactionManager =
+<pre class="prettyprint highlight"><code data-lang="java">BitronixTransactionManager transactionManager =
     TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 Class&lt;CacheLoaderWriter&lt;?, ?&gt;&gt; klazz = (Class&lt;CacheLoaderWriter&lt;?, ?&gt;&gt;) (Class) (SampleLoaderWriter.class);
@@ -414,7 +414,7 @@ will result in <code>XACacheException</code> to be thrown.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">BitronixTransactionManager transactionManager =
+<pre class="prettyprint highlight"><code data-lang="java">BitronixTransactionManager transactionManager =
     TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
@@ -488,7 +488,7 @@ XAResource identifier as some transaction managers require this.</td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">BitronixTransactionManager transactionManager =
+<pre class="prettyprint highlight"><code data-lang="java">BitronixTransactionManager transactionManager =
     TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
 PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
@@ -571,7 +571,7 @@ XA caches:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">  &lt;service&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">  &lt;service&gt;
     &lt;tx:jta-tm transaction-manager-lookup-class="org.ehcache.transactions.xa.txmgr.btm.BitronixTransactionManagerLookup"/&gt; <i class="conum" data-value="1"></i><b>(1)</b>
   &lt;/service&gt;
 
@@ -604,7 +604,7 @@ XA caches:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">    BitronixTransactionManager transactionManager =
+<pre class="prettyprint highlight"><code data-lang="java">    BitronixTransactionManager transactionManager =
         TransactionManagerServices.getTransactionManager(); <i class="conum" data-value="1"></i><b>(1)</b>
 
     URL myUrl = this.getClass().getResource("/docs/configs/xa-getting-started.xml"); <i class="conum" data-value="2"></i><b>(2)</b>
@@ -642,7 +642,7 @@ create your <code>CacheManager</code> instance using the <code>Configuration</co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">public class BitronixTransactionManagerLookup implements TransactionManagerLookup { <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">public class BitronixTransactionManagerLookup implements TransactionManagerLookup { <i class="conum" data-value="1"></i><b>(1)</b>
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BitronixTransactionManagerLookup.class);
 

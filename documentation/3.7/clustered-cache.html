@@ -278,7 +278,7 @@ It contains the bare minimum configuration required for the samples in the rest 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;tc-config xmlns="http://www.terracotta.org/config"
            xmlns:ohr="http://www.terracotta.org/config/offheap-resource"&gt;
   &lt;plugins&gt;
@@ -319,7 +319,7 @@ Change to your extracted directory and then execute the <strong>start-tc-server<
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-cmd" data-lang="cmd">cd &lt;path/to/terracotta/kit&gt;/server/bin
+<pre class="prettyprint highlight"><code data-lang="cmd">cd &lt;path/to/terracotta/kit&gt;/server/bin
 start-tc-server.bat -f &lt;path/to/server/config&gt;/tc-config.xml</code></pre>
 </div>
 </div>
@@ -328,7 +328,7 @@ start-tc-server.bat -f &lt;path/to/server/config&gt;/tc-config.xml</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-bash" data-lang="bash">cd &lt;path/to/terracotta/kit&gt;/server/bin
+<pre class="prettyprint highlight"><code data-lang="bash">cd &lt;path/to/terracotta/kit&gt;/server/bin
 ./start-tc-server.sh -f &lt;path/to/server/config&gt;/tc-config.xml</code></pre>
 </div>
 </div>
@@ -360,7 +360,7 @@ Here is a code sample that shows how to configure a cache manager with clusterin
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
     CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application")) <i class="conum" data-value="2"></i><b>(2)</b>
             .autoCreate()); <i class="conum" data-value="3"></i><b>(3)</b>
@@ -404,7 +404,7 @@ Sample <code>URI</code> provided in the example is pointing to the clustered sto
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
     CacheManagerBuilder.newCacheManagerBuilder()
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application")).autoCreate()
             .defaultServerResource("primary-server-resource") <i class="conum" data-value="1"></i><b>(1)</b>
@@ -488,7 +488,7 @@ reallocated to another cache sharing the pool.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; autoCreate = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; autoCreate = CacheManagerBuilder.newCacheManagerBuilder()
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application"))
             .autoCreate() <i class="conum" data-value="1"></i><b>(1)</b>
             .resourcePool("resource-pool", 8, MemoryUnit.MB, "primary-server-resource"))
@@ -541,7 +541,7 @@ If it does not exist then the cache manager will fail to initialize.</td>
 <h3 id="clustered-storage-tier"><a class="anchor" href="#clustered-storage-tier"></a>Clustered Storage Tier</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; config = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; config = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
     ResourcePoolsBuilder.newResourcePoolsBuilder()
         .heap(2, MemoryUnit.MB) <i class="conum" data-value="1"></i><b>(1)</b>
         .with(ClusteredResourcePoolBuilder.clusteredDedicated("primary-server-resource", 8, MemoryUnit.MB))) <i class="conum" data-value="2"></i><b>(2)</b>
@@ -569,7 +569,7 @@ cache.put(42L, "All you need to know!");</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-xml" data-lang="xml">&lt;cache alias="clustered-cache-tiered"&gt;
+<pre class="prettyprint highlight nowrap"><code data-lang="xml">&lt;cache alias="clustered-cache-tiered"&gt;
   &lt;resources&gt;
     &lt;heap unit="MB"&gt;10&lt;/heap&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     &lt;tc:clustered-dedicated unit="MB"&gt;50&lt;/tc:clustered-dedicated&gt; <i class="conum" data-value="2"></i><b>(2)</b>
@@ -613,7 +613,7 @@ This comes with a latency penalty on the write operation required to give this g
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; config = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; config = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.newResourcePoolsBuilder()
                 .with(ClusteredResourcePoolBuilder.clusteredDedicated("primary-server-resource", 2, MemoryUnit.MB)))
     .add(ClusteredStoreConfigurationBuilder.withConsistency(Consistency.STRONG)) <i class="conum" data-value="1"></i><b>(1)</b>
@@ -640,7 +640,7 @@ cache.put(42L, "All you need to know!"); <i class="conum" data-value="2"></i><b>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-xml" data-lang="xml">&lt;cache alias="clustered-cache"&gt;
+<pre class="prettyprint highlight nowrap"><code data-lang="xml">&lt;cache alias="clustered-cache"&gt;
   &lt;resources&gt;
     &lt;tc:clustered-dedicated unit="MB"&gt;50&lt;/tc:clustered-dedicated&gt;
   &lt;/resources&gt;
@@ -688,7 +688,7 @@ Thus any programmer can use the cache without having to worry about using matchi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; cacheManagerBuilderAutoCreate = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; cacheManagerBuilderAutoCreate = CacheManagerBuilder.newCacheManagerBuilder()
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application"))
             .autoCreate()  <i class="conum" data-value="1"></i><b>(1)</b>
             .resourcePool("resource-pool", 8, MemoryUnit.MB, "primary-server-resource"));

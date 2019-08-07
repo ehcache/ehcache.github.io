@@ -250,7 +250,7 @@ The <code>UserManagedCache</code> class extends the <code>Cache</code> class by 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">package org.ehcache;
+<pre class="prettyprint highlight"><code data-lang="java">package org.ehcache;
 
 import java.io.Closeable;
 
@@ -316,7 +316,7 @@ The <code>destroy</code> method deals with the lifecycle of the cache and needs 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">package org.ehcache;
+<pre class="prettyprint highlight"><code data-lang="java">package org.ehcache;
 
 /**
  * A {@link UserManagedCache} that holds data that can outlive the JVM.
@@ -349,7 +349,7 @@ public interface PersistentUserManagedCache&lt;K, V&gt; extends UserManagedCache
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; userManagedCache =
+<pre class="prettyprint highlight"><code data-lang="java">UserManagedCache&lt;Long, String&gt; userManagedCache =
     UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
         .build(false); <i class="conum" data-value="1"></i><b>(1)</b>
 userManagedCache.init(); <i class="conum" data-value="2"></i><b>(2)</b>
@@ -410,7 +410,7 @@ If you are also using managed caches simultaneously, the <code>CacheManager.clos
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">LocalPersistenceService persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(getStoragePath(), "myUserData"))); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">LocalPersistenceService persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(getStoragePath(), "myUserData"))); <i class="conum" data-value="1"></i><b>(1)</b>
 
 PersistentUserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
     .with(new UserManagedPersistenceContext&lt;Long, String&gt;("cache-name", persistenceService)) <i class="conum" data-value="2"></i><b>(2)</b>
@@ -482,7 +482,7 @@ The ordered events executor must be single threaded to guarantee ordering.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
+<pre class="prettyprint highlight"><code data-lang="java">UserManagedCache&lt;Long, String&gt; cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
     .withEventExecutors(Executors.newSingleThreadExecutor(), Executors.newFixedThreadPool(5)) <i class="conum" data-value="1"></i><b>(1)</b>
     .withEventListeners(CacheEventListenerConfigurationBuilder
         .newEventListenerConfiguration(ListenerObject.class, EventType.CREATED, EventType.UPDATED)

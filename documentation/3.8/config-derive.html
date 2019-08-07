@@ -218,7 +218,7 @@ with the configurations values</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">FluentConfigurationBuilder&lt;?&gt; derivedBuilder = configuration.derive(); <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight"><code data-lang="java">FluentConfigurationBuilder&lt;?&gt; derivedBuilder = configuration.derive(); <i class="conum" data-value="1"></i><b>(1)</b>
 Configuration configurationCopy = derivedBuilder.build(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
@@ -245,7 +245,7 @@ Configuration configurationCopy = derivedBuilder.build(); <i class="conum" data-
 <div class="listingblock">
 <div class="title">setting a custom classloader:</div>
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Configuration withClassLoader = configuration.derive()
+<pre class="prettyprint highlight"><code data-lang="java">Configuration withClassLoader = configuration.derive()
   .withClassLoader(classLoader)
   .build();</code></pre>
 </div>
@@ -253,7 +253,7 @@ Configuration configurationCopy = derivedBuilder.build(); <i class="conum" data-
 <div class="listingblock">
 <div class="title">adding a cache:</div>
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Configuration withCache = configuration.derive()
+<pre class="prettyprint highlight"><code data-lang="java">Configuration withCache = configuration.derive()
   .withCache("cache", CacheConfigurationBuilder.newCacheConfigurationBuilder(
     Long.class, String.class, ResourcePoolsBuilder.heap(10)))
   .build();</code></pre>
@@ -269,14 +269,14 @@ Configuration configurationCopy = derivedBuilder.build(); <i class="conum" data-
 <tr>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
 &lt;/ehcache&gt;</code></pre>
 </div>
 </div></div></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&rarr;</p></td>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;cache alias="cache"&gt;
     &lt;key-type&gt;Long.class&lt;/key-type&gt;
     &lt;value-type&gt;Object.class&lt;/value-type&gt;
@@ -291,7 +291,7 @@ Configuration configurationCopy = derivedBuilder.build(); <i class="conum" data-
 <div class="listingblock">
 <div class="title">removing a cache:</div>
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Configuration withoutCache = configuration.derive()
+<pre class="prettyprint highlight"><code data-lang="java">Configuration withoutCache = configuration.derive()
   .withoutCache("cache")
   .build();</code></pre>
 </div>
@@ -306,7 +306,7 @@ Configuration configurationCopy = derivedBuilder.build(); <i class="conum" data-
 <tr>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;cache alias="cache"&gt;
     &lt;key-type&gt;Long.class&lt;/key-type&gt;
     &lt;value-type&gt;Object.class&lt;/value-type&gt;
@@ -318,7 +318,7 @@ Configuration configurationCopy = derivedBuilder.build(); <i class="conum" data-
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&rarr;</p></td>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
 &lt;/ehcache&gt;</code></pre>
 </div>
 </div></div></td>
@@ -332,7 +332,7 @@ builder seeded using the existing cache configuration.</p>
 <div class="listingblock">
 <div class="title">updating a cache, by adding a resource:</div>
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Configuration withOffHeap = configuration.derive()
+<pre class="prettyprint highlight"><code data-lang="java">Configuration withOffHeap = configuration.derive()
   .updateCache("cache", cache -&gt; cache.updateResourcePools(
     resources -&gt; ResourcePoolsBuilder.newResourcePoolsBuilder(resources)
       .offheap(100, MemoryUnit.MB)
@@ -350,7 +350,7 @@ builder seeded using the existing cache configuration.</p>
 <tr>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;cache alias="cache"&gt;
     &lt;key-type&gt;Long.class&lt;/key-type&gt;
     &lt;value-type&gt;Object.class&lt;/value-type&gt;
@@ -362,7 +362,7 @@ builder seeded using the existing cache configuration.</p>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&rarr;</p></td>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;cache alias="cache"&gt;
     &lt;key-type&gt;Long.class&lt;/key-type&gt;
     &lt;value-type&gt;Object.class&lt;/value-type&gt;
@@ -389,7 +389,7 @@ creation configurations and service configurations:</p>
 <div class="listingblock">
 <div class="title">adding a service creation configuration (constraining the default thread pool)</div>
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Configuration withBoundedThreads = configuration.derive()
+<pre class="prettyprint highlight"><code data-lang="java">Configuration withBoundedThreads = configuration.derive()
   .withService(new PooledExecutionServiceConfiguration()
     .addDefaultPool("default", 1, 16))
   .build();</code></pre>
@@ -405,14 +405,14 @@ creation configurations and service configurations:</p>
 <tr>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
 &lt;/ehcache&gt;</code></pre>
 </div>
 </div></div></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&rarr;</p></td>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;thread-pools&gt;
     &lt;thread-pool alias="default" default="true"
                  min-size="1" max-size="16"/&gt;
@@ -426,7 +426,7 @@ creation configurations and service configurations:</p>
 <div class="listingblock">
 <div class="title">updating a service creation configuration (changing the persistence path)</div>
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Configuration withUpdatedPersistence = configuration.derive()
+<pre class="prettyprint highlight"><code data-lang="java">Configuration withUpdatedPersistence = configuration.derive()
   .updateServices(DefaultPersistenceConfiguration.class,
     existing -&gt; new File("/var/persistence/path"))
   .build();</code></pre>
@@ -442,7 +442,7 @@ creation configurations and service configurations:</p>
 <tr>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;persistence directory="/some/thing/else"/&gt;
 &lt;/ehcache&gt;</code></pre>
 </div>
@@ -450,7 +450,7 @@ creation configurations and service configurations:</p>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&rarr;</p></td>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;persistence directory="/var/persistence/path"/&gt;
 &lt;/ehcache&gt;</code></pre>
 </div>
@@ -461,7 +461,7 @@ creation configurations and service configurations:</p>
 <div class="listingblock">
 <div class="title">adding a service configuration (setting a resilience strategy)</div>
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Configuration withThrowingStrategy = configuration.derive()
+<pre class="prettyprint highlight"><code data-lang="java">Configuration withThrowingStrategy = configuration.derive()
   .updateCache("cache", existing -&gt; existing.withService(
     new DefaultResilienceStrategyConfiguration(new ThrowingResilienceStrategy&lt;&gt;())
   ))
@@ -478,7 +478,7 @@ creation configurations and service configurations:</p>
 <tr>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;cache alias="cache"&gt;
     &lt;key-type&gt;Long.class&lt;/key-type&gt;
     &lt;value-type&gt;Object.class&lt;/value-type&gt;
@@ -490,7 +490,7 @@ creation configurations and service configurations:</p>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&rarr;</p></td>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;cache alias="cache"&gt;
     &lt;key-type&gt;Long.class&lt;/key-type&gt;
     &lt;value-type&gt;Object.class&lt;/value-type&gt;
@@ -508,7 +508,7 @@ creation configurations and service configurations:</p>
 <div class="listingblock">
 <div class="title">updating a service configuration (changing a clustered cache&#8217;s consistency)</div>
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Configuration changedConsistency = configuration.derive()
+<pre class="prettyprint highlight"><code data-lang="java">Configuration changedConsistency = configuration.derive()
   .updateCache("cache", cache -&gt; cache.updateServices(
     ClusteredStoreConfiguration.class,
     existing -&gt; Consistency.EVENTUAL)
@@ -526,7 +526,7 @@ creation configurations and service configurations:</p>
 <tr>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;service&gt;
     &lt;tc:cluster&gt;
       &lt;tc:connection url="terracotta://example.com/cachemanager"/&gt;
@@ -545,7 +545,7 @@ creation configurations and service configurations:</p>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&rarr;</p></td>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;service&gt;
     &lt;tc:cluster&gt;
       &lt;tc:connection url="terracotta://example.com/cachemanager"/&gt;
@@ -573,7 +573,7 @@ instance its configuration are usually strongly coupled:</p>
 <div class="listingblock">
 <div class="title">removing a service (making a cache manager non-clustered)</div>
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-java" data-lang="java">Configuration withoutClustering = configuration.derive()
+<pre class="prettyprint highlight"><code data-lang="java">Configuration withoutClustering = configuration.derive()
   .updateCaches(cache -&gt; cache <i class="conum" data-value="1"></i><b>(1)</b>
     .withoutServices(ClusteredStoreConfiguration.class) <i class="conum" data-value="2"></i><b>(2)</b>
     .updateResourcePools(existing -&gt; {
@@ -632,7 +632,7 @@ instance its configuration are usually strongly coupled:</p>
 <tr>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;service&gt;
     &lt;tc:cluster&gt;
       &lt;tc:connection url="terracotta://example.com/cachemanager"/&gt;
@@ -652,7 +652,7 @@ instance its configuration are usually strongly coupled:</p>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&rarr;</p></td>
 <td class="tableblock halign-left valign-middle"><div class="content"><div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;ehcache&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache&gt;
   &lt;cache alias="cache"&gt;
     &lt;resources&gt;
       &lt;heap&gt;100&lt;/heap&gt;

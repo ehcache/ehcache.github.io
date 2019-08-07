@@ -201,42 +201,9 @@
 <div class="paragraph">
 <p>Distributed caching allows you to harness additional benefits of horizontal scale-out, without losing on low latency offered by local on-heap tiers.</p>
 </div>
-<div class="literalblock">
+<div class="imageblock">
 <div class="content">
-<pre>+------------------------------+            +------------------------------+
-|          Application         |            |          Application         |
-|                          cBE7|            |                          cBE7|
-|+----------------------------+|            |+----------------------------+|
-||        Cache Manager   c7DE||            ||        Cache Manager   c7DE||
-||+--------------------------+||            ||+--------------------------+||
-|||           Cache      c7AE|||            |||           Cache      c7AE|||
-|||+------------------------+|||            |||+------------------------+|||
-||||    Heap Tier       cFA4||||            ||||        Heap Tier   cFA4||||
-|||+------------------------+|||            |||+------------------------+|||
-||||                        ||||            ||||                        ||||
-||||      Off Heap Tier     ||||            ||||      Off Heap Tier     ||||
-||||                    cFA4||||            ||||                    cFA4||||
-|||+------------------------+|||            |||+------------------------+|||
-||||     Clustered Tier cA8D||||&lt;--+    +--&gt;||||     Clustered Tier cA8D||||
-|||+------------------------+|||   |    |   |||+------------------------+|||
-||+--------------------------+||   |    |   ||+--------------------------+||
-|+----------------------------+|   |    |   |+----------------------------+|
-+------------------------------+   |    |   +------------------------------+
-                                   |    |
-                                   V    V
-                      +------------------------------+
-                      |       Terracotta Server      |
-                      |                          c7AE|
-                      |+----------------------------+|
-                      ||       Cache Clustered      ||
-                      ||        Tier Manager    cF55||
-                      |+----------------------------+|
-                      ||                            ||
-                      ||          Off Heap          ||
-                      ||        Data Storage        ||
-                      ||                        cFA4||
-                      |+----------------------------+|
-                      +------------------------------+</pre>
+<img src="images/diag-023dc90b3469ccf84002e716bfe382de.png" alt="diag 023dc90b3469ccf84002e716bfe382de" width="800" height="532">
 </div>
 </div>
 <div class="ulist">
@@ -309,32 +276,9 @@ Consequently, when resource capacity is reached and triggers eviction, the evict
 <div class="paragraph">
 <p>Here is a pictorial representation of the concepts explained above:</p>
 </div>
-<div class="literalblock">
+<div class="imageblock">
 <div class="content">
-<pre>+-----------------------------------------+
-|         Primary Server Resource         |
-|                (196 GB)                 |
-|                                         |
-|  /---------------\   /---------------\  |
-|  | Shared Pool A |   | Shared Pool B |  |
-|  |    (32 GB)cBEC|   |    (24 GB)cBEC|  |
-|  \---------------/   \---------------/  |
-|                                         |
-|  /---------------\   /---------------\  |
-|  | Fixed Pool C  |   |  Fixed Pool D |  |
-|  |    (32 GB)cA8D|   |    (16 GB)cA8D|  |
-|  \---------------/   \---------------/  |
-|                                     cFAA|
-+-----------------------------------------+
-|        Secondary Server Resource        |
-|                 (96 GB)                 |
-|                                         |
-|  /---------------\   /---------------\  |
-|  | Shared Pool E |   |  Fixed Pool F |  |
-|  |    (28 GB)cBEC|   |    (12 GB)cA8D|  |
-|  \---------------/   \---------------/  |
-|                                     cF55|
-+-----------------------------------------+</pre>
+<img src="images/diag-7066c19a85be7f4b557b92d7002a3c17.png" alt="diag 7066c19a85be7f4b557b92d7002a3c17" width="470" height="392">
 </div>
 </div>
 </div>
@@ -348,7 +292,7 @@ It contains the bare minimum configuration required for the samples in the rest 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;tc-config xmlns="http://www.terracotta.org/config"
            xmlns:ohr="http://www.terracotta.org/config/offheap-resource"&gt;
   &lt;plugins&gt;
@@ -389,7 +333,7 @@ Change to your extracted directory and then execute the <strong>start-tc-server<
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-cmd" data-lang="cmd">cd &lt;path/to/terracotta/kit&gt;/server/bin
+<pre class="prettyprint highlight"><code data-lang="cmd">cd &lt;path/to/terracotta/kit&gt;/server/bin
 start-tc-server.bat -f &lt;path/to/server/config&gt;/tc-config.xml</code></pre>
 </div>
 </div>
@@ -398,7 +342,7 @@ start-tc-server.bat -f &lt;path/to/server/config&gt;/tc-config.xml</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code class="language-bash" data-lang="bash">cd &lt;path/to/terracotta/kit&gt;/server/bin
+<pre class="prettyprint highlight"><code data-lang="bash">cd &lt;path/to/terracotta/kit&gt;/server/bin
 ./start-tc-server.sh -f &lt;path/to/server/config&gt;/tc-config.xml</code></pre>
 </div>
 </div>
@@ -430,7 +374,7 @@ Here is a code sample that shows how to configure a cache manager with clusterin
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
     CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application")) <i class="conum" data-value="2"></i><b>(2)</b>
             .autoCreate(c -&gt; c)); <i class="conum" data-value="3"></i><b>(3)</b>
@@ -474,7 +418,7 @@ Sample <code>URI</code> provided in the example is pointing to the clustered sto
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
     CacheManagerBuilder.newCacheManagerBuilder()
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application")).autoCreate(server -&gt; server
             .defaultServerResource("primary-server-resource") <i class="conum" data-value="1"></i><b>(1)</b>
@@ -558,7 +502,7 @@ reallocated to another cache sharing the pool.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; autoCreate = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; autoCreate = CacheManagerBuilder.newCacheManagerBuilder()
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application"))
             .autoCreate(server -&gt; server <i class="conum" data-value="1"></i><b>(1)</b>
               .resourcePool("resource-pool", 8, MemoryUnit.MB, "primary-server-resource")))
@@ -611,7 +555,7 @@ If it does not exist then the cache manager will fail to initialize.</td>
 <h3 id="clustered-storage-tier"><a class="anchor" href="#clustered-storage-tier"></a>Clustered Storage Tier</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; config = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; config = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
     ResourcePoolsBuilder.newResourcePoolsBuilder()
         .heap(2, MemoryUnit.MB) <i class="conum" data-value="1"></i><b>(1)</b>
         .with(ClusteredResourcePoolBuilder.clusteredDedicated("primary-server-resource", 8, MemoryUnit.MB))) <i class="conum" data-value="2"></i><b>(2)</b>
@@ -639,7 +583,7 @@ cache.put(42L, "All you need to know!");</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-xml" data-lang="xml">&lt;cache alias="clustered-cache-tiered"&gt;
+<pre class="prettyprint highlight nowrap"><code data-lang="xml">&lt;cache alias="clustered-cache-tiered"&gt;
   &lt;resources&gt;
     &lt;heap unit="MB"&gt;10&lt;/heap&gt; <i class="conum" data-value="1"></i><b>(1)</b>
     &lt;tc:clustered-dedicated unit="MB"&gt;50&lt;/tc:clustered-dedicated&gt; <i class="conum" data-value="2"></i><b>(2)</b>
@@ -683,7 +627,7 @@ This comes with a latency penalty on the write operation required to give this g
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheConfiguration&lt;Long, String&gt; config = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; config = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
         ResourcePoolsBuilder.newResourcePoolsBuilder()
                 .with(ClusteredResourcePoolBuilder.clusteredDedicated("primary-server-resource", 2, MemoryUnit.MB)))
     .withService(ClusteredStoreConfigurationBuilder.withConsistency(Consistency.STRONG)) <i class="conum" data-value="1"></i><b>(1)</b>
@@ -710,7 +654,7 @@ cache.put(42L, "All you need to know!"); <i class="conum" data-value="2"></i><b>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-xml" data-lang="xml">&lt;cache alias="clustered-cache"&gt;
+<pre class="prettyprint highlight nowrap"><code data-lang="xml">&lt;cache alias="clustered-cache"&gt;
   &lt;resources&gt;
     &lt;tc:clustered-dedicated unit="MB"&gt;50&lt;/tc:clustered-dedicated&gt;
   &lt;/resources&gt;
@@ -758,7 +702,7 @@ Thus any programmer can use the cache without having to worry about using matchi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; cacheManagerBuilderAutoCreate = CacheManagerBuilder.newCacheManagerBuilder()
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; cacheManagerBuilderAutoCreate = CacheManagerBuilder.newCacheManagerBuilder()
         .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application"))
           .autoCreate(server -&gt; server  <i class="conum" data-value="1"></i><b>(1)</b>
             .resourcePool("resource-pool", 8, MemoryUnit.MB, "primary-server-resource")));

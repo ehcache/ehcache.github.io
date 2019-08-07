@@ -303,7 +303,7 @@ After this time has elapsed, the batch is processed even if incomplete.</p>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 
 Cache&lt;Long, String&gt; writeThroughCache = cacheManager.createCache("writeThroughCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
@@ -338,7 +338,7 @@ The returned mapping will populate the cache and be returned to the caller.</td>
 <h3 id="adding-write-behind"><a class="anchor" href="#adding-write-behind"></a>Adding Write-Behind</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code class="language-java" data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build(true);
 
 Cache&lt;Long, String&gt; writeBehindCache = cacheManager.createCache("writeBehindCache",
     CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))
