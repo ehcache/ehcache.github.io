@@ -193,7 +193,7 @@
             <span>Clustered Cache</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.8">3.8</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.9">3.9</a></span>
             
             
         </h1>
@@ -209,8 +209,24 @@
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/ClusteredEhcacheTopology.png" alt="ClusteredEhcacheTopology">
+<img src="images/diag-023dc90b3469ccf84002e716bfe382de.png" alt="diag 023dc90b3469ccf84002e716bfe382de" width="800" height="532">
 </div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Hot data is cached locally, hotter data in faster tiers</p>
+</li>
+<li>
+<p>Data cached by one application instance is available to all cluster members.</p>
+</li>
+<li>
+<p>Full data is available in the cluster.</p>
+</li>
+<li>
+<p>One or more mirror servers may be deployed to provide HA</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>To enable clustering with Terracotta, you will have to deploy a Terracotta server configured with clustered cache storage.
@@ -268,7 +284,7 @@ Consequently, when resource capacity is reached and triggers eviction, the evict
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/StoragePools.png" alt="StoragePools">
+<img src="images/diag-7066c19a85be7f4b557b92d7002a3c17.png" alt="diag 7066c19a85be7f4b557b92d7002a3c17" width="470" height="392">
 </div>
 </div>
 </div>

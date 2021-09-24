@@ -193,7 +193,7 @@
             <span>Performance Tuning</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.8">3.8</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.9">3.9</a></span>
             
             
         </h1>
@@ -355,7 +355,22 @@ However, keep in mind that your configuration might do so.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Unresolved directive in performance.adoc - include::_eh35/integration-test/src/test/java/org/ehcache/docs/Performance.java[tag=expiryAllocation]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">new ExpiryPolicy&lt;Object, Object&gt;() {
+  @Override
+  public Duration getExpiryForCreation(Object key, Object value) {
+    return null;
+  }
+
+  @Override
+  public Duration getExpiryForAccess(Object key, Supplier&lt;?&gt; value) {
+    return Duration.ofSeconds(10); <i class="conum" data-value="1"></i><b>(1)</b>
+  }
+
+  @Override
+  public Duration getExpiryForUpdate(Object key, Supplier&lt;?&gt; oldValue, Object newValue) {
+    return null;
+  }
+};</code></pre>
 </div>
 </div>
 <div class="colist arabic">

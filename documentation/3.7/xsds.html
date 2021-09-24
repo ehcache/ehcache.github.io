@@ -193,7 +193,7 @@
             <span>Ehcache XSDs</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.8">3.8</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.9">3.9</a></span>
             
             
         </h1>
@@ -343,6 +343,15 @@
            xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0"
            xmlns:annox="http://annox.dev.java.net" jaxb:extensionBindingPrefixes="annox"
            elementFormDefault="qualified" targetNamespace="http://www.ehcache.org/v3"&gt;
+
+  &lt;xs:annotation&gt;
+    &lt;xs:appinfo&gt;
+      &lt;jaxb:schemaBindings&gt;
+        &lt;jaxb:package name="org.ehcache.xml.model"/&gt;
+      &lt;/jaxb:schemaBindings&gt;
+    &lt;/xs:appinfo&gt;
+  &lt;/xs:annotation&gt;
+
   &lt;xs:element name="config" type="ehcache:config-type"/&gt;
 
   &lt;xs:complexType name="config-type"&gt;
@@ -945,7 +954,47 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="xsd">Unresolved directive in xsds.adoc - include::_eh36/107/src/main/resources/ehcache-107-ext.xsd[lines=18..-1]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="xsd">&lt;xs:schema version="1.0"
+           xmlns:jsr107="http://www.ehcache.org/v3/jsr107"
+           xmlns:eh="http://www.ehcache.org/v3"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified" targetNamespace="http://www.ehcache.org/v3/jsr107"&gt;
+  &lt;xs:import namespace="http://www.ehcache.org/v3"/&gt;
+
+  &lt;xs:element name="mbeans" type="jsr107:mbeans-type" substitutionGroup="eh:service-configuration"/&gt;
+
+  &lt;xs:element name="defaults" type="jsr107:defaults-type" substitutionGroup="eh:service-creation-configuration"&gt;
+    &lt;xs:key name="default-template-ref"&gt;
+      &lt;xs:selector xpath="cache-template"/&gt;
+      &lt;xs:field xpath="@name"/&gt;
+    &lt;/xs:key&gt;
+  &lt;/xs:element&gt;
+
+  &lt;xs:complexType name="defaults-type"&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="cache" type="jsr107:cache-type" minOccurs="0" maxOccurs="unbounded"&gt;
+        &lt;xs:key name="template-ref"&gt;
+          &lt;xs:selector xpath="cache-template"/&gt;
+          &lt;xs:field xpath="@name"/&gt;
+        &lt;/xs:key&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attribute name="default-template" type="xs:IDREF" use="optional"/&gt;
+    &lt;xs:attribute name="jsr-107-compliant-atomics" type="xs:boolean" use="optional"/&gt;
+    &lt;xs:attribute name="enable-management" type="xs:boolean" use="optional"/&gt;
+    &lt;xs:attribute name="enable-statistics" type="xs:boolean" use="optional"/&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="cache-type"&gt;
+    &lt;xs:attribute name="name" type="xs:ID" use="required" /&gt;
+    &lt;xs:attribute name="template" type="xs:IDREF" use="required" /&gt;
+  &lt;/xs:complexType&gt;
+
+  &lt;xs:complexType name="mbeans-type"&gt;
+    &lt;xs:attribute name="enable-management" type="xs:boolean" use="optional"/&gt;
+    &lt;xs:attribute name="enable-statistics" type="xs:boolean" use="optional"/&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:schema&gt;</code></pre>
 </div>
 </div>
 </div>

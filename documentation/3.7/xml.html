@@ -193,7 +193,7 @@
             <span>XML Configuration</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.8">3.8</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.9">3.9</a></span>
             
             
         </h1>
@@ -575,7 +575,39 @@ file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">Unresolved directive in xml.adoc - include::_eh36/xml/src/test/resources/configs/docs/multi/multiple-managers.xml[]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;multi:configurations
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+  xmlns='http://www.ehcache.org/v3'
+  xmlns:multi='http://www.ehcache.org/v3/multi'
+  xsi:schemaLocation='http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core.xsd
+  http://www.ehcache.org/v3/multi http://www.ehcache.org/schema/ehcache-multi.xsd'&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+
+  &lt;multi:configuration identity="foo-manager"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;config&gt;
+      &lt;cache alias="foo"&gt;
+        &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+        &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+        &lt;resources&gt;
+          &lt;heap unit="entries"&gt;20&lt;/heap&gt;
+          &lt;offheap unit="MB"&gt;10&lt;/offheap&gt;
+        &lt;/resources&gt;
+      &lt;/cache&gt;
+    &lt;/config&gt;
+  &lt;/multi:configuration&gt;
+
+  &lt;multi:configuration identity="bar-manager"&gt;
+    &lt;config&gt;
+      &lt;cache alias="bar"&gt;
+        &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+        &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+        &lt;resources&gt;
+          &lt;heap unit="entries"&gt;20&lt;/heap&gt;
+          &lt;offheap unit="MB"&gt;10&lt;/offheap&gt;
+        &lt;/resources&gt;
+      &lt;/cache&gt;
+    &lt;/config&gt;
+  &lt;/multi:configuration&gt;
+&lt;/multi:configurations&gt;</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -595,7 +627,11 @@ file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Unresolved directive in xml.adoc - include::_eh36/xml/src/test/java/org/ehcache/docs/MultiGettingStarted.java[tag=multipleManagers]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration multipleConfiguration = XmlMultiConfiguration
+  .from(getClass().getResource("/configs/docs/multi/multiple-managers.xml")) <i class="conum" data-value="1"></i><b>(1)</b>
+  .build(); <i class="conum" data-value="2"></i><b>(2)</b>
+
+Configuration fooConfiguration = multipleConfiguration.configuration("foo-manager"); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -623,7 +659,31 @@ with a required <code>type</code> attribute:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="xml">Unresolved directive in xml.adoc - include::_eh36/xml/src/test/resources/configs/docs/multi/multiple-variants.xml[tag=variants]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;multi:configuration identity="foo-manager"&gt;
+  &lt;multi:variant type="heap"&gt;
+    &lt;config&gt;
+      &lt;cache alias="foo"&gt;
+        &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+        &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+        &lt;resources&gt;
+          &lt;heap unit="entries"&gt;1000&lt;/heap&gt;
+        &lt;/resources&gt;
+      &lt;/cache&gt;
+    &lt;/config&gt;
+  &lt;/multi:variant&gt;
+  &lt;multi:variant type="offheap"&gt;
+    &lt;config&gt;
+      &lt;cache alias="foo"&gt;
+        &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+        &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+        &lt;resources&gt;
+          &lt;heap unit="entries"&gt;1000&lt;/heap&gt;
+          &lt;offheap unit="MB"&gt;128&lt;/offheap&gt;
+        &lt;/resources&gt;
+      &lt;/cache&gt;
+    &lt;/config&gt;
+  &lt;/multi:variant&gt;
+&lt;/multi:configuration&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -631,7 +691,11 @@ with a required <code>type</code> attribute:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Unresolved directive in xml.adoc - include::_eh36/xml/src/test/java/org/ehcache/docs/MultiGettingStarted.java[tag=multipleVariants]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration variantConfiguration = XmlMultiConfiguration
+  .from(getClass().getResource("/configs/docs/multi/multiple-variants.xml"))
+  .build();
+
+Configuration fooConfiguration = variantConfiguration.configuration("foo-manager", "offheap"); <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -661,7 +725,10 @@ configuration for all requested variants.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Unresolved directive in xml.adoc - include::_eh36/xml/src/test/java/org/ehcache/docs/MultiGettingStarted.java[tag=multipleRetrieval]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">Map&lt;String, Configuration&gt; allConfigurations = multipleConfiguration.identities().stream() <i class="conum" data-value="1"></i><b>(1)</b>
+  .collect(Collectors.toMap(i -&gt; i, i -&gt; multipleConfiguration.configuration(i))); <i class="conum" data-value="2"></i><b>(2)</b>
+Map&lt;String, Configuration&gt; offheapConfigurations = variantConfiguration.identities().stream()
+  .collect(Collectors.toMap(i -&gt; i, i -&gt; variantConfiguration.configuration(i, "offheap"))); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -692,7 +759,10 @@ of parsing XML multi-configuration documents are all just simple invocations of 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Unresolved directive in xml.adoc - include::_eh36/xml/src/test/java/org/ehcache/docs/MultiGettingStarted.java[tag=building]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration multiConfiguration = XmlMultiConfiguration.fromNothing() <i class="conum" data-value="1"></i><b>(1)</b>
+  .withManager("bar", barConfiguration) <i class="conum" data-value="2"></i><b>(2)</b>
+  .withManager("foo").variant("heap", heapConfiguration).variant("offheap", offheapConfiguration) <i class="conum" data-value="3"></i><b>(3)</b>
+  .build(); <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -720,7 +790,9 @@ of parsing XML multi-configuration documents are all just simple invocations of 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Unresolved directive in xml.adoc - include::_eh36/xml/src/test/java/org/ehcache/docs/MultiGettingStarted.java[tag=modifying]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration modified = XmlMultiConfiguration.from(multiConfiguration) <i class="conum" data-value="1"></i><b>(1)</b>
+  .withManager("foo") <i class="conum" data-value="2"></i><b>(2)</b>
+  .build();</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -740,7 +812,8 @@ of parsing XML multi-configuration documents are all just simple invocations of 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="java">Unresolved directive in xml.adoc - include::_eh36/xml/src/test/java/org/ehcache/docs/MultiGettingStarted.java[tag=rendering]</code></pre>
+<pre class="prettyprint highlight"><code data-lang="java">String xmlString = multiConfiguration.asRenderedDocument(); <i class="conum" data-value="1"></i><b>(1)</b>
+Document xmlDocument = multiConfiguration.asDocument(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">

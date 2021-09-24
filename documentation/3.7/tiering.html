@@ -193,7 +193,7 @@
             <span>Ehcache Tiering Options</span>
             
             
-            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.8">3.8</a></span>
+            <span class="old">CURRENT:&nbsp;&nbsp;<a href="/documentation/3.9">3.9</a></span>
             
             
         </h1>
@@ -594,7 +594,7 @@ This leads to the typical pyramid shape for a multi-tiered setup.</p>
 <div class="content">
 <div class="imageblock left">
 <div class="content">
-<img src="images/TiersHierarchy.png" alt="Tiers hierarchy">
+<img src="images/diag-4bfd9f9e6adaf86ffbde2a2ea2fc7781.png" alt="diag 4bfd9f9e6adaf86ffbde2a2ea2fc7781" width="330" height="238">
 </div>
 <div class="title">Figure 1. Tiers hierarchy</div>
 </div>
@@ -789,25 +789,25 @@ Also, for a clustered tier, no other cache manager should currently be connected
 <div class="sect1">
 <h2 id="multi-tier-sequence-flow"><a class="anchor" href="#multi-tier-sequence-flow"></a>Sequence Flow for Cache Operations with Multiple Tiers</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>In order to understand what happens for different cache operations when using multiple tiers, here are examples of <em>Put</em> and <em>Get</em> operations.
-The sequence diagrams are oversimplified but still show the main points.</p>
-</div>
-<div class="openblock float-group">
+<div class="openblock right">
 <div class="content">
-<div class="imageblock left">
+<div class="imageblock">
 <div class="content">
-<img src="images/Put.png" alt="Put">
+<img src="images/diag-10826f404327aca80706aa055f4a9e53.png" alt="diag 10826f404327aca80706aa055f4a9e53" width="316" height="189">
 </div>
 <div class="title">Figure 2. Multiple tiers using Put</div>
 </div>
-<div class="imageblock left">
+<div class="imageblock">
 <div class="content">
-<img src="images/Get.png" alt="Get">
+<img src="images/diag-4a7fb42dd1a9c1e24b3a456997597914.png" alt="diag 4a7fb42dd1a9c1e24b3a456997597914" width="360" height="562">
 </div>
 <div class="title">Figure 3. Multiple tiers using Get</div>
 </div>
 </div>
+</div>
+<div class="paragraph">
+<p>In order to understand what happens for different cache operations when using multiple tiers, here are examples of <em>Put</em> and <em>Get</em> operations.
+The sequence diagrams are oversimplified but still show the main points.</p>
 </div>
 <div class="paragraph">
 <p>You should then notice the following:</p>
