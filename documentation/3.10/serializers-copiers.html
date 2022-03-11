@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Serializers and Copiers</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="https://www.ehcache.org/documentation/3.10/serializers-copiers.html">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
+
+
+  <!-- Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-131151-10', 'auto');
+    ga('send', 'pageview');
+
+
+    </script>
+  
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png" style="margin-top:15px;margin-bottom:6px;"/></a>
+          <span style="vertical-align:bottom;color:gray;">By</span>
+          <a class="SAG-Logo" href="https://www.softwareag.com/corporate/products/az/terracotta_ehcache/default.html"><img src="/images/SAG_Logo.png" style="margin-top:12px;margin-bottom:6px;height:1.5em;width:9em;"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/contribute.html"><i class="fa fa-code"></i> Contributing</a></li>
+                <!--
+                <li><a href="/resources/"><i class="fa fa-external-link-square"></i> External Resources</a></li>
+                <li><a href="http://blog.terracotta.org" target="_blank"><i class="fa fa-rss-square"></i> Terracotta Blog</a></li>
+                -->
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3" target="_blank"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk" target="_blank"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues" target="_blank"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC" target="_blank"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!--
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="/blog"><i class="fa fa-rss-square"></i> Ehcache Blog</a></li>
+          </ul>
+          -->
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Serializers and Copiers</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid ehcache-documentation v3.10  current ">
+
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
+          <li class="submenu"><a href="resilience.html">Resilience</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
+          <li class="submenu"><a href="class-loading.html">Class loading</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+        
+        <h1 class="post-title">
+            <span>Serializers and Copiers</span>
+            
+            <span class="current">CURRENT</span>
+            
+        </h1>
+        <hr/>
+        
+      </header>
+      <article class="post-content">
+        <div class="sect1">
+<h2 id="overview"><a class="anchor" href="#overview"></a>Overview of Serializers and Copiers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While Ehcache is a Java cache, it cannot always store its mappings as Java objects.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="tiering.html#heap-tier">on-heap store</a> is capable of storing cached objects either by reference
+(where the given key and value references are stored) or by value
+(where a copy of the given key and value are made and those copies are then stored).
+All other stores are only capable of storing a byte representation of the key/value pair.</p>
+</div>
+<div class="paragraph">
+<p><code>Serializer</code> and <code>Copier</code> are the abstractions to enable these different storage options.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="serializers"><a class="anchor" href="#serializers"></a>Serializers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All stores but the on-heap one need some form of serialization/deserialization of objects to be able to store and retrieve mappings.
+This is because they cannot internally store plain java objects but only binary representations of them.</p>
+</div>
+<div class="paragraph">
+<p><code>Serializer</code> is the Ehcache abstraction solving this:
+every cache that has at least one store that cannot store by reference is going to use a pair of <code>Serializer</code> instances,
+one for the key and another one for the value.</p>
+</div>
+<div class="paragraph">
+<p>A <code>Serializer</code> is scoped at the cache level and all stores of a cache will be using and sharing the same pair of serializers.</p>
+</div>
+<div class="sect2">
+<h3 id="how-is-a-serializer-configured"><a class="anchor" href="#how-is-a-serializer-configured"></a>How is a serializer configured?</h3>
+<div class="paragraph">
+<p>There are two places where serializers can be configured:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>at the cache level where one can use</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CacheConfigurationBuilder.withKeySerializer(Class&lt;? extends Serializer&lt;K&gt;&gt; keySerializerClass)</code>,</p>
+</li>
+<li>
+<p><code>CacheConfigurationBuilder.withKeySerializer(Serializer&lt;K&gt; keySerializer)</code>,</p>
+</li>
+<li>
+<p><code>CacheConfigurationBuilder.withValueSerializer(Class&lt;? extends Serializer&lt;V&gt;&gt; valueSerializerClass)</code>,</p>
+</li>
+<li>
+<p>and <code>CacheConfigurationBuilder.withValueSerializer(Serializer&lt;V&gt; valueSerializer)</code>, which allow by instance or by class configuration.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>at the cache manager level where one can use</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CacheManagerBuilder.withSerializer(Class&lt;C&gt; clazz, Class&lt;? extends Serializer&lt;C&gt;&gt; serializer)</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If a serializer is configured directly at the cache level, it will be used, ignoring any cache manager level configuration.</p>
+</div>
+<div class="paragraph">
+<p>If a serializer is configured at the cache manager level, upon initialization, a cache with no specifically configured serializer
+will search through its cache manager&#8217;s registered list of serializers and try to find one that directly matches the cache&#8217;s key or value type.
+If such search fails, all the registered serializers will be tried in the added order to find one that handles compatible types.</p>
+</div>
+<div class="paragraph">
+<p>For instance, let&#8217;s say you have a <code>Person</code> interface and two subclasses: <code>Employee</code> and <code>Customer</code>.
+If you configure your cache manager as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withSerializer(Employee.class,
+  EmployeeSerializer.class).withSerializer(Person.class, PersonSerializer.class)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>then configuring a <code>Cache&lt;Long, Employee&gt;</code> would make it use the <code>EmployeeSerializer</code> while a <code>Cache&lt;Long, Customer&gt;</code> would make it use the <code>PersonSerializer</code>.</p>
+</div>
+<div class="paragraph">
+<p>A <code>Serializer</code> configured at the cache level by class will not be shared to other caches when instantiated.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Given the above, it is recommended to limit <code>Serializer</code> registration to concrete classes and not aim for generality.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="bundled-implementations"><a class="anchor" href="#bundled-implementations"></a>Bundled implementations</h3>
+<div class="paragraph">
+<p>By default, cache managers are pre-configured with specially optimized <code>Serializer</code> that can handle the following types, in the following order:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>java.io.Serializable</code></p>
+</li>
+<li>
+<p><code>java.lang.Long</code></p>
+</li>
+<li>
+<p><code>java.lang.Integer</code></p>
+</li>
+<li>
+<p><code>java.lang.Float</code></p>
+</li>
+<li>
+<p><code>*java.lang.Double</code></p>
+</li>
+<li>
+<p><code>java.lang.Character</code></p>
+</li>
+<li>
+<p><code>java.lang.String</code></p>
+</li>
+<li>
+<p><code>byte[]</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>All bundled <code>Serializer</code> implementations support both persistent and transient caches.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>A consequence of providing serializers registered by default is that you will not be able to register a generic <code>Serializer</code> for <code>Number</code>
+or any other super type and expect it to be picked instead of the default ones for the types listed above.</p>
+</div>
+<div class="paragraph">
+<p>However, registering a different <code>Serializer</code> for one of the given type means it will be used instead of the default.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="lifecycle-instances-vs-class"><a class="anchor" href="#lifecycle-instances-vs-class"></a>Lifecycle: instances vs. class</h3>
+<div class="paragraph">
+<p>When a <code>Serializer</code> is configured by providing an <em>instance</em>, it is up to the provider of that instance to manage its lifecycle.
+It will need to dispose of any resource the serializer might hold, persisting or reloading the serializer&#8217;s state.</p>
+</div>
+<div class="paragraph">
+<p>When a <code>Serializer</code> is configured by providing a <em>class</em> either at the cache or cache manager level,
+since Ehcache is responsible for creating the instance, it also is responsible for disposing of it.
+If the <code>Serializer</code> implements <code>java.io.Closeable</code> then <code>close()</code> will be called when the cache is closed and the <code>Serializer</code> no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="writing-your-own-serializer"><a class="anchor" href="#writing-your-own-serializer"></a>Writing your own serializer</h3>
+<div class="paragraph">
+<p><code>Serializer</code> defines a very strict contract.
+So if you&#8217;re planning to write your own implementation you have to keep in mind that
+the class of the serialized object MUST be retained after deserialization, that is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">object.getClass().equals(mySerializer.read(mySerializer.serialize(object)).getClass())</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is especially important when you are planning to write a serializer for an abstract type, e.g. a serializer of type <code>com.pany.MyInterface</code> should:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>deserialize a <code>com.pany.MyClassImplementingMyInterface</code> when the serialized object is of class <code>com.pany.MyClassImplementingMyInterface</code></p>
+</li>
+<li>
+<p>return a <code>com.pany.AnotherClassImplementingMyInterface</code> object when the serialized object is of class <code>com.pany.AnotherClassImplementingMyInterface</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Implement the following interface, from package <code>org.ehcache.spi.serialization</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">/**
+ * Defines the contract used to transform type instances to and from a serial form.
+ * &lt;p&gt;
+ * Implementations must be thread-safe.
+ * &lt;p&gt;
+ * When used within the default serialization provider, there is an additional requirement.
+ * The implementations must define a constructor that takes in a {@code ClassLoader}.
+ * The {@code ClassLoader} value may be {@code null}.  If not {@code null}, the class loader
+ * instance provided should be used during deserialization to load classes needed by the deserialized objects.
+ * &lt;p&gt;
+ * The serialized object's class must be preserved; deserialization of the serial form of an object must
+ * return an object of the same class. The following contract must always be true:
+ * &lt;p&gt;
+ * {@code object.getClass().equals( mySerializer.read(mySerializer.serialize(object)).getClass())}
+ *
+ * @param &lt;T&gt; the type of the instances to serialize
+ *
+ * @see SerializationProvider
+ */
+public interface Serializer&lt;T&gt; {
+
+  /**
+   * Transforms the given instance into its serial form.
+   *
+   * @param object the instance to serialize
+   *
+   * @return the binary representation of the serial form
+   *
+   * @throws SerializerException if serialization fails
+   */
+  ByteBuffer serialize(T object) throws SerializerException;
+
+  /**
+   * Reconstructs an instance from the given serial form.
+   *
+   * @param binary the binary representation of the serial form
+   *
+   * @return the de-serialized instance
+   *
+   * @throws SerializerException if reading the byte buffer fails
+   * @throws ClassNotFoundException if the type to de-serialize to cannot be found
+   */
+  T read(ByteBuffer binary) throws ClassNotFoundException, SerializerException;
+
+  /**
+   * Checks if the given instance and serial form {@link Object#equals(Object) represent} the same instance.
+   *
+   * @param object the instance to check
+   * @param binary the serial form to check
+   *
+   * @return {@code true} if both parameters represent equal instances, {@code false} otherwise
+   *
+   * @throws SerializerException if reading the byte buffer fails
+   * @throws ClassNotFoundException if the type to de-serialize to cannot be found
+   */
+  boolean equals(T object, ByteBuffer binary) throws ClassNotFoundException, SerializerException;
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As the Javadoc states, there are some constructor rules, see the section <a href="#persistent-vs-transient-caches">Persistent vs. transient caches</a> for that.</p>
+</div>
+<div class="paragraph">
+<p>You can optionally implement <code>java.io.Closeable</code>.
+If you do, Ehcache will call <code>close()</code> when a cache using such a serializer gets disposed of,
+but only if Ehcache instantiated the serializer itself.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="classloaders"><a class="anchor" href="#classloaders"></a>ClassLoaders</h3>
+<div class="paragraph">
+<p>When Ehcache instantiates a serializer itself, it will pass it a <code>ClassLoader</code> via the constructor.
+Such class loader must be used to access the classes of the serialized types as they might not be available in the current class loader.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="persistent-vs-transient-caches"><a class="anchor" href="#persistent-vs-transient-caches"></a>Persistent vs. transient caches</h3>
+<div class="paragraph">
+<p>All custom serializers must have a constructor with the following signature:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">public MySerializer(ClassLoader classLoader) {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Attempting to configure a serializer that lacks such a constructor on a cache using either of
+<code>CacheConfigurationBuilder.withKeySerializer(Class&lt;? extends Serializer&lt;K&gt;&gt; keySerializerClass)</code>
+or <code>CacheConfigurationBuilder.withValueSerializer(Class&lt;? extends Serializer&lt;V&gt;&gt; valueSerializerClass)</code>
+will cause an exception upon cache initialization.</p>
+</div>
+<div class="paragraph">
+<p>But if an instance of the serializer is configured using either of <code>CacheConfigurationBuilder.withKeySerializer(Serializer keySerializer)</code>
+or <code>CacheConfigurationBuilder.withValueSerializer(Serializer valueSerializer)</code> it will work since the instantiation is done by the user code itself.</p>
+</div>
+<div class="paragraph">
+<p>Registering a serializer that lacks such a constructor at the cache manager level will prevent it from being chosen for caches.</p>
+</div>
+<div class="paragraph">
+<p>Custom serializer implementations could have some state that is used in the serialization/deserialization process.
+When configured on a persistent cache, the state of such serializers needs to be persisted across restarts.</p>
+</div>
+<div class="paragraph">
+<p>To address these requirements you can have a <code>StatefulSerializer</code> implementation.
+<code>StatefulSerializer</code> is a specialized <code>Serializer</code> with an additional <code>init</code> method with the following signature:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">public void init(StateRepository repository) {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>StateRepository.getPersistentStateHolder(String, Class&lt;K&gt;, Class&lt;V&gt;)</code> provides a <code>StateHolder</code> (a map like structure) that you can use to store any relevant state.
+The <code>StateRepository</code> is provided by the authoritative tier of the cache and hence will have the same persistence properties of that tier.
+For persistent caches it is highly recommended that all state is stored in these holders
+as the users won&#8217;t have to worry about the persistence aspects of this state holder as it is taken care of by Ehcache.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In the case of a disk persistent cache, the contents of the state holder will be persisted locally on to the disk.</p>
+</li>
+<li>
+<p>For clustered caches, the contents are persisted in the cluster itself so that other clients using the same cache can also access the contents of the state holder.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The constructor with the signature <code>(ClassLoader classLoader, FileBasedPersistenceContext persistenceContext)</code>
+      that existed till v3.1 has been removed since v3.2 in favor of `StatefulSerializer`s.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="copiers"><a class="anchor" href="#copiers"></a>Copiers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As the on-heap store is capable of storing plain Java objects as such,
+it is not necessary to rely on a serialization mechanism to copy keys and values in order to provide by value semantics.
+Other forms of copy mechanism can be a lot more performant, such as using a copy constructor but it requires custom code to be able to copy user classes.</p>
+</div>
+<div class="paragraph">
+<p><code>Copier</code> is the Ehcache abstraction solving this: it is specific to the on-heap store.</p>
+</div>
+<div class="paragraph">
+<p>By default, the on-heap mappings are stored <em>by reference</em>.
+The way to store them <em>by value</em> is to configure copier(s) on the cache for the key, value or both.</p>
+</div>
+<div class="paragraph">
+<p>Of course, the exact semantic of <em>by value</em> in this context depends heavily on the <code>Copier</code> implementation.</p>
+</div>
+<div class="sect2">
+<h3 id="how-is-a-copier-configured"><a class="anchor" href="#how-is-a-copier-configured"></a>How is a copier configured?</h3>
+<div class="paragraph">
+<p>There are two places where copiers can be configured:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>at the cache level where one can use</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CacheConfigurationBuilder.withKeyCopier(Class&lt;? extends Copier&lt;K&gt;&gt; keyCopierClass)</code>,</p>
+</li>
+<li>
+<p><code>CacheConfigurationBuilder.withKeyCopier(Copier&lt;K&gt; keyCopier)</code>,</p>
+</li>
+<li>
+<p><code>CacheConfigurationBuilder.withValueCopier(Class&lt;? extends Copier&lt;V&gt;&gt; valueCopierClass)</code>,</p>
+</li>
+<li>
+<p>and <code>CacheConfigurationBuilder.withValueCopier(Copier&lt;V&gt; valueCopier)</code>, which allow by instance or by class configuration.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>at the cache manager level where one can use</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CacheManagerBuilder.withCopier(Class&lt;C&gt; clazz, Class&lt;? extends Copier&lt;C&gt;&gt; copier)</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If a copier is configured directly at the cache level, it will be used, ignoring any cache manager level configuration.</p>
+</div>
+<div class="paragraph">
+<p>If a copier is configured at the cache manager level, upon initialization, a cache with no specifically configured copier
+will search through its cache manager&#8217;s registered list of copiers and try to find one that directly matches the cache&#8217;s key or value type.
+If such search fails, all the registered copiers will be tried in the added order to find one that handles compatible types.</p>
+</div>
+<div class="paragraph">
+<p>For instance, let&#8217;s say you have a <code>Person</code> interface and two subclasses: <code>Employee</code> and <code>Customer</code>.
+If you configure your cache manager as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheManagerBuilder.newCacheManagerBuilder().withCopier(Employee.class,
+  EmployeeCopier.class).withCopier(Person.class, PersonCopier.class)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>then configuring a <code>Cache&lt;Long, Employee&gt;</code> would make it use the <code>EmployeeCopier</code> while a Cache&lt;Long, Customer&gt; would make it use the <code>PersonCopier</code>.</p>
+</div>
+<div class="paragraph">
+<p>A <code>Copier</code> configured at the cache level by class will not be shared to other caches when instantiated.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Given the above, it is recommended to limit Copier registration to concrete classes and not aim for generality.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="bundled-implementations-2"><a class="anchor" href="#bundled-implementations-2"></a>Bundled implementations</h3>
+<div class="paragraph">
+<p>A <code>SerializingCopier</code> class exists in case you want to configure store by value on-heap using the configured (or default) serializer.
+Note that this implementation performs a serialization / deserialization on each read or write operation.</p>
+</div>
+<div class="paragraph">
+<p>The <code>CacheConfigurationBuilder</code> provides the following methods to make use of this specialized copier:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CacheConfigurationBuilder.withKeySerializingCopier()</code> for the key.</p>
+</li>
+<li>
+<p><code>CacheConfigurationBuilder.withValueSerializingCopier()</code> for the value.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="lifecycle-instances-vs-class-2"><a class="anchor" href="#lifecycle-instances-vs-class-2"></a>Lifecycle: instances vs class</h3>
+<div class="paragraph">
+<p>When a <code>Copier</code> is configured by providing an instance, it is up to the provider of that instance to manage its lifecycle.
+It will need to dispose of any resource it used after it is no longer required.</p>
+</div>
+<div class="paragraph">
+<p>When a <code>Copier</code> is configured by providing a class either at the cache or cache manager level,
+since Ehcache is responsible for creating the instance, it also is responsible for disposing of it.
+If the <code>Copier</code> implements <code>java.io.Closeable</code> then <code>close()</code> will be called when the cache is closed and the <code>Copier</code> no longer needed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="writing-your-own-copier"><a class="anchor" href="#writing-your-own-copier"></a>Writing your own Copier</h3>
+<div class="paragraph">
+<p>Implement the following interface:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">/**
+ * Defines the contract used to copy type instances.
+ * &lt;p&gt;
+ * The copied object's class must be preserved.  The following must always be true:
+ * &lt;p&gt;
+ * &lt;code&gt;object.getClass().equals( myCopier.copyForRead(object).getClass() )&lt;/code&gt;
+ * &lt;code&gt;object.getClass().equals( myCopier.copyForWrite(object).getClass() )&lt;/code&gt;
+ *
+ * @param &lt;T&gt; the type of the instance to copy
+ */
+public interface Copier&lt;T&gt; {
+
+  /**
+   * Creates a copy of the instance passed in.
+   * &lt;p&gt;
+   * This method is invoked as a value is read from the cache.
+   *
+   * @param obj the instance to copy
+   * @return the copy of the {@code obj} instance
+   */
+  T copyForRead(T obj);
+
+  /**
+   * Creates a copy of the instance passed in.
+   * &lt;p&gt;
+   * This method is invoked as a value is written to the cache.
+   *
+   * @param obj the instance to copy
+   * @return the copy of the {@code obj} instance
+   */
+  T copyForWrite(T obj);
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>T copyForRead(T obj)</code> is invoked when a copy must be made upon a read operation (like a cache <code>get()</code>),</p>
+</li>
+<li>
+<p><code>T copyForWrite(T obj)</code> is invoked when a copy must be made upon a write operation (like a cache <code>put()</code>).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The separation between copying for read and for write can be useful when you want to store a lighter version of your objects into the cache.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can extend from <code>org.ehcache.impl.copy.ReadWriteCopier</code> if copying for read and copying for write implementations
+are identical, in which case you only have to implement:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>public abstract T copy(T obj)</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+          <!--
+          <li>
+            <a href="/feed.xml" title="Atom/RSS Feed">
+              <i class="fa fa-rss-square"></i> Atom/RSS Feed
+            </a>
+          </li>
+          -->
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      
+        <a href="https://github.com/ehcache"><i class="fa fa-github"></i> GitHub</a>
+        <br/>
+      
+
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <!--
+      <a href="/resources/"><i class="fa fa-external-link-square"></i> Resources</a>
+      <br/>
+      <a href="/blog/"><i class="fa fa-rss-square"></i> Ehcache Blog</a>
+      <br/>
+      -->
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <a class="SAG-Logo" href="https://www.softwareag.com/corporate/products/az/terracotta_ehcache/default.html"><img src="/images/SAG_Logo.png" style="height:1.5em;width:9em;"/></a>
+        <div class="footer-text">
+          <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+          <br/>
+          <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+        </div>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

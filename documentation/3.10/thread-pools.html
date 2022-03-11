@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Thread Pools</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="https://www.ehcache.org/documentation/3.10/thread-pools.html">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
+
+
+  <!-- Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-131151-10', 'auto');
+    ga('send', 'pageview');
+
+
+    </script>
+  
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png" style="margin-top:15px;margin-bottom:6px;"/></a>
+          <span style="vertical-align:bottom;color:gray;">By</span>
+          <a class="SAG-Logo" href="https://www.softwareag.com/corporate/products/az/terracotta_ehcache/default.html"><img src="/images/SAG_Logo.png" style="margin-top:12px;margin-bottom:6px;height:1.5em;width:9em;"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/contribute.html"><i class="fa fa-code"></i> Contributing</a></li>
+                <!--
+                <li><a href="/resources/"><i class="fa fa-external-link-square"></i> External Resources</a></li>
+                <li><a href="http://blog.terracotta.org" target="_blank"><i class="fa fa-rss-square"></i> Terracotta Blog</a></li>
+                -->
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3" target="_blank"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk" target="_blank"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues" target="_blank"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC" target="_blank"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!--
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="/blog"><i class="fa fa-rss-square"></i> Ehcache Blog</a></li>
+          </ul>
+          -->
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Thread Pools</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid ehcache-documentation v3.10  current ">
+
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
+          <li class="submenu"><a href="resilience.html">Resilience</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
+          <li class="submenu"><a href="class-loading.html">Class loading</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+        
+        <h1 class="post-title">
+            <span>Thread Pools</span>
+            
+            <span class="current">CURRENT</span>
+            
+        </h1>
+        <hr/>
+        
+      </header>
+      <article class="post-content">
+        <div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction to Thread Pools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Some services work asynchronously, hence they require thread pools to perform their tasks.
+All thread pooling facilities are centralized behind the <code>ExecutionService</code> interface.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start with a bit of theory.</p>
+</div>
+<div class="sect2">
+<h3 id="what-executionservice-provides"><a class="anchor" href="#what-executionservice-provides"></a>What <code>ExecutionService</code> provides</h3>
+<div class="paragraph">
+<p><code>ExecutionService</code> is an interface providing:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ScheduledExecutorService</code> to schedule tasks, i.e.: tasks that happen repeatedly after a configurable delay.</p>
+</li>
+<li>
+<p>Unordered <code>ExecutorService</code> to execute tasks as soon as a thread is available.</p>
+</li>
+<li>
+<p>Ordered <code>ExecutorService</code> to execute tasks as soon as a thread is available, with the guarantee that tasks are going to be executed in the order they were submitted.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="available-executionservice-implementations"><a class="anchor" href="#available-executionservice-implementations"></a>Available <code>ExecutionService</code> implementations</h3>
+<div class="paragraph">
+<p>There currently are two bundled implementations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>OnDemandExecutionService</code> creates a new pool each time an executor service (scheduled or not) is requested.
+This implementation is the default one and requires no configuration at all.</p>
+</li>
+<li>
+<p><code>PooledExecutionService</code> keeps a configurable set of thread pools and divides them to handle all executor service requests.
+This implementation must be configured with a <code>PooledExecutionServiceConfiguration</code> when used.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-pooledexecutionservice"><a class="anchor" href="#configuring-pooledexecutionservice"></a>Configuring <code>PooledExecutionService</code></h3>
+<div class="paragraph">
+<p>When you want total control of the threads used by a cache manager and its caches, you have to use a <code>PooledExecutionService</code>
+that itself must be configured as it does not have any defaults.</p>
+</div>
+<div class="paragraph">
+<p>The <code>PooledExecutionServiceConfigurationBuilder</code> can be used for this purpose, and the resulting configuration it builds can simply be added
+to a <code>CacheManagerBuilder</code> to switch the <code>ExecutionService</code> implementation to a <code>PooledExecutionService</code>.</p>
+</div>
+<div class="paragraph">
+<p>The builder has two interesting methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>defaultPool</code> that is used to set the default pool. There can be only one default pool, its name does not matter,
+and if thread-using services do not specify a thread pool, this is the one that will be used.</p>
+</li>
+<li>
+<p><code>pool</code> that is used to add a thread pool.
+There can be as many pools as you wish but services must explicitly be configured to make use of them.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-the-configured-thread-pools"><a class="anchor" href="#using-the-configured-thread-pools"></a>Using the configured thread pools</h3>
+<div class="paragraph">
+<p>Following is the list of services making use of <code>ExecutionService</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Disk store: disk writes are performed asynchronously.</p>
+<div class="paragraph">
+<p><code>OffHeapDiskStoreConfiguration</code> is used to configure what thread pool to use at the cache level,
+while <code>OffHeapDiskStoreProviderConfiguration</code> is used to configure what thread pool to use at the cache manager level.</p>
+</div>
+</li>
+<li>
+<p>Write Behind: CacheLoaderWriter write tasks happen asynchronously.</p>
+<div class="paragraph">
+<p><code>DefaultWriteBehindConfiguration</code> is used to configure what thread pool to use at the cache level,
+while <code>WriteBehindProviderConfiguration</code> is used to configure what thread pool to use at the cache manager level.</p>
+</div>
+</li>
+<li>
+<p>Eventing: produced events are queued and sent to the listeners by a thread pool.</p>
+<div class="paragraph">
+<p><code>DefaultCacheEventDispatcherConfiguration</code> is used to configure what thread pool to use at the cache level,
+while <code>CacheEventDispatcherFactoryConfiguration</code> is used to configure what thread pool to use at the cache manager level.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The different builders will make use of the right configuration class, you do not have to use those classes directly.
+For instance, calling <code>CacheManagerBuilder.withDefaultDiskStoreThreadPool(String threadPoolAlias)</code> actually is identical
+to calling <code>CacheManagerBuilder.using(new OffHeapDiskStoreProviderConfiguration(threadPoolAlias))</code>.</p>
+</div>
+<div class="paragraph">
+<p>The thread pool to use can be configured on a service through the builders by using the methods carrying a <code>ThreadPool</code> related name.
+When a service is not told anything about which thread pool to use, the default thread pool is used.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-code"><a class="anchor" href="#using-code"></a>Configuring Thread Pools with Code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Following are examples of describing how to configure the thread pools the different services will use.</p>
+</div>
+<div class="sect2">
+<h3 id="disk-store"><a class="anchor" href="#disk-store"></a>Disk store</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">    CacheManager cacheManager
+        = CacheManagerBuilder.newCacheManagerBuilder()
+        .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+            .defaultPool("dflt", 0, 10)
+            .pool("defaultDiskPool", 1, 3)
+            .pool("cache2Pool", 2, 2)
+            .build())
+        .with(new CacheManagerPersistenceConfiguration(new File(getStoragePath(), "myData")))
+        .withDefaultDiskStoreThreadPool("defaultDiskPool") <i class="conum" data-value="2"></i><b>(2)</b>
+        .withCache("cache1",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                ResourcePoolsBuilder.newResourcePoolsBuilder()
+                    .heap(10, EntryUnit.ENTRIES)
+                    .disk(10L, MemoryUnit.MB)))
+        .withCache("cache2",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                ResourcePoolsBuilder.newResourcePoolsBuilder()
+                    .heap(10, EntryUnit.ENTRIES)
+                    .disk(10L, MemoryUnit.MB))
+                .withDiskStoreThreadPool("cache2Pool", 2)) <i class="conum" data-value="3"></i><b>(3)</b>
+        .build(true);
+
+    Cache&lt;Long, String&gt; cache1 =
+        cacheManager.getCache("cache1", Long.class, String.class);
+    Cache&lt;Long, String&gt; cache2 =
+        cacheManager.getCache("cache2", Long.class, String.class);
+
+    cacheManager.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure the thread pools. Note that the default one (<code>dflt</code>) is required for the events even when no event listener is configured.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Tell the <code>CacheManagerBuilder</code> to use a default thread pool for all disk stores that don&#8217;t explicitly specify one.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Tell the cache to use a specific thread pool for its disk store.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="write-behind"><a class="anchor" href="#write-behind"></a>Write Behind</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">    CacheManager cacheManager
+        = CacheManagerBuilder.newCacheManagerBuilder()
+        .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+            .defaultPool("dflt", 0, 10)
+            .pool("defaultWriteBehindPool", 1, 3)
+            .pool("cache2Pool", 2, 2)
+            .build())
+        .withDefaultWriteBehindThreadPool("defaultWriteBehindPool") <i class="conum" data-value="2"></i><b>(2)</b>
+        .withCache("cache1",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                          ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+                .withLoaderWriter(new SampleLoaderWriter&lt;&gt;(singletonMap(41L, "zero")))
+                .withService(WriteBehindConfigurationBuilder
+                    .newBatchedWriteBehindConfiguration(1, TimeUnit.SECONDS, 3)
+                    .queueSize(3)
+                    .concurrencyLevel(1)))
+        .withCache("cache2",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                          ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+                .withLoaderWriter(new SampleLoaderWriter&lt;&gt;(singletonMap(41L, "zero")))
+                .withService(WriteBehindConfigurationBuilder
+                    .newBatchedWriteBehindConfiguration(1, TimeUnit.SECONDS, 3)
+                    .useThreadPool("cache2Pool") <i class="conum" data-value="3"></i><b>(3)</b>
+                    .queueSize(3)
+                    .concurrencyLevel(2)))
+        .build(true);
+
+    Cache&lt;Long, String&gt; cache1 =
+        cacheManager.getCache("cache1", Long.class, String.class);
+    Cache&lt;Long, String&gt; cache2 =
+        cacheManager.getCache("cache2", Long.class, String.class);
+
+    cacheManager.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure the thread pools. Note that the default one (<code>dflt</code>) is required for the events even when no event listener is configured.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Tell the <code>CacheManagerBuilder</code> to use a default thread pool for all write-behind caches that don&#8217;t explicitly specify one.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Tell the <code>WriteBehindConfigurationBuilder</code> to use a specific thread pool for its write-behind work.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="events"><a class="anchor" href="#events"></a>Events</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">    CacheManager cacheManager
+        = CacheManagerBuilder.newCacheManagerBuilder()
+        .using(PooledExecutionServiceConfigurationBuilder.newPooledExecutionServiceConfigurationBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+            .pool("defaultEventPool", 1, 3)
+            .pool("cache2Pool", 2, 2)
+            .build())
+        .withDefaultEventListenersThreadPool("defaultEventPool") <i class="conum" data-value="2"></i><b>(2)</b>
+        .withCache("cache1",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                          ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+                .withService(CacheEventListenerConfigurationBuilder
+                    .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED)))
+        .withCache("cache2",
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                          ResourcePoolsBuilder.newResourcePoolsBuilder().heap(10, EntryUnit.ENTRIES))
+                .withService(CacheEventListenerConfigurationBuilder
+                    .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED))
+                .withEventListenersThreadPool("cache2Pool")) <i class="conum" data-value="3"></i><b>(3)</b>
+        .build(true);
+
+    Cache&lt;Long, String&gt; cache1 =
+        cacheManager.getCache("cache1", Long.class, String.class);
+    Cache&lt;Long, String&gt; cache2 =
+        cacheManager.getCache("cache2", Long.class, String.class);
+
+    cacheManager.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure the thread pools. Note that there is no default one so all thread-using services must be configured with explicit defaults.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Tell the <code>CacheManagerBuilder</code> to use a default thread pool to manage events of all caches that don&#8217;t explicitly specify one.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Tell the <code>CacheEventListenerConfigurationBuilder</code> to use a specific thread pool for sending its events.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-xml"><a class="anchor" href="#using-xml"></a>Configuring Thread Pools with XML</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Following is an example describing how to configure the thread pools the different services will use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="xml">  &lt;thread-pools&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;thread-pool alias="defaultDiskPool" min-size="1" max-size="3"/&gt;
+    &lt;thread-pool alias="defaultWriteBehindPool" min-size="1" max-size="3"/&gt;
+    &lt;thread-pool alias="cache2Pool" min-size="2" max-size="2"/&gt;
+  &lt;/thread-pools&gt;
+
+  &lt;event-dispatch thread-pool="defaultEventPool"/&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+  &lt;write-behind thread-pool="defaultWriteBehindPool"/&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+  &lt;disk-store thread-pool="defaultDiskPool"/&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+
+  &lt;cache alias="cache1"&gt;
+    &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+
+    &lt;resources&gt;
+      &lt;heap unit="entries"&gt;10&lt;/heap&gt;
+      &lt;disk unit="MB"&gt;10&lt;/disk&gt;
+    &lt;/resources&gt;
+  &lt;/cache&gt;
+
+  &lt;cache alias="cache2"&gt;
+    &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+
+    &lt;loader-writer&gt;
+      &lt;class&gt;org.ehcache.docs.plugs.ListenerObject&lt;/class&gt;
+      &lt;write-behind thread-pool="cache2Pool"&gt; <i class="conum" data-value="5"></i><b>(5)</b>
+        &lt;batching batch-size="5"&gt;
+          &lt;max-write-delay unit="seconds"&gt;10&lt;/max-write-delay&gt;
+        &lt;/batching&gt;
+      &lt;/write-behind&gt;
+    &lt;/loader-writer&gt;
+    &lt;listeners dispatcher-thread-pool="cache2Pool"/&gt; <i class="conum" data-value="6"></i><b>(6)</b>
+    &lt;resources&gt;
+      &lt;heap unit="entries"&gt;10&lt;/heap&gt;
+      &lt;disk unit="MB"&gt;10&lt;/disk&gt;
+    &lt;/resources&gt;
+    &lt;disk-store-settings thread-pool="cache2Pool" writer-concurrency="2"/&gt; <i class="conum" data-value="7"></i><b>(7)</b>
+  &lt;/cache&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure the thread pools. Note that there is no default one.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure the default thread pool this cache manager will use to send events.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Configure the default thread pool this cache manager will use for write-behind work.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configure the default thread pool this cache manager will use for disk stores.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Configure a specific write-behind thread pool for this cache.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Configure a specific thread pool for this cache to send its events.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Configure a specific thread pool for this cache&#8217;s disk store.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+          <!--
+          <li>
+            <a href="/feed.xml" title="Atom/RSS Feed">
+              <i class="fa fa-rss-square"></i> Atom/RSS Feed
+            </a>
+          </li>
+          -->
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      
+        <a href="https://github.com/ehcache"><i class="fa fa-github"></i> GitHub</a>
+        <br/>
+      
+
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <!--
+      <a href="/resources/"><i class="fa fa-external-link-square"></i> Resources</a>
+      <br/>
+      <a href="/blog/"><i class="fa fa-rss-square"></i> Ehcache Blog</a>
+      <br/>
+      -->
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <a class="SAG-Logo" href="https://www.softwareag.com/corporate/products/az/terracotta_ehcache/default.html"><img src="/images/SAG_Logo.png" style="height:1.5em;width:9em;"/></a>
+        <div class="footer-text">
+          <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+          <br/>
+          <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+        </div>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

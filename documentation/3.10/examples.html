@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Examples</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="https://www.ehcache.org/documentation/3.10/examples.html">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
+
+
+  <!-- Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-131151-10', 'auto');
+    ga('send', 'pageview');
+
+
+    </script>
+  
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png" style="margin-top:15px;margin-bottom:6px;"/></a>
+          <span style="vertical-align:bottom;color:gray;">By</span>
+          <a class="SAG-Logo" href="https://www.softwareag.com/corporate/products/az/terracotta_ehcache/default.html"><img src="/images/SAG_Logo.png" style="margin-top:12px;margin-bottom:6px;height:1.5em;width:9em;"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/contribute.html"><i class="fa fa-code"></i> Contributing</a></li>
+                <!--
+                <li><a href="/resources/"><i class="fa fa-external-link-square"></i> External Resources</a></li>
+                <li><a href="http://blog.terracotta.org" target="_blank"><i class="fa fa-rss-square"></i> Terracotta Blog</a></li>
+                -->
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3" target="_blank"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk" target="_blank"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues" target="_blank"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC" target="_blank"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!--
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="/blog"><i class="fa fa-rss-square"></i> Ehcache Blog</a></li>
+          </ul>
+          -->
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Examples</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid ehcache-documentation v3.10  current ">
+
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
+          <li class="submenu"><a href="resilience.html">Resilience</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
+          <li class="submenu"><a href="class-loading.html">Class loading</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+        
+        <h1 class="post-title">
+            <span>Examples</span>
+            
+            <span class="current">CURRENT</span>
+            
+        </h1>
+        <hr/>
+        
+      </header>
+      <article class="post-content">
+        <div class="sect1">
+<h2 id="peeper-a-simple-message-board"><a class="anchor" href="#peeper-a-simple-message-board"></a>Peeper - a simple message board</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>demo</code> directory in the Ehcache 3 sources includes a sample applications with two (2)
+implementations demonstrating Ehcache use.  Implemented as a simple
+browser-based web service, the sample application Peeper displays any messages (<em>peeps</em>)
+previously entered and accepts new peeps, recording the peeps in a database.  The peeps
+database, shared among implementations of the Peeper application, is located at
+$HOME/ehcache-demo-peeper.mv.db.  This file may be safely erased while the application
+is not running.  While running, information about the operation of the Peeper application
+(database access, cache access, etc.) is written to the console.</p>
+</div>
+<div class="paragraph">
+<p>While the sample application may be run, the application is <em>very</em> simplistic&#8201;&#8212;&#8201;the code
+implementing the sample is the interesting bit. Running the sample application requires the
+use of <a href="https://gradle.org/">Gradle</a>. This sample may be accessed from GitHub by <em>cloning</em>
+the Ehcache 3 git repository:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="bash"># Create and/or change to a directory to hold the Ehcache git repository clone
+git clone https://github.com/ehcache/ehcache3.git</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="peeper-without-caching00-nocache"><a class="anchor" href="#peeper-without-caching00-nocache"></a>Peeper without Caching&#8201;&#8212;&#8201;00-NoCache</h3>
+<div class="paragraph">
+<p>The first sample, located in demos/00-NoCache, is a base Peeper application that
+does <strong>not</strong> use caching.  Each peep is stored in the database and all peeps are read
+from the database to display the Peeper web page. To run this implementation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="bash">cd ehcache3/demos/00-NoCache
+../../gradlew appStart</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This builds the necessary components, starts a <a href="http://eclipse.org/jetty/">Jetty</a> web service,
+and displays the URL of the web server on the console. The URL should be http://localhost:8080/.</p>
+</div>
+<div class="paragraph">
+<p>While running, lines like the following are displayed to the console:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>11:23:53.536 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Loading peeps from DB
+11:24:03.226 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Adding peep into DB
+11:24:03.234 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Loading peeps from DB
+11:24:13.312 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Adding peep into DB
+11:24:13.317 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Loading peeps from DB
+11:24:41.238 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Loading peeps from DB
+11:24:50.896 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Adding peep into DB
+11:24:50.901 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Loading peeps from DB
+11:24:56.295 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Adding peep into DB
+11:24:56.298 [800523121@qtp-1157162760-2] INFO  o.e.d.p.DataStore - Loading peeps from DB</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note the absence of indications of interactions with a cache.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="peeper-with-cache-aside-caching01-cacheaside"><a class="anchor" href="#peeper-with-cache-aside-caching01-cacheaside"></a>Peeper with Cache-aside Caching&#8201;&#8212;&#8201;01-CacheAside</h3>
+<div class="paragraph">
+<p>The second sample, located in demos/01-CacheAside, is a version of the Peeper application
+that makes use of Ehcache.  As each peep is read from the database (for display in the web
+page), it is written to an Ehcache instance.  If the Peeper web page is refreshed
+(without adding a new peep) or a new Peeper client connects, the peeps are read from
+the cache (instead of the database) to form the web page.  If a new peep is posted,
+the cache is cleared.  To run this implementation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="bash">cd ehcache3/demos/01-CacheAside
+../../gradlew appStart</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This builds the necessary components, starts a <a href="http://eclipse.org/jetty/">Jetty</a> web service,
+and displays the URL of the web server on the console. The URL, again, should be http://localhost:8080/.</p>
+</div>
+<div class="paragraph">
+<p>While running, lines like the following are displayed to the console:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>11:26:20.557 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Loading peeps from DB
+11:26:20.572 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Filling cache with peeps
+11:26:33.422 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Adding peep into DB
+11:26:33.428 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Clearing peeps cache
+11:26:33.431 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Loading peeps from DB
+11:26:33.432 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Filling cache with peeps
+11:26:50.025 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Adding peep into DB
+11:26:50.027 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Clearing peeps cache
+11:26:50.030 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Loading peeps from DB
+11:26:50.031 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Filling cache with peeps
+11:27:10.742 [139688380@qtp-965028604-0] INFO  o.e.d.p.DataStore - Getting peeps from cache</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note the presence of the Filling cache with peeps, Clearing peeps cache, and Getting peeps from cache lines indicating cache interactions.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="xml-with-107-extension"><a class="anchor" href="#xml-with-107-extension"></a>XML with 107 extension</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;ehcache:config
+    xmlns:ehcache="http://www.ehcache.org/v3"
+    xmlns:jcache="http://www.ehcache.org/v3/jsr107"&gt;
+
+  &lt;!--
+    OPTIONAL
+     services to be managed and lifecycled by the CacheManager
+  --&gt;
+  &lt;ehcache:service&gt;
+    &lt;!--
+      One element in another namespace, using our JSR-107 extension as an example here
+    --&gt;
+    &lt;jcache:defaults&gt;
+      &lt;jcache:cache name="invoices" template="myDefaultTemplate"/&gt;
+    &lt;/jcache:defaults&gt;
+  &lt;/ehcache:service&gt;
+
+  &lt;!--
+    OPTIONAL
+      A &lt;cache&gt; element defines a cache, identified by the mandatory 'alias' attribute, to be managed by the CacheManager
+  --&gt;
+  &lt;ehcache:cache alias="productCache"&gt;
+
+    &lt;!--
+      OPTIONAL, defaults to java.lang.Object
+        The FQCN of the type of keys K we'll use with the Cache&lt;K, V&gt;
+    --&gt;
+    &lt;ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;java.lang.Long&lt;/ehcache:key-type&gt;
+
+    &lt;!--
+      OPTIONAL, defaults to java.lang.Object
+        The FQCN of the type of values V we'll use with the Cache&lt;K, V&gt;
+    --&gt;
+    &lt;ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier"&gt;com.pany.domain.Product&lt;/ehcache:value-type&gt;
+
+    &lt;!--
+      OPTIONAL, defaults to no expiry
+        Entries to the Cache can be made to expire after a given time
+    --&gt;
+    &lt;ehcache:expiry&gt;
+      &lt;!--
+        time to idle, the maximum time for an entry to remain untouched
+          Entries to the Cache can be made to expire after a given time
+          other options are:
+             * &lt;ttl&gt;, time to live;
+             * &lt;class&gt;, for a custom Expiry implementation; or
+             * &lt;none&gt;, for no expiry
+      --&gt;
+      &lt;ehcache:tti unit="minutes"&gt;2&lt;/ehcache:tti&gt;
+    &lt;/ehcache:expiry&gt;
+
+    &lt;!--
+      OPTIONAL, defaults to no advice
+        An eviction advisor, which lets you control what entries should only get evicted as last resort
+        FQCN of a org.ehcache.config.EvictionAdvisor implementation
+    --&gt;
+    &lt;ehcache:eviction-advisor&gt;com.pany.ehcache.MyEvictionAdvisor&lt;/ehcache:eviction-advisor&gt;
+
+    &lt;!--
+      OPTIONAL,
+        Let's you configure your cache as a "cache-through",
+        i.e. a Cache that uses a CacheLoaderWriter to load on misses, and write on mutative operations.
+    --&gt;
+    &lt;ehcache:loader-writer&gt;
+      &lt;!--
+          The FQCN implementing org.ehcache.spi.loaderwriter.CacheLoaderWriter
+      --&gt;
+      &lt;ehcache:class&gt;com.pany.ehcache.integration.ProductCacheLoaderWriter&lt;/ehcache:class&gt;
+        &lt;!-- Any further elements in another namespace --&gt;
+    &lt;/ehcache:loader-writer&gt;
+
+    &lt;!--
+        The maximal number of entries to be held in the Cache, prior to eviction starting
+    --&gt;
+    &lt;ehcache:heap unit="entries"&gt;200&lt;/ehcache:heap&gt;
+
+    &lt;!--
+       OPTIONAL
+        Any further elements in another namespace
+    --&gt;
+  &lt;/ehcache:cache&gt;
+
+  &lt;!--
+    OPTIONAL
+      A &lt;cache-template&gt; defines a named template that can be used be &lt;cache&gt; definitions in this same file
+      They have all the same property as the &lt;cache&gt; elements above
+  --&gt;
+  &lt;ehcache:cache-template name="myDefaultTemplate"&gt;
+    &lt;ehcache:expiry&gt;
+      &lt;ehcache:none/&gt;
+    &lt;/ehcache:expiry&gt;
+    &lt;!--
+       OPTIONAL
+        Any further elements in another namespace
+    --&gt;
+  &lt;/ehcache:cache-template&gt;
+
+  &lt;!--
+    A &lt;cache&gt; that uses the template above by referencing the cache-template's name in the uses-template attribute:
+  --&gt;
+  &lt;ehcache:cache alias="customerCache" uses-template="myDefaultTemplate"&gt;
+    &lt;!--
+      Adds the key and value type configuration
+    --&gt;
+    &lt;ehcache:key-type&gt;java.lang.Long&lt;/ehcache:key-type&gt;
+    &lt;ehcache:value-type&gt;com.pany.domain.Customer&lt;/ehcache:value-type&gt;
+
+    &lt;!--
+      Overwrites the capacity limit set by the template to a new value
+    --&gt;
+    &lt;ehcache:heap unit="entries"&gt;200&lt;/ehcache:heap&gt;
+  &lt;/ehcache:cache&gt;
+
+&lt;/ehcache:config&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+          <!--
+          <li>
+            <a href="/feed.xml" title="Atom/RSS Feed">
+              <i class="fa fa-rss-square"></i> Atom/RSS Feed
+            </a>
+          </li>
+          -->
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      
+        <a href="https://github.com/ehcache"><i class="fa fa-github"></i> GitHub</a>
+        <br/>
+      
+
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <!--
+      <a href="/resources/"><i class="fa fa-external-link-square"></i> Resources</a>
+      <br/>
+      <a href="/blog/"><i class="fa fa-rss-square"></i> Ehcache Blog</a>
+      <br/>
+      -->
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <a class="SAG-Logo" href="https://www.softwareag.com/corporate/products/az/terracotta_ehcache/default.html"><img src="/images/SAG_Logo.png" style="height:1.5em;width:9em;"/></a>
+        <div class="footer-text">
+          <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+          <br/>
+          <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+        </div>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

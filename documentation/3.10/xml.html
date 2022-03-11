@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>XML Configuration</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="https://www.ehcache.org/documentation/3.10/xml.html">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
+
+
+  <!-- Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-131151-10', 'auto');
+    ga('send', 'pageview');
+
+
+    </script>
+  
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png" style="margin-top:15px;margin-bottom:6px;"/></a>
+          <span style="vertical-align:bottom;color:gray;">By</span>
+          <a class="SAG-Logo" href="https://www.softwareag.com/corporate/products/az/terracotta_ehcache/default.html"><img src="/images/SAG_Logo.png" style="margin-top:12px;margin-bottom:6px;height:1.5em;width:9em;"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/contribute.html"><i class="fa fa-code"></i> Contributing</a></li>
+                <!--
+                <li><a href="/resources/"><i class="fa fa-external-link-square"></i> External Resources</a></li>
+                <li><a href="http://blog.terracotta.org" target="_blank"><i class="fa fa-rss-square"></i> Terracotta Blog</a></li>
+                -->
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3" target="_blank"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk" target="_blank"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues" target="_blank"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC" target="_blank"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!--
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="/blog"><i class="fa fa-rss-square"></i> Ehcache Blog</a></li>
+          </ul>
+          -->
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>XML Configuration</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid ehcache-documentation v3.10  current ">
+
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
+          <li class="submenu"><a href="resilience.html">Resilience</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
+          <li class="submenu"><a href="class-loading.html">Class loading</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+        
+        <h1 class="post-title">
+            <span>XML Configuration</span>
+            
+            <span class="current">CURRENT</span>
+            
+        </h1>
+        <hr/>
+        
+      </header>
+      <article class="post-content">
+        <div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using an XML file you can configure a <code>CacheManager</code> at creation time, according to
+<a href="xsds.html#core">this schema definition</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="config-root-element"><a class="anchor" href="#config-root-element"></a><code>&lt;config&gt;</code> root element</h3>
+<div class="paragraph">
+<p>The root element of our XML configuration. One <code>&lt;config&gt;</code> element in an XML file provides the definition for a <code>CacheManager</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Ehcache allows for creating multiple <code>CacheManager</code> instances using the same XML configuration file.
+In contrast to the JSR-107 <code>javax.cache.spi.CachingProvider</code>, Ehcache does not maintain a registry of <code>CacheManager</code> instances.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="service-elements"><a class="anchor" href="#service-elements"></a><code>&lt;service&gt;</code> elements</h3>
+<div class="paragraph">
+<p><code>&lt;service&gt;</code> elements are extension points for specifying services managed by the <code>CacheManager</code>.</p>
+</div>
+<div class="paragraph">
+<p>Each <code>Service</code> defined in this way is managed with the
+same lifecycle as the <code>CacheManager</code>&#8201;&#8212;&#8201;for each <code>Service</code> defined for a <code>CacheManager</code>, the <code>Service.start</code>
+is called during <code>CacheManager.init</code> processing and the <code>Service.stop</code> method is called during
+<code>CacheManager.close</code> processing.</p>
+</div>
+<div class="paragraph">
+<p>These <code>Service</code> instances can then be used by <code>Cache</code> instances managed by the <code>CacheManager</code>.</p>
+</div>
+<div class="paragraph">
+<p>JSR-107 uses this extension point of the XML configuration (and Ehcache 3&#8217;s modular architecture), as explained in the
+<a href="107.html#supplement-jsr-107-configurations">JSR-107 configuration section</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="default-serializers-element"><a class="anchor" href="#default-serializers-element"></a><code>&lt;default-serializers&gt;</code> element</h3>
+<div class="paragraph">
+<p>A <code>&lt;default-serializers&gt;</code> element represents <code>Serializers</code> configured at <code>CacheManager</code> level.
+It is a collection of <code>&lt;serializer&gt;</code> elements that require a <code>type</code> and a fully qualified class name of the <code>Serializer</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="default-copiers-element"><a class="anchor" href="#default-copiers-element"></a><code>&lt;default-copiers&gt;</code> element</h3>
+<div class="paragraph">
+<p>A <code>&lt;default-copiers&gt;</code> element represents <code>Copiers</code> configured at <code>CacheManager</code> level.
+It is a collection of <code>&lt;copier&gt;</code> elements that requires a <code>type</code> and a fully qualified class name of the <code>Copier</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="persistence-element"><a class="anchor" href="#persistence-element"></a><code>&lt;persistence&gt;</code> element</h3>
+<div class="paragraph">
+<p>A <code>&lt;persistence&gt;</code> element represents <code>Persistence</code>, to be used when creating a <code>PersistentCacheManager</code>.
+It requires the <code>directory</code> location where data needs be stored on disk.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-elements"><a class="anchor" href="#cache-elements"></a><code>&lt;cache&gt;</code> elements</h3>
+<div class="paragraph">
+<p>A <code>&lt;cache&gt;</code> element represent a <code>Cache</code> instance that will be created and managed by the <code>CacheManager</code>.
+Each <code>&lt;cache&gt;</code> requires the <code>alias</code> attribute, used at runtime to retrieve the corresponding <code>Cache&lt;K, V&gt;</code> instance using
+the <code>org.ehcache.CacheManager.getCache(String, Class&lt;K&gt;, Class&lt;V&gt;)</code> method. The optional <code>uses-template</code> attribute lets you reference
+a <code>&lt;cache-template&gt;</code> element&#8217;s <code>name</code> attribute. See the <a href="#cache-template-elements">cache-template section</a>
+for further details on using them.</p>
+</div>
+<div class="paragraph">
+<p>Supported nested elements are optional:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>&lt;key-type&gt;</code>: the fully qualified class name (FQCN) of the keys (<code>&lt;K&gt;</code>) held in the <code>Cache&lt;K, V&gt;</code>; defaults to <code>java.lang.Object</code></p>
+</li>
+<li>
+<p><code>&lt;value-type&gt;</code>: FQCN of the values (<code>&lt;V&gt;</code>) held in the <code>Cache</code>; defaults to <code>java.lang.Object</code></p>
+</li>
+<li>
+<p><code>&lt;expiry&gt;</code>: control the expiry type and its parameters</p>
+</li>
+<li>
+<p><code>&lt;eviction-advisor&gt;</code>: FQCN of a <code>org.ehcache.config.EvictionAdvisor&lt;K, V&gt;</code> implementation, defaults to <code>null</code>, i.e. none</p>
+</li>
+<li>
+<p><code>&lt;integration&gt;</code>: configure a <code>CacheLoaderWriter</code> for a <em>cache-through</em> pattern</p>
+</li>
+<li>
+<p><code>&lt;resources&gt;</code>: configure the tiers and their capacity. When using on-heap only, you can replace this element by the <code>&lt;heap&gt;</code> one.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cache-template-elements"><a class="anchor" href="#cache-template-elements"></a><code>&lt;cache-template&gt;</code> elements</h3>
+<div class="paragraph">
+<p><code>&lt;cache-template&gt;</code> elements represent a uniquely named (specified using the mandatory <code>name</code> attribute) template for
+<code>&lt;cache&gt;</code> elements to inherit from.  A <code>&lt;cache&gt;</code> element that references a <code>&lt;cache-template&gt;</code> by
+its <code>name</code> using the <code>uses-template</code> attribute, will inherit all properties of the <code>&lt;cache-template&gt;</code>. A <code>&lt;cache&gt;</code>
+can override these properties as required.</p>
+</div>
+<div class="paragraph">
+<p>A <code>&lt;cache-template&gt;</code> element may contain all the same child elements as a <code>&lt;cache&gt;</code> element.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We&#8217;ve set up a complete configuration <a href="examples.html#xml-with-107-extension">example</a> to inspire you.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Processing of cache template configurations can be triggered lazily by actions that dynamically bind new caches
+ to existing cache templates. Errors within such templates may not be revealed until this lazy processing is triggered.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="property-replacement-in-xml-configuration-files"><a class="anchor" href="#property-replacement-in-xml-configuration-files"></a>Property replacement in XML configuration files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Certain elements inside XML configuration files can use <code>${property-name}</code> syntax. The value of the given
+system-property will replace the property reference during the configuration parsing.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If the system property does not exist, this will make the configuration parsing fail.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A classical use case for this feature is for disk files location inside the <code>directory</code> attribute of the <code>persistence</code> tag:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;persistence directory="${user.home}/cache-data"/&gt; <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Here <code>user.home</code> will be replaced by the value of the system property, something like <code>/home/user</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Attributes within the core configuration that can use system properties are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Local persistence directory (supports substitution within a string).</p>
+</li>
+<li>
+<p>Thread pool minimum and maximum size attributes.</p>
+</li>
+<li>
+<p>Write-behind queue size, concurrency, batch size and maximum batch delay.</p>
+</li>
+<li>
+<p>Cache TTI and TTL</p>
+</li>
+<li>
+<p>Core resource sizes (heap, offheap and disk)</p>
+</li>
+<li>
+<p>Disk store writer concurrency and segment count</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="xml-programmatic-parsing"><a class="anchor" href="#xml-programmatic-parsing"></a>XML programmatic parsing</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are obtaining your <code>CacheManager</code> through the JSR-107 API, what follows is done automatically
+      when invoking <code>javax.cache.spi.CachingProvider.getCacheManager(java.net.URI, java.lang.ClassLoader)</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">final URL myUrl = getClass().getResource("/configs/docs/getting-started.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
+XmlConfiguration xmlConfig = new XmlConfiguration(myUrl); <i class="conum" data-value="2"></i><b>(2)</b>
+CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <i class="conum" data-value="3"></i><b>(3)</b>
+myCacheManager.init();  <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Obtain a <code>URL</code> to your XML file&#8217;s location</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Instantiate an <code>XmlConfiguration</code> passing the XML file&#8217;s URL to it</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Using the static <code>org.ehcache.config.builders.CacheManagerBuilder.newCacheManager(org.ehcache.config.Configuration)</code> allows you
+to create your <code>CacheManager</code> instance using the <code>Configuration</code> from the <code>XmlConfiguration</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Initialize the <code>cacheManager</code> before it is used.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>We can also use <code>&lt;cache-template&gt;</code> declared in the XML file to seed instances of <code>CacheConfigurationBuilder</code>. In order
+to use a <code>&lt;cache-template&gt;</code> element from an XML file, e.g. the <code>/my-config.xml</code> contains this XML fragment:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;cache-template name="example"&gt;
+  &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
+  &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+  &lt;heap unit="entries"&gt;200&lt;/heap&gt;
+&lt;/cache-template&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Creating a <code>CacheConfigurationBuilder</code> of that <code>example</code> <code>&lt;cache-template&gt;</code> element, would be done as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">XmlConfiguration xmlConfiguration = new XmlConfiguration(getClass().getResource("/configs/docs/template-sample.xml"));
+CacheConfigurationBuilder&lt;Long, String&gt; configurationBuilder = xmlConfiguration.newCacheConfigurationBuilderFromTemplate("example", Long.class, String.class); <i class="conum" data-value="1"></i><b>(1)</b>
+configurationBuilder = configurationBuilder.withResourcePools(ResourcePoolsBuilder.heap(1000)); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Creates a builder, inheriting the capacity constraint of 200 entries</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The inherent properties can be overridden by simply providing a different value prior to building the <code>CacheConfiguration</code></td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="programmatic-configuration-to-xml"><a class="anchor" href="#programmatic-configuration-to-xml"></a>Programmatic configuration to XML</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Just like getting a cache manager configuration from its XML equivalent, the reverse translation is supported too.
+You can instantiate an <code>XmlConfiguration</code> object by passing the cache manager <code>Configuration</code>
+and the string representation of that object will give you the XML equivalent of the provided <code>Configuration</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">XmlConfiguration xmlConfiguration = new XmlConfiguration(getClass().getResource("/configs/docs/template-sample.xml"));
+CacheConfigurationBuilder&lt;Long, String&gt; configurationBuilder = xmlConfiguration.newCacheConfigurationBuilderFromTemplate("example", Long.class, String.class); <i class="conum" data-value="1"></i><b>(1)</b>
+configurationBuilder = configurationBuilder.withResourcePools(ResourcePoolsBuilder.heap(1000)); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Creates a builder, inheriting the capacity constraint of 200 entries</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The inherent properties can be overridden by simply providing a different value prior to building the <code>CacheConfiguration</code></td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+  .with(CacheManagerBuilder.persistence(tmpDir.newFile("myData")))
+  .withCache("threeTieredCache",
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+      ResourcePoolsBuilder.newResourcePoolsBuilder()
+        .heap(10, EntryUnit.ENTRIES)
+        .offheap(1, MemoryUnit.MB)
+        .disk(20, MemoryUnit.MB, true))
+      .withExpiry(ExpiryPolicyBuilder.timeToIdleExpiration(Duration.ofSeconds(20)))
+  ).build(false);
+
+Configuration configuration = cacheManager.getRuntimeConfiguration();
+XmlConfiguration xmlConfiguration = new XmlConfiguration(configuration);  <i class="conum" data-value="1"></i><b>(1)</b>
+String xml = xmlConfiguration.toString(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Instantiate an <code>XmlConfiguration</code> passing the cache manager <code>Configuration</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Retrieve the XML representation using the <code>toString</code> method.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Not every programmatic configuration can be translated to its XML equivalent in this manner.
+Translation is not supported if the cache manager configuration contains a cache with any one of the following configured:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>EvictionAdvisor</code></p>
+</li>
+<li>
+<p>A custom <code>ExpiryPolicy</code> other than <code>timeToLiveExpiration</code> or <code>timeToIdleExpiration</code> from ExpiryPolicyBuilder`</p>
+</li>
+<li>
+<p>Using an instance of the following instead of their classes:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><code>Serializer</code></p>
+</li>
+<li>
+<p><code>Copier</code></p>
+</li>
+<li>
+<p><code>CacheLoaderWriter</code></p>
+</li>
+<li>
+<p><code>CacheEventListener</code></p>
+</li>
+<li>
+<p><code>ResilienceStrategy</code></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="multiple-xml-configurations-in-one-document"><a class="anchor" href="#multiple-xml-configurations-in-one-document"></a>Multiple XML Configurations In One Document</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>XmlMultiConfiguration</code> class and the associated <code>ehcache-multi.xsd</code> XML schema provide support for multiple Ehcache
+configurations to be housed within a single XML container format.</p>
+</div>
+<div class="sect2">
+<h3 id="multiple-ehcache-manager-configurations"><a class="anchor" href="#multiple-ehcache-manager-configurations"></a>Multiple Ehcache Manager Configurations</h3>
+<div class="paragraph">
+<p>The simplest use of the multi-configuration features is to embed multiple cache manager configurations in a single xml
+file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;multi:configurations
+  xmlns='http://www.ehcache.org/v3'
+  xmlns:multi='http://www.ehcache.org/v3/multi'&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+
+  &lt;multi:configuration identity="foo-manager"&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;config&gt;
+      &lt;cache alias="foo"&gt;
+        &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+        &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+        &lt;resources&gt;
+          &lt;heap unit="entries"&gt;20&lt;/heap&gt;
+          &lt;offheap unit="MB"&gt;10&lt;/offheap&gt;
+        &lt;/resources&gt;
+      &lt;/cache&gt;
+    &lt;/config&gt;
+  &lt;/multi:configuration&gt;
+
+  &lt;multi:configuration identity="bar-manager"&gt;
+    &lt;config&gt;
+      &lt;cache alias="bar"&gt;
+        &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+        &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+        &lt;resources&gt;
+          &lt;heap unit="entries"&gt;20&lt;/heap&gt;
+          &lt;offheap unit="MB"&gt;10&lt;/offheap&gt;
+        &lt;/resources&gt;
+      &lt;/cache&gt;
+    &lt;/config&gt;
+  &lt;/multi:configuration&gt;
+&lt;/multi:configurations&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>A top-level <code>&lt;configurations&gt;</code> container with namespace declarations for the <code>multi</code> and core schemas</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Each Ehcache configuration is embedded inside a <code>configuration</code> tag with a required (unique) <code>identity</code> attribute</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>These embedded configurations can then be retrieved via an <code>XmlMultiConfiguration</code> instance built from the XML document.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration multipleConfiguration = XmlMultiConfiguration
+  .from(getClass().getResource("/configs/docs/multi/multiple-managers.xml")) <i class="conum" data-value="1"></i><b>(1)</b>
+  .build(); <i class="conum" data-value="2"></i><b>(2)</b>
+
+Configuration fooConfiguration = multipleConfiguration.configuration("foo-manager"); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>XmlMultiConfiguration</code> is assembled from the XML resource.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Once assembled the configuration is built.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td><code>Configuration</code> instances can then be retrieved using their identities.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="multiple-cache-manager-variants"><a class="anchor" href="#multiple-cache-manager-variants"></a>Multiple Cache Manager Variants</h3>
+<div class="paragraph">
+<p>Multiple variant configurations for a given manager can be provided by including a sequence of <code>&lt;variant&gt;</code> tags, each
+with a required <code>type</code> attribute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;multi:configuration identity="foo-manager"&gt;
+  &lt;multi:variant type="heap"&gt;
+    &lt;config&gt;
+      &lt;cache alias="foo"&gt;
+        &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+        &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+        &lt;resources&gt;
+          &lt;heap unit="entries"&gt;1000&lt;/heap&gt;
+        &lt;/resources&gt;
+      &lt;/cache&gt;
+    &lt;/config&gt;
+  &lt;/multi:variant&gt;
+  &lt;multi:variant type="offheap"&gt;
+    &lt;config&gt;
+      &lt;cache alias="foo"&gt;
+        &lt;key-type&gt;java.lang.String&lt;/key-type&gt;
+        &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+        &lt;resources&gt;
+          &lt;heap unit="entries"&gt;1000&lt;/heap&gt;
+          &lt;offheap unit="MB"&gt;128&lt;/offheap&gt;
+        &lt;/resources&gt;
+      &lt;/cache&gt;
+    &lt;/config&gt;
+  &lt;/multi:variant&gt;
+&lt;/multi:configuration&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A specific cache configuration can then be retrieved by choosing both a variant and an identity explicitly on retrieval.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration variantConfiguration = XmlMultiConfiguration
+  .from(getClass().getResource("/configs/docs/multi/multiple-variants.xml"))
+  .build();
+
+Configuration fooConfiguration = variantConfiguration.configuration("foo-manager", "offheap"); <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The samples above are just samples, variant types can be used to represent any kind of variation: development
+vs production, clustered vs unclustered, red vs blue, etc.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Configurations with multiple variants must have a variant type specified when they are retrieved otherwise an
+<code>IllegalStateException</code> will be thrown. Configurations without multiple variants will always return their single
+configuration for all requested variants.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="multiple-cache-manager-retrieval"><a class="anchor" href="#multiple-cache-manager-retrieval"></a>Multiple Cache Manager Retrieval</h3>
+<div class="paragraph">
+<p>Multiple cache managers can be retrieved from an <code>XmlMultiConfiguration</code> by iterating over the configurations
+<code>identities()</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">Map&lt;String, Configuration&gt; allConfigurations = multipleConfiguration.identities().stream() <i class="conum" data-value="1"></i><b>(1)</b>
+  .collect(Collectors.toMap(i -&gt; i, i -&gt; multipleConfiguration.configuration(i))); <i class="conum" data-value="2"></i><b>(2)</b>
+Map&lt;String, Configuration&gt; offheapConfigurations = variantConfiguration.identities().stream()
+  .collect(Collectors.toMap(i -&gt; i, i -&gt; variantConfiguration.configuration(i, "offheap"))); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>From a stream over the set of identities in a mult-configuration.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Map each identity to it&#8217;s unique (non-varianted) configuration.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Alternatively, map each identity to a specific variant configuration.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="building-xml-multi-configurations"><a class="anchor" href="#building-xml-multi-configurations"></a>Building XML Multi Configurations</h3>
+<div class="paragraph">
+<p><code>XmlMultiConfiguration</code> instance can be assembled and modified using the associated builder API.  The previous examples
+of parsing XML multi-configuration documents are all just simple invocations of the richer builder API.</p>
+</div>
+<div class="paragraph">
+<p>Configurations can be built from scratch as show below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration multiConfiguration = XmlMultiConfiguration.fromNothing() <i class="conum" data-value="1"></i><b>(1)</b>
+  .withManager("bar", barConfiguration) <i class="conum" data-value="2"></i><b>(2)</b>
+  .withManager("foo").variant("heap", heapConfiguration).variant("offheap", offheapConfiguration) <i class="conum" data-value="3"></i><b>(3)</b>
+  .build(); <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Starting with an initially empty set of configurations.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Add a configuration without variants.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Add a configuration with two different variants: heap and offheap.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Build the final configuration instance.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>They can also be built from existing configurations:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">XmlMultiConfiguration modified = XmlMultiConfiguration.from(multiConfiguration) <i class="conum" data-value="1"></i><b>(1)</b>
+  .withManager("foo") <i class="conum" data-value="2"></i><b>(2)</b>
+  .build();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Starting with an existing <code>XmlMultiConfiguration</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Remove the configuration with identity <code>"foo"</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Once built a multi-configuration can be retrieved in XML form:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">String xmlString = multiConfiguration.asRenderedDocument(); <i class="conum" data-value="1"></i><b>(1)</b>
+Document xmlDocument = multiConfiguration.asDocument(); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Retrieving the XML as a rendered string.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Retrieving the XML as a DOM (<code>org.w3c.Document</code>).</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="http://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="http://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@softwareag.com">tc-oss@softwareag.com</a></li>
+        </ul>
+      -->
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://twitter.com/ehcache">
+              <i class="fa fa-twitter"></i> Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.facebook.com/Terracotta">
+              <i class="fa fa-facebook"></i> Facebook
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="http://www.linkedin.com/company/terracotta">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+          <!--
+          <li>
+            <a href="/feed.xml" title="Atom/RSS Feed">
+              <i class="fa fa-rss-square"></i> Atom/RSS Feed
+            </a>
+          </li>
+          -->
+        </ul>
+      </div>
+
+    <div class="footer-col  footer-col-3">
+      
+        <a href="https://github.com/ehcache"><i class="fa fa-github"></i> GitHub</a>
+        <br/>
+      
+
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <!--
+      <a href="/resources/"><i class="fa fa-external-link-square"></i> Resources</a>
+      <br/>
+      <a href="/blog/"><i class="fa fa-rss-square"></i> Ehcache Blog</a>
+      <br/>
+      -->
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <a class="SAG-Logo" href="https://www.softwareag.com/corporate/products/az/terracotta_ehcache/default.html"><img src="/images/SAG_Logo.png" style="height:1.5em;width:9em;"/></a>
+        <div class="footer-text">
+          <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+          <br/>
+          <em class="copyright">&copy; Terracotta, Inc., a wholly-owned subsidiary of Software AG USA, Inc. All rights reserved.</em>
+        </div>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>
