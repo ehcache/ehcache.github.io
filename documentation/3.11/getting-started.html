@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Ehcache 3.11 Documentation</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="https://www.ehcache.org/documentation/3.11/getting-started.html">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
+
+
+  <!-- Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-131151-10', 'auto');
+    ga('send', 'pageview');
+
+
+    </script>
+  
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png" style="margin-top:15px;margin-bottom:6px;"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/contribute.html"><i class="fa fa-code"></i> Contributing</a></li>
+                <!--
+                <li><a href="/resources/"><i class="fa fa-external-link-square"></i> External Resources</a></li>
+                <li><a href="http://blog.terracotta.org" target="_blank"><i class="fa fa-rss-square"></i> Terracotta Blog</a></li>
+                -->
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3" target="_blank"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk" target="_blank"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues" target="_blank"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC" target="_blank"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!--
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="/blog"><i class="fa fa-rss-square"></i> Ehcache Blog</a></li>
+          </ul>
+          -->
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Ehcache 3.11 Documentation</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid ehcache-documentation v3.11  current ">
+
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
+          <li class="submenu"><a href="resilience.html">Resilience</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
+          <li class="submenu"><a href="class-loading.html">Class loading</a></li>
+          <li class="submenu"><a href="osgi.html">OSGi Deployment</a></li>
+          <li class="submenu"><a href="config-derive.html">Configuration Derivation</a></li>
+          <li class="submenu"><a href="performance.html">Ehcache Performance Tuning</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+        
+        <h1 class="post-title">
+            <span>Ehcache 3.11 Documentation</span>
+            
+            <span class="current">CURRENT</span>
+            
+        </h1>
+        <hr/>
+        
+      </header>
+      <article class="post-content">
+        <div class="sect1">
+<h2 id="getting-ehcache"><a class="anchor" href="#getting-ehcache"></a>Getting Ehcache</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The latest version of Ehcache 3.11 has been released to maven central under the following coordinates:</p>
+</div>
+<div class="sect2">
+<h3 id="from-gradle"><a class="anchor" href="#from-gradle"></a>From Gradle</h3>
+<div class="paragraph">
+<p>Add the following to the dependencies section of your <code>build.gradle</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="groovy">dependencies {
+  implementation 'org.ehcache:ehcache:3.11.1'
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="from-maven"><a class="anchor" href="#from-maven"></a>From Maven</h3>
+<div class="paragraph">
+<p>Add the following to the <code>&lt;dependencies&gt;</code> section in your <code>pom.xml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.ehcache&lt;/groupId&gt;
+  &lt;artifactId&gt;ehcache&lt;/artifactId&gt;
+  &lt;version&gt;3.11.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="jaxb-dependencies"><a class="anchor" href="#jaxb-dependencies"></a>JAXB Dependencies</h3>
+<div class="paragraph">
+<p>Ehcache uses JAXB to parse its XML configuration files. For out-of-the-box functionality it depends on the JAXB
+reference implementation using a version range: <code>org.glassfish.jaxb:jaxb-runtime:[2.2,3)</code>.
+If you require a repeatable build you will need to depend on an explicit version within this range.
+If you wish to use an alternate implementation of JAXB then you may need to manually exclude this dependency.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are using Java 8, or Java 9 (with <code>--add-modules java.xml.bind</code>) then you may safely exclude this
+dependency in favor of the implementation provided by the JRE.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="jakarta-variants"><a class="anchor" href="#jakarta-variants"></a>Jakarta Variants</h3>
+<div class="paragraph">
+<p>Ehcache 3.10 added support for the Jakarta EE namespaced versions of the JAXB APIs.
+If you have moved to the new Jakarta EE namespaced APIs then you may want to choose to use the matching Ehcache variants.</p>
+</div>
+<div class="sect3">
+<h4 id="from-gradle-2"><a class="anchor" href="#from-gradle-2"></a>From Gradle</h4>
+<div class="paragraph">
+<p>Add the following to the dependencies section of your <code>build.gradle</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="groovy">implementation('org.ehcache:ehcache:3.11.1') {
+  capabilities {
+    requireCapability('org.ehcache:ehcache-jakarta')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="from-maven-2"><a class="anchor" href="#from-maven-2"></a>From Maven</h4>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The Maven POM cannot express the dependencies of the Jakarta variant. You will need to manually correct the
+dependencies as shown below.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Add the following to the <code>&lt;dependencies&gt;</code> section in your <code>pom.xml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.ehcache&lt;/groupId&gt;
+  &lt;artifactId&gt;ehcache&lt;/artifactId&gt;
+  &lt;version&gt;3.11.1&lt;/version&gt;
+  &lt;classifier&gt;jakarta&lt;/classifier&gt;
+
+  &lt;exclusions&gt;
+    &lt;exclusion&gt;
+      &lt;groupId&gt;org.glassfish.jaxb&lt;/groupId&gt;
+      &lt;artifactId&gt;jaxb-runtime&lt;/artifactId&gt;
+    &lt;/exclusion&gt;
+  &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.glassfish.jaxb&lt;/groupId&gt;
+  &lt;artifactId&gt;jaxb-runtime&lt;/artifactId&gt;
+  &lt;version&gt;[3,3.1)&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configuring-ehcache"><a class="anchor" href="#configuring-ehcache"></a>Configuring Ehcache</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to start using Ehcache, you will need to configure your first <code>CacheManager</code> and <code>Cache</code>.
+This can be achieved through <a href="#configuring-with-java">programmatic configuration</a> or <a href="#configuring-with-xml">XML</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are looking to use the JSR-107, aka <code>javax.cache</code> API, you should start by reading
+      <a href="107.html">the Ehcache 3.x JSR-107 Provider page</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="configuring-with-java"><a class="anchor" href="#configuring-with-java"></a>Programmatic configuration</h3>
+<div class="paragraph">
+<p>Java configuration is most easily achieved through the use of builders that offer a fluent API.</p>
+</div>
+<div class="paragraph">
+<p>As with the previous versions of Ehcache, the canonical way of dealing with <code>Cache</code> is through a <code>CacheManager</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+    .withCache("preConfigured",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10))) <i class="conum" data-value="2"></i><b>(2)</b>
+    .build(); <i class="conum" data-value="3"></i><b>(3)</b>
+cacheManager.init(); <i class="conum" data-value="4"></i><b>(4)</b>
+
+Cache&lt;Long, String&gt; preConfigured =
+    cacheManager.getCache("preConfigured", Long.class, String.class); <i class="conum" data-value="5"></i><b>(5)</b>
+
+Cache&lt;Long, String&gt; myCache = cacheManager.createCache("myCache", <i class="conum" data-value="6"></i><b>(6)</b>
+    CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(10)));
+
+myCache.put(1L, "da one!"); <i class="conum" data-value="7"></i><b>(7)</b>
+String value = myCache.get(1L); <i class="conum" data-value="8"></i><b>(8)</b>
+
+cacheManager.removeCache("preConfigured"); <i class="conum" data-value="9"></i><b>(9)</b>
+
+cacheManager.close(); <i class="conum" data-value="10"></i><b>(10)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The static method <code>org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder</code> returns a new <code>org.ehcache.config.builders.CacheManagerBuilder</code> instance.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Use the builder to define a <code>Cache</code> with alias "preConfigured". This cache will be created when <code>cacheManager.build()</code> is invoked on the actual <code>CacheManager</code> instance.
+The first <code>String</code> argument is the cache alias, which is used to retrieve the cache from the <code>CacheManager</code>.
+The second argument, <code>org.ehcache.config.CacheConfiguration</code>, is used to configure the <code>Cache</code>.
+We use the static <code>newCacheConfigurationBuilder()</code> method on <code>org.ehcache.config.builders.CacheConfigurationBuilder</code> to create a default configuration.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Finally, invoking <code>build()</code> returns a fully instantiated, <strong>but uninitialized</strong>, <code>CacheManager</code> we can use.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Before using the <code>CacheManager</code> it needs to be initialized, which can be done in 1 of 2 ways:
+Calling <code>CacheManager.init()</code> on the <code>CacheManager</code> instance, or calling the <code>CacheManagerBuilder.build(boolean init)</code> method with the boolean parameter set to true.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>A cache is retrieved by passing its alias, key type and value type to the <code>CacheManager</code>.
+For instance, to obtain the cache declared in step 2 you need its <code>alias="preConfigured"</code>, <code>keyType=Long.class</code> and <code>valueType=String.class</code>.
+For type-safety, we ask for both key and value types to be passed in.
+If these differ from the ones we expect, the <code>CacheManager</code> throws a <code>ClassCastException</code> early in the application&#8217;s lifecycle.
+This guards the <code>Cache</code> from being polluted by random types.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>The <code>CacheManager</code> can be used to create new <code>Cache</code> instances as needed. Just as in step 2, it requires passing in an
+alias as well as a <code>CacheConfiguration</code>. The instantiated and fully initialized <code>Cache</code> added will be returned and/or
+accessed through the <code>CacheManager.getCache</code> API.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>The newly added <code>Cache</code> can now be used to store entries, which are comprised of key value pairs.
+The put method&#8217;s first parameter is the key and the second parameter is the value.
+Remember the key and value types must be the same types as those defined in the <code>CacheConfiguration</code>.
+Additionally the key must be unique and is only associated with one value.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>A value is retrieved from a cache by calling the <code>cache.get(key)</code> method.
+It only takes one parameter which is the key, and returns the value associated with that key. If there is no value associated with that key then null is returned.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td>We can <code>CacheManager.removeCache(String)</code> a given <code>Cache</code>. The <code>CacheManager</code> will not only remove its reference to the
+<code>Cache</code>, but will also close it. The <code>Cache</code> releases all locally held transient resources (such as memory).
+References to this <code>Cache</code> become unusable.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="10"></i><b>10</b></td>
+<td>In order to release all transient resources (memory, threads, &#8230;&#8203;) a <code>CacheManager</code> provides to <code>Cache</code> instances
+it manages, you have to invoke <code>CacheManager.close()</code>, which in turns closes all <code>Cache</code> instances known at the time.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Here is a shorter version featuring 3 important things:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">try(CacheManager cacheManager = newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+  .withCache("preConfigured", newCacheConfigurationBuilder(Long.class, String.class, heap(10))) <i class="conum" data-value="2"></i><b>(2)</b>
+  .build(true)) { <i class="conum" data-value="3"></i><b>(3)</b>
+
+  // Same code as before [...]
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>A <code>CacheManager</code> implements <code>Closeable</code> so can be closed automatically by a try-with-resources.
+A <code>CacheManager</code> must be closed cleanly. In a <code>finally</code> block, with a <code>try-with-resources</code> or (more frequent for normal applications) in some shutdown hook.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Builders having different names, you can use static imports for all of them.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>CacheManager</code> is initialized using <code>build(true)</code>.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-with-xml"><a class="anchor" href="#configuring-with-xml"></a>XML configuration</h3>
+<div class="paragraph">
+<p>You can create an XML file to configure a <code>CacheManager</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="xml">&lt;config xmlns='http://www.ehcache.org/v3'&gt;
+
+  &lt;cache alias="foo"&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;key-type&gt;java.lang.String&lt;/key-type&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;value-type&gt;java.lang.String&lt;/value-type&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+    &lt;resources&gt;
+      &lt;heap unit="entries"&gt;20&lt;/heap&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+      &lt;offheap unit="MB"&gt;10&lt;/offheap&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+    &lt;/resources&gt;
+  &lt;/cache&gt;
+
+  &lt;cache-template name="myDefaults"&gt; <i class="conum" data-value="5"></i><b>(5)</b>
+    &lt;key-type&gt;java.lang.Long&lt;/key-type&gt;
+    &lt;value-type&gt;java.lang.String&lt;/value-type&gt;
+    &lt;heap unit="entries"&gt;200&lt;/heap&gt;
+  &lt;/cache-template&gt;
+
+  &lt;cache alias="bar" uses-template="myDefaults"&gt; <i class="conum" data-value="6"></i><b>(6)</b>
+    &lt;key-type&gt;java.lang.Number&lt;/key-type&gt;
+  &lt;/cache&gt;
+
+  &lt;cache alias="simpleCache" uses-template="myDefaults" /&gt; <i class="conum" data-value="7"></i><b>(7)</b>
+
+&lt;/config&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Declares a <code>Cache</code> aliased to <code>foo</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The keys and values of <code>foo</code> are declared as type <code>String</code>; if not specified, the default is <code>java.lang.Object</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td><code>foo</code> is declared to hold up to 2,000 entries on heap&#8230;&#8203;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>&#8230;&#8203;as well as up to 500 MB of off-heap memory before it starts evicting</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td><code>&lt;cache-template&gt;</code> elements let you create an abstract configuration that further <code>&lt;cache&gt;</code> configurations can then "extend"</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td><code>bar</code> is such a <code>Cache</code>.   <code>bar</code> uses the <code>&lt;cache-template&gt;</code> named <code>myDefaults</code> and overrides its <code>key-type</code> to a wider type.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td><code>simpleCache</code> is another such <code>Cache</code>.  It uses <code>myDefaults</code> configuration for its sole <code>CacheConfiguration</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Refer to the <a href="xml.html">XML documentation</a> for more details on the XML format.</p>
+</div>
+<div class="paragraph">
+<p>In order to parse an XML configuration, you can use the <code>XmlConfiguration</code> type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">URL myUrl = getClass().getResource("/my-config.xml"); <i class="conum" data-value="1"></i><b>(1)</b>
+Configuration xmlConfig = new XmlConfiguration(myUrl); <i class="conum" data-value="2"></i><b>(2)</b>
+CacheManager myCacheManager = CacheManagerBuilder.newCacheManager(xmlConfig); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Obtain a <code>URL</code> to your XML file location</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Instantiate an <code>XmlConfiguration</code> passing the XML file URL to it</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Using the static <code>org.ehcache.config.builders.CacheManagerBuilder.newCacheManager(org.ehcache.config.Configuration)</code> lets you
+create your <code>CacheManager</code> instance using the <code>Configuration</code> from the <code>XmlConfiguration</code></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="creating-a-cache-manager-with-clustering-support"><a class="anchor" href="#creating-a-cache-manager-with-clustering-support"></a>Creating a cache manager with clustering support</h3>
+<div class="paragraph">
+<p>To enable Clustering with Terracotta, firstly you will have to <a href="clustered-cache.html#starting-server">start the Terracotta server</a> configured with clustered storage.
+In addition, for creating the cache manager with clustering support, you will need to provide the clustering service configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">CacheManagerBuilder&lt;PersistentCacheManager&gt; clusteredCacheManagerBuilder =
+    CacheManagerBuilder.newCacheManagerBuilder() <i class="conum" data-value="1"></i><b>(1)</b>
+        .with(ClusteringServiceConfigurationBuilder.cluster(URI.create("terracotta://localhost/my-application")) <i class="conum" data-value="2"></i><b>(2)</b>
+            .autoCreateOnReconnect(c -&gt; c)); <i class="conum" data-value="3"></i><b>(3)</b>
+PersistentCacheManager cacheManager = clusteredCacheManagerBuilder.build(true); <i class="conum" data-value="4"></i><b>(4)</b>
+
+cacheManager.close(); <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Returns the <code>org.ehcache.config.builders.CacheManagerBuilder</code> instance;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Use the <code>ClusteringServiceConfigurationBuilder</code>'s static method <code>.cluster(URI)</code> for connecting the cache manager to the clustering storage at the
+URI specified that returns the clustering service configuration builder instance.
+The sample URI provided in the example points to the clustered storage with clustered storage identifier <strong>my-application</strong> on the Terracotta server (assuming the server is running on localhost and port <strong>9410</strong>); the query-param <code>auto-create</code>
+creates the clustered storage in the server if it doesn&#8217;t already exist.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Returns a fully initialized cache manager that can be used to create clustered caches.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Auto-create the clustered storage if it doesn&#8217;t already exist.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Close the cache manager.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+See <a href="clustered-cache.html">the clustered cache documentation</a> for more information on this feature.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="storage-tiers"><a class="anchor" href="#storage-tiers"></a>Storage Tiers</h3>
+<div class="paragraph">
+<p>Ehcache 3, as in previous versions, offers a tiering model to allow storing increasing amounts of data on slower tiers
+(which are generally more abundant).</p>
+</div>
+<div class="paragraph">
+<p>The idea is that resources related to faster storage are more rare, but are located where the 'hottest' data is preferred to be.
+Thus less-hot (less frequently used) data is moved to the more abundant but slower tiers. Hotter data is moved onto
+the faster tiers.</p>
+</div>
+<div class="sect3">
+<h4 id="three-tiers"><a class="anchor" href="#three-tiers"></a>Three tiers</h4>
+<div class="paragraph">
+<p>A classical example would be using 3 tiers with a persistent disk storage.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">PersistentCacheManager persistentCacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    .with(CacheManagerBuilder.persistence(new File(getStoragePath(), "myData"))) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withCache("threeTieredCache",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+            ResourcePoolsBuilder.newResourcePoolsBuilder()
+                .heap(10, EntryUnit.ENTRIES) <i class="conum" data-value="2"></i><b>(2)</b>
+                .offheap(1, MemoryUnit.MB) <i class="conum" data-value="3"></i><b>(3)</b>
+                .disk(20, MemoryUnit.MB, true) <i class="conum" data-value="4"></i><b>(4)</b>
+            )
+    ).build(true);
+
+Cache&lt;Long, String&gt; threeTieredCache = persistentCacheManager.getCache("threeTieredCache", Long.class, String.class);
+threeTieredCache.put(1L, "stillAvailableAfterRestart"); <i class="conum" data-value="5"></i><b>(5)</b>
+
+persistentCacheManager.close();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If you wish to use disk storage (like for persistent <code>Cache</code> instances), you&#8217;ll have to provide a
+location where data should be stored on disk to the <code>CacheManagerBuilder.persistence()</code> static method.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>You define a resource pool for the heap. This will be your faster but smaller pool.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>You define a resource pool for the off-heap. Still pretty fast and a bit bigger.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>You define a persistent resource pool for the disk. It is persistent because said it should be (last parameter is <code>true</code>).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>All values stored in the cache will be available after a JVM restart (assuming the <code>CacheManager</code> has been closed cleanly by calling <code>close()</code>).</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For details, read the <a href="tiering.html">tiering documentation</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="data-freshness"><a class="anchor" href="#data-freshness"></a>Data freshness</h3>
+<div class="paragraph">
+<p>In Ehcache, data freshness is controlled through <code>Expiry</code>.
+The following illustrates how to configure a <em>time-to-live</em> expiry.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+        ResourcePoolsBuilder.heap(100)) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(20))) <i class="conum" data-value="2"></i><b>(2)</b>
+    .build();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Expiry is configured at the cache level, so start by defining a cache configuration,</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>then add to it an <code>Expiry</code>, here using the predefined <em>time-to-live</em> one, configured with the required <code>Duration</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See the section on <a href="expiry.html">expiry</a> for more information about the options available.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="advanced-topics"><a class="anchor" href="#advanced-topics"></a>Advanced topics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A number of advanced topics that were discussed here have been moved out, see below.</p>
+</div>
+<div class="sect2">
+<h3 id="user-managed-cache"><a class="anchor" href="#user-managed-cache"></a>User managed cache</h3>
+<div class="paragraph">
+<p>See <a href="usermanaged.html">the user managed cache documentation</a> for more information on this feature.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="update-resourcepools"><a class="anchor" href="#update-resourcepools"></a>Update ResourcePools</h3>
+<div class="paragraph">
+<p>See the <a href="tiering.html#update-resourcepools">relevant section</a> in the tiering documentation for more information on this feature.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="off-heap"><a class="anchor" href="#off-heap"></a>Off-heap</h3>
+<div class="paragraph">
+<p>See <a href="tiering.html#off-heap">the tiering documentation</a> for more information on this feature.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="disk-persistence"><a class="anchor" href="#disk-persistence"></a>Disk persistence</h3>
+<div class="paragraph">
+<p>See <a href="tiering.html#disk">the tiering documentation</a> for more information on this feature.</p>
+</div>
+</div>
+</div>
+</div>
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="https://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="https://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@wwpdl.vnet.ibm.com">tc-oss@wwpdl.vnet.ibm.com</a></li>
+        </ul>
+      -->
+      </div>
+      
+    <div class="footer-col  footer-col-2">
+      
+        <a href="https://github.com/ehcache"><i class="fa fa-github"></i> GitHub</a>
+        <br/>
+      
+
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <!--
+      <a href="/resources/"><i class="fa fa-external-link-square"></i> Resources</a>
+      <br/>
+      <a href="/blog/"><i class="fa fa-rss-square"></i> Ehcache Blog</a>
+      <br/>
+      -->
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <div class="footer-text">
+          <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        </div>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="shortcut icon"  type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+  <title>Cache Event Listeners</title>
+
+  <meta name="description" content="Java's most widely used cache.">
+
+  <link rel="canonical" href="https://www.ehcache.org/documentation/3.11/cache-event-listeners.html">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Ehcache Feed">
+
+
+  <!-- Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+  <!-- Global CSS -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/spacelab/bootstrap.min.css">
+
+
+<!--
+  <link rel="stylesheet" href="/plugins/highlight/styles/idea.css">
+  <script src="/plugins/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+-->
+
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+
+<!--
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  
+    <script>
+    
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-131151-10', 'auto');
+    ga('send', 'pageview');
+
+
+    </script>
+  
+</head>
+
+
+  <body>
+
+    
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="site-title" href="/"><img src="/images/ehcache.png" style="margin-top:15px;margin-bottom:6px;"/></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="ehc_mnu_about"><a href="/about/"><i class="fa fa-info-circle"></i> About</a></li>
+            <li id="ehc_mnu_docs"><a href="/documentation/"><i class="fa fa-book"></i> Docs</a></li>
+            <li id="ehc_mnu_download"><a href="/downloads/"><i class="fa fa-download"></i> Download</a></li>
+            <li id="ehc_mnu_community" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Community <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">We Love Contributors</li>
+                <li><a href="/community/contribute.html"><i class="fa fa-code"></i> Contributing</a></li>
+                <!--
+                <li><a href="/resources/"><i class="fa fa-external-link-square"></i> External Resources</a></li>
+                <li><a href="http://blog.terracotta.org" target="_blank"><i class="fa fa-rss-square"></i> Terracotta Blog</a></li>
+                -->
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Forums</li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-users" target="_blank"><i class="fa fa-commenting"></i> Users' Forum</a></li>
+                <li><a href="https://groups.google.com/forum/#!forum/ehcache-dev" target="_blank"><i class="fa fa-commenting"></i> Developers' Forum</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Source Code</li>
+                <li><a href="https://github.com/ehcache/ehcache3" target="_blank"><i class="fa fa-github"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="http://svn.terracotta.org/svn/ehcache/trunk" target="_blank"><i class="fa fa-code-fork"></i> SVN  (Ehcache 2)</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Bug Tracking</li>
+                <li><a href="https://github.com/ehcache/ehcache3/issues" target="_blank"><i class="fa fa-bug"></i> GitHub  (Ehcache 3)</a></li>
+                <li><a href="https://jira.terracotta.org/jira/browse/EHC" target="_blank"><i class="fa fa-bug"></i> Jira  (Ehcache 2)</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!--
+          <ul class="nav navbar-nav navbar-right">
+            <li id="ehc_mnu_events"><a href="/events"><i class="fa fa-calendar"></i> News & Events</a></li>
+            <li><a href="/blog"><i class="fa fa-rss-square"></i> Ehcache Blog</a></li>
+          </ul>
+          -->
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+<br/>
+<br/>
+<br/>
+
+
+    <div class="container-fluid">
+      <div id="contentTitle">
+        <h1>Cache Event Listeners</h1>
+      </div>
+      <div>
+        <br/>
+
+<div class="container-fluid ehcache-documentation v3.11  current ">
+
+
+  <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- sidebar -->
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <ul class="nav">
+          <li class="submenu"><a href="index.html">Docs Overview</a></li>
+        </ul>
+
+        Basic topics:
+        <ul class="nav">
+          <li class="submenu"><a href="getting-started.html">Getting Started</a></li>
+          <li class="submenu"><a href="tiering.html">Tiering options</a></li>
+          <li class="submenu"><a href="examples.html">Examples</a></li>
+          <li class="submenu"><a href="xml.html">XML Configuration</a></li>
+          <li class="submenu"><a href="107.html">JCache aka JSR-107</a></li>
+          <li class="submenu"><a href="xsds.html">Configuration XSD</a></li>
+          <li class="submenu"><a href="clustered-cache.html">Clustering with Terracotta</a></li>
+        </ul>
+
+        General topics:
+        <ul class="nav">
+          <li class="submenu"><a href="caching-terms.html">Caching Terms</a></li>
+          <li class="submenu"><a href="caching-concepts.html">Caching Concepts</a></li>
+          <li class="submenu"><a href="caching-patterns.html">Caching Patterns</a></li>
+        </ul>
+
+        Advanced topics:
+        <ul class="nav">
+          <li class="submenu"><a href="migration-guide.html">Migration Guide</a></li>
+          <li class="submenu"><a href="expiry.html">Expiry</a></li>
+          <li class="submenu"><a href="resilience.html">Resilience</a></li>
+          <li class="submenu"><a href="thread-pools.html">Thread Pools</a></li>
+          <li class="submenu"><a href="serializers-copiers.html">Serializers and Copiers</a></li>
+          <li class="submenu"><a href="xa.html">Transactions Support</a></li>
+          <li class="submenu"><a href="writers.html">Cache Writers</a></li>
+          <li class="submenu"><a href="usermanaged.html">User Managed Caches</a></li>
+          <li class="submenu"><a href="cache-event-listeners.html">Cache Event Listeners</a></li>
+          <li class="submenu"><a href="eviction-advisor.html">Eviction Advisors</a></li>
+          <li class="submenu"><a href="class-loading.html">Class loading</a></li>
+          <li class="submenu"><a href="osgi.html">OSGi Deployment</a></li>
+          <li class="submenu"><a href="config-derive.html">Configuration Derivation</a></li>
+          <li class="submenu"><a href="performance.html">Ehcache Performance Tuning</a></li>
+        </ul>
+    </div>
+
+    <!-- main area -->
+
+    <div class="col-xs-12 col-sm-9">
+      <header class="post-header">
+        
+        <h1 class="post-title">
+            <span>Cache Event Listeners</span>
+            
+            <span class="current">CURRENT</span>
+            
+        </h1>
+        <hr/>
+        
+      </header>
+      <article class="post-content">
+        <div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cache listeners allow implementers to register callback methods that will be executed when a cache event occurs.</p>
+</div>
+<div class="paragraph">
+<p>Listeners are registered at the cache level - and therefore only receive events for caches that they have been registered with.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheEventListenerConfigurationBuilder cacheEventListenerConfiguration = CacheEventListenerConfigurationBuilder
+    .newEventListenerConfiguration(new ListenerObject(), EventType.CREATED, EventType.UPDATED) <i class="conum" data-value="1"></i><b>(1)</b>
+    .unordered().asynchronous(); <i class="conum" data-value="2"></i><b>(2)</b>
+
+final CacheManager manager = CacheManagerBuilder.newCacheManagerBuilder()
+    .withCache("foo",
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(10))
+            .withService(cacheEventListenerConfiguration) <i class="conum" data-value="3"></i><b>(3)</b>
+    ).build(true);
+
+final Cache&lt;String, String&gt; cache = manager.getCache("foo", String.class, String.class);
+cache.put("Hello", "World"); <i class="conum" data-value="4"></i><b>(4)</b>
+cache.put("Hello", "Everyone"); <i class="conum" data-value="5"></i><b>(5)</b>
+cache.remove("Hello"); <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create a <code>CacheEventListenerConfiguration</code> using the builder indicating the listener and the events to receive (in this case create and update events)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Optionally indicate the delivery mode - defaults are <em>asynchronous</em> and <em>un-ordered</em> (for performance reasons)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Pass the configuration of the listener into the cache configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>You will be notified on creation</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>And on update</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>But not on removal, because it wasn&#8217;t included at step 1</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Created, updated, and removed events are triggered by user execution of mutative methods as outlined in the table below.
+Eviction and expiration events can be triggered by both internal processes and by user execution of methods targeting both related and unrelated keys within the cache.</p>
+</div>
+<table class="tableblock frame-topbot grid-all stretch">
+<caption class="title">Table 1. Cache entry event firing behaviors for mutative methods</caption>
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 40%;">
+<col style="width: 10%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">Initial value</th>
+<th class="tableblock halign-left valign-top">Operation</th>
+<th class="tableblock halign-center valign-top">New value</th>
+<th class="tableblock halign-left valign-top">Event {key, old-value, new-value}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>put(K, V)</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>created {K, null, V}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>put(K, V2)</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V2}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updated {K, V1, V2}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>put(K, V) [immediately expired]</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>none</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>put(K, V2) [immediately expired]</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>none</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>putIfAbsent(K, V)</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>created {K, null, V}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>putIfAbsent(K, V) [immediately expired]</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>none</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>replace(K, V2)</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V2}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updated {K, V1, V2}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>replace(K, V2) [immediately expired]</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>none</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>replace(K, V1, V2)</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V2}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updated {K, V1, V2}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V1}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>replace(K, V1, V2) [immediately expired]</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>no events</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{K, V}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>remove(K)</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>{}</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>removed {K, V, null}</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Ehcache provides an abstract class <code>CacheEventAdapter</code> for convenient implementation of event listeners when you are interested only on specific events.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="registering-during-runtime"><a class="anchor" href="#registering-during-runtime"></a>Registering Event Listeners during runtime</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cache event listeners may also be added and removed while the cache is being used.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">ListenerObject listener = new ListenerObject(); <i class="conum" data-value="1"></i><b>(1)</b>
+cache.getRuntimeConfiguration().registerCacheEventListener(listener, EventOrdering.ORDERED,
+    EventFiring.ASYNCHRONOUS, EnumSet.of(EventType.CREATED, EventType.REMOVED)); <i class="conum" data-value="2"></i><b>(2)</b>
+
+cache.put(1L, "one");
+cache.put(2L, "two");
+cache.remove(1L);
+cache.remove(2L);
+
+cache.getRuntimeConfiguration().deregisterCacheEventListener(listener); <i class="conum" data-value="3"></i><b>(3)</b>
+
+cache.put(1L, "one again");
+cache.remove(1L);</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create a <code>CacheEventListener</code> implementation instance.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Register it on the <code>RuntimeConfiguration</code>, indicating the delivery mode and events of interest.
+The following <code>put()</code> and <code>remove()</code> cache calls will make the listener receive events.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Unregister the previously registered <code>CacheEventListener</code> instance.
+The following <code>put()</code> and <code>remove()</code> cache calls will have no effect on the listener anymore.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="queues"><a class="anchor" href="#queues"></a>Event Processing Queues</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Advanced users may want to tune the level of concurrency which may be used for delivery of events:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight nowrap"><code data-lang="java">CacheConfiguration&lt;Long, String&gt; cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class, String.class,
+                                                                                      ResourcePoolsBuilder.heap(5L))
+    .withDispatcherConcurrency(10) <i class="conum" data-value="1"></i><b>(1)</b>
+    .withEventListenersThreadPool("listeners-pool")
+    .build();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Indicate the level of concurrency desired</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This will enable parallel processing of events at the cost of more threads being required by the system.</p>
+</div>
+</div>
+</div>
+      </article>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <br/>
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        Related Projects:<br/>
+        <a href="https://www.terracotta.org"><img src="/images/Terracotta_Logo_sm.png" style="max-height: 16px;"></a><br/><br/>
+        <a href="https://www.quartz-scheduler.org"><img src="/images/logo-quartz-scheduler.png" style="max-height: 20px;"></a>
+
+        <!--
+        <ul class="contact-list">
+          <li>Ehcache</li>
+          <li><a href="mailto:tc-oss@wwpdl.vnet.ibm.com">tc-oss@wwpdl.vnet.ibm.com</a></li>
+        </ul>
+      -->
+      </div>
+      
+    <div class="footer-col  footer-col-2">
+      
+        <a href="https://github.com/ehcache"><i class="fa fa-github"></i> GitHub</a>
+        <br/>
+      
+
+      <a href="/downloads/"><i class="fa fa-download"></i> Download Now</a>
+      <br/>
+      <a href="/documentation/"><i class="fa fa-book"></i> Documentation</a>
+      <br/>
+      <!--
+      <a href="/resources/"><i class="fa fa-external-link-square"></i> Resources</a>
+      <br/>
+      <a href="/blog/"><i class="fa fa-rss-square"></i> Ehcache Blog</a>
+      <br/>
+      -->
+      <a href="/community/"><i class="fa fa-users"></i> Join the Community</a>
+    </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <hr/>
+        <div class="footer-text">
+          <em class="copyleft">Ehcache is Open Source and freely available under the Apache 2 License</em>
+        </div>
+    </div>
+  </div>
+
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"/> -->
+
+<script type="text/javascript">
+        $('#').addClass("active");
+        $('#').addClass("active");
+</script>
+
+
+  </body>
+
+</html>
